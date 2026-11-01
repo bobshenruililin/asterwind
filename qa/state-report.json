@@ -47,6 +47,8 @@
     "repeat clicks do not replace choice",
     "nine-scene continuation",
     "Q5 two-option classroom adaptation",
+    "both quick choices and neutral skip reach counterfactual and ending",
+    "quick choice persists across resume and history",
     "optional Q3 four-option scene",
     "neutral skip",
     "saved-state resume",

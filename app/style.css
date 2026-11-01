@@ -16,3 +16,8 @@ body[data-paused=true] .arrive,body[data-paused=true] #reveal.play{animation-pla
 .notes,.caption,.response,.ending,.cover,dialog{scrollbar-width:thin;scrollbar-color:#7c6747 #c8ac77}.notes::-webkit-scrollbar,.caption::-webkit-scrollbar,.response::-webkit-scrollbar{width:7px}.notes::-webkit-scrollbar-track,.caption::-webkit-scrollbar-track,.response::-webkit-scrollbar-track{background:#c8ac77}.notes::-webkit-scrollbar-thumb,.caption::-webkit-scrollbar-thumb,.response::-webkit-scrollbar-thumb{background:#7c6747;border-radius:8px}
 
 body.reduce-motion *,body.reduce-motion *:before,body.reduce-motion *:after{animation:none!important;transition:none!important}
+
+/* Quick-path paper beats reuse the existing stage; keep actions scrollable on small screens. */
+#pressure p:not(.kicker),#close p:not(.kicker){margin-top:14px;font-size:18px;line-height:1.35}#pressure,#close{max-height:calc(100svh - 130px);overflow:auto}#pressure-title:focus,#close-title:focus{outline:none}#close .text-button{margin-top:2px;min-height:38px}
+@media(max-aspect-ratio:1/1){#pressure,#close{bottom:15%;max-height:75svh}#pressure p:not(.kicker),#close p:not(.kicker){font-size:17px}}
+@media(max-aspect-ratio:1/1) and (max-height:690px){#pressure p:not(.kicker),#close p:not(.kicker){font-size:15px;margin-top:8px}#close .text-button{min-height:34px}}

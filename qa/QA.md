@@ -35,3 +35,9 @@ Visual defects fixed during QA: missing system-font glyphs replaced with SVG/CSS
 The CUA tests used `sites-preview start` and the exact returned preview URL. The final branch loop selected each of four HTML `[data-choice]` buttons for each scene, waited for `#response`, read its consequence and opened Workbook perspective, then reflected/replayed/continued. The JSON is actual captured rendered text.
 
 For a browser-capable local executor, `qa/browser-qa.cjs` is an additional reproducible test script. It was supplied, not executed here: direct Chromium launch is infrastructure-blocked. `scripts/standalone.cjs` rebuilds the self-contained HTML. Both require Node; browser script also requires Playwright and Chromium. No dependency installation is needed to play the app.
+
+## 1 November 2026 — guided-route revision
+
+- Isolated DOM-adapter tests exercised all 36 unchanged source branches, both Q5 quick choices, the explicit three-hour hypothetical, reflection and closing, no-choice skip, replay, resume and a history-state restoration. These are logic tests, not browser layout tests.
+- The original Q5 three-day scenario and all 36 workbook options remain unchanged. The five-minute timings in the README are proposed discussion targets, not a timed rehearsal.
+- Desktop browser preview was exercised through Q5, a representative choice, the consequence, hypothetical, reflection and closing. Current revision's mobile viewport and deployed-host checks are not represented by the older 31 October browser evidence above.

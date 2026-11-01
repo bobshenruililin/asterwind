@@ -6,10 +6,14 @@ A private, still-first paper theatre for leadership conversations: nine situatio
 
 Open **`app/index.html`** in a modern browser, keeping the adjacent `assets/` folder intact. No build, server, account, API key, paid model or network connection is required to play. If a file viewer shows source text, open the file in a full browser.
 
-- **Begin a five-minute conversation:** Q5 with the explicitly adapted A/C two-choice structure, plus optional Q3. Five minutes is a design budget, not a measured rehearsal.
+- **Begin a five-minute conversation:** Q5 with the explicitly adapted A/C two-choice structure, then a hypothetical change from three days to three hours and a closing reflection. Q3 is optional after the ending. Five minutes is a facilitation budget with discussion, not a measured runtime.
 - **Explore all nine:** untimed; all four original response options in each scene.
 - Tab/Enter and 1–4 select choices. Right arrow advances or reflects without choosing. R replays. Corner controls provide arrival, pause, next beat, replay and About.
 - Progress stays in the browser's local storage when available. Nothing is sent. About includes reduced-motion and clear-progress controls.
+
+### Facilitation guide (about five minutes)
+
+Use these as discussion targets, not timers: arrival 15 seconds; context 35; choice 45; consequence 40; hypothetical pressure 50; reflection 85; closing 30. Advance manually. A solo click-through will be shorter; no timed rehearsal has established the duration.
 
 ## Repository map
 
