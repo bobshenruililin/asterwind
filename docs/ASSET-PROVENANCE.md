@@ -14,7 +14,7 @@ The nine original approved paper-theatre PNGs are in `production/reference-still
 
 The images are illustrations, not evidence of extra case facts. In particular Q3 depicts troubleshooting while the scenario begins with idle members; Q6 shows only part of the five-person group. Accessible HTML source facts take precedence.
 
-File-level SHA-256 hashes and sizes are recorded in `asset-manifest.json`. No third-party commercial stock license or blanket redistribution license is inferred. Keep the repository private pending any separate rights clearance.
+File-level SHA-256 hashes and sizes are recorded in `asset-manifest.json`. No third-party commercial stock license or blanket redistribution license is inferred. Keep the authoring repository private. Bob has separately approved a public playable runtime, including its delivery artwork; the precise scope and deployment status are recorded in [the handoff](HANDOFF.md). That approval does not create a blanket redistribution license or authorize publishing production material.
 
 ## Font
 

@@ -2,6 +2,8 @@
 
 A private, still-first paper theatre for leadership conversations: nine situations, 36 source-grounded responses, and small moments of reflection. The approved full-bleed paper stage, Kalam handwriting, sticker-note choices and corner controls are preserved.
 
+Start with [the working handoff](docs/HANDOFF.md) for approved design decisions, the current demo route, deployment status and the next review loop.
+
 ## Play locally
 
 Open **`app/index.html`** in a modern browser, keeping the adjacent `assets/` folder intact. No build, server, account, API key, paid model or network connection is required to play. If a file viewer shows source text, open the file in a full browser.
@@ -47,7 +49,7 @@ Optional browser regression tests require an existing Playwright installation an
 BROWSER_EXECUTABLE=/path/to/chromium node qa/browser-qa.cjs
 ```
 
-No runtime dependencies or credentials are required. No automatic deployment or public hosting is configured.
+No runtime dependencies or credentials are required. The `pages-runtime` branch contains only the runtime files at its root and matches the current app; it is prepared for Pages but no public hosting or automatic deployment is configured. See the [deployment decision](docs/HANDOFF.md#deployment-decision-and-privacy-boundary).
 
 ## Media and content honesty
 
@@ -61,4 +63,4 @@ The approved build was exercised in a real browser on 31 October 2026: all 36 br
 
 ## Private project and rights
 
-This project is intended for a private repository. Do not change visibility, publish the workbook/artwork, or add a permissive license without the owner's approval. Kalam carries its included SIL Open Font License. No new license is assigned to the remaining project material; see the provenance document.
+The authoring repository must remain private. Bob has separately approved a public playable website containing the runtime app and its delivery assets. Production prompts, the source workbook, internal notes and private history are outside that publication scope. Creating a separate public export repository still needs specific approval; see the [handoff](docs/HANDOFF.md). Kalam carries its included SIL Open Font License. No new license is assigned to the remaining project material; see the provenance document.
