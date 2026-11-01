@@ -1,0 +1,218 @@
+[
+  {
+    "id": "Q1A",
+    "choiceText": "Cover their tasks for now\nTake over their tasks this week so the event isn't affected, and raise it with them once the event is over.",
+    "consequence": "You cover the immediate work, but the reason for the silence may remain unresolved.",
+    "workbookFeedback": "You protected the deadline, but taking over may hide the reason for the silence and add to your own workload. This works when time is almost gone, not as a first response. If the event is tonight, covering the tasks or escalating becomes more reasonable."
+  },
+  {
+    "id": "Q1B",
+    "choiceText": "Ask the committee to share tasks\nPost in the committee chat that their tasks are uncovered and ask everyone to say what they can take on.",
+    "consequence": "The uncovered work becomes visible to everyone; the teammate may feel exposed before being heard.",
+    "workbookFeedback": "You shared the problem with the group, but doing so publicly may embarrass the teammate and leave ownership unclear. Group input works better after someone has checked what happened. If the event is tonight, covering the tasks or escalating becomes more reasonable."
+  },
+  {
+    "id": "Q1C",
+    "choiceText": "Reach out and check on them\nTry another way to reach them, like a call or a friend who lives nearby, and ask how they're doing before deciding anything.",
+    "consequence": "You seek information before judging; the event still needs a reply deadline and a backup plan.",
+    "workbookFeedback": "You checked the situation before judging it. This protects trust and gives you useful information, as long as you also set a clear time for a reply and a backup plan. If the event is tonight, covering the tasks or escalating becomes more reasonable."
+  },
+  {
+    "id": "Q1D",
+    "choiceText": "Escalate and reassign with deadlines\nTell the director today and reassign the tasks with deadlines, so the event has a clear plan.",
+    "consequence": "The work gets new owners quickly, but you may act before learning what caused the silence.",
+    "workbookFeedback": "You created clarity quickly, which may be necessary if the deadline is close. As a first step, though, it may overlook a genuine personal problem or work already in progress. If the event is tonight, covering the tasks or escalating becomes more reasonable."
+  },
+  {
+    "id": "Q2A",
+    "choiceText": "Talk privately about the lateness\nPull them aside after rehearsal, describe what you've noticed and what it's doing to the group, and ask what's making it hard to get there on time.",
+    "consequence": "The specific behaviour and its impact are named privately, with room to understand its cause.",
+    "workbookFeedback": "You addressed the issue privately, explained its impact and made space for the person’s side. This combines accountability with support and gives you a basis for the next step. If lateness continues after a clear conversation, firmer consequences become appropriate."
+  },
+  {
+    "id": "Q2B",
+    "choiceText": "Remind everyone of the shared goal\nOpen the next rehearsal by reminding the whole team what the performance means and why every minute counts.",
+    "consequence": "The group hears a shared purpose, but the late member may not recognize the specific change needed.",
+    "workbookFeedback": "You reminded everyone of the shared goal, but the message is indirect. The person who is late may not realize the concern is about them, while others may feel unfairly lectured. If lateness continues after a clear conversation, firmer consequences become appropriate."
+  },
+  {
+    "id": "Q2C",
+    "choiceText": "Keep rehearsal pressure low\nKeep rehearsals relaxed and tell them you understand everyone is swamped, so they don't feel extra pressure.",
+    "consequence": "Pressure may ease for the late member while the rest of the team continues to lose rehearsal time.",
+    "workbookFeedback": "You reduced pressure, but the rest of the team continues to absorb the cost. Support matters, yet it should come with a direct conversation about what needs to change. If lateness continues after a clear conversation, firmer consequences become appropriate."
+  },
+  {
+    "id": "Q2D",
+    "choiceText": "Model punctuality and start on time\nArrive early and start every rehearsal exactly on time, so the standard is visible.",
+    "consequence": "The expected standard is visible, but the cause of the lateness may remain unaddressed.",
+    "workbookFeedback": "You modelled the standard you want, but example alone may not change the behavior. The expectation and its impact still need to be stated clearly. If lateness continues after a clear conversation, firmer consequences become appropriate."
+  },
+  {
+    "id": "Q3A",
+    "choiceText": "Rally the team around the purpose\nPull everyone together and remind them why this event matters to the society and to the guests outside.",
+    "consequence": "The team hears why the event matters, but urgent jobs may still have no owners.",
+    "workbookFeedback": "You brought attention back to purpose, but the team already knows why the event matters. With ten minutes left, they need clear tasks more than motivation. With 30+ minutes, a quick round of ideas could work. Without a crisis, overusing commanding leaves people feeling repressed and stops them speaking up."
+  },
+  {
+    "id": "Q3B",
+    "choiceText": "Ask for ideas and decide together\nAsk the committee for quick ideas on how to fix it and go with what the group lands on.",
+    "consequence": "More ideas become available, but discussion uses some of the ten remaining minutes.",
+    "workbookFeedback": "You invited ideas, which can improve buy-in, but an open discussion uses time the team does not have. A very brief idea check could work if one person still makes the call. With 30+ minutes, a quick round of ideas could work. Without a crisis, overusing commanding leaves people feeling repressed and stops them speaking up."
+  },
+  {
+    "id": "Q3C",
+    "choiceText": "Troubleshoot the projector yourself\nStart troubleshooting the projector yourself right away, showing the others what to do.",
+    "consequence": "You begin the repair effort while other urgent jobs may still wait for someone to act.",
+    "workbookFeedback": "You acted immediately, but the rest of the team may remain passive while you become the only problem-solver. In a crisis, using everyone’s capacity matters. With 30+ minutes, a quick round of ideas could work. Without a crisis, overusing commanding leaves people feeling repressed and stops them speaking up."
+  },
+  {
+    "id": "Q3D",
+    "choiceText": "Assign urgent jobs and check back\nName one person for each urgent job (backup projector, venue contact, the queue) and ask for updates in five minutes.",
+    "consequence": "Each urgent job has an owner and a check-back time; the equipment problem is not yet guaranteed solved.",
+    "workbookFeedback": "You gave each urgent task a clear owner and set a check-back time. This is a strong use of direct leadership in a genuine time-sensitive crisis. With 30+ minutes, a quick round of ideas could work. Without a crisis, overusing commanding leaves people feeling repressed and stops them speaking up."
+  },
+  {
+    "id": "Q4A",
+    "choiceText": "Set tougher targets next time\nSet tougher targets for the next event and ask everyone to bring the same effort the planning team put in this time.",
+    "consequence": "Expectations rise, but a discouraged team may experience the message as blame.",
+    "workbookFeedback": "You raised expectations, but a discouraged team may hear this as blame. Higher standards help when people are motivated, not when they are questioning whether the effort is worthwhile. If the team is simply exhausted, rest and support come first, and direction follows."
+  },
+  {
+    "id": "Q4B",
+    "choiceText": "Debrief and reconnect to purpose\nHold a debrief that treats the flop as a lesson and ties it to a bigger goal for the society.",
+    "consequence": "The team can connect what happened to a larger purpose and identify what to learn next.",
+    "workbookFeedback": "You turned failure into a learning point and reconnected the team to a larger purpose. That gives people a reason to improve rather than simply asking them to work harder. If the team is simply exhausted, rest and support come first, and direction follows."
+  },
+  {
+    "id": "Q4C",
+    "choiceText": "Reconnect over hotpot first\nOrganise a casual hotpot night so people can vent and reconnect, and leave planning until everyone feels better.",
+    "consequence": "People get space to reconnect; a later conversation is still needed about what to change.",
+    "workbookFeedback": "You created space for the team to recover and reconnect. That may be needed first, but morale alone will not answer what the group should learn or do differently. If the team is simply exhausted, rest and support come first, and direction follows."
+  },
+  {
+    "id": "Q4D",
+    "choiceText": "Review each member’s development\nMeet each committee member one-on-one to review what went wrong for them and what they want to improve.",
+    "consequence": "Individuals receive attention, while the team-wide question of purpose may remain open.",
+    "workbookFeedback": "You invested in each person’s learning, which can improve future performance. However, individual development may not fully address a team-wide loss of confidence and purpose. If the team is simply exhausted, rest and support come first, and direction follows."
+  },
+  {
+    "id": "Q5A",
+    "choiceText": "Redo the slides yourself tonight\nRedo the slides yourself tonight. It's 30% of the grade and you know they'll be done right.",
+    "consequence": "You take control of tonight’s revision; your groupmate may still need help doing it independently.",
+    "workbookFeedback": "You protected the grade, but redoing the work teaches little and makes you the bottleneck. It is more reasonable when only hours remain, not when there is time for revision. With 3 hours left, redoing the slides or giving exact instructions can be the right call. The analyst in the reading made the same trade-off; his problem was making it a habit."
+  },
+  {
+    "id": "Q5B",
+    "choiceText": "Reaffirm the group’s standard\nRemind the whole group what standard you're aiming for and why this grade matters, and trust everyone to lift their own part.",
+    "consequence": "The target is repeated, but your groupmate may still not know how to close the specific quality gap.",
+    "workbookFeedback": "You reinforced the group’s goal, but the problem is a specific quality gap. A general reminder may not help the person understand what needs to improve. With 3 hours left, redoing the slides or giving exact instructions can be the right call. The analyst in the reading made the same trade-off; his problem was making it a habit."
+  },
+  {
+    "id": "Q5C",
+    "choiceText": "Review together and set a checkpoint\nSit down with them, go through what works and what doesn't against the marking criteria, and agree a checkpoint tomorrow.",
+    "consequence": "The marking criteria guide the discussion and tomorrow’s checkpoint gives the revision a clear next step.",
+    "workbookFeedback": "You used the marking criteria to make the feedback concrete and added a checkpoint for accountability. This improves the work while building the person’s ability. With 3 hours left, redoing the slides or giving exact instructions can be the right call. The analyst in the reading made the same trade-off; his problem was making it a habit."
+  },
+  {
+    "id": "Q5D",
+    "choiceText": "Send required changes and a deadline\nSend a clear list of the changes needed, with a deadline tomorrow night.",
+    "consequence": "The requested edits and deadline are explicit, but the reasoning behind them may remain unclear.",
+    "workbookFeedback": "You made the required changes clear and protected the deadline. This may secure compliance, but it gives the person less help in understanding how to improve independently. With 3 hours left, redoing the slides or giving exact instructions can be the right call. The analyst in the reading made the same trade-off; his problem was making it a habit."
+  },
+  {
+    "id": "Q6A",
+    "choiceText": "Agree success, roles and feedback\nOpen with what a strong final project looks like, then agree roles, standards and how you'll give each other feedback.",
+    "consequence": "The new team has a shared picture of success, roles and a way to discuss progress.",
+    "workbookFeedback": "You gave a new team a shared picture of success, then clarified roles and feedback. This creates direction without removing everyone’s involvement. If the topic and roles are genuinely open, more collaboration works. If the deadline is tight, a firmer plan may be needed."
+  },
+  {
+    "id": "Q6B",
+    "choiceText": "Shape the plan through a brainstorm\nRun an open brainstorm where everyone shapes the topic, roles and schedule together.",
+    "consequence": "Everyone can shape the plan, but the meeting still needs to end with clear responsibilities and standards.",
+    "workbookFeedback": "You gave everyone a voice, which can build ownership. Without some structure, though, a first meeting may end with broad ideas but unclear standards and responsibilities. If the topic and roles are genuinely open, more collaboration works. If the deadline is tight, a firmer plan may be needed."
+  },
+  {
+    "id": "Q6C",
+    "choiceText": "Send assigned roles before meeting\nSend out a plan with roles and deadlines before the meeting, so the first meeting is about getting started.",
+    "consequence": "The group can start quickly, but the assigned roles may not fit what each person can contribute.",
+    "workbookFeedback": "You created speed and clarity, but assigned roles before learning what people can contribute. This may reduce ownership and place people in unsuitable roles. If the topic and roles are genuinely open, more collaboration works. If the deadline is tight, a firmer plan may be needed."
+  },
+  {
+    "id": "Q6D",
+    "choiceText": "Learn strengths before assigning work\nSpend the first week having short one-on-one chats to learn each person's strengths and goals before assigning anything.",
+    "consequence": "You learn more about each person while a week passes without an agreed division of work.",
+    "workbookFeedback": "You took time to understand individual strengths and goals. That is useful, but waiting a full week before setting a shared direction could leave the project behind. If the topic and roles are genuinely open, more collaboration works. If the deadline is tight, a firmer plan may be needed."
+  },
+  {
+    "id": "Q7A",
+    "choiceText": "Build relationships with the exec\nGet to know a few exec members informally first, then raise the idea once they know and trust you.",
+    "consequence": "Trust may make the proposal easier to hear, but it does not yet show that the new method works.",
+    "workbookFeedback": "You focused on trust and relationships, which can make others more open to your idea. On its own, though, this approach is slow and does not show whether the change will work. If the exec is resistant to any change, building relationships first may be needed."
+  },
+  {
+    "id": "Q7B",
+    "choiceText": "Gather member support with a poll\nCollect support from other members with a quick poll, then present the idea as a request from many members.",
+    "consequence": "Member support becomes visible, but the executive committee may still want evidence of effectiveness.",
+    "workbookFeedback": "You showed that others support the idea, but interest is not the same as evidence. The executive team may also see the poll as pressure rather than collaboration. If the exec is resistant to any change, building relationships first may be needed."
+  },
+  {
+    "id": "Q7C",
+    "choiceText": "Pitch an inspiring direction\nPrepare a short, inspiring pitch about where the society could go and present it at the next general meeting.",
+    "consequence": "The idea gains a clear purpose, but the change remains untested.",
+    "workbookFeedback": "You offered an engaging direction, but a strong pitch still asks the team to accept an untested change. Evidence would make the idea easier to support. If the exec is resistant to any change, building relationships first may be needed."
+  },
+  {
+    "id": "Q7D",
+    "choiceText": "Run a small trial and bring evidence\nOffer to run the online form for one small upcoming event and bring the sign-up numbers to the exec.",
+    "consequence": "A small trial creates evidence to discuss, without guaranteeing higher attendance.",
+    "workbookFeedback": "You lowered the risk by offering a small trial and taking responsibility for it. The results give you credibility even without a formal title. If the exec is resistant to any change, building relationships first may be needed."
+  },
+  {
+    "id": "Q8A",
+    "choiceText": "Ask the dominant speaker to pause\nStep in during the meeting and ask them to hold back so others can speak.",
+    "consequence": "The interruption stops for now, but quieter members still need a reliable way to prepare and contribute.",
+    "workbookFeedback": "You stopped the interruption quickly, but correcting someone publicly may create defensiveness. It also does not help quieter members prepare to contribute next time. If one person's behaviour continues despite structure, a private conversation is the next step."
+  },
+  {
+    "id": "Q8B",
+    "choiceText": "Share an agenda and give turns\nCirculate the agenda beforehand and give each person a few minutes to speak in turn.",
+    "consequence": "Everyone gets preparation time and a speaking turn; follow-through still matters.",
+    "workbookFeedback": "You changed the meeting structure so everyone has a fair chance to prepare and speak. This addresses the group dynamic without singling anyone out. If one person's behaviour continues despite structure, a private conversation is the next step."
+  },
+  {
+    "id": "Q8C",
+    "choiceText": "Hear quieter members afterwards\nCheck in with the quieter members after the meeting and encourage them to share their ideas with you.",
+    "consequence": "Quieter members are heard privately, but their ideas may still be missing from the shared discussion.",
+    "workbookFeedback": "You made quieter members feel heard, but their ideas still do not reach the group directly. This is helpful support, not a full solution to the meeting dynamic. If one person's behaviour continues despite structure, a private conversation is the next step."
+  },
+  {
+    "id": "Q8D",
+    "choiceText": "Coach the dominant speaker privately\nTalk privately to the loud member about how it comes across and help them make more room for others.",
+    "consequence": "The dominant speaker receives private feedback; the meeting may also need a better participation structure.",
+    "workbookFeedback": "You addressed the behavior privately and gave the person a chance to improve. This can help, though meeting structure is still needed to support quieter voices. If one person's behaviour continues despite structure, a private conversation is the next step."
+  },
+  {
+    "id": "Q9A",
+    "choiceText": "Back your friend’s proven teamwork\nSupport your friend because trust, reliability and team chemistry matter, even if those strengths were less visible in the interview.",
+    "consequence": "You recognize real teamwork strengths, but the panel must guard against giving friendship extra weight.",
+    "workbookFeedback": "You valued trust and proven reliability, which are relevant to teamwork. The risk is giving extra weight to qualities that favor someone you already know unless the panel agreed on them beforehand. If criteria are agreed in advance and trust or team fit is one of them, it is a legitimate factor."
+  },
+  {
+    "id": "Q9B",
+    "choiceText": "Recommend immediate experience\nRecommend the more experienced applicant and explain clearly that the role needs someone who can contribute immediately.",
+    "consequence": "You prioritize immediate capability, but a transparent selection process is still needed.",
+    "workbookFeedback": "You prioritized immediate capability and made a clear recommendation. The choice may be reasonable, but a transparent panel process is especially important because of your personal connection. If criteria are agreed in advance and trust or team fit is one of them, it is a legitimate factor."
+  },
+  {
+    "id": "Q9C",
+    "choiceText": "Back your friend with development\nSupport your friend and offer to help them build the skills they would need to grow into the role.",
+    "consequence": "You invest in potential, but a development promise does not itself make the selection fair.",
+    "workbookFeedback": "You focused on long-term potential and development. However, a development plan should not replace fair selection criteria or disadvantage the stronger candidate. If criteria are agreed in advance and trust or team fit is one of them, it is a legitimate factor."
+  },
+  {
+    "id": "Q9D",
+    "choiceText": "Agree criteria and score both fairly\nAgree the selection criteria and their weighting with the panel, then score both applicants against the same standard.",
+    "consequence": "The panel compares both candidates consistently; the process does not predetermine who wins.",
+    "workbookFeedback": "You made the process more transparent by agreeing on criteria before scoring either person. This helps the panel weigh experience, reliability and team fit consistently. If criteria are agreed in advance and trust or team fit is one of them, it is a legitimate factor."
+  }
+]

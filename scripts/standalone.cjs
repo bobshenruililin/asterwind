@@ -1,0 +1,7 @@
+const fs=require('fs'),path=require('path'),vm=require('vm');const root=path.resolve(__dirname,'..');
+let html=fs.readFileSync(root+'/app/index.html','utf8'),css=fs.readFileSync(root+'/app/style.css','utf8'),app=fs.readFileSync(root+'/app/app.js','utf8'),scenarios=fs.readFileSync(root+'/app/scenarios.js','utf8');
+const embed=(file,mime)=>'data:'+mime+';base64,'+fs.readFileSync(root+'/app/'+file).toString('base64');
+const assets={castle:embed('assets/castle-hero.png','image/png')};for(let i=1;i<=9;i++)assets['Q'+i]=embed('assets/scenes/Q'+i+(i===5?'.png':'.webp'),i===5?'image/png':'image/webp');
+for(const font of ['Kalam-Regular.ttf','Kalam-Bold.ttf'])css=css.replace('assets/fonts/'+font,embed('assets/fonts/'+font,'font/ttf'));
+html=html.replace('<link rel="stylesheet" href="style.css">','<style>'+css+'</style>');html=html.replace(/<pre id="font-license">[\s\S]*?<\/pre>/,'<pre id="font-license">'+fs.readFileSync(root+'/app/assets/fonts/OFL.txt','utf8')+'</pre>');
+const code='window.ASTERWIND_ASSETS='+JSON.stringify(assets)+';\n'+scenarios+'\n'+app;new vm.Script(code);html=html.replace('<script src="scenarios.js"></script><script src="app.js"></script>','<script>'+code.replace(/<\/script/gi,'<\\/script')+'</script>');fs.mkdirSync(root+'/deliverables',{recursive:true});fs.writeFileSync(root+'/deliverables/Asterwind-Nine-Scenes-Offline.html',html);console.log('Standalone bytes: '+Buffer.byteLength(html));

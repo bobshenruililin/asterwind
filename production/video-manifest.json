@@ -1,0 +1,435 @@
+{
+  "schemaVersion": "1.0.0",
+  "providerRecommendation": "MiniMax Design for a user-run first proof, reusing the approved still; no account access or purchase is assumed.",
+  "scope": "Optional micro-motion overlays on a complete still-first interactive experience, not nine required videos.",
+  "budget": {
+    "currency": "HKD",
+    "userRange": [
+      100,
+      200
+    ],
+    "spentByThisTask": 0,
+    "priceCheckedForSelectedVideoModel": false,
+    "purchaseAuthorizedByThisManifest": false,
+    "policy": "Use existing eligible credits if available. Before a paid generation, check the chosen model’s live cost and confirm it fits the user’s budget. Do not purchase a plan, top-up or annual subscription without confirmation. Generate only Q5 first; review the keeper and actual cost before any batch. If value is poor or access is blocked, keep all stills.",
+    "maxAutomaticBatch": 0
+  },
+  "firstProofShotId": "Q5-SETUP-01",
+  "productionOrder": [
+    "Q5-SETUP-01",
+    "Q3-SETUP-01",
+    "Q8-SETUP-01",
+    "Q1-SETUP-01",
+    "Q2-SETUP-01",
+    "Q4-SETUP-01",
+    "Q6-SETUP-01",
+    "Q7-SETUP-01",
+    "Q9-SETUP-01"
+  ],
+  "productionOrderMeaning": "Editorial priority only; it is not an instruction to generate the full list.",
+  "narrativeOrder": {
+    "fullExplore": [
+      "Q1",
+      "Q2",
+      "Q3",
+      "Q4",
+      "Q5",
+      "Q6",
+      "Q7",
+      "Q8",
+      "Q9"
+    ],
+    "quickDemo": [
+      "Q5"
+    ],
+    "optionalClassroomContrast": [
+      "Q5",
+      "Q3"
+    ]
+  },
+  "shots": [
+    {
+      "shotId": "Q1-SETUP-01",
+      "sceneId": "Q1",
+      "shotOrderWithinScene": 1,
+      "purpose": "Make the unanswered silence and missing teammate feel present without inventing a reason or a reply.",
+      "status": "prompt_prepared_clip_not_generated",
+      "priority": "optional_only_after_proof_and_budget_check",
+      "targetDurationSeconds": 6,
+      "permittedPlanningRangeSeconds": [
+        5,
+        8
+      ],
+      "durationStatus": "design_target_not_verified_app_setting",
+      "referenceMode": "Attach this approved scene still as the image-to-video start frame. If a service offers separate reference mode, choose that instead; do not mix incompatible first/last-frame and reference input modes.",
+      "referenceStillFilename": "Q1-Unreachable-Teammate.png",
+      "oneAction": "The teal-cardigan student makes one small, thoughtful glance from the phone toward the empty chair.",
+      "camera": "Locked medium-wide camera; no zoom or pan.",
+      "endState": "The student’s gaze rests toward the empty chair; the phone and all papers remain in their original places.",
+      "prompt": "SHOT Q1-SETUP-01. Target 6 seconds, or the nearest supported duration between 5 and 8 seconds. Animate the attached approved Asterwind paper-theatre still; do not redesign or replace it. Preserve the supplied composition, adult fictional cast, faces, hair, wardrobe, body scale, warm honey-stone paper architecture, teal and antique-gold accents, golden lighting, folded-paper material, fibrous cut edges and tiny physical shadow gaps. Keep motion small, readable and tactile, as carefully staged miniature stop-motion, not smooth plastic CGI. Do not infer personality, ability or ethnicity from appearance; use the actual approved image as the visual identity reference. No new people, face drift, extra limbs, finger distortion, morphing, teleporting props, costume changes, architecture changes, camera cuts, scene transitions, new text, letters, numbers, captions, UI, sticky notes, score symbols, logos or watermarks. Preserve existing abstract non-text marks; do not turn them into readable writing. No dialogue, singing or precise lip sync; keep mouths in their existing neutral pose. Silent visual pass preferred; mute unwanted generated speech or music in the edit. All readable scenario facts, choice text, feedback and captions are separate HTML, not generated pixels. ONE ACTION: The teal-cardigan student makes one small, thoughtful glance from the phone toward the empty chair. CAMERA: Locked medium-wide camera; no zoom or pan. END STATE: The student’s gaze rests toward the empty chair; the phone and all papers remain in their original places. SCENE GUARDRAILS: Keep the phone screen dark. Do not add messages, a ringing phone, an arriving teammate, tears, or any explanation for the absence. Stop after this single shot. Do not create other clips or branch endings.",
+      "outputFilename": "q1-setup-v01.mp4",
+      "audio": "No precise lip sync; prefer silent. Optional ambience is edited separately after listening.",
+      "runtimeFallback": {
+        "stillFilename": "Q1-Unreachable-Teammate.png",
+        "htmlFacts": [
+          "You are on a student society committee.",
+          "Everyone is busy with midterms.",
+          "One member has not replied to the group chat or your DMs in nearly a week.",
+          "The next event is approaching and that member’s tasks remain undone."
+        ],
+        "behaviour": "Missing, failed, blocked or slow clip never prevents choosing or continuing. Reduced motion uses still. Do not generate a clip at runtime."
+      },
+      "qa": [
+        "Same recognizable adult cast and clothes as the approved still",
+        "Paper texture, palette, lighting and architecture remain stable",
+        "Only the specified action and camera instruction occur",
+        "No new readable text, UI, labels or altered factual numbers",
+        "No implied successful repair, better grade or unchosen outcome",
+        "First and final frames can transition back to the approved still without a jarring identity change",
+        "Watch the entire clip at normal speed and listen for unintended speech or music before acceptance"
+      ],
+      "referenceStillPath": "production/reference-stills/Q1-Unreachable-Teammate.png"
+    },
+    {
+      "shotId": "Q2-SETUP-01",
+      "sceneId": "Q2",
+      "shotOrderWithinScene": 1,
+      "purpose": "Make the cost of interrupted rehearsal legible without judging the late person’s character.",
+      "status": "prompt_prepared_clip_not_generated",
+      "priority": "optional_only_after_proof_and_budget_check",
+      "targetDurationSeconds": 6,
+      "permittedPlanningRangeSeconds": [
+        5,
+        8
+      ],
+      "durationStatus": "design_target_not_verified_app_setting",
+      "referenceMode": "Attach this approved scene still as the image-to-video start frame. If a service offers separate reference mode, choose that instead; do not mix incompatible first/last-frame and reference input modes.",
+      "referenceStillFilename": "Q2-Late-Dancer.png",
+      "oneAction": "The mustard-sweater student at the doorway makes one small step into the room and pauses.",
+      "camera": "Locked full-body composition preserving the doorway and waiting teammates.",
+      "endState": "The arriving student pauses just inside the threshold; the waiting students remain where they were.",
+      "prompt": "SHOT Q2-SETUP-01. Target 6 seconds, or the nearest supported duration between 5 and 8 seconds. Animate the attached approved Asterwind paper-theatre still; do not redesign or replace it. Preserve the supplied composition, adult fictional cast, faces, hair, wardrobe, body scale, warm honey-stone paper architecture, teal and antique-gold accents, golden lighting, folded-paper material, fibrous cut edges and tiny physical shadow gaps. Keep motion small, readable and tactile, as carefully staged miniature stop-motion, not smooth plastic CGI. Do not infer personality, ability or ethnicity from appearance; use the actual approved image as the visual identity reference. No new people, face drift, extra limbs, finger distortion, morphing, teleporting props, costume changes, architecture changes, camera cuts, scene transitions, new text, letters, numbers, captions, UI, sticky notes, score symbols, logos or watermarks. Preserve existing abstract non-text marks; do not turn them into readable writing. No dialogue, singing or precise lip sync; keep mouths in their existing neutral pose. Silent visual pass preferred; mute unwanted generated speech or music in the edit. All readable scenario facts, choice text, feedback and captions are separate HTML, not generated pixels. ONE ACTION: The mustard-sweater student at the doorway makes one small step into the room and pauses. CAMERA: Locked full-body composition preserving the doorway and waiting teammates. END STATE: The arriving student pauses just inside the threshold; the waiting students remain where they were. SCENE GUARDRAILS: Do not invent a reason for lateness, begin a dance, add spectators, humiliate anyone or animate several people at once. Stop after this single shot. Do not create other clips or branch endings.",
+      "outputFilename": "q2-setup-v01.mp4",
+      "audio": "No precise lip sync; prefer silent. Optional ambience is edited separately after listening.",
+      "runtimeFallback": {
+        "stillFilename": "Q2-Late-Dancer.png",
+        "htmlFacts": [
+          "You lead a dance team preparing an end-of-semester performance.",
+          "One member repeatedly arrives late.",
+          "Their lateness delays rehearsals and affects the rest of the team."
+        ],
+        "behaviour": "Missing, failed, blocked or slow clip never prevents choosing or continuing. Reduced motion uses still. Do not generate a clip at runtime."
+      },
+      "qa": [
+        "Same recognizable adult cast and clothes as the approved still",
+        "Paper texture, palette, lighting and architecture remain stable",
+        "Only the specified action and camera instruction occur",
+        "No new readable text, UI, labels or altered factual numbers",
+        "No implied successful repair, better grade or unchosen outcome",
+        "First and final frames can transition back to the approved still without a jarring identity change",
+        "Watch the entire clip at normal speed and listen for unintended speech or music before acceptance"
+      ],
+      "referenceStillPath": "production/reference-stills/Q2-Late-Dancer.png"
+    },
+    {
+      "shotId": "Q3-SETUP-01",
+      "sceneId": "Q3",
+      "shotOrderWithinScene": 1,
+      "purpose": "Show urgent failed equipment without inventing a successful repair or a decision.",
+      "status": "prompt_prepared_clip_not_generated",
+      "priority": "optional_only_after_proof_and_budget_check",
+      "targetDurationSeconds": 6,
+      "permittedPlanningRangeSeconds": [
+        5,
+        8
+      ],
+      "durationStatus": "design_target_not_verified_app_setting",
+      "referenceMode": "Attach this approved scene still as the image-to-video start frame. If a service offers separate reference mode, choose that instead; do not mix incompatible first/last-frame and reference input modes.",
+      "referenceStillFilename": "Q3-Emergency.png",
+      "oneAction": "Keep the actors and equipment still; let the single camera movement carry the shot.",
+      "camera": "One restrained straight push toward the nonworking projector, with no cut or orbit.",
+      "endState": "The projector is slightly more prominent; its screen remains blank and unlit.",
+      "prompt": "SHOT Q3-SETUP-01. Target 6 seconds, or the nearest supported duration between 5 and 8 seconds. Animate the attached approved Asterwind paper-theatre still; do not redesign or replace it. Preserve the supplied composition, adult fictional cast, faces, hair, wardrobe, body scale, warm honey-stone paper architecture, teal and antique-gold accents, golden lighting, folded-paper material, fibrous cut edges and tiny physical shadow gaps. Keep motion small, readable and tactile, as carefully staged miniature stop-motion, not smooth plastic CGI. Do not infer personality, ability or ethnicity from appearance; use the actual approved image as the visual identity reference. No new people, face drift, extra limbs, finger distortion, morphing, teleporting props, costume changes, architecture changes, camera cuts, scene transitions, new text, letters, numbers, captions, UI, sticky notes, score symbols, logos or watermarks. Preserve existing abstract non-text marks; do not turn them into readable writing. No dialogue, singing or precise lip sync; keep mouths in their existing neutral pose. Silent visual pass preferred; mute unwanted generated speech or music in the edit. All readable scenario facts, choice text, feedback and captions are separate HTML, not generated pixels. ONE ACTION: Keep the actors and equipment still; let the single camera movement carry the shot. CAMERA: One restrained straight push toward the nonworking projector, with no cut or orbit. END STATE: The projector is slightly more prominent; its screen remains blank and unlit. SCENE GUARDRAILS: No projector beam, repair success, sparks, smoke, panic, new roles, dialogue, or text. The approved image is a response illustration, not a literal pre-choice count of the five idle committee members. Stop after this single shot. Do not create other clips or branch endings.",
+      "outputFilename": "q3-setup-v01.mp4",
+      "audio": "No precise lip sync; prefer silent. Optional ambience is edited separately after listening.",
+      "runtimeFallback": {
+        "stillFilename": "Q3-Emergency.png",
+        "htmlFacts": [
+          "The current time is 6:50 pm; the event starts at 7:00 pm.",
+          "The lecture theatre projector has just failed.",
+          "Five committee members are standing around chatting or scrolling.",
+          "Guests are already queuing outside."
+        ],
+        "behaviour": "Missing, failed, blocked or slow clip never prevents choosing or continuing. Reduced motion uses still. Do not generate a clip at runtime."
+      },
+      "qa": [
+        "Same recognizable adult cast and clothes as the approved still",
+        "Paper texture, palette, lighting and architecture remain stable",
+        "Only the specified action and camera instruction occur",
+        "No new readable text, UI, labels or altered factual numbers",
+        "No implied successful repair, better grade or unchosen outcome",
+        "First and final frames can transition back to the approved still without a jarring identity change",
+        "Watch the entire clip at normal speed and listen for unintended speech or music before acceptance"
+      ],
+      "referenceStillPath": "production/reference-stills/Q3-Emergency.png"
+    },
+    {
+      "shotId": "Q4-SETUP-01",
+      "sceneId": "Q4",
+      "shotOrderWithinScene": 1,
+      "purpose": "Hold the disappointment for a moment without declaring the team has quit or recovered.",
+      "status": "prompt_prepared_clip_not_generated",
+      "priority": "optional_only_after_proof_and_budget_check",
+      "targetDurationSeconds": 6,
+      "permittedPlanningRangeSeconds": [
+        5,
+        8
+      ],
+      "durationStatus": "design_target_not_verified_app_setting",
+      "referenceMode": "Attach this approved scene still as the image-to-video start frame. If a service offers separate reference mode, choose that instead; do not mix incompatible first/last-frame and reference input modes.",
+      "referenceStillFilename": "Q4-Disappointing-Event.png",
+      "oneAction": "The teal-cardigan student slowly raises their gaze from the table toward the empty seating and holds.",
+      "camera": "Locked wide composition retaining the mostly empty rows.",
+      "endState": "The gaze rests toward the room; the seated group and background guests keep their original positions.",
+      "prompt": "SHOT Q4-SETUP-01. Target 6 seconds, or the nearest supported duration between 5 and 8 seconds. Animate the attached approved Asterwind paper-theatre still; do not redesign or replace it. Preserve the supplied composition, adult fictional cast, faces, hair, wardrobe, body scale, warm honey-stone paper architecture, teal and antique-gold accents, golden lighting, folded-paper material, fibrous cut edges and tiny physical shadow gaps. Keep motion small, readable and tactile, as carefully staged miniature stop-motion, not smooth plastic CGI. Do not infer personality, ability or ethnicity from appearance; use the actual approved image as the visual identity reference. No new people, face drift, extra limbs, finger distortion, morphing, teleporting props, costume changes, architecture changes, camera cuts, scene transitions, new text, letters, numbers, captions, UI, sticky notes, score symbols, logos or watermarks. Preserve existing abstract non-text marks; do not turn them into readable writing. No dialogue, singing or precise lip sync; keep mouths in their existing neutral pose. Silent visual pass preferred; mute unwanted generated speech or music in the edit. All readable scenario facts, choice text, feedback and captions are separate HTML, not generated pixels. ONE ACTION: The teal-cardigan student slowly raises their gaze from the table toward the empty seating and holds. CAMERA: Locked wide composition retaining the mostly empty rows. END STATE: The gaze rests toward the room; the seated group and background guests keep their original positions. SCENE GUARDRAILS: No celebration, crying performance, new audience, attendance counter, changing expressions across the whole cast or miraculous recovery. Stop after this single shot. Do not create other clips or branch endings.",
+      "outputFilename": "q4-setup-v01.mp4",
+      "audio": "No precise lip sync; prefer silent. Optional ambience is edited separately after listening.",
+      "runtimeFallback": {
+        "stillFilename": "Q4-Disappointing-Event.png",
+        "htmlFacts": [
+          "The society spent six weeks preparing its flagship event.",
+          "Only 12 people attended.",
+          "The feedback is harsh and the group chat is silent.",
+          "Two committee members are suggesting they will not run again next semester."
+        ],
+        "behaviour": "Missing, failed, blocked or slow clip never prevents choosing or continuing. Reduced motion uses still. Do not generate a clip at runtime."
+      },
+      "qa": [
+        "Same recognizable adult cast and clothes as the approved still",
+        "Paper texture, palette, lighting and architecture remain stable",
+        "Only the specified action and camera instruction occur",
+        "No new readable text, UI, labels or altered factual numbers",
+        "No implied successful repair, better grade or unchosen outcome",
+        "First and final frames can transition back to the approved still without a jarring identity change",
+        "Watch the entire clip at normal speed and listen for unintended speech or music before acceptance"
+      ],
+      "referenceStillPath": "production/reference-stills/Q4-Disappointing-Event.png"
+    },
+    {
+      "shotId": "Q5-SETUP-01",
+      "sceneId": "Q5",
+      "shotOrderWithinScene": 1,
+      "purpose": "Make the temptation to take over feel like a human decision, without choosing a response for the player.",
+      "status": "prompt_prepared_clip_not_generated",
+      "priority": "first_single_clip_proof",
+      "targetDurationSeconds": 6,
+      "permittedPlanningRangeSeconds": [
+        5,
+        8
+      ],
+      "durationStatus": "design_target_not_verified_app_setting",
+      "referenceMode": "Attach this approved scene still as the image-to-video start frame. If a service offers separate reference mode, choose that instead; do not mix incompatible first/last-frame and reference input modes.",
+      "referenceStillFilename": "Q5-Weak-Slides.png",
+      "oneAction": "The teal-cardigan student makes one small glance from the laptop toward the mustard-sweater groupmate and holds.",
+      "camera": "Locked medium three-shot at the existing table; retain the laptop and all three faces.",
+      "endState": "The student’s gaze rests on the groupmate; hands, laptop angle and abstract slide shapes stay unchanged.",
+      "prompt": "SHOT Q5-SETUP-01. Target 6 seconds, or the nearest supported duration between 5 and 8 seconds. Animate the attached approved Asterwind paper-theatre still; do not redesign or replace it. Preserve the supplied composition, adult fictional cast, faces, hair, wardrobe, body scale, warm honey-stone paper architecture, teal and antique-gold accents, golden lighting, folded-paper material, fibrous cut edges and tiny physical shadow gaps. Keep motion small, readable and tactile, as carefully staged miniature stop-motion, not smooth plastic CGI. Do not infer personality, ability or ethnicity from appearance; use the actual approved image as the visual identity reference. No new people, face drift, extra limbs, finger distortion, morphing, teleporting props, costume changes, architecture changes, camera cuts, scene transitions, new text, letters, numbers, captions, UI, sticky notes, score symbols, logos or watermarks. Preserve existing abstract non-text marks; do not turn them into readable writing. No dialogue, singing or precise lip sync; keep mouths in their existing neutral pose. Silent visual pass preferred; mute unwanted generated speech or music in the edit. All readable scenario facts, choice text, feedback and captions are separate HTML, not generated pixels. ONE ACTION: The teal-cardigan student makes one small glance from the laptop toward the mustard-sweater groupmate and holds. CAMERA: Locked medium three-shot at the existing table; retain the laptop and all three faces. END STATE: The student’s gaze rests on the groupmate; hands, laptop angle and abstract slide shapes stay unchanged. SCENE GUARDRAILS: Do not start typing, repair the slides, move the laptop to another person, nod agreement, show a grade, add dialogue or invent a precise marking-criteria defect. Stop after this single shot. Do not create other clips or branch endings.",
+      "outputFilename": "q5-setup-v01.mp4",
+      "audio": "No precise lip sync; prefer silent. Optional ambience is edited separately after listening.",
+      "runtimeFallback": {
+        "stillFilename": "Q5-Weak-Slides.png",
+        "htmlFacts": [
+          "You lead a tutorial group presentation.",
+          "The presentation is in three days.",
+          "It counts for 30% of the grade.",
+          "One groupmate’s slides are below the standard the rest of the group is aiming for.",
+          "You could redo those slides in one hour tonight."
+        ],
+        "behaviour": "Missing, failed, blocked or slow clip never prevents choosing or continuing. Reduced motion uses still. Do not generate a clip at runtime."
+      },
+      "qa": [
+        "Same recognizable adult cast and clothes as the approved still",
+        "Paper texture, palette, lighting and architecture remain stable",
+        "Only the specified action and camera instruction occur",
+        "No new readable text, UI, labels or altered factual numbers",
+        "No implied successful repair, better grade or unchosen outcome",
+        "First and final frames can transition back to the approved still without a jarring identity change",
+        "Watch the entire clip at normal speed and listen for unintended speech or music before acceptance"
+      ],
+      "referenceStillPath": "production/reference-stills/Q5-Weak-Slides.png"
+    },
+    {
+      "shotId": "Q6-SETUP-01",
+      "sceneId": "Q6",
+      "shotOrderWithinScene": 1,
+      "purpose": "Express a first meeting’s tentative attention without assigning roles or inventing agreement.",
+      "status": "prompt_prepared_clip_not_generated",
+      "priority": "optional_only_after_proof_and_budget_check",
+      "targetDurationSeconds": 6,
+      "permittedPlanningRangeSeconds": [
+        5,
+        8
+      ],
+      "durationStatus": "design_target_not_verified_app_setting",
+      "referenceMode": "Attach this approved scene still as the image-to-video start frame. If a service offers separate reference mode, choose that instead; do not mix incompatible first/last-frame and reference input modes.",
+      "referenceStillFilename": "Q6-Day-One.png",
+      "oneAction": "The cream-shirt student makes one small glance from the blank planning page toward the teal-cardigan student and holds.",
+      "camera": "Locked table composition; preserve all four visible figures.",
+      "endState": "The glance rests across the table; blank sheets and pencils remain still.",
+      "prompt": "SHOT Q6-SETUP-01. Target 6 seconds, or the nearest supported duration between 5 and 8 seconds. Animate the attached approved Asterwind paper-theatre still; do not redesign or replace it. Preserve the supplied composition, adult fictional cast, faces, hair, wardrobe, body scale, warm honey-stone paper architecture, teal and antique-gold accents, golden lighting, folded-paper material, fibrous cut edges and tiny physical shadow gaps. Keep motion small, readable and tactile, as carefully staged miniature stop-motion, not smooth plastic CGI. Do not infer personality, ability or ethnicity from appearance; use the actual approved image as the visual identity reference. No new people, face drift, extra limbs, finger distortion, morphing, teleporting props, costume changes, architecture changes, camera cuts, scene transitions, new text, letters, numbers, captions, UI, sticky notes, score symbols, logos or watermarks. Preserve existing abstract non-text marks; do not turn them into readable writing. No dialogue, singing or precise lip sync; keep mouths in their existing neutral pose. Silent visual pass preferred; mute unwanted generated speech or music in the edit. All readable scenario facts, choice text, feedback and captions are separate HTML, not generated pixels. ONE ACTION: The cream-shirt student makes one small glance from the blank planning page toward the teal-cardigan student and holds. CAMERA: Locked table composition; preserve all four visible figures. END STATE: The glance rests across the table; blank sheets and pencils remain still. SCENE GUARDRAILS: Do not add a fifth person by morphing or duplicate a face. This is a partial view: the source includes the leader plus four groupmates, stated in HTML. No names, roles or written plan appear in the image. Stop after this single shot. Do not create other clips or branch endings.",
+      "outputFilename": "q6-setup-v01.mp4",
+      "audio": "No precise lip sync; prefer silent. Optional ambience is edited separately after listening.",
+      "runtimeFallback": {
+        "stillFilename": "Q6-Day-One.png",
+        "htmlFacts": [
+          "You have been chosen to lead a semester-long Common Core group project.",
+          "You have four groupmates, making five people including you.",
+          "The groupmates are mostly strangers from different faculties.",
+          "This is the first meeting."
+        ],
+        "behaviour": "Missing, failed, blocked or slow clip never prevents choosing or continuing. Reduced motion uses still. Do not generate a clip at runtime."
+      },
+      "qa": [
+        "Same recognizable adult cast and clothes as the approved still",
+        "Paper texture, palette, lighting and architecture remain stable",
+        "Only the specified action and camera instruction occur",
+        "No new readable text, UI, labels or altered factual numbers",
+        "No implied successful repair, better grade or unchosen outcome",
+        "First and final frames can transition back to the approved still without a jarring identity change",
+        "Watch the entire clip at normal speed and listen for unintended speech or music before acceptance"
+      ],
+      "referenceStillPath": "production/reference-stills/Q6-Day-One.png"
+    },
+    {
+      "shotId": "Q7-SETUP-01",
+      "sceneId": "Q7",
+      "shotOrderWithinScene": 1,
+      "purpose": "Keep the proposal open rather than pretending the trial has already succeeded.",
+      "status": "prompt_prepared_clip_not_generated",
+      "priority": "optional_only_after_proof_and_budget_check",
+      "targetDurationSeconds": 6,
+      "permittedPlanningRangeSeconds": [
+        5,
+        8
+      ],
+      "durationStatus": "design_target_not_verified_app_setting",
+      "referenceMode": "Attach this approved scene still as the image-to-video start frame. If a service offers separate reference mode, choose that instead; do not mix incompatible first/last-frame and reference input modes.",
+      "referenceStillFilename": "Q7-Influence-Without-Title.png",
+      "oneAction": "The mustard-sweater executive makes one small, considering glance from the blank tablet toward the proposer and holds.",
+      "camera": "Locked medium table composition including both tablet and paper sign-up sheets.",
+      "endState": "The executive looks toward the proposer; the tablet stays blank and nobody signals agreement.",
+      "prompt": "SHOT Q7-SETUP-01. Target 6 seconds, or the nearest supported duration between 5 and 8 seconds. Animate the attached approved Asterwind paper-theatre still; do not redesign or replace it. Preserve the supplied composition, adult fictional cast, faces, hair, wardrobe, body scale, warm honey-stone paper architecture, teal and antique-gold accents, golden lighting, folded-paper material, fibrous cut edges and tiny physical shadow gaps. Keep motion small, readable and tactile, as carefully staged miniature stop-motion, not smooth plastic CGI. Do not infer personality, ability or ethnicity from appearance; use the actual approved image as the visual identity reference. No new people, face drift, extra limbs, finger distortion, morphing, teleporting props, costume changes, architecture changes, camera cuts, scene transitions, new text, letters, numbers, captions, UI, sticky notes, score symbols, logos or watermarks. Preserve existing abstract non-text marks; do not turn them into readable writing. No dialogue, singing or precise lip sync; keep mouths in their existing neutral pose. Silent visual pass preferred; mute unwanted generated speech or music in the edit. All readable scenario facts, choice text, feedback and captions are separate HTML, not generated pixels. ONE ACTION: The mustard-sweater executive makes one small, considering glance from the blank tablet toward the proposer and holds. CAMERA: Locked medium table composition including both tablet and paper sign-up sheets. END STATE: The executive looks toward the proposer; the tablet stays blank and nobody signals agreement. SCENE GUARDRAILS: No taps, form filling, approval nod, sign-up count, higher-attendance claim, demonstration result or changing screen content. Stop after this single shot. Do not create other clips or branch endings.",
+      "outputFilename": "q7-setup-v01.mp4",
+      "audio": "No precise lip sync; prefer silent. Optional ambience is edited separately after listening.",
+      "runtimeFallback": {
+        "stillFilename": "Q7-Influence-Without-Title.png",
+        "htmlFacts": [
+          "You are an ordinary society member, not on the executive committee.",
+          "Event sign-ups currently use paper.",
+          "You think an online form would improve attendance; that is a proposal, not a proven result.",
+          "The executive committee has always used the existing method."
+        ],
+        "behaviour": "Missing, failed, blocked or slow clip never prevents choosing or continuing. Reduced motion uses still. Do not generate a clip at runtime."
+      },
+      "qa": [
+        "Same recognizable adult cast and clothes as the approved still",
+        "Paper texture, palette, lighting and architecture remain stable",
+        "Only the specified action and camera instruction occur",
+        "No new readable text, UI, labels or altered factual numbers",
+        "No implied successful repair, better grade or unchosen outcome",
+        "First and final frames can transition back to the approved still without a jarring identity change",
+        "Watch the entire clip at normal speed and listen for unintended speech or music before acceptance"
+      ],
+      "referenceStillPath": "production/reference-stills/Q7-Influence-Without-Title.png"
+    },
+    {
+      "shotId": "Q8-SETUP-01",
+      "sceneId": "Q8",
+      "shotOrderWithinScene": 1,
+      "purpose": "Make the unequal opportunity to speak visible without solving it before the player chooses.",
+      "status": "prompt_prepared_clip_not_generated",
+      "priority": "optional_only_after_proof_and_budget_check",
+      "targetDurationSeconds": 6,
+      "permittedPlanningRangeSeconds": [
+        5,
+        8
+      ],
+      "durationStatus": "design_target_not_verified_app_setting",
+      "referenceMode": "Attach this approved scene still as the image-to-video start frame. If a service offers separate reference mode, choose that instead; do not mix incompatible first/last-frame and reference input modes.",
+      "referenceStillFilename": "Q8-Loudest-Voice.png",
+      "oneAction": "The cream-shirt student lifts the already partly raised hand a little higher and pauses.",
+      "camera": "Locked group composition; retain the dominant speaker and both quieter participants.",
+      "endState": "The hand is held in a small request to contribute; no one is assigned a speaking turn yet.",
+      "prompt": "SHOT Q8-SETUP-01. Target 6 seconds, or the nearest supported duration between 5 and 8 seconds. Animate the attached approved Asterwind paper-theatre still; do not redesign or replace it. Preserve the supplied composition, adult fictional cast, faces, hair, wardrobe, body scale, warm honey-stone paper architecture, teal and antique-gold accents, golden lighting, folded-paper material, fibrous cut edges and tiny physical shadow gaps. Keep motion small, readable and tactile, as carefully staged miniature stop-motion, not smooth plastic CGI. Do not infer personality, ability or ethnicity from appearance; use the actual approved image as the visual identity reference. No new people, face drift, extra limbs, finger distortion, morphing, teleporting props, costume changes, architecture changes, camera cuts, scene transitions, new text, letters, numbers, captions, UI, sticky notes, score symbols, logos or watermarks. Preserve existing abstract non-text marks; do not turn them into readable writing. No dialogue, singing or precise lip sync; keep mouths in their existing neutral pose. Silent visual pass preferred; mute unwanted generated speech or music in the edit. All readable scenario facts, choice text, feedback and captions are separate HTML, not generated pixels. ONE ACTION: The cream-shirt student lifts the already partly raised hand a little higher and pauses. CAMERA: Locked group composition; retain the dominant speaker and both quieter participants. END STATE: The hand is held in a small request to contribute; no one is assigned a speaking turn yet. SCENE GUARDRAILS: No synchronized conversation, precise lip sync, cheering, silencing gesture, aggressive behaviour, giant gestures or an automatic happy resolution. Stop after this single shot. Do not create other clips or branch endings.",
+      "outputFilename": "q8-setup-v01.mp4",
+      "audio": "No precise lip sync; prefer silent. Optional ambience is edited separately after listening.",
+      "runtimeFallback": {
+        "stillFilename": "Q8-Loudest-Voice.png",
+        "htmlFacts": [
+          "This is a hall committee’s weekly meeting.",
+          "One person talks over others.",
+          "First-years who recently joined barely speak."
+        ],
+        "behaviour": "Missing, failed, blocked or slow clip never prevents choosing or continuing. Reduced motion uses still. Do not generate a clip at runtime."
+      },
+      "qa": [
+        "Same recognizable adult cast and clothes as the approved still",
+        "Paper texture, palette, lighting and architecture remain stable",
+        "Only the specified action and camera instruction occur",
+        "No new readable text, UI, labels or altered factual numbers",
+        "No implied successful repair, better grade or unchosen outcome",
+        "First and final frames can transition back to the approved still without a jarring identity change",
+        "Watch the entire clip at normal speed and listen for unintended speech or music before acceptance"
+      ],
+      "referenceStillPath": "production/reference-stills/Q8-Loudest-Voice.png"
+    },
+    {
+      "shotId": "Q9-SETUP-01",
+      "sceneId": "Q9",
+      "shotOrderWithinScene": 1,
+      "purpose": "Show personal involvement without announcing either candidate’s merit or the selection result.",
+      "status": "prompt_prepared_clip_not_generated",
+      "priority": "optional_only_after_proof_and_budget_check",
+      "targetDurationSeconds": 6,
+      "permittedPlanningRangeSeconds": [
+        5,
+        8
+      ],
+      "durationStatus": "design_target_not_verified_app_setting",
+      "referenceMode": "Attach this approved scene still as the image-to-video start frame. If a service offers separate reference mode, choose that instead; do not mix incompatible first/last-frame and reference input modes.",
+      "referenceStillFilename": "Q9-Friend-Versus-Better-Candidate.png",
+      "oneAction": "The teal-cardigan panel member makes one small glance from the two folders toward the familiar person at the doorway and holds.",
+      "camera": "Locked medium-wide composition retaining both equally sized folders.",
+      "endState": "The folders stay closed, equally lit and unmoved; the glance rests toward the doorway.",
+      "prompt": "SHOT Q9-SETUP-01. Target 6 seconds, or the nearest supported duration between 5 and 8 seconds. Animate the attached approved Asterwind paper-theatre still; do not redesign or replace it. Preserve the supplied composition, adult fictional cast, faces, hair, wardrobe, body scale, warm honey-stone paper architecture, teal and antique-gold accents, golden lighting, folded-paper material, fibrous cut edges and tiny physical shadow gaps. Keep motion small, readable and tactile, as carefully staged miniature stop-motion, not smooth plastic CGI. Do not infer personality, ability or ethnicity from appearance; use the actual approved image as the visual identity reference. No new people, face drift, extra limbs, finger distortion, morphing, teleporting props, costume changes, architecture changes, camera cuts, scene transitions, new text, letters, numbers, captions, UI, sticky notes, score symbols, logos or watermarks. Preserve existing abstract non-text marks; do not turn them into readable writing. No dialogue, singing or precise lip sync; keep mouths in their existing neutral pose. Silent visual pass preferred; mute unwanted generated speech or music in the edit. All readable scenario facts, choice text, feedback and captions are separate HTML, not generated pixels. ONE ACTION: The teal-cardigan panel member makes one small glance from the two folders toward the familiar person at the doorway and holds. CAMERA: Locked medium-wide composition retaining both equally sized folders. END STATE: The folders stay closed, equally lit and unmoved; the glance rests toward the doorway. SCENE GUARDRAILS: No selected folder, winner badge, ranking, candidate portrait, visible name, approval nod or visual cue that appearance predicts competence. Stop after this single shot. Do not create other clips or branch endings.",
+      "outputFilename": "q9-setup-v01.mp4",
+      "audio": "No precise lip sync; prefer silent. Optional ambience is edited separately after listening.",
+      "runtimeFallback": {
+        "stillFilename": "Q9-Friend-Versus-Better-Candidate.png",
+        "htmlFacts": [
+          "You are on the selection panel for next year’s society committee.",
+          "Your close friend has been reliable behind the scenes and works well with the team.",
+          "Another applicant gave a stronger interview and has more relevant experience.",
+          "Everyone knows you and your friend are close."
+        ],
+        "behaviour": "Missing, failed, blocked or slow clip never prevents choosing or continuing. Reduced motion uses still. Do not generate a clip at runtime."
+      },
+      "qa": [
+        "Same recognizable adult cast and clothes as the approved still",
+        "Paper texture, palette, lighting and architecture remain stable",
+        "Only the specified action and camera instruction occur",
+        "No new readable text, UI, labels or altered factual numbers",
+        "No implied successful repair, better grade or unchosen outcome",
+        "First and final frames can transition back to the approved still without a jarring identity change",
+        "Watch the entire clip at normal speed and listen for unintended speech or music before acceptance"
+      ],
+      "referenceStillPath": "production/reference-stills/Q9-Friend-Versus-Better-Candidate.png"
+    }
+  ],
+  "sources": {
+    "studio": "https://design.minimax.io",
+    "apiReference": "https://platform.minimax.io/docs/api-reference/video-generation-v2-create",
+    "repository": "https://github.com/MiniMax-AI/MiniMax-H3",
+    "limits": "App access, export controls and the selected video model’s current cost/settings have not been checked in this handoff. API parameters are not assumed to be app controls."
+  }
+}

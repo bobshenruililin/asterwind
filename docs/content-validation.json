@@ -1,0 +1,22 @@
+{
+  "status": "PASS",
+  "scenarioCount": 9,
+  "sourceOptionExactMatches": 36,
+  "sourceFeedbackExactMatchesAcrossBothSourceSheets": 36,
+  "sourceCaveatExactMatches": 9,
+  "allOptionIdsUnique": true,
+  "assetCount": 9,
+  "assetHashesMatch": true,
+  "optionalShotCount": 9,
+  "generatedClipCount": 0,
+  "bothCuratedBudgetsSumTo300": true,
+  "sourceWorkbookHash": "a55072c8c5aa9c1a9d1bfaccc539f3d0b92be45c94bda38310635da9defa43a6",
+  "sourceWorkbookUnchanged": true,
+  "errors": [],
+  "limits": [
+    "No player app or device timing tested by this content task.",
+    "No video generated, watched or priced in the selected account.",
+    "Course-reference links are workbook interpretations, not independently checked readings.",
+    "Existing Q3 and Q6 art is illustrative; preserve exact source facts in HTML."
+  ]
+}

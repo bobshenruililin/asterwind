@@ -1,0 +1,12 @@
+node_modules/
+deliverables/
+qa/browser-rerun/
+qa/frames/
+.openai/
+.env
+.env.*
+!.env.example
+*.zip
+*.tar
+*.log
+.DS_Store
