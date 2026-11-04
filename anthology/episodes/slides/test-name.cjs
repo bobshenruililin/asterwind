@@ -23,18 +23,27 @@ console.log('Missing Name: both paths, untimed choice, pause, duplicate input, r
 // Exercise the actual DOM controller without opening a browser or fetching any resource.
 const vm=require('node:vm');
 (async()=>{
- for(const raster of [false,true]){
+ for(const mode of ['vector','raster','new-plate-failure']){const raster=mode!=='vector';
  const nodes=new Map(),messages=[],listeners={};let frame;
  const el=id=>{if(!nodes.has(id))nodes.set(id,{id,hidden:false,dataset:{},style:{setProperty(){}},clientWidth:1600,clientHeight:900,querySelector(){return el(id+'-span')},setAttribute(){},removeAttribute(){},focus(){},getAnimations(){return[]},animate(){}});return nodes.get(id)};
  const win={NAME_STORY:story,NAME_ART:raster?(Object.keys(art.plates).length?art:{plates:Object.fromEntries(['master','decision','microphone','notebook'].map(id=>[id,{src:'test.webp',alt:'Test plate'}])),beats:Object.fromEntries(['open','choice',...story.setup.map(x=>x.stage),...Object.values(story.branches).flat().map(x=>x.stage)].map(id=>[id,{plate:'master'}]))}):{plates:{},beats:{}},addEventListener:(type,fn)=>listeners[type]=fn};
- const context={window:win,document:{getElementById:el,hidden:false},parent:{postMessage:m=>messages.push(m)},location:{search:'?session=test-name'},URLSearchParams,performance:{now:()=>0},NameTimeline:require('./timeline.js'),NameLayout:layout,requestAnimationFrame:fn=>frame=fn,matchMedia:()=>({matches:true}),innerWidth:1600,innerHeight:900,Image:class{set src(value){this.onload?.()}},setTimeout:()=>0,console};
+ const context={window:win,document:{getElementById:el,hidden:false},parent:{postMessage:m=>messages.push(m)},location:{search:'?session=test-name'},URLSearchParams,performance:{now:()=>0},NameTimeline:require('./timeline.js'),NameLayout:layout,requestAnimationFrame:fn=>frame=fn,matchMedia:()=>({matches:true}),innerWidth:1600,innerHeight:900,Image:class{set src(value){if(mode==='new-plate-failure'&&value.includes('performance-microphone-offer'))this.onerror?.();else this.onload?.()}},setTimeout:()=>0,console};
  vm.runInNewContext(js,context);await new Promise(resolve=>setImmediate(resolve));
- assert.equal(messages[0].type,'ready');assert.equal(messages[0].session,'test-name');assert.equal(win.__asterwindEpisode.assetsReady,true);assert.equal(el('stage').dataset.raster,String(raster));
+ assert.equal(messages[0].type,'ready');assert.equal(messages[0].session,'test-name');assert.equal(win.__asterwindEpisode.assetsReady,true);assert.equal(el('stage').dataset.raster,String(mode==='raster'));
  el('start').onclick();let now=0;const advance=ms=>{for(let n=0;n<ms;n+=250){now+=250;frame(now)}};
  advance(1000);const held=win.__asterwindEpisode.state.elapsed;context.document.hidden=true;advance(1000);assert.equal(win.__asterwindEpisode.state.elapsed,held);context.document.hidden=false;el('pause').onclick();advance(1000);assert.equal(win.__asterwindEpisode.state.elapsed,held);el('pause').onclick();advance(sum(story.setup));assert.equal(win.__asterwindEpisode.state.phase,'choice');assert.equal(messages.length,1);
  el('notebook').onclick();el('microphone').onclick();assert.equal(win.__asterwindEpisode.state.choice,'notebook');advance(sum(story.branches.notebook)+1000);assert.equal(messages.filter(m=>m.type==='completed').length,1);assert.equal(messages.at(-1).outcome,'notebook');
  el('replay').onclick();advance(sum(story.setup));el('microphone').onclick();advance(sum(story.branches.microphone)+1000);assert.equal(messages.filter(m=>m.type==='completed').length,2);assert.equal(messages.at(-1).outcome,'microphone');
  listeners.pagehide();const before=win.__asterwindEpisode.state;frame(now+250);assert.equal(win.__asterwindEpisode.state.phase,before.phase);
- console.log('Missing Name DOM controller: '+(raster?'generated art':'vector fallback')+', session, playback, both actions and completion/replay pass.');
+ console.log('Missing Name DOM controller: '+mode+', session, playback, both actions and completion/replay pass.');
  }
 })().catch(err=>{console.error(err);process.exitCode=1});
+// First response is the chosen object moving; the authored consent stays before choice.
+assert.equal(story.branches.microphone[0].stage,'microphone-action');assert.equal(story.branches.notebook[0].stage,'notebook-action');
+assert(story.setup.some(b=>b.speaker==='Asha'&&b.line.includes('happy with both')));
+assert.equal(art.beats.introduce.plate,'microphone-offer');assert.equal(art.beats.offer.plate,'microphone-offer');assert.equal(art.beats.authorship.plate,'microphone');assert.equal(art.beats.credit.plate,'source-credit');
+assert.equal(story.choice.actions.length,2);
+for(const stage of ['reveal','question','invite'])assert.equal(art.beats[stage].plate,'invite');
+for(const stage of ['accept','ending-notebook'])assert.equal(art.beats[stage].plate,'notebook');
+const sequence=story.branches.notebook.map(b=>b.stage);assert(sequence.indexOf('invite')<sequence.indexOf('accept'));assert.equal(Object.keys(art.plates).length,9);
+console.log('Missing Name performance: physical action, credit/handoff, invitation before answer; original consent retained; nine plates.');

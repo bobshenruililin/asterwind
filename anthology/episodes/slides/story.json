@@ -78,6 +78,13 @@
   "branches": {
     "microphone": [
       {
+        "stage": "microphone-action",
+        "shot": "hands",
+        "duration": 1500,
+        "speaker": "",
+        "line": ""
+      },
+      {
         "stage": "introduce",
         "shot": "wide",
         "duration": 6000,
@@ -89,7 +96,7 @@
         "shot": "hands",
         "duration": 5000,
         "speaker": "",
-        "line": "You slide the microphone toward Asha. She takes it and turns toward her notebook."
+        "line": "You offer the microphone to Asha. She reaches for it willingly, then turns toward her notebook."
       },
       {
         "stage": "authorship",
@@ -121,6 +128,13 @@
       }
     ],
     "notebook": [
+      {
+        "stage": "notebook-action",
+        "shot": "hands",
+        "duration": 1500,
+        "speaker": "",
+        "line": ""
+      },
       {
         "stage": "credit",
         "shot": "hands",

@@ -24,6 +24,36 @@
       "alt": "The full neighbourhood model is revealed. Kit invites Asha to answer an audience question; she speaks beside her visible original notebook.",
       "width": 1672,
       "height": 941
+    },
+    "microphone-action": {
+      "src": "assets/performance-microphone-action.webp",
+      "alt": "The lead lifts the microphone from its block. Asha waits beside her open notebook.",
+      "width": 1672,
+      "height": 941
+    },
+    "microphone-offer": {
+      "src": "assets/performance-microphone-offer.webp",
+      "alt": "The lead offers the microphone; Asha willingly reaches toward it, not yet speaking. The model box remains closed.",
+      "width": 1671,
+      "height": 941
+    },
+    "notebook-action": {
+      "src": "assets/performance-notebook-action.webp",
+      "alt": "The lead turns the notebook easel toward the audience. The microphone stays on its block.",
+      "width": 1672,
+      "height": 941
+    },
+    "source-credit": {
+      "src": "assets/performance-source-credit.webp",
+      "alt": "The lead credits Asha while presenting her notebook. Asha listens; Kit stands behind the still-closed model box.",
+      "width": 1670,
+      "height": 941
+    },
+    "invite": {
+      "src": "assets/performance-invite.webp",
+      "alt": "The full model is revealed. Kit invites a response; Asha listens with her mouth closed and hand resting near her waist, not yet answering.",
+      "width": 1672,
+      "height": 941
     }
   },
   "beats": {
@@ -84,14 +114,14 @@
       "focus": 50
     },
     "introduce": {
-      "plate": "master",
+      "plate": "microphone-offer",
       "zoom": 1.08,
       "x": 55,
       "y": 40,
       "focus": 50
     },
     "offer": {
-      "plate": "microphone",
+      "plate": "microphone-offer",
       "zoom": 1.12,
       "x": 75,
       "y": 48,
@@ -126,28 +156,28 @@
       "focus": 50
     },
     "credit": {
-      "plate": "master",
-      "zoom": 1.15,
-      "x": 77,
-      "y": 58,
-      "focus": 75
+      "plate": "source-credit",
+      "zoom": 1,
+      "x": 50,
+      "y": 50,
+      "focus": 60
     },
     "reveal": {
-      "plate": "notebook",
+      "plate": "invite",
       "zoom": 1,
       "x": 50,
       "y": 50,
       "focus": 50
     },
     "question": {
-      "plate": "notebook",
+      "plate": "invite",
       "zoom": 1.15,
       "x": 60,
       "y": 75,
       "focus": 55
     },
     "invite": {
-      "plate": "notebook",
+      "plate": "invite",
       "zoom": 1.2,
       "x": 44,
       "y": 37,
@@ -166,6 +196,20 @@
       "x": 50,
       "y": 50,
       "focus": 50
+    },
+    "microphone-action": {
+      "plate": "microphone-action",
+      "zoom": 1,
+      "x": 50,
+      "y": 50,
+      "focus": 25
+    },
+    "notebook-action": {
+      "plate": "notebook-action",
+      "zoom": 1,
+      "x": 50,
+      "y": 50,
+      "focus": 78
     }
   }
 }
