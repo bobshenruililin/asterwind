@@ -41,6 +41,7 @@ button:focus-visible{outline:3px solid #fff4d0;outline-offset:4px}
 #drinks{position:absolute;inset:0;transform-style:preserve-3d;transform:translateZ(calc(var(--W)*-.12)) scale(1.03);pointer-events:none}
 .coils{transform:translateZ(calc(var(--W)*-.105)) scale(1.026)}
 .glass{position:absolute;left:6.667%;top:21.4%;width:65%;height:55.6%;transform:translateZ(-2px);pointer-events:none;overflow:hidden;background:linear-gradient(115deg,#ffffff00 30%,#ffffff12 42%,#ffffff05 48%,#ffffff00 60%)}
+.glass .glass-art{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none}.glass.has-art .streak{display:none}
 .glass .sheen{position:absolute;inset:-20%;background:linear-gradient(115deg,transparent 40%,#fff2d81c 47%,transparent 54%);transform:translateX(calc(var(--px)*-6%));transition:transform .9s}
 .glass .streak{position:absolute;left:3%;top:0;bottom:0;width:7%;background:linear-gradient(90deg,#ffc27a00,#ffc27a1f,#ffc27a00);opacity:calc(1 - var(--dawn))}
 .glass .fog{position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='90' height='90'%3E%3Cg fill='%23fff'%3E%3Ccircle cx='12' cy='18' r='1.6' opacity='.35'/%3E%3Ccircle cx='47' cy='9' r='1' opacity='.3'/%3E%3Ccircle cx='71' cy='33' r='2.1' opacity='.28'/%3E%3Ccircle cx='28' cy='52' r='1.2' opacity='.32'/%3E%3Ccircle cx='60' cy='70' r='1.7' opacity='.3'/%3E%3Ccircle cx='9' cy='79' r='.9' opacity='.35'/%3E%3Ccircle cx='84' cy='84' r='1.1' opacity='.28'/%3E%3C/g%3E%3C/svg%3E"),linear-gradient(180deg,#e3ecee26,#dfe8ea14 60%,#dfe8ea22);-webkit-mask-image:radial-gradient(circle at var(--fx,-40%) var(--fy,-40%),transparent 0 13%,#000 30%);mask-image:radial-gradient(circle at var(--fx,-40%) var(--fy,-40%),transparent 0 13%,#000 30%);opacity:calc(.95 - var(--dawn)*.95);transition:opacity 2s}
@@ -181,10 +182,6 @@ button:focus-visible{outline:3px solid #fff4d0;outline-offset:4px}
 @keyframes rise{0%{transform:translate(0,0) scale(.6);opacity:0}12%{opacity:.85}100%{transform:translate(14px,-340px) scale(1.4);opacity:0}}
 .drink-art .fizz .bubble:nth-child(even){animation-name:rise-b}@keyframes rise-b{0%{transform:translate(0,0) scale(.6);opacity:0}12%{opacity:.85}100%{transform:translate(-18px,-300px) scale(1.3);opacity:0}}
 .drink-art [class]{transform-box:fill-box}
-/* Delivered raster drinks: the open art waits on top of the sealed art and is revealed by the ritual. */
-.drink-art .raster-next{opacity:0}
-.drink-art.opening .raster-next{animation:raster-open .45s .32s ease-out forwards}
-@keyframes raster-open{to{opacity:1}}
 .drink-art.opening .cap{transform-origin:50% 100%;animation:cap-off 1s cubic-bezier(.5,0,.3,1) forwards}
 @keyframes cap-off{0%{transform:none}12%{transform:rotate(-5deg)}24%{transform:rotate(5deg) translateY(-6px)}36%{transform:rotate(-6deg) translateY(-14px)}48%{transform:rotate(4deg) translateY(-26px)}100%{transform:translate(190px,-300px) rotate(38deg);opacity:0}}
 .drink-art.opening .seal-l{transform-origin:100% 50%;animation:seal-l .7s .38s cubic-bezier(.4,0,.6,1) forwards}

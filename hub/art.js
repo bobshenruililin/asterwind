@@ -65,15 +65,14 @@ const PARTS={
  slides:{hx:352,
   body:'M440 908 L440 1100 C440 1166 322 1176 322 1256 L322 1952 Q322 2000 370 2000 L590 2000 Q638 2000 638 1952 L638 1256 C638 1176 520 1166 520 1100 L520 908 Z',
   glass:'url(#aw-bitters)',liquid:{top:1250,empty:1950,fill:'#2a0d08',surface:'#6e2a18'},glossy:true,
-  lip:'<rect x="432" y="892" width="96" height="30" rx="8" fill="url(#aw-bitters)"/>',
+  lip:'<rect x="432" y="892" width="96" height="30" rx="8" fill="url(#aw-bitters)"/><g class="dasher"><rect x="446" y="790" width="68" height="112" rx="8" fill="url(#aw-gold)"/><path d="M452 792 L480 706 L508 792Z" fill="url(#aw-gold)"/><circle cx="480" cy="704" r="7" fill="#f6dc95"/></g>',
   label:d=>`<g class="label"><rect x="278" y="1308" width="428" height="472" fill="#0d0907" opacity=".35"/><rect x="266" y="1296" width="428" height="472" rx="4" fill="url(#aw-cream)"/><rect x="266" y="1296" width="428" height="472" fill="url(#aw-grain)" opacity=".45"/><rect x="282" y="1312" width="396" height="440" fill="none" stroke="#7a3a2c" stroke-width="3"/>
    <rect x="302" y="1322" width="356" height="208" rx="8" fill="#1b1d22"/>${cameo(d,d._src,d._clip)}<rect x="440" y="1530" width="80" height="14" fill="#1b1d22"/>
    ${T(480,1590,38,d.lines[0],{w:400,fill:'#5a2a22',fit:300})}${T(480,1664,66,d.lines[1],{fill:'#3a1612',fit:330})}
    ${T(326,1730,30,'by',{w:400,style:'italic',fill:'#5a2a22',anchor:'start'})}<path d="M366 1732 H640" stroke="#5a2a22" stroke-width="3"/></g>`,
-  closure:`<g class="closure" data-part="wax"><g class="dasher"><rect x="446" y="790" width="68" height="112" rx="8" fill="url(#aw-gold)"/><path d="M452 792 L480 706 L508 792Z" fill="url(#aw-gold)"/><circle cx="480" cy="704" r="7" fill="#f6dc95"/></g>
-   <g class="wax"><path d="M436 806 Q480 756 524 806 L530 922 Q527 958 518 924 L514 904 Q508 974 498 912 L494 900 Q486 940 478 906 L470 900 Q462 984 452 916 L446 904 Q440 946 434 920Z" fill="url(#aw-wax)"/><path d="M450 800 Q470 786 490 790" stroke="#f08a6e" stroke-width="5" fill="none" opacity=".6"/></g>
+  closure:`<g class="closure" data-part="wax"><g class="wax"><path d="M436 806 Q480 756 524 806 L530 922 Q527 958 518 924 L514 904 Q508 974 498 912 L494 900 Q486 940 478 906 L470 900 Q462 984 452 916 L446 904 Q440 946 434 920Z" fill="url(#aw-wax)"/><path d="M450 800 Q470 786 490 790" stroke="#f08a6e" stroke-width="5" fill="none" opacity=".6"/></g>
    <g class="wax-bits" fill="#a8261c"><path d="M450 800 l20 -6 l6 18 l-22 4z"/><path d="M500 790 l22 4 l-4 20 l-20 -6z"/><path d="M470 840 l18 2 l-2 16 l-18 -4z"/><path d="M506 850 l16 6 l-6 14 l-14 -8z"/></g></g>`,
-  opened:`<g class="opened"><rect x="446" y="790" width="68" height="112" rx="8" fill="url(#aw-gold)"/><path d="M452 792 L480 706 L508 792Z" fill="url(#aw-gold)"/><path d="M436 880 L524 880 L528 924 Q520 950 512 922 L500 912 Q490 948 480 914 L462 916 Q452 954 444 922Z" fill="url(#aw-wax)"/><path d="M450 884 l14 18 l10 -12 l14 16" stroke="#3a0a06" stroke-width="3" fill="none"/></g>`,
+  opened:`<g class="opened"><path d="M436 880 L524 880 L528 924 Q520 950 512 922 L500 912 Q490 948 480 914 L462 916 Q452 954 444 922Z" fill="url(#aw-wax)"/><path d="M450 884 l14 18 l10 -12 l14 16" stroke="#3a0a06" stroke-width="3" fill="none"/></g>`,
   fizz:null,mouth:704
  },
  scope:{hx:350,
@@ -114,31 +113,55 @@ const PARTS={
  }
 };
 
-/* Which delivered raster draws a drink in a given state, from the slots that actually loaded.
-   Raster art is all-or-nothing for the shelf and the hand: sealed and open must both have loaded,
-   so a drink never switches style mid-ritual and never shows its closure again once opened. In
-   raster mode the sealed art carries the open art as a hidden next layer, revealed by the opening
-   ritual. An empty uses its own raster when it loaded and otherwise the vector empty, never a full
-   sealed bottle. Anything else keeps the code-native vector art. */
-const RASTER_STATES=['sealed','open','empty'];
-function rasterFor(loaded,state){
- if(!loaded||typeof loaded.sealed!=='string'||typeof loaded.open!=='string')return null;
- if(state==='sealed')return{base:loaded.sealed,next:loaded.open};
- if(state==='open')return{base:loaded.open};
+/* --- delivered paper art, in independently controllable layers ---------------------------
+   A drink is never one flat picture. Delivered art arrives as registered layers on the 960×2080
+   template: the vessel body (label with a transparent cameo hole, mouth drawn open, no closure),
+   one transparent cut-out per opening part, an optional remnant layer for after opening, and an
+   optional drained empty. Each part keeps the class the opening ritual animates and sits in the
+   same box as its vector original, so cap, seal, tab, wax, stopper, bail, crown, cork and string
+   move exactly as the code-native parts do. A part image is cropped to its box; a manifest entry
+   may give {src,x,y,w,h} to use a different box. */
+const LAYERS={
+ seam:{cap:[386,652,188,160],'seal-l':[392,800,88,42],'seal-r':[480,800,88,42]},
+ standup:{tab:[436,574,88,38]},
+ slides:{wax:[434,780,96,168]},
+ scope:{stopper:[418,548,124,108],bail:[388,598,184,206]},
+ pixel:{crown:[410,756,143,78]},
+ ship:{cork:[434,638,92,140],string:[406,636,192,256]}
+};
+const SLOTS=['body','opened','empty'];
+// Normalise one manifest part entry into {src,x,y,w,h}, or null.
+function partSlot(id,name,entry){const box=LAYERS[id]?.[name];if(!box)return null;if(typeof entry==='string'&&entry)return{src:entry,x:box[0],y:box[1],w:box[2],h:box[3]};if(entry&&typeof entry==='object'&&typeof entry.src==='string'&&entry.src){const n=k=>Number.isFinite(+entry[k])&&+entry[k]>=0?+entry[k]:null;const [x,y,w,h]=['x','y','w','h'].map(n);return{src:entry.src,x:x??box[0],y:y??box[1],w:w||box[2],h:h||box[3]}}return null}
+/* Which layers draw a drink in a given state, from the slots that actually loaded. Layered art is
+   all-or-nothing for the shelf and the hand: the body and every opening part must have loaded,
+   so a drink never switches style mid-ritual, and once opened it never shows its closure again.
+   An empty uses its own layer when that loaded, otherwise the vector empty, never a full bottle.
+   Anything less keeps the code-native vector drink. */
+function layersFor(id,loaded,state){
+ const need=Object.keys(LAYERS[id]||{});
+ if(!loaded||typeof loaded.body!=='string'||!need.length||need.some(n=>!loaded.parts?.[n]?.src))return null;
+ if(state==='sealed')return{base:loaded.body,parts:need.map(n=>({cls:n,...loaded.parts[n]}))};
+ if(state==='open')return{base:loaded.body,over:typeof loaded.opened==='string'?loaded.opened:null};
  if(state==='empty')return typeof loaded.empty==='string'?{base:loaded.empty}:null;
  return null;
 }
-function drink(d,{state='sealed',src=null,raster=null}={}){
+const img=(cls,src,x,y,w,h)=>`<image class="${cls}" href="${esc(src)}" x="${x}" y="${y}" width="${w}" height="${h}" preserveAspectRatio="none"/>`;
+function drink(d,{state='sealed',src=null,layers=null}={}){
  const p=PARTS[d.id],u='aw'+(++serial),clip=u+'c',body=u+'b';
  const x={...d,_src:src,_clip:clip};
  const liquid=p.liquid?`<g clip-path="url(#${body})"><rect class="liquid" x="180" y="${state==='empty'?p.liquid.empty:p.liquid.top}" width="600" height="1200" fill="${p.liquid.fill}" opacity="${p.liquid.alpha||.9}"/><rect x="180" y="${(state==='empty'?p.liquid.empty:p.liquid.top)-4}" width="600" height="10" fill="${p.liquid.surface}" opacity=".7"/>${p.inside&&state!=='empty'?`<g class="fizz-in">${bubbles(16,d.id.length*31,350,610,p.liquid.top+60,1940)}</g>`:''}</g>`:'';
  const light=`<path d="${p.body}" fill="url(#aw-light)"/>${p.glossy?`<path d="M${p.hx} ${p.liquid.top+170} q-6 380 0 720" stroke="#fff" stroke-opacity=".22" stroke-width="22" stroke-linecap="round" fill="none"/><path d="M${p.hx+26} ${p.liquid.top+190} v120" stroke="#fff" stroke-opacity=".35" stroke-width="8" stroke-linecap="round"/>`:''}${p.metal?'<rect x="356" y="660" width="30" height="1290" rx="15" fill="#fff" opacity=".24"/><rect x="600" y="660" width="14" height="1290" rx="7" fill="#1d2a22" opacity=".25"/>':''}`;
  const fizz=p.fizz?`<g class="fizz">${bubbles(12,d.id.length*17,p.fizz[0],p.fizz[1],p.fizz[2],p.fizz[3])}</g>`:'';
  const vector=`<path d="${p.body}" transform="translate(16 14)" fill="#0a0910" opacity=".38"/><path d="${p.body}" fill="${p.glass}"/>${liquid}${p.over?`<g clip-path="url(#${body})">${p.over}</g>`:''}${p.lip}${p.label(x)}<g clip-path="url(#${body})">${light}<path d="${p.body}" fill="url(#aw-grain)" opacity=".35"/></g><path d="${p.body}" fill="none" stroke="#120f16" stroke-opacity=".55" stroke-width="5"/>`;
- // Delivered art has a transparent cameo hole; the film frame sits behind it.
- const vectorState=state==='sealed'?p.closure:p.opened;
- const art=raster?.base?`${cameo(x,src,clip).replace('class="cameo-frame"','class="cameo-frame" opacity="0"')}<image class="raster" href="${esc(raster.base)}" x="0" y="0" width="960" height="2080"/>${raster.next?`<image class="raster raster-next" href="${esc(raster.next)}" x="0" y="0" width="960" height="2080"/>`:''}`:vector+vectorState;
- return `<svg class="drink-art" data-drink="${d.id}" data-state="${state}" data-art="${raster?.base?'raster':'vector'}" data-closure="${d.closure}" viewBox="${DRINK_VIEW}" aria-hidden="true" focusable="false"><defs><clipPath id="${body}"><path d="${p.body}"/></clipPath></defs><ellipse class="contact" cx="480" cy="2002" rx="250" ry="20" fill="#05060a" opacity=".55"/>${art}${state!=='empty'?fizz:''}<g class="sparkle"><circle cx="${p.mouth?480:480}" cy="${p.mouth||700}" r="0" fill="#fff"/></g></svg>`;
+ const layered=!!layers?.base;
+ let art;
+ if(layered){
+  // The story frame sits behind the body's transparent cameo hole; parts and remnants sit on top.
+  const bits=state==='sealed'?(p.closure.match(/<g class="wax-bits"[\s\S]*?<\/g>/)?.[0]||''):'';
+  const top=state==='sealed'?`<g class="closure" data-part="${d.closure}">${(layers.parts||[]).map(q=>img(q.cls,q.src,q.x,q.y,q.w,q.h)).join('')}${bits}</g>`:layers.over?img('opened layer-opened',layers.over,0,0,960,2080):'';
+  art=`${cameo(x,src,clip).replace('class="cameo-frame"','class="cameo-frame" opacity="0"')}${img('layer-body',layers.base,0,0,960,2080)}${top}`;
+ }else art=vector+(state==='sealed'?p.closure:p.opened);
+ return `<svg class="drink-art" data-drink="${d.id}" data-state="${state}" data-art="${layered?'layered':'vector'}" data-closure="${d.closure}" viewBox="${DRINK_VIEW}" aria-hidden="true" focusable="false"><defs><clipPath id="${body}"><path d="${p.body}"/></clipPath></defs><ellipse class="contact" cx="480" cy="2002" rx="250" ry="20" fill="#05060a" opacity=".55"/>${art}${state!=='empty'?fizz:''}<g class="sparkle"><circle cx="480" cy="${p.mouth||700}" r="0" fill="#fff"/></g></svg>`;
 }
 
 /* --- the machine (1200×2000 template) ---------------------------------------------------- */
@@ -215,5 +238,5 @@ function defs(){
  <pattern id="aw-grain" width="48" height="48" patternUnits="userSpaceOnUse">${(()=>{const r=rand(3);let s='';for(let i=0;i<46;i++)s+=`<rect x="${(r()*48).toFixed(1)}" y="${(r()*48).toFixed(1)}" width="${(1+r()*2.4).toFixed(1)}" height="${(1+r()*1.6).toFixed(1)}" fill="${r()>.5?'#fff':'#000'}" opacity="${(.06+r()*.12).toFixed(2)}"/>`;return s})()}</pattern>
  </defs></svg>`;
 }
-return{defs,drink,rasterFor,RASTER_STATES,machineFace,machineBack,coilsFront,coverBox,CELLS,KEYS,PLATE,DRINK_VIEW,PARTS};
+return{defs,drink,layersFor,partSlot,LAYERS,SLOTS,machineFace,machineBack,coilsFront,coverBox,CELLS,KEYS,PLATE,DRINK_VIEW,PARTS};
 });

@@ -37,17 +37,27 @@ front.querySelector('.face-art').innerHTML=Art.machineFace(D.DRINKS);
 glass.insertAdjacentHTML('beforeend','<i class="fog"></i>');
 keys.forEach((k,i)=>{const [c,r]=Art.KEYS[i];Object.assign(k.style,{left:(918+c*94)/12+'%',top:(472+r*126)/20+'%'})});
 document.querySelectorAll('.motes i').forEach((m,i)=>{m.style.setProperty('--i',i);m.style.setProperty('--j',(i*7)%5)});
-function drinkMarkup(id,s,src){const d=D.byId[id];return Art.drink(d,{state:s,src:src||memento[id]||d.cameo.src,raster:Art.rasterFor(rasters[id],s)})}
+function drinkMarkup(id,s,src){const d=D.byId[id];return Art.drink(d,{state:s,src:src||memento[id]||d.cameo.src,layers:Art.layersFor(id,rasters[id],s)})}
 for(const b of document.querySelectorAll('.drink')){const id=b.dataset.id,i=slot(id),d=D.byId[id],e=stories[id];b.style.setProperty('--col',i%3);b.style.setProperty('--row',Math.floor(i/3));b.setAttribute('aria-label',d.name+'. '+(e?.title||''));b.querySelector('.drink-body').innerHTML=drinkMarkup(id,'sealed')}
 // Delivered art replaces a placeholder only after it has actually loaded.
 function swapIn(src,apply){if(!src)return;const img=new Image();img.onload=()=>apply(src);img.src=src}
 swapIn(MAN.machine?.face,src=>{front.querySelector('.face-art').innerHTML='<img src="'+esc(src)+'" alt="">'});
 swapIn(MAN.machine?.interior,src=>{front.querySelector('.interior').innerHTML='<img src="'+esc(src)+'" alt="">'});
+// Glass is its own layer (780×1112, the window): reflections and grime over the drinks, under the fog.
+swapIn(MAN.machine?.glass,src=>{glass.insertAdjacentHTML('afterbegin','<img class="glass-art" src="'+esc(src)+'" alt="">');glass.classList.add('has-art')});
 swapIn(MAN.machine?.side,src=>{$('side').querySelector('.side-plate').style.background='url("'+src+'") center/100% 100%'});
-// Drink art: every state slot is probed on its own; only slots that really loaded are used, and
-// Art.rasterFor decides whether the set is complete enough to replace the vector drink.
+// Drink art: body, remnant, empty and every opening part are probed on their own. Only layers
+// that really loaded are kept, and Art.layersFor decides whether the set can replace the vector.
 const probe=src=>new Promise(res=>{if(typeof src!=='string'||!src){res(false);return}const img=new Image();img.onload=()=>res(true);img.onerror=()=>res(false);img.src=src});
-for(const id of order){const r=MAN.drinks?.[id]||{};Promise.all(Art.RASTER_STATES.map(s=>probe(r[s]).then(ok=>ok?[s,r[s]]:null))).then(list=>{const got=Object.fromEntries(list.filter(Boolean));if(!Art.rasterFor(got,'sealed'))return;rasters[id]=got;const b=btnFor(id);if(!b.classList.contains('dispensed'))b.querySelector('.drink-body').innerHTML=drinkMarkup(id,'sealed');if(state==='idle')renderRoof()})}
+async function loadLayers(id){
+ const r=MAN.drinks?.[id]||{},got={parts:{}};
+ const slots=Art.SLOTS.map(async k=>{if(await probe(r[k]))got[k]=r[k]});
+ const parts=Object.keys(Art.LAYERS[id]).map(async n=>{const q=Art.partSlot(id,n,r.parts?.[n]);if(q&&await probe(q.src))got.parts[n]=q});
+ await Promise.all([...slots,...parts]);
+ if(!Art.layersFor(id,got,'sealed'))return;
+ rasters[id]=got;const b=btnFor(id);if(!b.classList.contains('dispensed'))b.querySelector('.drink-body').innerHTML=drinkMarkup(id,'sealed');if(state==='idle')renderRoof();
+}
+order.forEach(loadLayers);
 const portraitPlate=()=>matchMedia('(max-aspect-ratio: 4/5)').matches;
 swapIn(portraitPlate()?MAN.corridor?.portrait:null,src=>{document.querySelector('.corridor-plate').src=src});
 swapIn(portraitPlate()?MAN.corridor?.portraitDawn:MAN.corridor?.dawn,src=>{const p=document.querySelector('.dawn-plate');p.src=src;p.hidden=false});

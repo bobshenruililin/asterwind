@@ -1,6 +1,7 @@
 // Rendered QA for the After Hours journey. Serve the repository first:
 //   python3 -m http.server 8731 --bind 127.0.0.1
 //   node hub/qa/journey.cjs [routes|repeat|complete|complete-alt|dawn|keyboard|reduced|mobile|history|storage|art|offline|all]
+//   ART_MANIFEST=candidate.json node hub/qa/journey.cjs art-candidate   (screens a candidate manifest; not in 'all')
 // Screenshots and a JSON report go to hub/qa/after-hours/. Inspect the screenshots; passing
 // assertions are not visual approval. Browser emulation is not a physical-device or screen-reader test.
 const {chromium}=require('playwright'),fs=require('fs'),path=require('path');
@@ -195,26 +196,70 @@ const SUITES={
   note('no console errors (blocked storage)',errors.length===0,{info:errors.join(' | ')});await ctx.close();
  },
  async art(browser){
-  // Delivered-art fallbacks, with stand-in rasters (the layout guides) and deliberately missing files.
-  const G=id=>'art/templates/drink-'+id+'-guide.webp',MISSING='art/drinks/missing.webp';
-  const drinks={seam:{sealed:G('seam'),open:G('pixel'),empty:MISSING},standup:{sealed:G('standup'),open:null,empty:null},slides:{sealed:MISSING,open:G('slides'),empty:G('slides')},scope:{sealed:G('scope'),open:G('ship'),empty:G('standup')},pixel:{sealed:null,open:null,empty:null},ship:{sealed:G('ship'),open:MISSING,empty:G('ship')}};
-  const manifest={schemaVersion:1,machine:{face:'art/machine/missing.webp',interior:null,side:null},drinks,corridor:{portrait:null,dawn:null,portraitDawn:null},hand:{},clips:{}};
+  // Delivered-art paths, with stand-in layers rendered from the vector art (hub/qa/make-standins.cjs)
+  // and deliberately missing files. ART_MANIFEST=<json> tests a candidate manifest instead (suite art-candidate).
+  const St=require('./make-standins.cjs');const {fits}=await St.make(browser);note('art: every vector opening part fits its template box',fits.every(f=>f.inside),{info:fits.filter(f=>!f.inside).map(f=>f.id+'.'+f.part).join(',')||'10 parts'});
+  const L=St.manifestFor(),MISSING='art/drinks/missing.webp';
+  const drinks={
+   seam:{...L.seam,empty:MISSING},                                   // layered; empty falls back to vector
+   standup:{body:L.standup.body,parts:{}},                           // body alone → vector
+   slides:{...L.slides,parts:{wax:MISSING}},                         // a part fails to load → vector
+   scope:L.scope,                                                    // complete set → layered everywhere
+   pixel:{sealed:L.pixel.body,open:L.pixel.body,empty:L.pixel.empty}, // schema-1 whole bottles are ignored → vector
+   ship:{...L.ship,opened:null,parts:{...L.ship.parts,cork:{src:L.ship.parts.cork,x:434,y:638,w:92,h:140}}} // boxed part, no remnants
+  };
+  const manifest={schemaVersion:2,machine:{face:'art/machine/missing.webp',interior:null,glass:null,side:null},drinks,corridor:{portrait:null,dawn:null,portraitDawn:null},hand:{},clips:{}};
   const {ctx,page,errors}=await open(browser,{manifest,storage:{'asterwind.progress.v1':JSON.stringify({schemaVersion:1,completed:{seam:['backup'],scope:['extend']}})}});
-  await page.waitForTimeout(600);
-  const shelf=await page.evaluate(()=>Object.fromEntries([...document.querySelectorAll('.drink')].map(b=>{const s=b.querySelector('svg');return[b.dataset.id,s.dataset.art+(s.querySelector('.raster-next')?'+next':'')]})));
+  await page.waitForTimeout(800);
+  const shelf=await page.evaluate(()=>Object.fromEntries([...document.querySelectorAll('.drink')].map(b=>[b.dataset.id,b.querySelector('svg').dataset.art])));
   const roof=await page.evaluate(()=>Object.fromEntries([...document.querySelectorAll('#roof li')].map(li=>[li.dataset.id,li.querySelector('svg').dataset.art])));
-  const face=await page.evaluate(()=>!!document.querySelector('.face-art svg.machine-face'));
-  await shot(page,'18-art-fallbacks');
-  const want={seam:'raster+next',standup:'vector',slides:'vector',scope:'raster+next',pixel:'vector',ship:'vector'};
-  note('art: raster only where sealed and open both load; missing or partial sets keep vector',JSON.stringify(shelf)===JSON.stringify(want),{info:JSON.stringify(shelf)});
-  note('art: an empty uses its own raster or the vector empty, never a sealed bottle',roof.seam==='vector'&&roof.scope==='raster',{info:JSON.stringify(roof)});
-  note('art: a missing machine face keeps the code-native face',face);
-  await toHeld(page,'scope');const sealed=await page.evaluate(()=>{const s=document.querySelector('#open-drink svg');return{state:s.dataset.state,art:s.dataset.art,next:!!s.querySelector('.raster-next'),visibleImages:[...s.querySelectorAll('image.raster')].filter(i=>+getComputedStyle(i).opacity>0).length}});
-  await page.click('#open-drink');await until(page,()=>document.querySelector('#open-drink svg')?.dataset.state==='open',null,5000);
-  const opened=await page.evaluate(()=>{const s=document.querySelector('#open-drink svg');return{state:s.dataset.state,art:s.dataset.art,next:!!s.querySelector('.raster-next'),href:s.querySelector('image.raster').getAttribute('href')}});
-  note('art: held sealed shows only the sealed raster; opening reveals the open raster',sealed.art==='raster'&&sealed.next&&sealed.visibleImages===1&&opened.art==='raster'&&!opened.next&&/ship-guide/.test(opened.href),{info:JSON.stringify({sealed,opened})});
-  await until(page,()=>__dispenser.state.phase==='playing',null,25000);await returnHome(page);
+  await shot(page,'18-art-layered-and-fallbacks');
+  const want={seam:'layered',standup:'vector',slides:'vector',scope:'layered',pixel:'vector',ship:'layered'};
+  note('art: layered only where the body and every part load; partial, failed or schema-1 sets keep vector',JSON.stringify(shelf)===JSON.stringify(want),{info:JSON.stringify(shelf)});
+  note('art: an empty uses its own layer or the vector empty, never a sealed bottle',roof.seam==='vector'&&roof.scope==='layered',{info:JSON.stringify(roof)});
+  note('art: a missing machine face keeps the code-native face',await page.evaluate(()=>!!document.querySelector('.face-art svg.machine-face')));
+  for(const id of ['scope','seam','ship']){
+   await toHeld(page,id);
+   const sealed=await page.evaluate(()=>{const s=document.querySelector('#open-drink svg');return{art:s.dataset.art,parts:[...s.querySelectorAll('.closure > image')].map(i=>i.getAttribute('class')),opened:!!s.querySelector('.layer-opened')}});
+   await page.click('#open-drink');await page.waitForTimeout(260);
+   // The ritual moves each raster part itself: its transform changes while the body stays put.
+   const moving=await page.evaluate(()=>{const s=document.querySelector('#open-drink svg');return{parts:[...s.querySelectorAll('.closure > image')].map(i=>getComputedStyle(i).transform!=='none'||i.getAnimations().length>0),body:getComputedStyle(s.querySelector('.layer-body')).transform}});
+   if(id==='scope')await shot(page,'19-art-layered-opening-scope');
+   await until(page,()=>document.querySelector('#open-drink svg')?.dataset.state==='open',null,5000);
+   const opened=await page.evaluate(()=>{const s=document.querySelector('#open-drink svg');return{art:s.dataset.art,parts:s.querySelectorAll('.closure').length,opened:!!s.querySelector('.layer-opened')}});
+   note(`art ${id}: sealed shows each part as its own layer; the ritual animates them; open drops them`,sealed.art==='layered'&&sealed.parts.length>0&&!sealed.opened&&moving.parts.every(Boolean)&&moving.body==='none'&&opened.art==='layered'&&opened.parts===0&&opened.opened===(id!=='ship'),{info:JSON.stringify({sealed,moving,opened})});
+   await until(page,()=>__dispenser.state.phase==='playing',null,25000);await returnHome(page);await page.waitForTimeout(900);
+  }
+  // Registration: a drink composed from its layers matches its vector original.
+  const reg=await page.evaluate(async L=>{
+   const A=AsterwindArt,D=AsterwindDrinks,out={};
+   const raster=async svg=>{const host=document.createElement('div');host.style.cssText='position:fixed;left:0;top:0;width:240px;height:480px;z-index:99';host.innerHTML=svg;document.body.appendChild(host);const el=host.querySelector('svg');el.style.width='240px';el.style.height='480px';
+    await Promise.all([...el.querySelectorAll('image')].map(i=>new Promise(r=>{const im=new Image();im.onload=im.onerror=r;im.src=i.getAttribute('href')})));
+    await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
+    const xml=new XMLSerializer().serializeToString(el),defs=document.getElementById('aw-defs').outerHTML;
+    // Inline images so the serialized SVG can be drawn to a canvas.
+    let doc=xml;for(const i of el.querySelectorAll('image')){const h=i.getAttribute('href');if(h.startsWith('data:'))continue;const b=await (await fetch(h)).blob();const u=await new Promise(r=>{const f=new FileReader();f.onload=()=>r(f.result);f.readAsDataURL(b)});doc=doc.split('href="'+h+'"').join('href="'+u+'"')}
+    doc=doc.replace(/<svg([^>]*)>/,(m,a)=>'<svg'+a.replace(/ style="[^"]*"/,'')+' xmlns="http://www.w3.org/2000/svg" width="240" height="480">'+defs.replace(/^<svg[^>]*>|<\/svg>$/g,''));host.remove();
+    const img=new Image();await new Promise((r,j)=>{img.onload=r;img.onerror=j;img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(doc)});
+    const c=document.createElement('canvas');c.width=240;c.height=480;const g=c.getContext('2d');g.drawImage(img,0,0);return g.getImageData(0,0,240,480).data};
+   for(const d of D.DRINKS){const got={body:L[d.id].body,opened:L[d.id].opened,empty:L[d.id].empty,parts:Object.fromEntries(Object.entries(L[d.id].parts).map(([n,s])=>[n,A.partSlot(d.id,n,s)]))};out[d.id]={};
+    for(const st of ['sealed','open','empty']){const v=await raster(A.drink(d,{state:st,src:'data:,'})),l=await raster(A.drink(d,{state:st,src:'data:,',layers:A.layersFor(d.id,got,st)}));// The cameo window is excluded by design: the vector glazes the frame, a layered hole shows it clean.
+    const c=d.cameo,[vx,vy]=A.DRINK_VIEW.split(' ').map(Number),k=240/800,cx0=(c.x-vx)*k-2,cy0=(c.y-vy)*k-2,cx1=(c.x+c.w-vx)*k+2,cy1=(c.y+c.h-vy)*k+2;let off=0,n=0;for(let i=0;i<v.length;i+=4){const px=(i/4)%240,py=Math.floor(i/960);if(px>=cx0&&px<=cx1&&py>=cy0&&py<=cy1)continue;if(v[i+3]<8&&l[i+3]<8)continue;n++;if(Math.max(Math.abs(v[i]-l[i]),Math.abs(v[i+1]-l[i+1]),Math.abs(v[i+2]-l[i+2]),Math.abs(v[i+3]-l[i+3]))>48)off++}out[d.id][st]=+(off/Math.max(1,n)*100).toFixed(2)}}
+   return out},L);
+  const worst=Math.max(...Object.values(reg).flatMap(o=>Object.values(o)));
+  note('art: layered drinks register with their vector originals (≤ 2% of drawn pixels differ visibly)',worst<=2,{info:JSON.stringify(reg)});
   note('no console errors (art)',errors.length===0,{info:errors.join(' | ')});await ctx.close();
+ },
+ async 'art-candidate'(browser){
+  // Browser-test a candidate manifest (e.g. Dot's cabinet study) without committing it.
+  const file=process.env.ART_MANIFEST;if(!file){note('art-candidate needs ART_MANIFEST=<path to manifest json>',false);return}
+  const manifest=JSON.parse(fs.readFileSync(file,'utf8'));
+  for(const [w,h,m] of [[1440,900,false],[390,844,true]]){
+   const {ctx,page,errors}=await open(browser,{w,h,mobile:m,manifest});await page.waitForTimeout(1200);await shot(page,`20-candidate-lobby-${w}x${h}`);
+   const used=await page.evaluate(()=>({face:!!document.querySelector('.face-art img'),interior:!!document.querySelector('.interior img'),glass:!!document.querySelector('.glass-art'),drinks:Object.fromEntries([...document.querySelectorAll('.drink')].map(b=>[b.dataset.id,b.querySelector('svg').dataset.art]))}));
+   await toHeld(page,'seam',m?'tap':'click');await shot(page,`21-candidate-held-${w}x${h}`);await page.click('#turn').catch(()=>{});
+   note(`candidate ${w}×${h}: layers in use`,true,{info:JSON.stringify(used)});note(`no console errors (candidate ${w}×${h})`,errors.length===0,{info:errors.join(' | ')});await ctx.close();
+  }
  },
  async offline(browser){
   const file='file://'+path.resolve(__dirname,'../dist/index.html');if(!fs.existsSync(file.slice(7))){note('offline export present',false,{info:'run python3 hub/build.py'});return}
@@ -228,7 +273,7 @@ const SUITES={
  }
 };
 (async()=>{
- const which=process.argv[2]||'all',names=which==='all'?Object.keys(SUITES):which.split(',');
+ const which=process.argv[2]||'all',names=which==='all'?Object.keys(SUITES).filter(n=>n!=='art-candidate'):which.split(',');
  let browser;try{browser=await chromium.launch(process.env.CHROMIUM_PATH?{executablePath:process.env.CHROMIUM_PATH}:{})}catch{browser=await chromium.launch({executablePath:'/opt/pw-browsers/chromium',args:['--no-sandbox']})}
  report.browser=browser.version();
  for(const n of names){if(!SUITES[n]){note('unknown suite '+n,false);continue}try{await SUITES[n](browser)}catch(e){note(n+' suite crashed',false,{info:e.message.split('\n')[0]})}}
