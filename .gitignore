@@ -10,3 +10,9 @@ qa/frames/
 *.tar
 *.log
 .DS_Store
+# Generated locally: offline exports (rebuild with film/anthology/hub build.py), QA output, caches.
+# Curated QA screenshots for review live in docs/after-hours/.
+anthology/dist/
+hub/dist/
+hub/qa/after-hours/
+__pycache__/
