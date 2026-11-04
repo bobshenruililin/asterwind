@@ -1,4 +1,4 @@
-> Quiet Minute integration: the dispenser now uses the six-drink anthology lineup. Cold Brew, Scope Creep Fizz, Standup Seltzer and Ship-It Ginger Ale are playable prototypes; the remaining two are explicitly in development. Run `python3 anthology/build-all.py` before `hub/build.py`. Historical notes below describe earlier versions.
+> Quiet Minute integration: the dispenser now uses the six-drink anthology lineup. Cold Brew, Scope Creep Fizz, Standup Seltzer, Ship-It Ginger Ale and Slide Deck Bitters are playable prototypes; Dead Pixel Tonic remains explicitly in development. Run `python3 anthology/build-all.py` before `hub/build.py`. Historical notes below describe earlier versions.
 
 > Anthology update: Scope Creep Fizz now opens the original **One More Chair** prototype. The Seam remains unchanged. The historical notes below describe earlier releases; current behavior, honest production limits and completion contract are in `../anthology/README.md`. Run `python3 anthology/build.py` before the hub exporter.
 

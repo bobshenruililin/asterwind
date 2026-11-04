@@ -33,9 +33,15 @@
       "id": "slides",
       "drink": "Slide Deck Bitters",
       "title": "The Missing Name",
-      "status": "outlined",
+      "status": "playable-prototype",
       "origin": "original-fiction",
-      "premise": "A beautiful presentation erases the person whose research made it possible. Recognition and a deadline collide."
+      "entry": "episodes/slides/index.html",
+      "adapter": "anthology-v1",
+      "outcomes": [
+        "microphone",
+        "notebook"
+      ],
+      "arrival": "A beautiful opening is missing its author."
     },
     {
       "id": "pixel",

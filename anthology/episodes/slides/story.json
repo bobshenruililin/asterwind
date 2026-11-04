@@ -1,0 +1,168 @@
+{
+  "id": "slides",
+  "title": "The Missing Name",
+  "origin": "Original fiction about attribution and agency. Not a Q5 adaptation and not an allegation about real teammates.",
+  "setup": [
+    {
+      "stage": "open",
+      "shot": "wide",
+      "duration": 5000,
+      "speaker": "",
+      "line": "A route diagram fills the screen at the research showcase."
+    },
+    {
+      "stage": "source",
+      "shot": "hands",
+      "duration": 4500,
+      "speaker": "",
+      "line": "The same pencilled route runs through Asha’s field notebook."
+    },
+    {
+      "stage": "kit",
+      "shot": "kit",
+      "duration": 3500,
+      "speaker": "Kit",
+      "line": "That opening looks incredible."
+    },
+    {
+      "stage": "asha",
+      "shot": "asha",
+      "duration": 5000,
+      "speaker": "Asha",
+      "line": "They won’t know where the map came from."
+    },
+    {
+      "stage": "repair",
+      "shot": "lead",
+      "duration": 4000,
+      "speaker": "You",
+      "line": "We correct that before we start."
+    },
+    {
+      "stage": "limit",
+      "shot": "asha",
+      "duration": 5000,
+      "speaker": "Asha",
+      "line": "I can explain the fieldwork. But not the whole pitch."
+    },
+    {
+      "stage": "tradeoff",
+      "shot": "kit",
+      "duration": 6000,
+      "speaker": "Kit",
+      "line": "If we change the opening, we’ll have less time for the final model."
+    },
+    {
+      "stage": "choice",
+      "shot": "wide",
+      "duration": 9000,
+      "speaker": "Asha",
+      "line": "Either introduce my work yourself, or let me open with the map. I’m happy with both."
+    }
+  ],
+  "choice": {
+    "prompt": "How will you open with Asha’s work?",
+    "actions": [
+      {
+        "id": "microphone",
+        "label": "Move the microphone",
+        "description": "Asha opens with her fieldwork, as she has offered."
+      },
+      {
+        "id": "notebook",
+        "label": "Show the notebook",
+        "description": "Credit Asha’s fieldwork yourself, keeping the planned pitch."
+      }
+    ]
+  },
+  "branches": {
+    "microphone": [
+      {
+        "stage": "introduce",
+        "shot": "wide",
+        "duration": 6000,
+        "speaker": "You",
+        "line": "Asha will open with the fieldwork that shaped this map."
+      },
+      {
+        "stage": "offer",
+        "shot": "hands",
+        "duration": 5000,
+        "speaker": "",
+        "line": "You slide the microphone toward Asha. She takes it and turns toward her notebook."
+      },
+      {
+        "stage": "authorship",
+        "shot": "asha",
+        "duration": 7000,
+        "speaker": "Asha",
+        "line": "This line moved three times. People showed us why."
+      },
+      {
+        "stage": "context",
+        "shot": "hands",
+        "duration": 6500,
+        "speaker": "",
+        "line": "Her finger follows the route through her notebook. She explains why it changed. The audience leans closer."
+      },
+      {
+        "stage": "follow",
+        "shot": "kit",
+        "duration": 5000,
+        "speaker": "Kit",
+        "line": "And that is why our model starts with the people who use it."
+      },
+      {
+        "stage": "ending-microphone",
+        "shot": "wide",
+        "duration": 7000,
+        "speaker": "",
+        "line": "The slot ends before the decorative model reveal. Asha and Kit share the projection; the model stays inside its closed box."
+      }
+    ],
+    "notebook": [
+      {
+        "stage": "credit",
+        "shot": "hands",
+        "duration": 10500,
+        "speaker": "You",
+        "line": "Asha built this map through the fieldwork. These are her observations, not details we invented for the model."
+      },
+      {
+        "stage": "reveal",
+        "shot": "wide",
+        "duration": 4500,
+        "speaker": "",
+        "line": "Kit continues the planned pitch. The full model opens beside Asha’s original notebook."
+      },
+      {
+        "stage": "question",
+        "shot": "kit",
+        "duration": 4000,
+        "speaker": "Visitor",
+        "line": "What made you change that route?"
+      },
+      {
+        "stage": "invite",
+        "shot": "kit",
+        "duration": 4500,
+        "speaker": "Kit",
+        "line": "Asha, would you like to answer that?"
+      },
+      {
+        "stage": "accept",
+        "shot": "asha",
+        "duration": 6500,
+        "speaker": "Asha",
+        "line": "Yes. That route changed after our second visit."
+      },
+      {
+        "stage": "ending-notebook",
+        "shot": "wide",
+        "duration": 6000,
+        "speaker": "",
+        "line": "The full model is visible. So is the field notebook. The opening was framed for Asha; this answer is hers."
+      }
+    ]
+  }
+}
