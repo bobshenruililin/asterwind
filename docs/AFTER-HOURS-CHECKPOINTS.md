@@ -66,3 +66,13 @@ Imported bundle head `5cad5ea` (base `8f030f9` verified) and the follow-on patch
 **Honest limits:** the finale's light is CSS shading over a night plate with the lamp painted on. It reads as a change of light, not yet as dawn, and needs ART-AH-03a or K-02. Condensation and the sheen are code-native placeholders sized for the vector bottles.
 
 _Correction to commit `9e01a41`: its message says `film/dist` remains tracked. It is not; `film/.gitignore` already ignores it. The change itself (ignoring `anthology/dist/`, `hub/dist/`, `hub/qa/after-hours/` and `__pycache__/`) is as described._
+
+## Checkpoint 4: first deliveries from dot (5 Nov, scheduled resume)
+
+Picked up by the scheduled resume at 04:11 UTC+8. Two deliveries were waiting on their own branches; both are now cherry-picked onto this branch with their authorship (`142ae48`, `caa8866`).
+
+**ART-AH-03a dawn plate: integrated as the finale's painted light.** It registers 0,0 px with the night plate in all seven regions measured. Through the night it shows only faintly, so the lamp's pool keeps its warmth; at the sixth real ending it takes over across the lamp-off beat and replaces the coded shade and shaft. The machine's face cools with the room. A portrait pairing bug is fixed: portrait screens showing the landscape plate never received a dawn plate. The finale now reads as dawn, not just as a change of light. Provenance file still to come from dot.
+
+**ART-AH-00 cabinet study: screened, candidate ready, awaiting sign-off.** The material is right, and the machine finally belongs to the corridor. Instead of warping dot's art, a delivered face can now declare where its own controls sit (keys, knob, chute, clock well), and the live controls follow it; the window stays fixed. Key lights land on the six keys, and the knob's focus ring circles the paper dial. The candidate is reproducible from `make-candidate.py` and is **not** switched on in the production manifest, because the study's provenance keeps placeholders authoritative until review.
+
+**Tooling:** `ART_MANIFEST=<json>` now applies to every journey suite, so any delivery can be screened through the whole experience before it is wired in.

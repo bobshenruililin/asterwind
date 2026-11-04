@@ -12,6 +12,9 @@ Branch `claude/awesome-hypatia-6bf97q` (Last Light on the Floor / After Hours di
 | 4 | ART-AH-03a | Dawn corridor plate registered to the night plate (1672×941) | Image 2.5 | **delivered, screened, integrated as candidate** (provenance pending) | The dawn finale's end state; K-02's last frame |
 | 5 | K-01 | The Seam: the label's still breathes into the film (silent, 4–6 s) | Kling | **proposed, decide together** | A living threshold into the flagship film |
 | 6 | K-02 | Dawn finale: last light leaves the floor (silent, 8–10 s) | Kling | **proposed, decide together**, needs ART-AH-03a | The ending of the whole night |
+| 7 | ART-AH-01b | Machine interior: back wall, tube, two shelves, chute well; no drinks or coils (1200×2000; only the window and chute show) | Image 2.5 | requested next, after ART-AH-02 | The view through the glass matching the paper face |
+
+**Update 5 Nov after screening (Claude):** ART-AH-00 is now the **material and light reference for every machine and drink asset** that follows. With that face in place, the vector interior behind the glass and the vector bottles are the most visible mismatch. So the next asks, in order, are ART-AH-02 (Cold Brew pilot), ART-AH-01 (a finished face; it may keep the study's control layout, which the code now accepts) and ART-AH-01b (interior), one asset each. Still open from deliveries: the ART-AH-00 original PNG (`f535262e…0643e0`) and an ART-AH-03a `provenance.md`.
 
 Every slot has a working placeholder, so nothing here blocks play. Exact timings and layer orders each asset must fit are in [AFTER-HOURS-CONTRACTS.md](AFTER-HOURS-CONTRACTS.md).
 
@@ -70,6 +73,16 @@ Every slot has a working placeholder, so nothing here blocks play. Exact timings
 - **Acceptance checks:** registers with the guide in the alignment bench (holes and zones within ±4 px); holes alpha 0; no perspective; reads as layered card at 390×844 and at 1440×900 in the composed lobby; no essential text; WebP derivative ≤ 450 KB.
 - **Cost / permissions:** dot reports an unlimited Image 2.5 budget; no other service or disclosure needed.
 
+## ART-AH-01b · Machine interior (requested next, after ART-AH-02)
+
+- **Purpose:** what you see through the glass: the inside of the same paper machine. Back wall, a warm-white tube along the top of the window, two shelf lips, the coil seats and the chute's dark well. It must read as the inside of the ART-AH-00 cabinet: same card, same edges, lit from within rather than from the doorway.
+- **Asset:** `machine-interior.png`, 1200×2000, opaque where it matters. Only the window (80,428 → 860,1540) and chute (about 132,1661 → 799,1851 with the study's layout) show through the face.
+- **Composition:** shelf tops at y 960 and 1500 (the drinks stand on them); tube at the top of the window (around y 438); no drinks, no coils (the code draws the coils so they can turn), no glass reflections (a separate layer).
+- **Light:** the tube is the key light, soft and slightly green-white, falling off toward the bottom shelf; a little amber spill from the doorway on the left inner wall. At dawn the code dims it (tube off), so avoid baking a hard glow into the wall.
+- **References:** `hub/art/incoming/ART-AH-00-cabinet-study-v1/cabinet-study.webp` (material), `hub/art/templates/machine-guide.webp` (zones), `docs/after-hours/2026-11-05-ART-AH-00-candidate-machine-closeup.webp` (what it sits behind).
+- **Fallback:** the code-native interior.
+- **Acceptance:** shelves within ±4 px of y 960 and 1500; nothing essential outside the window and chute; reads correctly behind the candidate face at 1440×900 and 390×844; ≤ 400 KB.
+
 ## ART-AH-02 · One drink-opening pilot: 3:00 AM Cold Brew (priority 2)
 
 - **Status:** requested (pilot only; the other five follow once this one passes)
@@ -84,6 +97,7 @@ Every slot has a working placeholder, so nothing here blocks play. Exact timings
 - **Slots:** `drinks.seam.body`, `drinks.seam.parts.cap`, `…parts['seal-l']`, `…parts['seal-r']`, `drinks.seam.opened`, `drinks.seam.empty`.
 - **Interaction:** the whole held bottle is the button; the ritual animates each part from its box (cap twists and lifts off from its bottom centre; seal halves swing out from the tear line). Parts must fill their boxes the way the guide shows, or the pivots will be off.
 - **Lighting and material:** soft warm key from upper left, indigo fill from the right; it must read both small on the shelf behind glass and large when held against a blurred corridor. Paper-miniature glass: tinted translucent card or cellophane over card, not photoreal glass.
+- **Material reference (added 5 Nov):** match ART-AH-00's card, edges and light; the bottle should look like it was made by the same hands as the cabinet.
 - **Continuity:** palette and label character from the current placeholder; cameo frame from `film/assets/performanceStable.webp`.
 - **Fallback while pending:** the code-native bottle. Layered mode only activates when the body and all three parts load; any missing part keeps the vector bottle, so a partial delivery is safe.
 - **Acceptance checks:** `node hub/qa/journey.cjs art` with the delivered files (layers register within ±4 px, cameo hole alpha 0, ritual moves each part, open never re-shows the cap); held view at 1440×900 and 390×844; shelf view; roof empty if delivered; set ≤ 350 KB as WebP.
@@ -126,7 +140,7 @@ Every slot has a working placeholder, so nothing here blocks play. Exact timings
 Planning only; each becomes a request after the pilot is accepted.
 
 - ART-AH-02b · the other five drinks (Standup tab; Slide Deck wax; Scope Creep swing-top stopper and bail; Dead Pixel crown; Ship-It cork and string), same layer scheme. Part boxes are in `hub/art/README.md`.
-- ART-AH-01b · `machine.interior` (back wall, tube, shelves; no drinks or coils) and `machine.glass` (780×1112 mostly transparent reflections and grime).
+- ART-AH-01c · `machine.glass` (780×1112, mostly transparent reflections and grime), after the interior.
 - ART-AH-05 · `machine.side` (600×2000 turned side panel behind the six folds).
 - ART-AH-03b · a portrait corridor crop and its dawn twin (after ART-AH-03a).
 - K-01b · the other five label-to-film breaths, if K-01 earns its place.
