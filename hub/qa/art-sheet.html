@@ -1,0 +1,7 @@
+<!doctype html><meta charset="utf-8"><title>art sheet</title><base href="../">
+<style>body{margin:0;background:#2a2f3a;display:flex;gap:10px;padding:20px;flex-wrap:wrap;align-items:flex-end}.c{width:200px;height:400px}.c svg{width:100%;height:100%}.m{width:420px;height:700px;position:relative}.m svg{position:absolute;inset:0;width:100%;height:100%}</style>
+<body><script src="drinks.js"></script><script src="art.js"></script><script>
+document.body.insertAdjacentHTML('afterbegin',AsterwindArt.defs());
+for(const st of ['sealed','open'])for(const d of AsterwindDrinks.DRINKS)document.body.insertAdjacentHTML('beforeend',`<div class="c">${AsterwindArt.drink(d,{state:st})}</div>`);
+document.body.insertAdjacentHTML('beforeend',`<div class="m">${AsterwindArt.machineBack()}${AsterwindArt.coilsFront(AsterwindDrinks.DRINKS)}${AsterwindArt.machineFace(AsterwindDrinks.DRINKS)}</div>`);
+</script>

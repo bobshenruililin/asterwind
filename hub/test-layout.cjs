@@ -1,29 +1,29 @@
-// Structural/formula guards. This is not browser rendering or visual approval.
+// Structural guards for the After Hours journey. Not browser rendering: see hub/qa/journey.cjs.
 const assert=require('node:assert/strict'),fs=require('node:fs');
 const html=fs.readFileSync(__dirname+'/index.html','utf8'),css=fs.readFileSync(__dirname+'/hub.css','utf8');
 const screen=html.indexOf('<section id="screen"'),end=html.indexOf('</section>',screen);
-for(const id of ['portal','film-host','loading','failure','return']){const i=html.indexOf(`id="${id}"`);assert(i>screen&&i<end,`${id} must share the screen stacking context`)}
+for(const id of ['portal','portal-frame','film-host','loading','failure','return']){const i=html.indexOf(`id="${id}"`);assert(i>screen&&i<end,`${id} must share the screen stacking context`)}
 function rule(selector){const escaped=selector.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');return css.replace(/\/\*[\s\S]*?\*\//g,'').match(new RegExp('(?:^|})\\s*'+escaped+'\\{([^}]*)\\}'))?.[1]||''}
 assert.match(rule('#screen'),/isolation:isolate/);
 for(const [selector,z] of [['#film-host',0],['#portal',1],['#loading',2],['#failure',3],['#return',4]])assert.match(rule(selector),new RegExp(`z-index:${z}(?:;|$)`));
 assert.match(rule('#portal'),/pointer-events:none/);assert(!css.includes('#screen.revealing #return'),'Return must not be conditionally hidden');
-assert.equal((css.match(/#cabinet\{/g)||[]).length,1,'One geometry rule, no media-query width override');
-assert(css.includes('--cabinet-width:min(650px,max(440px,90vw))'));
-assert(css.includes('--cabinet-shift:clamp(0px,calc((100vw - 700px)*.3),14vw)'));
-const width=v=>Math.min(650,Math.max(440,.9*v)),shift=v=>Math.min(.14*v,Math.max(0,(v-700)*.3));
-const left=v=>(v-width(v))/2+shift(v);
-for(let v=320;v<1800;v++){assert(Math.abs(width(v+1)-width(v))<=.901);assert(Math.abs(left(v+1)-left(v))<=.801)}
-assert(Math.abs(width(700)-width(701))<1);
-for(const v of [320,390,600,700,701,900,1440]){
- const w=width(v),l=left(v);const controlsLeft=l+.22*w,controlsRight=l+.78*w;
- assert(controlsLeft>=0&&controlsRight<=v,'Drink targets fit viewport '+v);
- const turnRight=l+.86*w;assert(turnRight<=v,'Turn fits viewport '+v);
- const row=(.44*1.2*w)*(1-.07)/2,wrap=row-30-6;assert(wrap>=72,'Reserved shelf row leaves stable can space');
-}
-const drinks=[...html.matchAll(/<button class="drink\b[^>]*>([\s\S]*?)<\/button>/g)];assert.equal(drinks.length,6);
-for(const [,body] of drinks){assert.match(body,/<span class="can-wrap"><span class="lid"><\/span><span class="can">/);assert.match(body,/<\/i><\/span><\/span><span class="shelf-label">/)}
-assert.match(rule('.drink'),/grid-template-rows:minmax\(0,1fr\) 30px/);assert.match(rule('.can'),/position:absolute;inset:4px 11.5% 0/);assert.match(rule('.lid'),/position:absolute;top:0/);assert.match(rule('.dispensing .seam .can-wrap'),/animation:dispense/);assert(!css.includes('.dispensing .seam{'),'Shelf labels must not fall with the can');
-console.log('PASS: shared overlay hierarchy, Return/loading above portal, continuous cabinet width/placement, viewport target bounds, stable can/lid wrappers and reserved shelf rows. Browser layout still unverified.');
-
-assert(!/margin-left:(?:-?45%)/.test(css),'Six-slot lineup must use standard three-column shelves');
-for(const id of ['seam','standup','slides','scope','pixel','ship'])assert(html.includes('data-id="'+id+'"'));
+// Six drinks, in shelf order, each a real button with a stable body for the art.
+const drinks=[...html.matchAll(/<button class="drink" data-id="([a-z]+)"[^>]*><span class="drink-body"><\/span><\/button>/g)].map(m=>m[1]);
+assert.deepEqual(drinks,['seam','standup','slides','scope','pixel','ship']);
+// The 3D machine must not swallow clicks: only controls receive pointer events.
+assert.match(rule('.face'),/pointer-events:none/);assert.match(css,/#cabinet\{position:absolute;inset:0;pointer-events:none/);assert.match(rule('.drink'),/pointer-events:auto/);
+assert.match(css,/#turn,#turn-back,#mechanism\{pointer-events:auto\}/);
+// Held drink: a labelled modal with one primary action; the moving art never moves the target.
+assert.match(html,/<section id="held" hidden role="dialog" aria-modal="true" aria-labelledby="held-title" aria-describedby="held-arrival">/);
+assert.match(html,/<button id="open-drink" class="held-drink">/);assert.match(html,/<button id="put-back">/);assert.match(html,/<button id="flip-tag" aria-expanded="false" aria-controls="tag-back"/);
+assert(css.includes('#held.show .held-drink.idle .held-art{animation:breathe'),'Breathing animates the art, not the hit target');
+assert.match(html,/<button id="sound" aria-pressed="true" aria-label="Sound">/);assert.match(html,/<p id="status" class="sr-only" role="status" aria-live="polite"><\/p>/);
+// Template geometry: window 80–860 × 428–1540, cells 260 × 520 on a 1200 × 2000 face.
+assert(css.includes('.glass{position:absolute;left:6.667%;top:21.4%;width:65%;height:55.6%'));
+assert(css.includes('.drink{position:absolute;left:calc(6.667% + var(--col)*21.667%);top:calc(22% + var(--row)*27%);width:21.667%;height:26%'));
+// Machine height formula stays continuous and keeps drink cells usable from 320 px upward.
+const H=(vw,vh)=>Math.min(Math.max(.74*vh,Math.min(.86*vh,340)),1.4*vw,820),W=(vw,vh)=>H(vw,vh)*.6;
+for(const [vw,vh] of [[320,568],[390,844],[768,1024],[1366,768],[1440,900],[844,390],[1920,1080]]){const cell=W(vw,vh)*.21667;assert(cell>=40,`cell ${cell.toFixed(1)} at ${vw}×${vh}`);assert(W(vw,vh)<=vw,'machine fits '+vw)}
+assert(css.includes('--H:min(max(74svh,min(86svh,340px)),140vw,820px)'));
+assert.match(css,/@media\(prefers-reduced-motion:reduce\)/);
+console.log('PASS: screen stacking, six shelf buttons, pass-through 3D face, held dialog semantics, stable targets, template geometry and machine size formula. Rendered layout is checked separately in hub/qa/journey.cjs.');
