@@ -6,7 +6,7 @@
 const KEY='asterwind.sound.v1';
 function create(storage){
  let enabled=true;try{const v=storage?.getItem(KEY);if(v==='off')enabled=false}catch{}
- let ctx=null,master=null,amb=null,ambGain=null,noiseBuf=null,started=false,ambWanted=true,compressorTimer=null;
+ let ctx=null,master=null,amb=null,ambGain=null,humGain=null,noiseBuf=null,started=false,ambWanted=true,compressorTimer=null,isMorning=false,birdTimer=null;
  const now=()=>ctx.currentTime;
  function init(){
   if(ctx)return true;const AC=root.AudioContext||root.webkitAudioContext;if(!AC)return false;
@@ -33,10 +33,12 @@ function create(storage){
  function startAmbience(){
   if(amb)return;ambGain=ctx.createGain();ambGain.gain.value=0;ambGain.connect(master);amb=[];
   const room=ctx.createBufferSource();room.buffer=noiseBuf;room.loop=true;const lp=ctx.createBiquadFilter();lp.type='lowpass';lp.frequency.value=320;const rg=ctx.createGain();rg.gain.value=.05;room.connect(lp).connect(rg).connect(ambGain);room.start();amb.push(room);
-  [[50,.022],[100,.012],[150,.004]].forEach(([f,v])=>{const o=ctx.createOscillator(),g=ctx.createGain();o.frequency.value=f;g.gain.value=v;o.connect(g).connect(ambGain);o.start();amb.push(o)});
-  const buzz=ctx.createOscillator();buzz.type='sawtooth';buzz.frequency.value=100;const bp=ctx.createBiquadFilter();bp.type='bandpass';bp.frequency.value=3100;bp.Q.value=8;const bg=ctx.createGain();bg.gain.value=.0022;buzz.connect(bp).connect(bg).connect(ambGain);buzz.start();amb.push(buzz);
+  humGain=ctx.createGain();humGain.gain.value=isMorning?0:1;humGain.connect(ambGain);
+  [[50,.022],[100,.012],[150,.004]].forEach(([f,v])=>{const o=ctx.createOscillator(),g=ctx.createGain();o.frequency.value=f;g.gain.value=v;o.connect(g).connect(humGain);o.start();amb.push(o)});
+  const buzz=ctx.createOscillator();buzz.type='sawtooth';buzz.frequency.value=100;const bp=ctx.createBiquadFilter();bp.type='bandpass';bp.frequency.value=3100;bp.Q.value=8;const bg=ctx.createGain();bg.gain.value=.0022;buzz.connect(bp).connect(bg).connect(humGain);buzz.start();amb.push(buzz);
   const lfo=ctx.createOscillator(),lg=ctx.createGain();lfo.frequency.value=.13;lg.gain.value=.0012;lfo.connect(lg).connect(bg.gain);lfo.start();amb.push(lfo);
   const cycle=()=>{if(!ctx||!ambGain)return;if(ambWanted&&enabled&&ctx.state==='running'){const t=now(),o=ctx.createOscillator(),g=ctx.createGain();o.frequency.value=43;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.03,t+2.5);g.gain.setValueAtTime(.03,t+7);g.gain.linearRampToValueAtTime(0,t+10);o.connect(g).connect(ambGain);o.start(t);o.stop(t+10.2);ticks(2,.08,{freq:900,gain:.05,at:9.8})}compressorTimer=setTimeout(cycle,38000+Math.random()*20000)};compressorTimer=setTimeout(cycle,14000);
+  if(isMorning)birds();
  }
  function ambience(on,fade=1.2){ambWanted=on;if(!ctx||!ambGain)return;const t=now();ambGain.gain.cancelScheduledValues(t);ambGain.gain.setValueAtTime(ambGain.gain.value,t);ambGain.gain.linearRampToValueAtTime(on?1:0,t+fade)}
  const SOUNDS={
@@ -61,13 +63,22 @@ function create(storage){
   restock(){noise({dur:.05,type:'lowpass',freq:800,gain:.18});ticks(2,.06,{freq:1500,gain:.06,at:.05})},
   turn(){noise({dur:.9,type:'lowpass',freq:260,gain:.16,attack:.2});ticks(10,.07,{freq:1300,gain:.05});tone({freq:70,dur:.25,gain:.12,at:.85})},
   latch(){ticks(1,0,{freq:2200,gain:.15});tone({freq:180,to:120,dur:.1,gain:.15,at:.05})},
-  dawn(){[0,.18,.36].forEach((a,i)=>tone({freq:[523,659,784][i],dur:2.4,gain:.018,attack:.6,at:a,type:'triangle'}))}
+  dawn(){[0,.18,.36].forEach((a,i)=>tone({freq:[523,659,784][i],dur:2.4,gain:.018,attack:.6,at:a,type:'triangle'}))},
+  // The tube goes out: two starter ticks, a falling buzz, then nothing.
+  tubeOff(){ticks(2,.11,{freq:2600,gain:.09});noise({dur:.35,type:'bandpass',freq:3100,to:900,q:6,gain:.05,at:.18});tone({freq:100,to:60,dur:.5,gain:.03,at:.2,type:'sawtooth'})},
+  // Morning, far off: a harbour horn across the water.
+  horn(){[[98,.03],[147,.012],[196,.008]].forEach(([f,g])=>tone({freq:f,dur:2.6,gain:g,attack:.9,type:'sine'}));noise({dur:2.4,type:'lowpass',freq:240,gain:.02,attack:.9,brown:true})}
  };
+/* Morning: the tube's hum fades out, the room tone stays, and birds start outside. Small, sparse,
+    never a loop you can hear repeat. */
+ function chirp(at){const base=2600+Math.random()*1800,n=2+Math.floor(Math.random()*3);for(let i=0;i<n;i++)tone({freq:base*(1+Math.random()*.08),to:base*(1.25+Math.random()*.2),dur:.06+Math.random()*.05,gain:.011,attack:.01,at:at+i*(.09+Math.random()*.05),type:'sine'})}
+ function birds(){clearTimeout(birdTimer);const next=()=>{if(!isMorning||!ctx)return;if(enabled&&ambWanted&&ctx.state==='running'){chirp(0);if(Math.random()<.45)chirp(.5+Math.random()*.6)}birdTimer=setTimeout(next,2200+Math.random()*5200)};birdTimer=setTimeout(next,1800)}
+ function morning(on){if(isMorning===on)return;isMorning=on;if(!ctx||!humGain){return}const t=now();humGain.gain.cancelScheduledValues(t);humGain.gain.setValueAtTime(humGain.gain.value,t);humGain.gain.linearRampToValueAtTime(on?0:1,t+(on?2.8:1.2));if(on){birds();if(enabled&&ctx.state==='running')SOUNDS.horn()}else clearTimeout(birdTimer)}
  function play(name,at=0){if(!enabled||!ctx||ctx.state!=='running'||!SOUNDS[name])return;try{SOUNDS[name](at)}catch{}}
  function unlock(){if(!enabled)return;if(!init())return;if(ctx.state==='suspended')ctx.resume();if(!started){started=true;startAmbience();ambience(ambWanted,2.5)}}
  function setEnabled(on){enabled=on;try{storage?.setItem(KEY,on?'on':'off')}catch{}if(on){unlock();if(ctx){master.gain.setTargetAtTime(.9,now(),.2)}}else if(ctx){master.gain.setTargetAtTime(0,now(),.08)}}
  function suspend(hidden){if(!ctx)return;if(hidden)ctx.suspend?.();else if(enabled)ctx.resume?.()}
- return{play,unlock,setEnabled,ambience,suspend,get enabled(){return enabled},get running(){return !!ctx&&ctx.state==='running'}};
+ return{play,unlock,setEnabled,ambience,suspend,morning,get isMorning(){return isMorning},get enabled(){return enabled},get running(){return !!ctx&&ctx.state==='running'}};
 }
 root.AsterwindSound={create};
 })(typeof window!=='undefined'?window:globalThis);

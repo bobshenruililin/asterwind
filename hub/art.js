@@ -145,8 +145,16 @@ function layersFor(id,loaded,state){
  if(state==='empty')return typeof loaded.empty==='string'?{base:loaded.empty}:null;
  return null;
 }
+/* The held drink has come out of a cold machine: condensation on the glass (kept off the label),
+   a few slow drips, and a sheen that follows the light. Clipped to the vessel, so it sits on vector
+   and layered art alike. Held view only; shelf and roof drinks stay dry. */
+function cold(d,p,clipId){
+ const c=d.cameo,top=c.y-110,bottom=c.y+c.h+250,r=rand(d.id.length*53),drips=[0,1,2].map(i=>{const x=330+r()*300,y=bottom+40+r()*120;return `<path class="drip" style="--o:${(-i*3.1).toFixed(1)}s" d="M${x.toFixed(0)} ${y.toFixed(0)} q-7 14 0 22 q7 -8 0 -22z" fill="#f4fbff" fill-opacity=".34"/>`}).join('');
+ // The clip sits on the parent so the sliding sheen and running drips stay on the glass.
+ return `<g class="cold" clip-path="url(#${clipId})"><rect class="haze" x="180" y="${(p.mouth||700)+40}" width="600" height="1400" fill="#eef4f6" opacity=".06"/><g class="frost" opacity=".55">${beads(30,d.id.length*41,300,660,(p.mouth||700)+90,top,1.6,5.5)}${beads(34,d.id.length*43,300,660,bottom,1990,1.6,6)}</g>${drips}</g><g clip-path="url(#${clipId})"><rect class="sheen" x="${(p.hx||330)-70}" y="560" width="140" height="1480" fill="url(#aw-sheen)"/></g>`;
+}
 const img=(cls,src,x,y,w,h)=>`<image class="${cls}" href="${esc(src)}" x="${x}" y="${y}" width="${w}" height="${h}" preserveAspectRatio="none"/>`;
-function drink(d,{state='sealed',src=null,layers=null}={}){
+function drink(d,{state='sealed',src=null,layers=null,held=false}={}){
  const p=PARTS[d.id],u='aw'+(++serial),clip=u+'c',body=u+'b';
  const x={...d,_src:src,_clip:clip};
  const liquid=p.liquid?`<g clip-path="url(#${body})"><rect class="liquid" x="180" y="${state==='empty'?p.liquid.empty:p.liquid.top}" width="600" height="1200" fill="${p.liquid.fill}" opacity="${p.liquid.alpha||.9}"/><rect x="180" y="${(state==='empty'?p.liquid.empty:p.liquid.top)-4}" width="600" height="10" fill="${p.liquid.surface}" opacity=".7"/>${p.inside&&state!=='empty'?`<g class="fizz-in">${bubbles(16,d.id.length*31,350,610,p.liquid.top+60,1940)}</g>`:''}</g>`:'';
@@ -161,7 +169,7 @@ function drink(d,{state='sealed',src=null,layers=null}={}){
   const top=state==='sealed'?`<g class="closure" data-part="${d.closure}">${(layers.parts||[]).map(q=>img(q.cls,q.src,q.x,q.y,q.w,q.h)).join('')}${bits}</g>`:layers.over?img('opened layer-opened',layers.over,0,0,960,2080):'';
   art=`${cameo(x,src,clip).replace('class="cameo-frame"','class="cameo-frame" opacity="0"')}${img('layer-body',layers.base,0,0,960,2080)}${top}`;
  }else art=vector+(state==='sealed'?p.closure:p.opened);
- return `<svg class="drink-art" data-drink="${d.id}" data-state="${state}" data-art="${layered?'layered':'vector'}" data-closure="${d.closure}" viewBox="${DRINK_VIEW}" aria-hidden="true" focusable="false"><defs><clipPath id="${body}"><path d="${p.body}"/></clipPath></defs><ellipse class="contact" cx="480" cy="2002" rx="250" ry="20" fill="#05060a" opacity=".55"/>${art}${state!=='empty'?fizz:''}<g class="sparkle"><circle cx="480" cy="${p.mouth||700}" r="0" fill="#fff"/></g></svg>`;
+ return `<svg class="drink-art" data-drink="${d.id}" data-state="${state}" data-art="${layered?'layered':'vector'}" data-closure="${d.closure}" viewBox="${DRINK_VIEW}" aria-hidden="true" focusable="false"><defs><clipPath id="${body}"><path d="${p.body}"/></clipPath></defs><ellipse class="contact" cx="480" cy="2002" rx="250" ry="20" fill="#05060a" opacity=".55"/>${art}${held&&state!=='empty'?cold(d,p,body):''}${state!=='empty'?fizz:''}<g class="sparkle"><circle cx="480" cy="${p.mouth||700}" r="0" fill="#fff"/></g></svg>`;
 }
 
 /* --- the machine (1200×2000 template) ---------------------------------------------------- */
@@ -226,6 +234,7 @@ function defs(){
  ${g('aw-porcelain',[[0,'#d8d6cf'],[.35,'#ffffff'],[1,'#a9a69e']])}
  ${g('aw-kraft',[[0,'#bf9866'],[.5,'#d7b689'],[1,'#b38a58']])}
  ${g('aw-cream',[[0,'#e6d8b6'],[.4,'#f4ead1'],[1,'#ddcca6']])}
+ ${g('aw-sheen',[[0,'#fff',0],[.42,'#fff',.05],[.5,'#fff',.2],[.58,'#fff',.05],[1,'#fff',0]])}
  ${g('aw-light',[[0,'#ffe2b0',.32],[.2,'#ffe2b0',.06],[.55,'#000',0],[.84,'#5a5fd0',0],[1,'#7a7ff0',.38]])}
  ${g('aw-face',[[0,'#6a8079'],[.45,'#4f6560'],[1,'#3a4c49']],{x2:.2,y2:1})}
  ${g('aw-warm-rim',[[0,'#ffb766',.38],[1,'#ffb766',0]])}

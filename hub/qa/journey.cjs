@@ -1,6 +1,6 @@
 // Rendered QA for the After Hours journey. Serve the repository first:
 //   python3 -m http.server 8731 --bind 127.0.0.1
-//   node hub/qa/journey.cjs [routes|repeat|complete|complete-alt|dawn|keyboard|reduced|mobile|history|storage|art|offline|all]
+//   node hub/qa/journey.cjs [routes|repeat|complete|complete-alt|dawn|finale|keyboard|reduced|mobile|history|storage|art|offline|all]
 //   ART_MANIFEST=candidate.json node hub/qa/journey.cjs art-candidate   (screens a candidate manifest; not in 'all')
 // Screenshots and a JSON report go to hub/qa/after-hours/. Inspect the screenshots; passing
 // assertions are not visual approval. Browser emulation is not a physical-device or screen-reader test.
@@ -14,7 +14,8 @@ const report={started:new Date().toISOString(),base:BASE,results:[]};
 const note=(name,ok,detail={})=>{report.results.push({name,ok:!!ok,...detail});console.log((ok?'PASS':'FAIL')+': '+name+(detail.info?' — '+detail.info:''))};
 async function open(browser,{w=1440,h=900,mobile=false,reduced=false,storage=null,blockStorage=false,url=BASE,manifest=null}={}){
  const ctx=await browser.newContext({viewport:{width:w,height:h},isMobile:mobile,hasTouch:mobile,reducedMotion:reduced?'reduce':'no-preference'});
- if(storage)await ctx.addInitScript(s=>{try{for(const [k,v] of Object.entries(s))localStorage.setItem(k,v)}catch{}},storage);
+ // Seed once: an init script runs on every navigation, and a reload must keep what the visit saved.
+ if(storage)await ctx.addInitScript(s=>{try{for(const [k,v] of Object.entries(s))if(localStorage.getItem(k)===null)localStorage.setItem(k,v)}catch{}},storage);
  if(blockStorage)await ctx.addInitScript(()=>{Object.defineProperty(window,'localStorage',{get(){throw new DOMException('blocked','SecurityError')}})});
  if(manifest)await ctx.route('**/hub/art/manifest.js',r=>r.fulfill({contentType:'text/javascript',body:'window.ASTERWIND_ART='+JSON.stringify(manifest)+';'}));
  const page=await ctx.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error'&&!/favicon|404 \(File not found\)|Failed to load resource/.test(m.text()))errors.push(m.text())});
@@ -114,6 +115,25 @@ const SUITES={
   s=await open(browser,{storage:{'asterwind.progress.v1':'{not json'}});r=await read(s.page);
   note('corrupt progress falls back to an empty night',r.roof===0&&r.clock==='03:14',{info:JSON.stringify(r)});await s.ctx.close();
  },
+ async finale(browser){
+  // The sixth real ending, played live: last light leaves the floor. Then a reload opens at morning.
+  const five={seam:['repair'],standup:['slips'],slides:['notebook'],scope:['return'],pixel:['connect']},save={'asterwind.progress.v1':JSON.stringify({schemaVersion:1,completed:five})};
+  for(const reduced of [false,true]){
+   const {ctx,page,errors}=await open(browser,{storage:save,reduced});const tag=reduced?'-reduced':'';
+   const before=await page.evaluate(()=>({morning:AsterwindJourney.state.morning,clock:document.getElementById('display-text').textContent}));
+   await toStory(page,'ship');await playToEnd(page,'ship','live');await page.click('#return');
+   await until(page,()=>AsterwindJourney.state.state==='idle',null,20000);
+   const t0=Date.now(),frames=[];
+   for(const [ms,name] of reduced?[[300,'rest']]:[[300,'tube'],[2600,'draining'],[7600,'morning']]){await page.waitForTimeout(Math.max(0,ms-(Date.now()-t0)));await shot(page,`22-finale${tag}-${name}`);frames.push(await page.evaluate(()=>({run:document.getElementById('lobby').classList.contains('finale-run'),morning:AsterwindJourney.state.morning})))}
+   const after=await page.evaluate(()=>({status:document.getElementById('status').textContent,clock:document.getElementById('display-text').textContent,roof:document.querySelectorAll('#roof li svg[data-state="empty"]').length,lamp:+getComputedStyle(document.querySelector('.lamp-off')).opacity,doorLight:+getComputedStyle(document.querySelector('.door-light')).opacity}));
+   note(`finale${tag}: sixth real ending → tube out, lamp drains, morning; announced; clock 06:02`,!before.morning&&before.clock==='05:31'&&frames.at(-1).morning&&after.status.startsWith('Morning.')&&after.clock==='06:02'&&after.roof===6&&after.lamp>.95&&after.doorLight<.05,{info:JSON.stringify({before,frames,after})});
+   await page.reload();await page.waitForFunction(()=>window.AsterwindJourney);await page.waitForTimeout(400);
+   const reload=await page.evaluate(()=>({morning:AsterwindJourney.state.morning,run:document.getElementById('lobby').classList.contains('finale-run'),lamp:+getComputedStyle(document.querySelector('.lamp-off')).opacity}));
+   note(`finale${tag}: a later visit opens at morning without replaying`,reload.morning&&!reload.run&&reload.lamp>.95,{info:JSON.stringify(reload)});
+   await toHeld(page,'seam');note(`finale${tag}: the machine still works at morning`,heldOk(await heldLook(page)));
+   note(`no console errors (finale${tag})`,errors.length===0,{info:errors.join(' | ')});await ctx.close();
+  }
+ },
  async keyboard(browser){
   const {ctx,page,errors}=await open(browser);const active=()=>page.evaluate(()=>document.activeElement.id||document.activeElement.dataset.id);
   await page.keyboard.press('Tab');const f=await active();
@@ -191,8 +211,13 @@ const SUITES={
   note('no console errors (history)',errors.length===0,{info:errors.join(' | ')});await ctx.close();
  },
  async storage(browser){
-  const {ctx,page,errors}=await open(browser,{blockStorage:true});await toStory(page,'slides');const ep=await frameEpisode(page);await returnHome(page);
-  note('blocked storage: dispense, open, play and return still work',ep==='slides'&&await page.evaluate(()=>__dispenser.state.persistent===false),{info:'persistent='+await page.evaluate(()=>__dispenser.state.persistent)});
+  // Storage blocked outright: the night still plays, and a real ending still counts for this visit.
+  const {ctx,page,errors}=await open(browser,{blockStorage:true});
+  const access=await page.evaluate(()=>{try{localStorage;return'readable'}catch(e){return e.name}});
+  await toStory(page,'standup');const ep=await frameEpisode(page);await playToEnd(page,'standup','round');await page.click('#return');
+  await until(page,()=>AsterwindJourney.state.state==='idle',null,20000);await page.waitForTimeout(500);
+  const r=await page.evaluate(()=>({persistent:__dispenser.state.persistent,roof:!!document.querySelector('#roof li[data-id="standup"] svg[data-state="empty"]'),clock:document.getElementById('display-text').textContent}));
+  note('blocked storage: dispense, open, play to a real ending and return; the empty counts for this visit',access==='SecurityError'&&ep==='standup'&&r.persistent===false&&r.roof&&r.clock==='03:41',{info:JSON.stringify({access,...r})});
   note('no console errors (blocked storage)',errors.length===0,{info:errors.join(' | ')});await ctx.close();
  },
  async art(browser){
@@ -266,7 +291,8 @@ const SUITES={
   const ctx=await browser.newContext({viewport:{width:1440,height:900},offline:true});const blocked=[];await ctx.route(/^https?:/,r=>{blocked.push(r.request().url());r.abort()});
   const page=await ctx.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text())});
   await page.goto(file);await page.waitForFunction(()=>window.AsterwindJourney&&document.querySelector('.drink svg'));await page.waitForTimeout(2700);
-  const fonts=await page.evaluate(async()=>{await document.fonts.ready;return document.fonts.check('16px Kalam')});await shot(page,'17-offline-lobby');
+  // Fonts load on first use; ask for Kalam explicitly, with the network cut off.
+  const fonts=await page.evaluate(async()=>{await document.fonts.load('16px Kalam');await document.fonts.load('700 16px Kalam');return document.fonts.check('16px Kalam')&&document.fonts.check('700 16px Kalam')});await shot(page,'17-offline-lobby');
   for(const id of ['scope','seam']){await toStory(page,id);await page.waitForTimeout(800);const ep=await frameEpisode(page);if(id==='scope')await shot(page,'17-offline-story');await returnHome(page);note('offline single file: '+id+' dispenses, opens, plays and returns',ep===id,{info:'file:// '+ep})}
   note('offline: Kalam font embedded, no network requests',fonts&&blocked.length===0,{info:`font=${fonts} requests=${blocked.slice(0,3).join(',')}`});
   note('no console errors (offline)',errors.length===0,{info:errors.join(' | ')});await ctx.close();

@@ -1,7 +1,7 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="color-scheme" content="dark"><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect x=%2710%27 y=%273%27 width=%2712%27 height=%275%27 rx=%271%27 fill=%27%2317151a%27/%3E%3Cpath d=%27M11 8h10v4c4 1 5 3 5 6v11H6V18c0-3 1-5 5-6z%27 fill=%27%23b8691e%27/%3E%3Crect x=%278%27 y=%2717%27 width=%2716%27 height=%277%27 fill=%27%23d7b689%27/%3E%3C/svg%3E"><title>Asterwind · After hours</title><link rel="stylesheet" href="hub.css"></head><body>
 <main id="lobby" aria-labelledby="lobby-title">
 <h1 id="lobby-title" class="sr-only">Asterwind, after hours. A drinks dispenser in a quiet studio corridor; each drink opens a story.</h1>
-<div id="world" aria-hidden="true"><img class="corridor-plate" src="assets/corridor.webp" alt=""><img class="corridor-plate dawn-plate" alt="" hidden><div class="door-light"></div><div class="dawn"></div><div class="motes"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="floor-shadow"></div></div>
+<div id="world" aria-hidden="true"><img class="corridor-plate" src="assets/corridor.webp" alt=""><img class="corridor-plate dawn-plate" alt="" hidden><div class="door-light"></div><div class="lamp-off"></div><div class="sunshaft"></div><div class="dawn"></div><div class="motes"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div class="floor-shadow"></div></div>
 <div id="stage3d"><div id="cabinet">
  <div class="face front" id="front">
   <div class="layer interior" aria-hidden="true"></div>
@@ -34,6 +34,7 @@
   <button id="flip-tag" aria-expanded="false" aria-controls="tag-back" aria-label="Turn the tag over to read the ingredients"><span aria-hidden="true">↻</span></button>
  </div>
  <button id="put-back"><span aria-hidden="true">↓</span> Put back</button>
+ <div class="house" aria-hidden="true"></div>
 </section>
 <div id="homecoming" hidden aria-hidden="true"><div class="frame"><img alt=""></div></div>
 <button id="sound" aria-pressed="true" aria-label="Sound"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 9h4l5-4v14l-5-4H4z" fill="currentColor"/><path class="on" d="M16 8.5a5 5 0 0 1 0 7M18.5 6a8.5 8.5 0 0 1 0 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path class="off" d="M16.5 9.5l5 5m0-5l-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
@@ -41,4 +42,4 @@
 <noscript><p class="noscript">JavaScript is needed for the dispenser. <a href="../film/index.html">Open The Seam directly</a>.</p></noscript>
 </main>
 <section id="screen" hidden aria-label="Asterwind interactive film"><div id="portal" hidden aria-hidden="true"><div id="portal-frame"><img id="bridge-fallback" src="assets/studio-opening.webp" alt=""></div></div><div id="film-host"></div><button id="return" aria-label="Return to the corridor"><span aria-hidden="true">↶</span> <span class="return-word">Corridor</span></button><div id="loading" role="status">Unfolding the night…</div><div id="failure" hidden><p>The film could not open here.</p><button id="retry">Reload the film</button><button id="error-return">Back to the corridor</button></div></section>
-<script src="drinks.js"></script><script src="art.js"></script><script src="art/manifest.js"></script><script src="sound.js"></script><script src="mechanism.js"></script><script src="legacy-seam.js"></script><script src="registry-data.js"></script><script src="../anthology/progress.js"></script><script src="bridge-data.js"></script><script src="bridge.js"></script><script src="hub.js"></script><script src="journey.js"></script></body></html>
+<script src="timing.js"></script><script src="drinks.js"></script><script src="art.js"></script><script src="art/manifest.js"></script><script src="sound.js"></script><script src="mechanism.js"></script><script src="legacy-seam.js"></script><script src="registry-data.js"></script><script src="../anthology/progress.js"></script><script src="bridge-data.js"></script><script src="bridge.js"></script><script src="hub.js"></script><script src="journey.js"></script></body></html>

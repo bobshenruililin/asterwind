@@ -2,6 +2,8 @@
 
 Every visual layer of the corridor journey has a code-native placeholder in `hub/art.js`, drawn on fixed templates. Delivered paper art replaces a placeholder **layer by layer** through `hub/art/manifest.js` (schema 2) without code changes. Each slot is probed on its own; a slot that fails to load keeps its placeholder. Requests and acceptance checks: [docs/AFTER-HOURS-ASSET-REQUESTS.md](../../docs/AFTER-HOURS-ASSET-REQUESTS.md).
 
+Timing (every beat a layer takes part in, and what a clip may replace) is in [docs/AFTER-HOURS-CONTRACTS.md](../../docs/AFTER-HOURS-CONTRACTS.md).
+
 Nothing is a flattened picture. The machine's face, interior and glass, each drink's body and each opening part stay separately controllable, so light, parallax, fog, the dispense, the six opening rituals and the empties keep working when paper art lands.
 
 ## Machine (1200×2000, straight-on, no perspective)

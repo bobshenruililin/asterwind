@@ -2,7 +2,20 @@
 
 Branch `claude/awesome-hypatia-6bf97q` (Last Light on the Floor / After Hours dispenser). Opened 4 November 2026. This file is the durable request list; status lines are updated in place. Format follows [ASSET-REQUEST-TEMPLATE.md](ASSET-REQUEST-TEMPLATE.md).
 
-**Order:** ART-AH-00 (the existing study) → ART-AH-01 machine face → ART-AH-02 one drink-opening pilot. Nothing else is requested yet; the queued list at the end is for planning only. The game stays fully playable on its code-native placeholders while these are pending.
+## Priorities at a glance
+
+| # | ID | What | Tool | Status | Unblocks |
+| --- | --- | --- | --- | --- | --- |
+| 1 | ART-AH-00 | The existing cabinet material study, committed as is | — | requested | Registration and look test for ART-AH-01 |
+| 2 | ART-AH-01 | Machine face, layered (1200×2000) | Image 2.5 | requested | The whole lobby's material read |
+| 3 | ART-AH-02 | 3:00 AM Cold Brew opening pilot: body, cap, two seal halves, remnants, empty | Image 2.5 | requested | The layered drink pipeline; then the other five |
+| 4 | ART-AH-03a | Dawn corridor plate registered to the night plate (1672×941) | Image 2.5 | requested (lower priority) | The dawn finale's end state; K-02's last frame |
+| 5 | K-01 | The Seam: the label's still breathes into the film (silent, 4–6 s) | Kling | **proposed, decide together** | A living threshold into the flagship film |
+| 6 | K-02 | Dawn finale: last light leaves the floor (silent, 8–10 s) | Kling | **proposed, decide together**, needs ART-AH-03a | The ending of the whole night |
+
+Every slot has a working placeholder, so nothing here blocks play. Exact timings and layer orders each asset must fit are in [AFTER-HOURS-CONTRACTS.md](AFTER-HOURS-CONTRACTS.md).
+
+**Order:** ART-AH-00 (the existing study) → ART-AH-01 machine face → ART-AH-02 one drink-opening pilot, then ART-AH-03a. K-01 and K-02 are proposals for us to decide together. The queued list at the end is for planning only. The game stays fully playable on its code-native placeholders while these are pending.
 
 **Why:** Dot's review is right that the dispenser reads flatter and more vector-like than the photographed paper-miniature corridor and stories. The machine and drinks should share the world's fibrous layered card, physical cut edges, amber practical light and indigo night fill.
 
@@ -75,6 +88,37 @@ Branch `claude/awesome-hypatia-6bf97q` (Last Light on the Floor / After Hours di
 - **Fallback while pending:** the code-native bottle. Layered mode only activates when the body and all three parts load; any missing part keeps the vector bottle, so a partial delivery is safe.
 - **Acceptance checks:** `node hub/qa/journey.cjs art` with the delivered files (layers register within ±4 px, cameo hole alpha 0, ritual moves each part, open never re-shows the cap); held view at 1440×900 and 390×844; shelf view; roof empty if delivered; set ≤ 350 KB as WebP.
 
+## ART-AH-03a · Dawn corridor plate (priority 4)
+
+- **Status:** requested (lower priority than 00–02)
+- **Purpose and emotional role:** "Last Light on the Floor." All night, the doorway's amber lamp spills across the corridor floor. When the sixth story ends, that pool of light goes out and the first daylight crosses the same floor. This plate is the room after that moment: tired, quiet, a little hopeful. Same objects, different light.
+- **Asset:** `corridor-dawn.png`, **1672×941**, registered **pixel-for-pixel** with `hub/assets/corridor.webp` (the code cross-fades them; any shift reads as a jump).
+- **Slot:** `corridor.dawn` (and later `corridor.portraitDawn` if we make a portrait crop).
+- **Lighting:** the doorway lamp **off**; cool, low early daylight from the room beyond the door and the window (blue-grey to pale gold where it lands), a long soft shaft across the floor; the indigo wall lifts toward grey-lilac. No warm pool on the floor.
+- **Must preserve:** every object, crease and position in the night plate, the paper-craft material, the door's angle, the coat and the pinned drawing. Leave the machine's area exactly as it is in the night plate (the machine is a separate layer drawn on top).
+- **Fallback while pending:** the current CSS dawn grade over the night plate.
+- **Acceptance checks:** pixel registration (difference view in `hub/qa/align.html` or a 50% cross-fade shows no edge doubling); reads as dawn at 1440×900 and 390×844; WebP ≤ 350 KB.
+
+## K-01 · The Seam: the label's still breathes into the film (Kling proposal)
+
+- **Status:** proposed, for Bob, dot and me to decide together. Not requested yet.
+- **The moment:** the visitor opens the Cold Brew; the house lights go down around the bottle; the label's little photograph grows to fill the screen. Today it arrives as a still, and the film starts. The clip would make that photograph **come alive for a breath** before the film begins: the lamp's light shifts, dust drifts through it, Julian's brush lifts and taps once, Mara's eyes move to the rib. Then it settles exactly on the film's first frame.
+- **Contract (already in the code):** `hub/bridge-manifest.json` → `transition: {kind:'video', src, mime, audio:'silent', stallTimeoutMs, maxPlaybackMs}` with the still as fallback. It plays after the spatial reveal and before the film starts, muted and inline; reduced motion skips it; any error falls back to the still. See `hub/VIDEO-BRIDGE.md`.
+- **Shot:** locked-off, the film's own camera. 16:9 at 1920×1080 (or 1672×941), 24 fps, **4–6 s**, silent. **First and last frames must both match `film/assets/performanceStable.webp` exactly** (Kling first+last frame), so it enters from the grown still and hands off to the film without a cut.
+- **Performance limits:** small, natural movement only; no new action that changes the story, no dialogue, no mouth movement, no camera move. Hands and faces must stay anatomically stable; reject any variant with morphing fingers or face drift.
+- **References:** `film/assets/performanceStable.webp` (first and last frame), `film/source/DIRECTOR-TREATMENT.md` (shot 1–2 tone), the stills in `film/assets/` for identities.
+- **Fallback:** the still reveal (current behaviour).
+- **Acceptance:** play the whole clip in the composed reveal at 1440×900 and 390×844; check the loop-free hand-off frame; file size ≤ 4 MB; then decide whether the other five drinks get one.
+
+## K-02 · Dawn finale: last light leaves the floor (Kling proposal)
+
+- **Status:** proposed, decide together; depends on ART-AH-03a.
+- **The moment:** the sixth empty lands on the roof. The clock flips to 06:02. The machine's tube ticks off. In the corridor the doorway lamp goes out and its amber pool on the floor drains away, and pale daylight slides in across the same boards. Silence, then the first birds.
+- **Shot:** locked-off on the corridor plate, **1672×941**, 24 fps, **8–10 s**, silent. **First frame = `hub/assets/corridor.webp`, last frame = ART-AH-03a**, so it can sit in the world layer behind the machine and hand off to the dawn still.
+- **Motion limits:** light only. Objects do not move, and there is no camera move. The lamp's switch-off may flicker once.
+- **Contract:** a new optional `clips.dawn` slot played once in the world layer by the finale (see the dawn finale beat in [AFTER-HOURS-CONTRACTS.md](AFTER-HOURS-CONTRACTS.md)); the CSS light change is the fallback, and reduced motion skips straight to the dawn still.
+- **Acceptance:** registration of the first and last frames with the plates; no flicker on the machine area; ≤ 6 MB.
+
 ---
 
 ## Queued, not yet requested
@@ -84,8 +128,8 @@ Planning only; each becomes a request after the pilot is accepted.
 - ART-AH-02b · the other five drinks (Standup tab; Slide Deck wax; Scope Creep swing-top stopper and bail; Dead Pixel crown; Ship-It cork and string), same layer scheme. Part boxes are in `hub/art/README.md`.
 - ART-AH-01b · `machine.interior` (back wall, tube, shelves; no drinks or coils) and `machine.glass` (780×1112 mostly transparent reflections and grime).
 - ART-AH-05 · `machine.side` (600×2000 turned side panel behind the six folds).
-- ART-AH-03 · corridor portrait crop and dawn plates that register exactly with the night plate.
-- ART-AH-06 · optional silent clips that end exactly on each story's first frame (still reveal remains the fallback).
+- ART-AH-03b · a portrait corridor crop and its dawn twin (after ART-AH-03a).
+- K-01b · the other five label-to-film breaths, if K-01 earns its place.
 
 ## Responses
 

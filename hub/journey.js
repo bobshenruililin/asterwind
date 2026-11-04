@@ -5,6 +5,8 @@
 (function(){
 const $=id=>document.getElementById(id),D=window.AsterwindDrinks,Art=window.AsterwindArt,MAN=window.ASTERWIND_ART||{};
 if(!D||!Art||!window.__dispenser)return;
+// Every staged beat comes from the timing contract (hub/timing.js, docs/AFTER-HOURS-CONTRACTS.md).
+const T=window.AsterwindTiming;if(!T)return;
 const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches,coarse=matchMedia('(hover: none)').matches;
 const registry=window.ASTERWIND_REGISTRY||{episodes:[]},stories=Object.fromEntries(registry.episodes.map(e=>[e.id,e]));
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -23,8 +25,8 @@ function settle(...els){for(const el of els)for(const a of el?.getAnimations?.()
 const focusQuietly=el=>el?.focus({preventScroll:true});
 // Closure centre and neck height as fractions of the held drink, from the 960×2080 template.
 const CLOSURE={seam:[.19,.275],standup:[.095,.14],slides:[.23,.35],scope:[.13,.24],pixel:[.22,.29],ship:[.18,.26]};
-const OPEN_MS={cap:1050,tab:820,wax:900,swing:1000,crown:900,cork:1100};
-let state='idle',heldId=null,displayTimer=null;const memento={},rasters={};
+// After a real ending the clock holds the new time, so the night visibly moves even as focus returns.
+let state='idle',heldId=null,displayTimer=null,clockHold=0;const memento={},rasters={};
 const order=D.DRINKS.map(d=>d.id),slot=id=>order.indexOf(id),btnFor=id=>document.querySelector('.drink[data-id="'+id+'"]');
 const root=document.documentElement,front=$('front'),glass=front.querySelector('.glass'),keys=[...front.querySelectorAll('.keylights i')];
 const soundBtn=$('sound'),soundHome=soundBtn.parentNode,soundAfter=soundBtn.nextSibling;
@@ -37,7 +39,7 @@ front.querySelector('.face-art').innerHTML=Art.machineFace(D.DRINKS);
 glass.insertAdjacentHTML('beforeend','<i class="fog"></i>');
 keys.forEach((k,i)=>{const [c,r]=Art.KEYS[i];Object.assign(k.style,{left:(918+c*94)/12+'%',top:(472+r*126)/20+'%'})});
 document.querySelectorAll('.motes i').forEach((m,i)=>{m.style.setProperty('--i',i);m.style.setProperty('--j',(i*7)%5)});
-function drinkMarkup(id,s,src){const d=D.byId[id];return Art.drink(d,{state:s,src:src||memento[id]||d.cameo.src,layers:Art.layersFor(id,rasters[id],s)})}
+function drinkMarkup(id,s,src,held=false){const d=D.byId[id];return Art.drink(d,{state:s,src:src||memento[id]||d.cameo.src,layers:Art.layersFor(id,rasters[id],s),held})}
 for(const b of document.querySelectorAll('.drink')){const id=b.dataset.id,i=slot(id),d=D.byId[id],e=stories[id];b.style.setProperty('--col',i%3);b.style.setProperty('--row',Math.floor(i/3));b.setAttribute('aria-label',d.name+'. '+(e?.title||''));b.querySelector('.drink-body').innerHTML=drinkMarkup(id,'sealed')}
 // Delivered art replaces a placeholder only after it has actually loaded.
 function swapIn(src,apply){if(!src)return;const img=new Image();img.onload=()=>apply(src);img.src=src}
@@ -70,6 +72,18 @@ function idleDisplay(delay=0){clearTimeout(displayTimer);displayTimer=setTimeout
 function setNight(){const n=done().length;root.style.setProperty('--dawn',(n/6).toFixed(3));$('lobby').dataset.night=String(n)}
 function renderRoof(landing=null){const roof=$('roof');roof.innerHTML=done().map(id=>`<li style="--slot:${slot(id)}" data-id="${id}" aria-label="${esc(stories[id]?.title||id)}, finished"${id===landing?' class="landing"':''}>${drinkMarkup(id,'empty')}</li>`).join('')}
 setNight();renderRoof();setDisplay(clock());
+// Six finished before this visit: the corridor is simply morning, with no replay.
+const morning=()=>done().length===6;
+if(morning()){$('lobby').classList.add('morning');sound.morning?.(true)}
+async function finale(){
+ const lobby=$('lobby');if(lobby.classList.contains('morning'))return;
+ for(const [k,v] of [['--tube-t',T.finale.tubeOff],['--lamp-t',T.finale.lampOff],['--sun-t',T.finale.sunrise],['--glint-t',T.finale.glint],['--glint-at',T.finale.tubeOff+T.finale.lampOff*.6]])lobby.style.setProperty(k,(reduced?0:v)+'ms');
+ lobby.classList.add('finale-run');$('status').textContent='Morning. All six stories are finished.';sound.play('tubeOff');
+ await wait(T.finale.tubeOff);
+ lobby.classList.add('morning');sound.morning?.(true);sound.play('dawn');
+ await wait(T.finale.lampOff*.6+T.finale.glint+6*160);
+ lobby.classList.remove('finale-run');
+}
 
 /* ---- presence: parallax, fog and attention ---------------------------------------------- */
 let pending=null;
@@ -81,7 +95,7 @@ $('lobby').addEventListener('pointerdown',e=>{if(state==='idle')clearFog(e.clien
 let lastTick=0;
 for(const b of document.querySelectorAll('.drink')){
  const id=b.dataset.id,d=D.byId[id],i=slot(id);
- const show=()=>{if(state!=='idle')return;clearTimeout(displayTimer);setDisplay(d.lines.join(' '));keys[i].classList.add('warm')};
+ const show=()=>{if(state!=='idle')return;keys[i].classList.add('warm');if(performance.now()<clockHold)return;clearTimeout(displayTimer);setDisplay(d.lines.join(' '))};
  const hide=()=>{keys[i].classList.remove('warm');idleDisplay(900)};
  b.addEventListener('pointerenter',e=>{show();if(e.pointerType==='mouse'&&performance.now()-lastTick>140){lastTick=performance.now();sound.play('hover')}});b.addEventListener('pointerleave',hide);
  b.addEventListener('focus',()=>{show();if(b.matches(':focus-visible'))attend(b)});b.addEventListener('blur',hide);
@@ -97,11 +111,11 @@ async function dispense(id){
  const b=btnFor(id),i=slot(id),d=D.byId[id];lockShelf(true);setDisplay(d.lines.join(' '));keys.forEach(k=>k.classList.remove('warm'));keys[i].classList.add('lit');sound.play('press');
  if(!reduced){
   const coil=front.querySelector('[data-coil="'+id+'"]');coil.classList.remove('spin');void coil.getBoundingClientRect();coil.classList.add('spin');sound.play('coil');
-  await wait(600);
+  await wait(T.coil);
   const h=$('stage3d').clientHeight,w=$('stage3d').clientWidth,base=i<3?960:1500,cx=[210,470,730][i%3];
   b.style.setProperty('--fall-y',((1790-base)/2000*h).toFixed(1)+'px');b.style.setProperty('--fall-x',((470-cx)/1200*w*.55).toFixed(1)+'px');
-  b.classList.add('falling');await wait(600);sound.play('drop');const flap=front.querySelector('.flap');flap.classList.remove('bang');void flap.offsetWidth;flap.classList.add('bang');
-  await wait(330);
+  b.classList.add('falling');await wait(T.fall);sound.play('drop');const flap=front.querySelector('.flap');flap.classList.remove('bang');void flap.offsetWidth;flap.classList.add('bang');
+  await wait(T.flap);
  }
  const from=b.querySelector('.drink-body').getBoundingClientRect();b.classList.remove('falling');b.classList.add('dispensed');keys[i].classList.remove('lit');
  await showHeld(id,{from});
@@ -114,16 +128,16 @@ function setTag(flipped){const tag=$('tag');tag.classList.toggle('flipped',flipp
 async function showHeld(id,{from=null,s='sealed',src=null,quietly=false}={}){
  const d=D.byId[id],e=stories[id]||{},held=$('held'),btn=$('open-drink'),[cy]=CLOSURE[id];
  heldId=id;$('held-title').textContent=e.title||d.name;$('held-arrival').textContent=e.arrival||'';$('ingredients').innerHTML=d.ingredients.map(x=>'<li>'+esc(x)+'</li>').join('');
- btn.style.setProperty('--cy',(cy*100)+'%');btn.setAttribute('aria-label','Open the '+d.name+' and begin '+(e.title||'the story'));btn.querySelector('.verb').textContent=d.verb;btn.querySelector('.held-art').innerHTML=drinkMarkup(id,s,src);btn.classList.remove('opening','idle');settle(btn,$('tag'));btn.removeAttribute('style');btn.style.setProperty('--cy',(cy*100)+'%');
+ btn.style.setProperty('--cy',(cy*100)+'%');btn.setAttribute('aria-label','Open the '+d.name+' and begin '+(e.title||'the story'));btn.querySelector('.verb').textContent=d.verb;btn.querySelector('.held-art').innerHTML=drinkMarkup(id,s,src,true);btn.classList.remove('opening','idle');settle(btn,$('tag'));btn.removeAttribute('style');btn.style.setProperty('--cy',(cy*100)+'%');
  setTag(false);held.hidden=false;dockSound(true);held.classList.remove('ready');$('stage3d').inert=true;
  await new Promise(r=>requestAnimationFrame(r));held.classList.add('show');tagString();
  if(from&&!reduced){
   const to=btn.getBoundingClientRect(),dx=(from.left+from.width/2)-(to.left+to.width/2),dy=(from.top+from.height/2)-(to.top+to.height/2),sc=Math.max(.06,from.width/to.height);
   const flap=front.querySelector('.flap');flap.classList.add('reach');sound.play('pickup');
   const tag=$('tag');tag.style.opacity='0';
-  await finished(btn.animate([{transform:`translate(${dx}px,${dy}px) rotate(84deg) scale(${sc})`,transformOrigin:'50% 50%'},{transform:`translate(${dx*.35}px,${dy*.2-30}px) rotate(18deg) scale(${(sc+1)*.5})`,transformOrigin:'50% 50%',offset:.45},{transform:'translate(0,-1.5%) rotate(-3deg) scale(1.02)',transformOrigin:'50% 50%',offset:.82},{transform:'none',transformOrigin:'50% 50%'}],{duration:980,easing:'cubic-bezier(.3,.7,.2,1)'}));
+  await finished(btn.animate([{transform:`translate(${dx}px,${dy}px) rotate(84deg) scale(${sc})`,transformOrigin:'50% 50%'},{transform:`translate(${dx*.35}px,${dy*.2-30}px) rotate(18deg) scale(${(sc+1)*.5})`,transformOrigin:'50% 50%',offset:.45},{transform:'translate(0,-1.5%) rotate(-3deg) scale(1.02)',transformOrigin:'50% 50%',offset:.82},{transform:'none',transformOrigin:'50% 50%'}],{duration:T.catch,easing:'cubic-bezier(.3,.7,.2,1)'}));
   flap.classList.remove('reach');tag.style.opacity='';tagString();held.classList.add('flying-done');
-  await finished(tag.animate([{transform:'rotate(-30deg)'},{transform:'rotate(6deg)'},{transform:'rotate(-6deg)'},{transform:'rotate(-2deg)'},{transform:'rotate(-4deg)'}],{duration:1300,easing:'ease-out'}));
+  await finished(tag.animate([{transform:'rotate(-30deg)'},{transform:'rotate(6deg)'},{transform:'rotate(-6deg)'},{transform:'rotate(-2deg)'},{transform:'rotate(-4deg)'}],{duration:T.tagSwing,easing:'ease-out'}));
  }else if(!quietly)sound.play('pickup');
  if(heldId!==id)return;
  held.classList.add('ready');btn.classList.add('idle');state='held';if(!quietly)focusQuietly(btn);$('status').textContent='';
@@ -133,29 +147,40 @@ async function showHeld(id,{from=null,s='sealed',src=null,quietly=false}={}){
    joins its Tab cycle; it returns to the corridor when the dialog closes. Same node, same place. */
 function dockSound(inHeld){if(inHeld){if(soundBtn.parentNode!==$('held'))$('held').appendChild(soundBtn)}else if(soundBtn.parentNode!==soundHome)soundHome.insertBefore(soundBtn,soundAfter)}
 const heldStops=()=>[$('open-drink'),$('flip-tag'),$('put-back'),soundBtn].filter(el=>el.isConnected&&!el.disabled&&el.closest('#held'));
-function closeHeld(){const held=$('held');held.hidden=true;dockSound(false);held.classList.remove('show','ready','flying-done');settle($('open-drink'),$('tag'));$('stage3d').inert=false;$('open-drink').removeAttribute('style');setTag(false);heldId=null}
-function restock(id,{animate=true}={}){const b=btnFor(id);if(!b)return;b.classList.remove('dispensed','falling','restock');b.querySelector('.drink-body').innerHTML=drinkMarkup(id,'sealed',D.byId[id].cameo.src);if(animate&&!reduced){void b.offsetWidth;b.classList.add('restock');setTimeout(()=>b.classList.remove('restock'),900)}}
+function closeHeld(){const held=$('held');held.hidden=true;dockSound(false);held.classList.remove('lights-down');held.classList.remove('show','ready','flying-done');settle($('open-drink'),$('tag'));$('stage3d').inert=false;$('open-drink').removeAttribute('style');setTag(false);heldId=null}
+function restock(id,{animate=true}={}){const b=btnFor(id);if(!b)return;b.classList.remove('dispensed','falling','restock');b.querySelector('.drink-body').innerHTML=drinkMarkup(id,'sealed',D.byId[id].cameo.src);if(animate&&!reduced){void b.offsetWidth;b.classList.add('restock');setTimeout(()=>b.classList.remove('restock'),T.restock)}}
+
+/* ---- house lights and the light on the glass ----------------------------------------------
+   During the quiet beat the corridor goes dark around the bottle and only the label's window stays
+   lit: the eye is already where the film will open. On the way back the last frame lands in that
+   lit window, then the house comes up. Contract: beat, homecoming.lightsUp. */
+function houseLights(down,ms){const held=$('held'),btn=$('open-drink');
+ if(down){const c=btn.querySelector('.cameo-frame > *')?.getBoundingClientRect();if(c){held.style.setProperty('--lx',(c.left+c.width/2).toFixed(0)+'px');held.style.setProperty('--ly',(c.top+c.height/2).toFixed(0)+'px');held.style.setProperty('--lr',(Math.max(c.width,c.height)/2).toFixed(0)+'px')}}
+ held.style.setProperty('--house-t',(reduced?0:ms)+'ms');held.classList.toggle('lights-down',down)}
+// A mouse turns the held bottle a few degrees toward itself and the sheen slides across the glass.
+$('held').addEventListener('pointermove',e=>{if(reduced||e.pointerType!=='mouse'||state!=='held')return;const b=$('open-drink'),r=b.getBoundingClientRect();b.style.setProperty('--tilt',Math.max(-1,Math.min(1,(e.clientX-(r.left+r.width/2))/(innerWidth*.35))).toFixed(3))});
 
 /* ---- open: the closure, a quiet beat, then the label becomes the film --------------------- */
 async function openHeld(){
  if(state!=='held')return;state='opening';sound.unlock();
  const id=heldId,d=D.byId[id],btn=$('open-drink'),held=$('held');
- btn.classList.remove('idle');btn.classList.add('opening');held.classList.remove('ready');
+ btn.classList.remove('idle');btn.classList.add('opening');held.classList.remove('ready');btn.style.setProperty('--tilt','0');
  btn.querySelector('svg').classList.add('opening');sound.play(d.sound);
- await wait(OPEN_MS[d.closure]||900);
- btn.querySelector('.held-art').innerHTML=drinkMarkup(id,'open',d.cameo.src);btn.querySelector('svg').classList.add('opened-now');
- await wait(420);
+ await wait(T.open[d.closure]||T.open.cap);
+ btn.querySelector('.held-art').innerHTML=drinkMarkup(id,'open',d.cameo.src,true);btn.querySelector('svg').classList.add('opened-now');
+ houseLights(true,T.beat);sound.ambience(false,1.4);
+ await wait(T.beat);
  const c=btn.querySelector('.cameo-frame > *').getBoundingClientRect(),cam=d.cameo;
  const position=(id==='seam'&&innerWidth<=700)?'75% 50%':'50% 50%';
- sound.play('whoosh');sound.ambience(false,1.4);
+ sound.play('whoosh');
  const ok=window.__dispenser.choose(id,{reveal:{rect:{x:c.left,y:c.top,w:c.width,h:c.height},radius:['circle','oval'].includes(cam.shape)?'50%':'6px',src:cam.src,startPosition:(cam.fx*100)+'% '+(cam.fy*100)+'%',position}});
- if(!ok){state='held';btn.classList.remove('opening');held.classList.add('ready');sound.ambience(true);return}
+ if(!ok){state='held';houseLights(false,T.homecoming.lightsUp);btn.classList.remove('opening');held.classList.add('ready');sound.ambience(true);return}
  state='story';
 }
 async function putBack(){
  if(state!=='held')return;state='putting';const id=heldId,btn=$('open-drink');
  $('held').classList.remove('ready','show');sound.play('putback');
- if(!reduced)await finished(btn.animate([{transform:'none',opacity:1},{transform:'translateY(36%) scale(.55) rotate(8deg)',opacity:0}],{duration:460,easing:'cubic-bezier(.5,0,.8,.4)',fill:'forwards'}));
+ if(!reduced)await finished(btn.animate([{transform:'none',opacity:1},{transform:'translateY(36%) scale(.55) rotate(8deg)',opacity:0}],{duration:T.putBack,easing:'cubic-bezier(.5,0,.8,.4)',fill:'forwards'}));
  closeHeld();restock(id);sound.play('restock');lockShelf(false);state='idle';idleDisplay();focusQuietly(btnFor(id));
 }
 
@@ -166,18 +191,18 @@ async function returned(id,{lastFrame=null,finished:ended=false}={}){
  if(!had){closeHeld();order.forEach(x=>restock(x,{animate:false}));setNight();renderRoof();lockShelf(false);state='idle';idleDisplay();focusQuietly(btnFor(id));return}
  state='returning';lockShelf(true);
  const d=D.byId[id],src=lastFrame?.src||d.cameo.src,btn=$('open-drink');
- btn.querySelector('.held-art').innerHTML=drinkMarkup(id,'open',src);btn.classList.remove('opening');
+ btn.querySelector('.held-art').innerHTML=drinkMarkup(id,'open',src,true);btn.classList.remove('opening');houseLights(true,0);
  const target=btn.querySelector('.cameo-frame > *').getBoundingClientRect();
  if(!reduced){
   const hc=$('homecoming'),fr=hc.querySelector('.frame'),img=fr.querySelector('img');img.src=src;img.style.objectPosition=lastFrame?.position||'50% 50%';hc.hidden=false;sound.play('homecoming');
   const round=['circle','oval'].includes(d.cameo.shape)?'50%':'6px';
-  const a=fr.animate([{left:'0px',top:'0px',width:innerWidth+'px',height:innerHeight+'px',borderRadius:'0px'},{left:target.left+'px',top:target.top+'px',width:target.width+'px',height:target.height+'px',borderRadius:round}],{duration:1050,easing:'cubic-bezier(.6,0,.2,1)',fill:'forwards'});
-  await finished(a);await finished(fr.animate([{opacity:1},{opacity:0}],{duration:240,fill:'forwards'}));hc.hidden=true;a.cancel();fr.getAnimations().forEach(x=>x.cancel());
+  const a=fr.animate([{left:'0px',top:'0px',width:innerWidth+'px',height:innerHeight+'px',borderRadius:'0px'},{left:target.left+'px',top:target.top+'px',width:target.width+'px',height:target.height+'px',borderRadius:round}],{duration:T.homecoming.shrink,easing:'cubic-bezier(.6,0,.2,1)',fill:'forwards'});
+  await finished(a);await finished(fr.animate([{opacity:1},{opacity:0}],{duration:T.homecoming.fade,fill:'forwards'}));hc.hidden=true;a.cancel();fr.getAnimations().forEach(x=>x.cancel());
  }
- await wait(450);
+ houseLights(false,T.homecoming.lightsUp);await wait(T.homecoming.settle);
  if(ended){memento[id]=src;await toRoof(id)}else await sink(id);
  closeHeld();restock(id);setNight();lockShelf(false);state='idle';
- if(ended){setDisplay(clock(),true);if(done().length===6)sound.play('dawn')}else idleDisplay();
+ if(ended){clockHold=performance.now()+(reduced?2000:T.clockHold);setDisplay(clock(),true);if(morning())finale()}else idleDisplay();
  focusQuietly(btnFor(id));
 }
 async function toRoof(id){
@@ -185,10 +210,10 @@ async function toRoof(id){
  const btn=$('open-drink'),from=btn.querySelector('svg').getBoundingClientRect(),to=li.querySelector('svg').getBoundingClientRect();
  $('held').classList.remove('show');
  if(!reduced){const dx=(to.left+to.width/2)-(from.left+from.width/2),dy=(to.top+to.height/2)-(from.top+from.height/2),s=to.height/from.height;
-  await finished(btn.animate([{transform:'none',transformOrigin:'50% 50%'},{transform:`translate(${dx*.45}px,${dy*.55-70}px) scale(${(1+s)*.45}) rotate(-8deg)`,transformOrigin:'50% 50%',offset:.55},{transform:`translate(${dx}px,${dy}px) scale(${s})`,transformOrigin:'50% 50%'}],{duration:1000,easing:'cubic-bezier(.45,0,.25,1)',fill:'forwards'}))}
- li.style.visibility='';li.classList.add('landing');sound.play('clink');await wait(500);
+  await finished(btn.animate([{transform:'none',transformOrigin:'50% 50%'},{transform:`translate(${dx*.45}px,${dy*.55-70}px) scale(${(1+s)*.45}) rotate(-8deg)`,transformOrigin:'50% 50%',offset:.55},{transform:`translate(${dx}px,${dy}px) scale(${s})`,transformOrigin:'50% 50%'}],{duration:T.roof.fly,easing:'cubic-bezier(.45,0,.25,1)',fill:'forwards'}))}
+ li.style.visibility='';li.classList.add('landing');sound.play('clink');await wait(T.roof.land);
 }
-async function sink(id){$('held').classList.remove('show');sound.play('putback');if(!reduced)await finished($('open-drink').animate([{transform:'none',opacity:1},{transform:'translateY(40%) scale(.5)',opacity:0}],{duration:520,easing:'cubic-bezier(.5,0,.8,.4)',fill:'forwards'}))}
+async function sink(id){$('held').classList.remove('show');sound.play('putback');if(!reduced)await finished($('open-drink').animate([{transform:'none',opacity:1},{transform:'translateY(40%) scale(.5)',opacity:0}],{duration:T.sink,easing:'cubic-bezier(.5,0,.8,.4)',fill:'forwards'}))}
 
 /* ---- controls --------------------------------------------------------------------------- */
 $('open-drink').onclick=openHeld;$('put-back').onclick=putBack;
@@ -205,11 +230,11 @@ document.addEventListener('keydown',e=>{
 });
 addEventListener('resize',()=>{tagString()});
 // The machine wakes when you arrive: tube flicker, drinks surface. Skipped under reduced motion.
-if(!reduced){$('lobby').classList.add('waking');setTimeout(()=>$('lobby').classList.remove('waking'),2600)}
+if(!reduced){$('lobby').classList.add('waking');setTimeout(()=>$('lobby').classList.remove('waking'),T.wake)}
 if(window.__dispenser.state.screen)state='story';
 
 window.AsterwindJourney={returned,
  storyEnded(){},
- turned(on){sound.play('turn');if(on){setTimeout(()=>{focusQuietly($('mechanism').querySelector('.paper-fold:not(:disabled)')||$('turn-back'))},reduced?0:700)}else focusQuietly($('turn'))},
- get state(){return{state,heldId,night:done().length,sound:sound.enabled,memento:{...memento}}},dispense,openHeld,putBack};
+ turned(on){sound.play('turn');if(on){setTimeout(()=>{focusQuietly($('mechanism').querySelector('.paper-fold:not(:disabled)')||$('turn-back'))},reduced?0:T.turnFocus)}else focusQuietly($('turn'))},
+ get state(){return{state,heldId,night:done().length,morning:$('lobby').classList.contains('morning'),sound:sound.enabled,memento:{...memento}}},dispense,openHeld,putBack};
 })();

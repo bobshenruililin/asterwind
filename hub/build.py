@@ -54,7 +54,7 @@ def build(root=ROOT):
     for src in sorted(set(re.findall(r"'(art/[^']+\.(?:webp|png|jpg|jpeg))'",manifest_js))):
         manifest_js=manifest_js.replace("'"+src+"'","'"+data_url(local_asset(root,src,MIMES[Path(src).suffix.lower()]),MIMES[Path(src).suffix.lower()])+"'")
     inline=lambda text:'<script>'+text.replace('</script','<\\/script')+'</script>'
-    for name,text in (('drinks.js',drinks),('art.js',(root/'art.js').read_text()),('art/manifest.js',manifest_js),('sound.js',(root/'sound.js').read_text()),('journey.js',(root/'journey.js').read_text())):
+    for name,text in (('timing.js',(root/'timing.js').read_text()),('drinks.js',drinks),('art.js',(root/'art.js').read_text()),('art/manifest.js',manifest_js),('sound.js',(root/'sound.js').read_text()),('journey.js',(root/'journey.js').read_text())):
         page=page.replace('<script src="'+name+'"></script>',inline(text))
     page=page.replace('<script src="mechanism.js"></script>','<script>'+(root/'mechanism.js').read_text()+'</script>')
     page=page.replace('<script src="legacy-seam.js"></script>','<script>'+(root/'legacy-seam.js').read_text()+'</script>')

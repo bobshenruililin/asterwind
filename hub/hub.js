@@ -49,8 +49,9 @@ function growFromLabel(t,reveal){
  if(reduced||!frame.animate||!r){if(frame.style)img.style.objectPosition=reveal.position||'';later(done,reduced?0:16);return}
  const from={left:r.x+'px',top:r.y+'px',width:r.w+'px',height:r.h+'px',borderRadius:reveal.radius||'8px'},to={left:'0px',top:'0px',width:vw+'px',height:vh+'px',borderRadius:'0px'};
  Object.assign(frame.style,from);
- revealAnimation=frame.animate([from,to],{duration:1150,easing:'cubic-bezier(.62,0,.18,1)',fill:'forwards'});
- img.animate?.([{objectPosition:reveal.startPosition||reveal.position||'50% 50%'},{objectPosition:reveal.position||'50% 50%'}],{duration:1150,easing:'cubic-bezier(.62,0,.18,1)',fill:'forwards'});
+ const ms=window.AsterwindTiming?.reveal||1150;
+ revealAnimation=frame.animate([from,to],{duration:ms,easing:'cubic-bezier(.62,0,.18,1)',fill:'forwards'});
+ img.animate?.([{objectPosition:reveal.startPosition||reveal.position||'50% 50%'},{objectPosition:reveal.position||'50% 50%'}],{duration:ms,easing:'cubic-bezier(.62,0,.18,1)',fill:'forwards'});
  revealAnimation.onfinish=()=>{revealAnimation=null;done()};
 }
 function launch({animate=false,reveal=null}={}){clear();const t=++token;phase=animate?'dispensing':'loading';filmReady=false;finishedThisVisit=false;revealReady=!(animate||reveal)||reduced;lock(true);$('screen').dataset.episode=activeEpisode;$('screen').hidden=false;$('screen').classList.toggle('revealing',(animate||!!reveal)&&!reduced);$('loading').hidden=false;$('failure').hidden=true;const newFrame=document.createElement('iframe');newFrame.id='film';newFrame.title=(episode()?.title||activeEpisode)+', an interactive paper film';newFrame.hidden=true;newFrame.setAttribute('allow','autoplay');$('lobby').inert=true;$('return').focus();
