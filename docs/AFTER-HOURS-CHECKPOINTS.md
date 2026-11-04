@@ -39,4 +39,7 @@ Imported bundle head `5cad5ea` (base `8f030f9` verified) and the follow-on patch
 
 **Tested so far:** see the commit messages for exact suites; the full matrix is recorded at the end of this checkpoint.
 
-**Known open:** turned-side rendering defect (lower side panel missing); code-native cabinet still reads as flat vector; story reassessment proposal pending.
+**Known open:**
+- Turned side (optional coda view), Chromium 153 at 1440×900: the side panel paints only its upper ~76%; below it the floor and edge-on slivers of the front face's inner layers show. Stable after the 1.1 s turn (checked at 0.6/1.3/3 s). Present since checkpoint 1: switching the lobby back from `overflow:clip` to `hidden` does not change it. Hiding the whole front face reveals the full panel; hiding any one sub-layer or group does not, so it looks like 3D depth-sorting between the front face's translated layers and the side wall. Deferred to the art/animation pass (Bob, 4 Nov), not fixed. The folds remain operable by keyboard and pointer.
+- The code-native cabinet still reads as flat vector; the paper material comes through ART-AH-00/01/02 rather than more vector work.
+- Story reassessment proposal pending (propose only).
