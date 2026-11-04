@@ -1,3 +1,5 @@
+> Quiet Minute integration: the dispenser now uses the six-drink anthology lineup. Cold Brew, Scope Creep Fizz and Standup Seltzer are playable prototypes; the remaining three are explicitly in development. Build `anthology/episodes/standup/build.py` as well as `anthology/build.py` before `hub/build.py`. Historical notes below describe earlier versions.
+
 > Anthology update: Scope Creep Fizz now opens the original **One More Chair** prototype. The Seam remains unchanged. The historical notes below describe earlier releases; current behavior, honest production limits and completion contract are in `../anthology/README.md`. Run `python3 anthology/build.py` before the hub exporter.
 
 # After Hours dispenser

@@ -8,27 +8,32 @@
     "master": {
       "sourceFilename": "01-repair-cafe-master-no-clock.png",
       "sourceSha256": "5cca674d901ac3664d0aec10ad73773d1cd14649c7a21115e3ce314edbd25c08",
-      "runtimeSha256": "de03820021a84b614b488fca622193783c30f97529216ca9335288e46a215c1e"
+      "runtimeSha256": "de03820021a84b614b488fca622193783c30f97529216ca9335288e46a215c1e",
+      "sourceLibraryFileId": "libfile_48f1ca37b1ac81918a3baa731c310421"
     },
     "capacity": {
       "sourceFilename": "02-bo-sam-capacity-no-clock.png",
       "sourceSha256": "a00e5c432f85980936dd967a98c13d4c0f42907394be81de9e086a3a6f75fbc6",
-      "runtimeSha256": "4bc2168fbd571e03d1ae839228dd5743e15c622c00643b7aaf1da6982944469c"
+      "runtimeSha256": "4bc2168fbd571e03d1ae839228dd5743e15c622c00643b7aaf1da6982944469c",
+      "sourceLibraryFileId": "libfile_71f55077a540819192e555acda758cf2"
     },
     "decision": {
       "sourceFilename": "03-chair-or-return-slot.png",
       "sourceSha256": "6daa14a7e983efe6a82bca657380d35e6151c5343511ae8b835c6c8dfe774d77",
-      "runtimeSha256": "a5102d2e8e5ee8aa6da1e83a3b4a60370b084b035da4151f89eff4d49da71c41"
+      "runtimeSha256": "a5102d2e8e5ee8aa6da1e83a3b4a60370b084b035da4151f89eff4d49da71c41",
+      "sourceLibraryFileId": "libfile_50849ee3bdc48191ae0374cfdb1b8ec5"
     },
     "extend": {
       "sourceFilename": "04-extend-mixed-consequence.png",
       "sourceSha256": "4eb20864b6bbb4fca1d405276f760c80378bdb494c70125d30aa074cab62413d",
-      "runtimeSha256": "a8a742049d843448b5db307a371ce466d387c8bbe0f652309436569f300161d6"
+      "runtimeSha256": "a8a742049d843448b5db307a371ce466d387c8bbe0f652309436569f300161d6",
+      "sourceLibraryFileId": "libfile_f6debaefd3b881918765b48af595ead7"
     },
     "return": {
       "sourceFilename": "05-return-slot-consequence.png",
       "sourceSha256": "7d5e9b3206c3ec82f5afa3dcbe2aa2800beefb23db4e11c4e4c344a64efaf8dc",
-      "runtimeSha256": "b8d6d004683c4d20113e44ac3821702e8c01c4f097a786dd7b692e2df8653f32"
+      "runtimeSha256": "b8d6d004683c4d20113e44ac3821702e8c01c4f097a786dd7b692e2df8653f32",
+      "sourceLibraryFileId": "libfile_413991c534808191af39f293fd0ce198"
     }
   }
 }

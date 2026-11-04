@@ -24,7 +24,7 @@ button:focus-visible,a:focus-visible{outline:3px solid #fff4d0;outline-offset:6p
 .can i{display:none}
 .lid{position:absolute;top:0;left:11.5%;width:77%;height:8px;background:#b7b8aa;border:2px solid #e0d6ba;border-radius:50%;z-index:1}
 .lid:after{content:'';display:block;margin:0 auto;width:25%;height:100%;border:1px solid #666f66;border-radius:50%}
-.seam{--can:#e2b25c}.nod{--can:#9cae98}.slides{--can:#c58f7f}.scope{--can:#9da6c2;grid-column:1;margin-left:45%;margin-right:-45%}.almost{--can:#c1ac79;grid-column:3;margin-left:-45%;margin-right:45%}
+.seam{--can:#e2b25c}.standup{--can:#9cae98}.slides{--can:#c58f7f}.scope{--can:#9da6c2}.pixel{--can:#b1a4bc}.ship{--can:#c1ac79}
 .shelf-label{display:flex;align-items:center;justify-content:center;font:12px/1.1 Arial,sans-serif;letter-spacing:0;text-align:center;padding:3px 2px;background:#d8ccb1;color:#343d3b;box-shadow:1px 2px #1115;min-width:0}
 .seam .shelf-label{background:#f4ce7e}
 #turn{position:absolute;right:14%;bottom:13%;background:#c6b99a;color:#303c3e;border:1px solid #7a7d6d;border-radius:50%;width:48px;height:48px;box-shadow:3px 4px #1a2a2c;font-size:26px}

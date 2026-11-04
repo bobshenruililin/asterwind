@@ -1,6 +1,6 @@
 """Offline hub export. Typed local media, exact MIME types, no external dependencies."""
 from pathlib import Path
-import json, base64
+import json, base64, re
 ROOT = Path(__file__).resolve().parent
 MIMES = {'.webp':'image/webp','.png':'image/png','.jpg':'image/jpeg','.jpeg':'image/jpeg','.svg':'image/svg+xml','.mp4':'video/mp4','.webm':'video/webm'}
 def local_asset(root, src, mime):
@@ -46,7 +46,12 @@ def build(root=ROOT):
             page=page.replace('src="assets/'+asset.name+'"','src="'+data_url(asset,mime)+'"')
     registry=json.loads((root.parent/'anthology/registry.json').read_text())
     (root/'registry-data.js').write_text('window.ASTERWIND_REGISTRY='+dump(registry)+';\n')
-    anthology_script='window.ASTERWIND_REGISTRY='+dump(registry)+';\nwindow.ASTERWIND_EPISODES='+dump({'scope':(root.parent/'anthology/dist/scope.html').read_text()})+';\n'+(root.parent/'anthology/progress.js').read_text()
+    episodes={}
+    for entry in registry['episodes']:
+        if entry.get('adapter')=='anthology-v1' and entry.get('status') in ('playable-prototype','existing-playable'):
+            if not re.fullmatch(r'[a-z][a-z0-9-]*',entry['id']): raise ValueError('Invalid episode ID')
+            episodes[entry['id']]=(root.parent/'anthology/dist'/ (entry['id']+'.html')).read_text()
+    anthology_script='window.ASTERWIND_REGISTRY='+dump(registry)+';\nwindow.ASTERWIND_EPISODES='+dump(episodes)+';\n'+(root.parent/'anthology/progress.js').read_text()
     page=page.replace('<script src="registry-data.js"></script><script src="../anthology/progress.js"></script>','<script>'+anthology_script+'</script>')
     script='window.ASTERWIND_FILM='+dump(film)+';\nwindow.ASTERWIND_BRIDGE='+dump(encoded_manifest(root,manifest))+';\n'+(root/'bridge.js').read_text()+'\n'+(root/'hub.js').read_text()
     page=page.replace('<script src="bridge-data.js"></script><script src="bridge.js"></script><script src="hub.js"></script>','<script>'+script+'</script>')
