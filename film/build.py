@@ -7,6 +7,7 @@ assets = {p.stem: 'assets/' + p.name for p in sorted((ROOT / 'assets').glob('*.w
 manifest = json.loads((ROOT / 'audio/manifest.json').read_text())
 voices = {c['id']: {'src': 'audio/' + c['file'], 'duration': c['duration']} for c in manifest}
 required = {s['asset'] for route in ('setup', 'backup', 'repair') for s in story[route]} - {'black'}
+required |= {frame['asset'] for route in ('setup', 'backup', 'repair') for shot in story[route] for frame in shot.get('frames', [])}
 required |= {story['cover'], 'decisionPortrait', story['decision']['asset']}
 missing = required - assets.keys()
 if missing: raise SystemExit('Missing required art: ' + ', '.join(sorted(missing)))

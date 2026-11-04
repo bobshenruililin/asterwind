@@ -1,6 +1,6 @@
 ## Current film pilot: The Seam
 
-The latest film-first work now lives in [`film/`](film/README.md). Open `film/index.html`, or build an offline HTML with `python3 film/build.py`. It preserves the delivered V5 story, 14 runtime frames, 28 optional timing voices, one untimed choice and two distinct consequences. The older nine-scenario source-grounded experience below remains intact in `app/`.
+The latest film-first work now lives in [`film/`](film/README.md). Open `film/index.html`, or build an offline HTML with `python3 film/build.py`. It preserves the delivered V5 story, 22 runtime frames, 28 optional timing voices, one untimed choice and two distinct consequences. The older nine-scenario source-grounded experience below remains intact in `app/`.
 
 This is a playable illustrated animatic, not completed character animation. Read [fresh verification and limits](film/REPOSITORY-QA.md) before presenting. Authoring repository remains private; this integration does not publish a new site.
 

@@ -12,3 +12,7 @@ Passed fresh:
 Browser test was prepared but did NOT execute: Chromium process socket initialization is prohibited in this execution environment, including the escalation attempt. No fresh screenshots, visual QA, physical-device, screen-reader or listening test are claimed. V5-QA.md is historical evidence from the delivered version, not verification of this integration. Run qa/browser.cjs in a browser-capable environment before release.
 
 No public deployment, spending, new voice generation, repository visibility change or changes to original workbook runtime.
+
+## Held-pose performance integration
+
+Eight new authored pose images inspected together for lamp, table, sleeves, model and hand continuity. Fresh automated tests verify stable/slip/buckle order, untimed decision, correct reach/grasp or reach/brace after commit, pose pause and all frame times within shot boundaries. Both complete branches and all28 unchanged audio cues pass. Eight optimized art files added without replacing original art. No smooth animation or acted-voice claim. Fresh browser verification remains blocked by the environment noted above.

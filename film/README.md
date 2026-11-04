@@ -9,10 +9,10 @@ This is the delivered V5 story and art, integrated into the repository without r
 - `story.json`: shot order, dialogue, cue timing, framing, two action labels, branch endings.
 - `index.html`: minimal semantic stage and accessible controls.
 - `player.js` / `player.css`: playback and full-bleed presentation.
-- `assets/`: 14 optimized runtime frames; `assets/reference/`: three visual references.
+- `assets/`: 22 optimized runtime frames; `assets/reference/`: three visual references.
 - `audio/`: 28 optional synthetic timing cues with exact text and duration manifests. Off by default. These are not acted voices.
 - `source/`: preserved story development and attribution, not runtime files.
-- `asset-manifest.json`: hashes for all 45 image/audio files.
+- `asset-manifest.json`: hashes for all 53 image/audio files.
 - `data.js`: generated from sources. Do not hand-edit.
 - `dist/`: generated offline export. Do not commit duplicate embedded media.
 
@@ -27,3 +27,7 @@ Run `python3 film/build.py`, then `node film/test-state.cjs`. Browser test: serv
 The playable illustrated animatic has automatic setup/consequences, exactly one consequential choice, untimed decision, replay, pause, keyboard access, portrait choice composition, caption/voice safeguards and notes modal. It is not completed character animation. Natural recorded performances, continuous character movement and audience-tested pacing remain production work. No new paid media or publication occurred in this integration.
 
 The audience's job is to notice the two legitimate needs, choose an action and witness what that action does not settle. For course presentation, discuss who carried its cost and what a follow-up conversation should change. Do not claim validated learning outcomes.
+
+## Held-pose performance revision
+
+Eight approved generated frames add an opening stable/slip/buckle sequence, a spare offer and the player's reaching/gripping action on each route. These are authored pose cuts, not smoothly interpolated or fully animated performances. The opening keeps its original length; each branch gains 1.1 seconds of immediate visible response. Reduced motion shows the final settled pose without the intra-shot changes. Existing dialogue, voices, outcomes and prior assets remain intact. `source/performance-source-manifest.json` records original PNG hashes; runtime WebP exports do not alter the originals.

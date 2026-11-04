@@ -1,0 +1,50 @@
+[
+  {
+    "source_name": "01-stable.png",
+    "sha256": "56065641730dee5e9704360d7acc8e36bf1075dd8d7dc057ad069401717ee57a",
+    "bytes": 2237212,
+    "role": "generated performance reference; retained unchanged outside runtime"
+  },
+  {
+    "source_name": "02-slip.png",
+    "sha256": "64e7c943f26f6c05fb729a0dc81817825711cd168f1c758393b349da18dc03bf",
+    "bytes": 2092822,
+    "role": "generated performance reference; retained unchanged outside runtime"
+  },
+  {
+    "source_name": "03-buckle.png",
+    "sha256": "508551e3a984ab40194feb08bf9fe34823267c176fbde2ad232991810bf0cb83",
+    "bytes": 2017967,
+    "role": "generated performance reference; retained unchanged outside runtime"
+  },
+  {
+    "source_name": "04-offer.png",
+    "sha256": "324d6ffec1c5faa80ba3bbf76b7834c1cc5d36e4ba3326e12b72610b95c65fce",
+    "bytes": 2017607,
+    "role": "generated performance reference; retained unchanged outside runtime"
+  },
+  {
+    "source_name": "05a-reach-spare.png",
+    "sha256": "d9443016a243899f939146cfc1aa1a3cc6afc1a11d62779b588bc90b9ff74d8c",
+    "bytes": 2053069,
+    "role": "generated performance reference; retained unchanged outside runtime"
+  },
+  {
+    "source_name": "05b-reach-original.png",
+    "sha256": "ef2c44b5c622c7ab1b2f39c20f932456d75bf3350e0c5f4f5e14f0712ad003ec",
+    "bytes": 2056527,
+    "role": "generated performance reference; retained unchanged outside runtime"
+  },
+  {
+    "source_name": "06a-grasp-spare.png",
+    "sha256": "63a19d96d1b16478c750cb499dbc7a720ee65178422bed5b7bfe3992767fc4e6",
+    "bytes": 2004733,
+    "role": "generated performance reference; retained unchanged outside runtime"
+  },
+  {
+    "source_name": "06b-brace-original.png",
+    "sha256": "9bfe1e5f05bb05510e13af06f061fecec8ff5c3ed01dd3146cb41581c014ff64",
+    "bytes": 2011177,
+    "role": "generated performance reference; retained unchanged outside runtime"
+  }
+]

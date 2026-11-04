@@ -50,6 +50,46 @@
     "sha256": "657b0c213f2ce445cec48e57adb82eaa248f0301781eb41f034f4a9250308c4e"
   },
   {
+    "path": "assets/performanceBraceOriginal.webp",
+    "bytes": 226254,
+    "sha256": "32e509b215a29111d22f9d36d80bce1df5bf34ff1b00460a73651e5e3f5720e8"
+  },
+  {
+    "path": "assets/performanceBuckle.webp",
+    "bytes": 231108,
+    "sha256": "cb8fcfe9e503d6edfe5a81b6004d9e499bc3e2fb7ff18c5b695d7365668b2ca3"
+  },
+  {
+    "path": "assets/performanceGraspSpare.webp",
+    "bytes": 219050,
+    "sha256": "979dd239e86c4e4438d9ab18387f41b261efe2c11589d19d224ca6c3d71d51f1"
+  },
+  {
+    "path": "assets/performanceOffer.webp",
+    "bytes": 225978,
+    "sha256": "bfb2578410f348b66a459e403cdcb04f54a2709f40aab07f995b9efc06c3edb3"
+  },
+  {
+    "path": "assets/performanceReachOriginal.webp",
+    "bytes": 234716,
+    "sha256": "f81a0b887ac96a7cc9515b341b01ed993926b9412259816af9a366bd95337a8b"
+  },
+  {
+    "path": "assets/performanceReachSpare.webp",
+    "bytes": 229074,
+    "sha256": "d0f5f1533c1b0fb1ee4ad07eb808c59cca6785f6d41e7dc4a239e8a0c266cf7f"
+  },
+  {
+    "path": "assets/performanceSlip.webp",
+    "bytes": 247158,
+    "sha256": "d6ad1200b881ea608b17b9d84ce9717a88d4321e5d40978577c551624210db85"
+  },
+  {
+    "path": "assets/performanceStable.webp",
+    "bytes": 282400,
+    "sha256": "b79e98f8de46582ceef15287004792db263edc18b478d4e2de31bbdb996ab0a1"
+  },
+  {
     "path": "assets/reference/people.webp",
     "bytes": 243654,
     "sha256": "36e532f71f493ffbf4d82e3593341dee3fe82a274dbb1fedd9008dbec53ee0e2"

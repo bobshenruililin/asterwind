@@ -1,14 +1,14 @@
 {
-  "cover": "brush",
+  "cover": "performanceStable",
   "setup": [
     {
-      "asset": "brush",
+      "asset": "performanceBuckle",
       "ms": 4500,
       "camera": [
         1,
         50,
         50,
-        1.025,
+        1,
         50,
         50
       ],
@@ -21,10 +21,27 @@
           "id": "setup-00-00"
         }
       ],
-      "alt": "A brush slips beside Julian’s cracked paper rib."
+      "alt": "Julian loses his grip and the canopy buckles.",
+      "frames": [
+        {
+          "at": 0,
+          "asset": "performanceStable",
+          "alt": "Julian steadies the small paper canopy."
+        },
+        {
+          "at": 600,
+          "asset": "performanceSlip",
+          "alt": "Julian’s fingers slip away from the rib."
+        },
+        {
+          "at": 1000,
+          "asset": "performanceBuckle",
+          "alt": "The unsupported paper canopy buckles; Julian reaches for it."
+        }
+      ]
     },
     {
-      "asset": "left",
+      "asset": "performanceBuckle",
       "ms": 5800,
       "camera": [
         1,
@@ -47,7 +64,7 @@
       "slate": "03:14 · ARCHITECTURE STUDIO"
     },
     {
-      "asset": "offer",
+      "asset": "performanceOffer",
       "ms": 5800,
       "camera": [
         1,
@@ -209,7 +226,7 @@
       "alt": "The cracked seam requires more work before it can set."
     },
     {
-      "asset": "left",
+      "asset": "performanceOffer",
       "ms": 1800,
       "camera": [
         1,
@@ -224,6 +241,32 @@
     }
   ],
   "backup": [
+    {
+      "asset": "performanceGraspSpare",
+      "ms": 1100,
+      "frames": [
+        {
+          "at": 0,
+          "asset": "performanceReachSpare",
+          "alt": "Ren reaches for and takes the clean spare on Mara’s side of the table."
+        },
+        {
+          "at": 450,
+          "asset": "performanceGraspSpare",
+          "alt": "Ren reaches for and takes the clean spare on Mara’s side of the table."
+        }
+      ],
+      "camera": [
+        1,
+        50,
+        50,
+        1,
+        50,
+        50
+      ],
+      "lines": [],
+      "alt": "Ren reaches for and takes the clean spare on Mara’s side of the table."
+    },
     {
       "asset": "restOffer",
       "ms": 4800,
@@ -534,6 +577,32 @@
   ],
   "repair": [
     {
+      "asset": "performanceBraceOriginal",
+      "ms": 1100,
+      "frames": [
+        {
+          "at": 0,
+          "asset": "performanceReachOriginal",
+          "alt": "Ren reaches toward Julian’s original and braces its damaged rib."
+        },
+        {
+          "at": 450,
+          "asset": "performanceBraceOriginal",
+          "alt": "Ren reaches toward Julian’s original and braces its damaged rib."
+        }
+      ],
+      "camera": [
+        1,
+        50,
+        50,
+        1,
+        50,
+        50
+      ],
+      "lines": [],
+      "alt": "Ren reaches toward Julian’s original and braces its damaged rib."
+    },
+    {
       "asset": "offer",
       "ms": 3800,
       "camera": [
@@ -770,18 +839,18 @@
     }
   ],
   "decision": {
-    "asset": "left",
+    "asset": "performanceOffer",
     "alt": "Clean backup on the left, original pavilion on the right.",
     "prompt": "Where will you put the light?",
     "backup": {
       "label": "Fit the backup",
       "detail": "Mara’s pre-cut rib",
-      "asset": "left"
+      "asset": "performanceOffer"
     },
     "repair": {
       "label": "Repair together",
       "detail": "Julian’s original rib",
-      "asset": "right"
+      "asset": "performanceOffer"
     }
   },
   "endings": {
