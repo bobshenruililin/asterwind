@@ -13,12 +13,21 @@ const quiet={play(){},unlock(){},setEnabled(){},ambience(){},suspend(){},enabled
 const sound=window.AsterwindSound?.create(storage)||quiet;
 const wait=ms=>new Promise(r=>setTimeout(r,reduced?0:ms));
 const finished=a=>a?.finished?a.finished.catch(()=>{}):Promise.resolve();
+/* The held drink and its tag are reused for every drink. A scripted flight that ends with
+   fill:'forwards' would otherwise keep composing over the next cycle and leave a later drink
+   invisible, shrunken or displaced, so every cycle starts and ends by cancelling them. CSS-driven
+   animations (breathing, jolt) belong to classes and are left alone. */
+const scripted=a=>!(window.CSSAnimation&&a instanceof CSSAnimation)&&!(window.CSSTransition&&a instanceof CSSTransition);
+function settle(...els){for(const el of els)for(const a of el?.getAnimations?.()||[])if(scripted(a))a.cancel()}
+// Focus must never scroll the clipped stage: a focused element mid-flight would shift the world.
+const focusQuietly=el=>el?.focus({preventScroll:true});
 // Closure centre and neck height as fractions of the held drink, from the 960×2080 template.
 const CLOSURE={seam:[.19,.275],standup:[.095,.14],slides:[.23,.35],scope:[.13,.24],pixel:[.22,.29],ship:[.18,.26]};
 const OPEN_MS={cap:1050,tab:820,wax:900,swing:1000,crown:900,cork:1100};
 let state='idle',heldId=null,displayTimer=null;const memento={},rasters={};
 const order=D.DRINKS.map(d=>d.id),slot=id=>order.indexOf(id),btnFor=id=>document.querySelector('.drink[data-id="'+id+'"]');
 const root=document.documentElement,front=$('front'),glass=front.querySelector('.glass'),keys=[...front.querySelectorAll('.keylights i')];
+const soundBtn=$('sound'),soundHome=soundBtn.parentNode,soundAfter=soundBtn.nextSibling;
 
 /* ---- build the machine ---------------------------------------------------------------- */
 document.body.insertAdjacentHTML('afterbegin',Art.defs());
@@ -28,14 +37,17 @@ front.querySelector('.face-art').innerHTML=Art.machineFace(D.DRINKS);
 glass.insertAdjacentHTML('beforeend','<i class="fog"></i>');
 keys.forEach((k,i)=>{const [c,r]=Art.KEYS[i];Object.assign(k.style,{left:(918+c*94)/12+'%',top:(472+r*126)/20+'%'})});
 document.querySelectorAll('.motes i').forEach((m,i)=>{m.style.setProperty('--i',i);m.style.setProperty('--j',(i*7)%5)});
-function drinkMarkup(id,s,src){const d=D.byId[id];return Art.drink(d,{state:s,src:src||memento[id]||d.cameo.src,raster:rasters[id]&&(s==='sealed'?rasters[id]:{sealed:rasters[id][s]||rasters[id].sealed})})}
+function drinkMarkup(id,s,src){const d=D.byId[id];return Art.drink(d,{state:s,src:src||memento[id]||d.cameo.src,raster:Art.rasterFor(rasters[id],s)})}
 for(const b of document.querySelectorAll('.drink')){const id=b.dataset.id,i=slot(id),d=D.byId[id],e=stories[id];b.style.setProperty('--col',i%3);b.style.setProperty('--row',Math.floor(i/3));b.setAttribute('aria-label',d.name+'. '+(e?.title||''));b.querySelector('.drink-body').innerHTML=drinkMarkup(id,'sealed')}
 // Delivered art replaces a placeholder only after it has actually loaded.
 function swapIn(src,apply){if(!src)return;const img=new Image();img.onload=()=>apply(src);img.src=src}
 swapIn(MAN.machine?.face,src=>{front.querySelector('.face-art').innerHTML='<img src="'+esc(src)+'" alt="">'});
 swapIn(MAN.machine?.interior,src=>{front.querySelector('.interior').innerHTML='<img src="'+esc(src)+'" alt="">'});
 swapIn(MAN.machine?.side,src=>{$('side').querySelector('.side-plate').style.background='url("'+src+'") center/100% 100%'});
-for(const id of order){const r=MAN.drinks?.[id];swapIn(r?.sealed,src=>{rasters[id]={sealed:src,open:r.open,empty:r.empty};const b=btnFor(id);if(!b.classList.contains('dispensed'))b.querySelector('.drink-body').innerHTML=drinkMarkup(id,'sealed');renderRoof()})}
+// Drink art: every state slot is probed on its own; only slots that really loaded are used, and
+// Art.rasterFor decides whether the set is complete enough to replace the vector drink.
+const probe=src=>new Promise(res=>{if(typeof src!=='string'||!src){res(false);return}const img=new Image();img.onload=()=>res(true);img.onerror=()=>res(false);img.src=src});
+for(const id of order){const r=MAN.drinks?.[id]||{};Promise.all(Art.RASTER_STATES.map(s=>probe(r[s]).then(ok=>ok?[s,r[s]]:null))).then(list=>{const got=Object.fromEntries(list.filter(Boolean));if(!Art.rasterFor(got,'sealed'))return;rasters[id]=got;const b=btnFor(id);if(!b.classList.contains('dispensed'))b.querySelector('.drink-body').innerHTML=drinkMarkup(id,'sealed');if(state==='idle')renderRoof()})}
 const portraitPlate=()=>matchMedia('(max-aspect-ratio: 4/5)').matches;
 swapIn(portraitPlate()?MAN.corridor?.portrait:null,src=>{document.querySelector('.corridor-plate').src=src});
 swapIn(portraitPlate()?MAN.corridor?.portraitDawn:MAN.corridor?.dawn,src=>{const p=document.querySelector('.dawn-plate');p.src=src;p.hidden=false});
@@ -64,7 +76,7 @@ for(const b of document.querySelectorAll('.drink')){
  b.addEventListener('pointerenter',e=>{show();if(e.pointerType==='mouse'&&performance.now()-lastTick>140){lastTick=performance.now();sound.play('hover')}});b.addEventListener('pointerleave',hide);
  b.addEventListener('focus',()=>{show();if(b.matches(':focus-visible'))attend(b)});b.addEventListener('blur',hide);
  b.onclick=()=>dispense(id);
- b.addEventListener('keydown',e=>{const step={ArrowRight:1,ArrowLeft:-1,ArrowDown:3,ArrowUp:-3}[e.key];if(!step)return;e.preventDefault();const next=order[(i+step+6)%6];btnFor(next)?.focus()});
+ b.addEventListener('keydown',e=>{const step={ArrowRight:1,ArrowLeft:-1,ArrowDown:3,ArrowUp:-3}[e.key];if(!step)return;e.preventDefault();const next=order[(i+step+6)%6];focusQuietly(btnFor(next))});
 }
 
 /* ---- dispense: press, coil, fall, catch ------------------------------------------------- */
@@ -84,13 +96,16 @@ async function dispense(id){
  const from=b.querySelector('.drink-body').getBoundingClientRect();b.classList.remove('falling');b.classList.add('dispensed');keys[i].classList.remove('lit');
  await showHeld(id,{from});
 }
-function tagString(){const btn=$('open-drink'),tag=$('tag');if($('held').hidden)return;const r=btn.getBoundingClientRect(),t=tag.getBoundingClientRect(),[,neck]=CLOSURE[heldId]||[.2,.28];const x1=r.left+r.width*.5,y1=r.top+r.height*neck,x2=t.left+t.width*.5,y2=t.top+16;$('held').querySelector('.tag-string path').setAttribute('d',`M${x1} ${y1} Q${(x1+x2)/2} ${Math.max(y1,y2)+40} ${x2} ${y2}`)}
+// The tag hangs from the neck, but its height comes from its words: on a short screen it lifts
+// itself just enough to stay whole (layout box, so its swing and turn never change the measure).
+function fitTag(){const tag=$('tag');tag.style.removeProperty('--lift');const lift=Math.max(0,Math.min(tag.offsetTop+tag.offsetHeight-(innerHeight-14),tag.offsetTop-64));if(lift>0)tag.style.setProperty('--lift',lift.toFixed(0)+'px')}
+function tagString(){const btn=$('open-drink'),tag=$('tag');if($('held').hidden)return;fitTag();const r=btn.getBoundingClientRect(),t=tag.getBoundingClientRect(),[,neck]=CLOSURE[heldId]||[.2,.28];const x1=r.left+r.width*.5,y1=r.top+r.height*neck,x2=t.left+t.width*.5,y2=t.top+16;$('held').querySelector('.tag-string path').setAttribute('d',`M${x1} ${y1} Q${(x1+x2)/2} ${Math.max(y1,y2)+40} ${x2} ${y2}`)}
 function setTag(flipped){const tag=$('tag');tag.classList.toggle('flipped',flipped);$('flip-tag').setAttribute('aria-expanded',String(flipped));$('flip-tag').setAttribute('aria-label',flipped?'Turn the tag back over':'Turn the tag over to read the ingredients');$('tag-back').setAttribute('aria-hidden',String(!flipped));tag.querySelector('.tag-front').setAttribute('aria-hidden',String(flipped))}
 async function showHeld(id,{from=null,s='sealed',src=null,quietly=false}={}){
  const d=D.byId[id],e=stories[id]||{},held=$('held'),btn=$('open-drink'),[cy]=CLOSURE[id];
  heldId=id;$('held-title').textContent=e.title||d.name;$('held-arrival').textContent=e.arrival||'';$('ingredients').innerHTML=d.ingredients.map(x=>'<li>'+esc(x)+'</li>').join('');
- btn.style.setProperty('--cy',(cy*100)+'%');btn.setAttribute('aria-label','Open the '+d.name+' and begin '+(e.title||'the story'));btn.querySelector('.verb').textContent=d.verb;btn.querySelector('.held-art').innerHTML=drinkMarkup(id,s,src);btn.classList.remove('opening','idle');btn.removeAttribute('style');btn.style.setProperty('--cy',(cy*100)+'%');
- setTag(false);held.hidden=false;held.classList.remove('ready');$('stage3d').inert=true;
+ btn.style.setProperty('--cy',(cy*100)+'%');btn.setAttribute('aria-label','Open the '+d.name+' and begin '+(e.title||'the story'));btn.querySelector('.verb').textContent=d.verb;btn.querySelector('.held-art').innerHTML=drinkMarkup(id,s,src);btn.classList.remove('opening','idle');settle(btn,$('tag'));btn.removeAttribute('style');btn.style.setProperty('--cy',(cy*100)+'%');
+ setTag(false);held.hidden=false;dockSound(true);held.classList.remove('ready');$('stage3d').inert=true;
  await new Promise(r=>requestAnimationFrame(r));held.classList.add('show');tagString();
  if(from&&!reduced){
   const to=btn.getBoundingClientRect(),dx=(from.left+from.width/2)-(to.left+to.width/2),dy=(from.top+from.height/2)-(to.top+to.height/2),sc=Math.max(.06,from.width/to.height);
@@ -101,9 +116,14 @@ async function showHeld(id,{from=null,s='sealed',src=null,quietly=false}={}){
   await finished(tag.animate([{transform:'rotate(-30deg)'},{transform:'rotate(6deg)'},{transform:'rotate(-6deg)'},{transform:'rotate(-2deg)'},{transform:'rotate(-4deg)'}],{duration:1300,easing:'ease-out'}));
  }else if(!quietly)sound.play('pickup');
  if(heldId!==id)return;
- held.classList.add('ready');btn.classList.add('idle');state='held';if(!quietly)btn.focus();$('status').textContent='';
+ held.classList.add('ready');btn.classList.add('idle');state='held';if(!quietly)focusQuietly(btn);$('status').textContent='';
 }
-function closeHeld(){const held=$('held');held.hidden=true;held.classList.remove('show','ready','flying-done');$('stage3d').inert=false;$('open-drink').removeAttribute('style');setTag(false);heldId=null}
+/* The sound control is the corridor's one persistent setting. The held view is a modal dialog,
+   so the control moves inside it while it is open (aria-modal hides everything outside) and
+   joins its Tab cycle; it returns to the corridor when the dialog closes. Same node, same place. */
+function dockSound(inHeld){if(inHeld){if(soundBtn.parentNode!==$('held'))$('held').appendChild(soundBtn)}else if(soundBtn.parentNode!==soundHome)soundHome.insertBefore(soundBtn,soundAfter)}
+const heldStops=()=>[$('open-drink'),$('flip-tag'),$('put-back'),soundBtn].filter(el=>el.isConnected&&!el.disabled&&el.closest('#held'));
+function closeHeld(){const held=$('held');held.hidden=true;dockSound(false);held.classList.remove('show','ready','flying-done');settle($('open-drink'),$('tag'));$('stage3d').inert=false;$('open-drink').removeAttribute('style');setTag(false);heldId=null}
 function restock(id,{animate=true}={}){const b=btnFor(id);if(!b)return;b.classList.remove('dispensed','falling','restock');b.querySelector('.drink-body').innerHTML=drinkMarkup(id,'sealed',D.byId[id].cameo.src);if(animate&&!reduced){void b.offsetWidth;b.classList.add('restock');setTimeout(()=>b.classList.remove('restock'),900)}}
 
 /* ---- open: the closure, a quiet beat, then the label becomes the film --------------------- */
@@ -126,14 +146,14 @@ async function putBack(){
  if(state!=='held')return;state='putting';const id=heldId,btn=$('open-drink');
  $('held').classList.remove('ready','show');sound.play('putback');
  if(!reduced)await finished(btn.animate([{transform:'none',opacity:1},{transform:'translateY(36%) scale(.55) rotate(8deg)',opacity:0}],{duration:460,easing:'cubic-bezier(.5,0,.8,.4)',fill:'forwards'}));
- closeHeld();restock(id);sound.play('restock');lockShelf(false);state='idle';idleDisplay();btnFor(id)?.focus();
+ closeHeld();restock(id);sound.play('restock');lockShelf(false);state='idle';idleDisplay();focusQuietly(btnFor(id));
 }
 
 /* ---- the way back: your last frame folds into the label, the empty finds the roof ------- */
 async function returned(id,{lastFrame=null,finished:ended=false}={}){
  sound.ambience(true,1.8);
  const had=state==='story'&&heldId===id&&!$('held').hidden;
- if(!had){closeHeld();order.forEach(x=>restock(x,{animate:false}));setNight();renderRoof();lockShelf(false);state='idle';idleDisplay();btnFor(id)?.focus();return}
+ if(!had){closeHeld();order.forEach(x=>restock(x,{animate:false}));setNight();renderRoof();lockShelf(false);state='idle';idleDisplay();focusQuietly(btnFor(id));return}
  state='returning';lockShelf(true);
  const d=D.byId[id],src=lastFrame?.src||d.cameo.src,btn=$('open-drink');
  btn.querySelector('.held-art').innerHTML=drinkMarkup(id,'open',src);btn.classList.remove('opening');
@@ -148,7 +168,7 @@ async function returned(id,{lastFrame=null,finished:ended=false}={}){
  if(ended){memento[id]=src;await toRoof(id)}else await sink(id);
  closeHeld();restock(id);setNight();lockShelf(false);state='idle';
  if(ended){setDisplay(clock(),true);if(done().length===6)sound.play('dawn')}else idleDisplay();
- btnFor(id)?.focus();
+ focusQuietly(btnFor(id));
 }
 async function toRoof(id){
  renderRoof();const li=$('roof').querySelector('li[data-id="'+id+'"]');if(!li)return;li.style.visibility='hidden';
@@ -170,7 +190,7 @@ document.addEventListener('visibilitychange',()=>sound.suspend(document.hidden))
 document.addEventListener('keydown',e=>{
  if(!$('held').hidden&&state==='held'){
   if(e.key==='Escape'){e.preventDefault();putBack();return}
-  if(e.key==='Tab'){const f=[$('open-drink'),$('flip-tag'),$('put-back')],i=f.indexOf(document.activeElement);e.preventDefault();f[(i+(e.shiftKey?-1:1)+f.length)%f.length].focus()}
+  if(e.key==='Tab'){const f=heldStops(),i=f.indexOf(document.activeElement);e.preventDefault();focusQuietly(f[i<0?0:(i+(e.shiftKey?-1:1)+f.length)%f.length])}
  }else if(e.key==='Escape'&&$('cabinet').classList.contains('turned')&&state==='idle'){e.preventDefault();window.__dispenser.turn()}
 });
 addEventListener('resize',()=>{tagString()});
@@ -180,6 +200,6 @@ if(window.__dispenser.state.screen)state='story';
 
 window.AsterwindJourney={returned,
  storyEnded(){},
- turned(on){sound.play('turn');if(on){setTimeout(()=>{($('mechanism').querySelector('.paper-fold:not(:disabled)')||$('turn-back')).focus()},reduced?0:700)}else $('turn').focus()},
+ turned(on){sound.play('turn');if(on){setTimeout(()=>{focusQuietly($('mechanism').querySelector('.paper-fold:not(:disabled)')||$('turn-back'))},reduced?0:700)}else focusQuietly($('turn'))},
  get state(){return{state,heldId,night:done().length,sound:sound.enabled,memento:{...memento}}},dispense,openHeld,putBack};
 })();

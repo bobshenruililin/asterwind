@@ -114,6 +114,20 @@ const PARTS={
  }
 };
 
+/* Which delivered raster draws a drink in a given state, from the slots that actually loaded.
+   Raster art is all-or-nothing for the shelf and the hand: sealed and open must both have loaded,
+   so a drink never switches style mid-ritual and never shows its closure again once opened. In
+   raster mode the sealed art carries the open art as a hidden next layer, revealed by the opening
+   ritual. An empty uses its own raster when it loaded and otherwise the vector empty, never a full
+   sealed bottle. Anything else keeps the code-native vector art. */
+const RASTER_STATES=['sealed','open','empty'];
+function rasterFor(loaded,state){
+ if(!loaded||typeof loaded.sealed!=='string'||typeof loaded.open!=='string')return null;
+ if(state==='sealed')return{base:loaded.sealed,next:loaded.open};
+ if(state==='open')return{base:loaded.open};
+ if(state==='empty')return typeof loaded.empty==='string'?{base:loaded.empty}:null;
+ return null;
+}
 function drink(d,{state='sealed',src=null,raster=null}={}){
  const p=PARTS[d.id],u='aw'+(++serial),clip=u+'c',body=u+'b';
  const x={...d,_src:src,_clip:clip};
@@ -122,8 +136,9 @@ function drink(d,{state='sealed',src=null,raster=null}={}){
  const fizz=p.fizz?`<g class="fizz">${bubbles(12,d.id.length*17,p.fizz[0],p.fizz[1],p.fizz[2],p.fizz[3])}</g>`:'';
  const vector=`<path d="${p.body}" transform="translate(16 14)" fill="#0a0910" opacity=".38"/><path d="${p.body}" fill="${p.glass}"/>${liquid}${p.over?`<g clip-path="url(#${body})">${p.over}</g>`:''}${p.lip}${p.label(x)}<g clip-path="url(#${body})">${light}<path d="${p.body}" fill="url(#aw-grain)" opacity=".35"/></g><path d="${p.body}" fill="none" stroke="#120f16" stroke-opacity=".55" stroke-width="5"/>`;
  // Delivered art has a transparent cameo hole; the film frame sits behind it.
- const art=raster?`${cameo(x,src,clip).replace('class="cameo-frame"','class="cameo-frame" opacity="0"')}<image class="raster raster-sealed" href="${esc(raster.sealed)}" x="0" y="0" width="960" height="2080"/>${raster.open?`<image class="raster raster-open" href="${esc(raster.open)}" x="0" y="0" width="960" height="2080"/>`:''}`:vector+(state==='sealed'?p.closure:p.opened);
- return `<svg class="drink-art" data-drink="${d.id}" data-state="${state}" data-closure="${d.closure}" viewBox="${DRINK_VIEW}" aria-hidden="true" focusable="false"><defs><clipPath id="${body}"><path d="${p.body}"/></clipPath></defs><ellipse class="contact" cx="480" cy="2002" rx="250" ry="20" fill="#05060a" opacity=".55"/>${art}${state!=='empty'?fizz:''}<g class="sparkle"><circle cx="${p.mouth?480:480}" cy="${p.mouth||700}" r="0" fill="#fff"/></g></svg>`;
+ const vectorState=state==='sealed'?p.closure:p.opened;
+ const art=raster?.base?`${cameo(x,src,clip).replace('class="cameo-frame"','class="cameo-frame" opacity="0"')}<image class="raster" href="${esc(raster.base)}" x="0" y="0" width="960" height="2080"/>${raster.next?`<image class="raster raster-next" href="${esc(raster.next)}" x="0" y="0" width="960" height="2080"/>`:''}`:vector+vectorState;
+ return `<svg class="drink-art" data-drink="${d.id}" data-state="${state}" data-art="${raster?.base?'raster':'vector'}" data-closure="${d.closure}" viewBox="${DRINK_VIEW}" aria-hidden="true" focusable="false"><defs><clipPath id="${body}"><path d="${p.body}"/></clipPath></defs><ellipse class="contact" cx="480" cy="2002" rx="250" ry="20" fill="#05060a" opacity=".55"/>${art}${state!=='empty'?fizz:''}<g class="sparkle"><circle cx="${p.mouth?480:480}" cy="${p.mouth||700}" r="0" fill="#fff"/></g></svg>`;
 }
 
 /* --- the machine (1200×2000 template) ---------------------------------------------------- */
@@ -200,5 +215,5 @@ function defs(){
  <pattern id="aw-grain" width="48" height="48" patternUnits="userSpaceOnUse">${(()=>{const r=rand(3);let s='';for(let i=0;i<46;i++)s+=`<rect x="${(r()*48).toFixed(1)}" y="${(r()*48).toFixed(1)}" width="${(1+r()*2.4).toFixed(1)}" height="${(1+r()*1.6).toFixed(1)}" fill="${r()>.5?'#fff':'#000'}" opacity="${(.06+r()*.12).toFixed(2)}"/>`;return s})()}</pattern>
  </defs></svg>`;
 }
-return{defs,drink,machineFace,machineBack,coilsFront,coverBox,CELLS,KEYS,PLATE,DRINK_VIEW,PARTS};
+return{defs,drink,rasterFor,RASTER_STATES,machineFace,machineBack,coilsFront,coverBox,CELLS,KEYS,PLATE,DRINK_VIEW,PARTS};
 });
