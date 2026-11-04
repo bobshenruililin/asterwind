@@ -10,9 +10,11 @@ const IDS=['seam','standup','slides','scope','pixel','ship'];
 // Both allowed outcomes per story (anthology/registry.json), as the button each story uses.
 const OUTCOMES={seam:['backup','repair'],standup:['round','slips'],slides:['microphone','notebook'],scope:['extend','return'],pixel:['lower','connect'],ship:['live','rehearsal']};
 const BUTTON={'scope:return':'return-slot'};
-const report={started:new Date().toISOString(),base:BASE,results:[]};
+// ART_MANIFEST=<json> runs every suite against a candidate art manifest (nothing is committed).
+const CANDIDATE=process.env.ART_MANIFEST?JSON.parse(fs.readFileSync(process.env.ART_MANIFEST,'utf8')):null;
+const report={started:new Date().toISOString(),base:BASE,candidate:process.env.ART_MANIFEST||null,results:[]};
 const note=(name,ok,detail={})=>{report.results.push({name,ok:!!ok,...detail});console.log((ok?'PASS':'FAIL')+': '+name+(detail.info?' — '+detail.info:''))};
-async function open(browser,{w=1440,h=900,mobile=false,reduced=false,storage=null,blockStorage=false,url=BASE,manifest=null}={}){
+async function open(browser,{w=1440,h=900,mobile=false,reduced=false,storage=null,blockStorage=false,url=BASE,manifest=CANDIDATE}={}){
  const ctx=await browser.newContext({viewport:{width:w,height:h},isMobile:mobile,hasTouch:mobile,reducedMotion:reduced?'reduce':'no-preference'});
  // Seed once: an init script runs on every navigation, and a reload must keep what the visit saved.
  if(storage)await ctx.addInitScript(s=>{try{for(const [k,v] of Object.entries(s))if(localStorage.getItem(k)===null)localStorage.setItem(k,v)}catch{}},storage);
@@ -125,10 +127,12 @@ const SUITES={
    await until(page,()=>AsterwindJourney.state.state==='idle',null,20000);
    const t0=Date.now(),frames=[];
    for(const [ms,name] of reduced?[[300,'rest']]:[[300,'tube'],[2600,'draining'],[7600,'morning']]){await page.waitForTimeout(Math.max(0,ms-(Date.now()-t0)));await shot(page,`22-finale${tag}-${name}`);frames.push(await page.evaluate(()=>({run:document.getElementById('lobby').classList.contains('finale-run'),morning:AsterwindJourney.state.morning})))}
-   const after=await page.evaluate(()=>({status:document.getElementById('status').textContent,clock:document.getElementById('display-text').textContent,roof:document.querySelectorAll('#roof li svg[data-state="empty"]').length,lamp:+getComputedStyle(document.querySelector('.lamp-off')).opacity,doorLight:+getComputedStyle(document.querySelector('.door-light')).opacity}));
+   // With a dawn plate the painted light carries the change; otherwise the coded shade does.
+   const light=()=>{const plate=document.getElementById('lobby').classList.contains('has-dawn-plate');return{plate,lamp:+getComputedStyle(document.querySelector(plate?'.dawn-plate':'.lamp-off')).opacity}};
+   const after=await page.evaluate(l=>({status:document.getElementById('status').textContent,clock:document.getElementById('display-text').textContent,roof:document.querySelectorAll('#roof li svg[data-state="empty"]').length,...eval(l)(),doorLight:+getComputedStyle(document.querySelector('.door-light')).opacity}),'('+light+')');
    note(`finale${tag}: sixth real ending → tube out, lamp drains, morning; announced; clock 06:02`,!before.morning&&before.clock==='05:31'&&frames.at(-1).morning&&after.status.startsWith('Morning.')&&after.clock==='06:02'&&after.roof===6&&after.lamp>.95&&after.doorLight<.05,{info:JSON.stringify({before,frames,after})});
    await page.reload();await page.waitForFunction(()=>window.AsterwindJourney);await page.waitForTimeout(400);
-   const reload=await page.evaluate(()=>({morning:AsterwindJourney.state.morning,run:document.getElementById('lobby').classList.contains('finale-run'),lamp:+getComputedStyle(document.querySelector('.lamp-off')).opacity}));
+   const reload=await page.evaluate(l=>({morning:AsterwindJourney.state.morning,run:document.getElementById('lobby').classList.contains('finale-run'),...eval(l)()}),'('+light+')');
    note(`finale${tag}: a later visit opens at morning without replaying`,reload.morning&&!reload.run&&reload.lamp>.95,{info:JSON.stringify(reload)});
    await toHeld(page,'seam');note(`finale${tag}: the machine still works at morning`,heldOk(await heldLook(page)));
    note(`no console errors (finale${tag})`,errors.length===0,{info:errors.join(' | ')});await ctx.close();

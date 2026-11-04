@@ -19,7 +19,8 @@ window.ASTERWIND_ART={
   pixel:{body:null,opened:null,empty:null,parts:{crown:null}},
   ship:{body:null,opened:null,empty:null,parts:{cork:null,string:null}}
  },
- corridor:{portrait:null,dawn:null,portraitDawn:null},     // ART-AH-03
+ // ART-AH-03a accepted as a candidate 5 Nov (registers 0,0 px with the night plate; provenance pending).
+ corridor:{portrait:null,dawn:'art/corridor/corridor-dawn.webp',portraitDawn:null},
  hand:{back:null,front:null},                              // ART-AH-04 (optional, not wired)
  clips:{}                                                  // ART-AH-06: { seam: {src, mime, still} } once approved
 };

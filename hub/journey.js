@@ -61,8 +61,12 @@ async function loadLayers(id){
 }
 order.forEach(loadLayers);
 const portraitPlate=()=>matchMedia('(max-aspect-ratio: 4/5)').matches;
-swapIn(portraitPlate()?MAN.corridor?.portrait:null,src=>{document.querySelector('.corridor-plate').src=src});
-swapIn(portraitPlate()?MAN.corridor?.portraitDawn:MAN.corridor?.dawn,src=>{const p=document.querySelector('.dawn-plate');p.src=src;p.hidden=false});
+// The dawn plate must register with whichever night plate is actually showing: a portrait crop
+// pairs with its portrait dawn; otherwise (including portrait screens showing the landscape plate)
+// the landscape dawn is used. With a plate, the finale is a real cross-fade of painted light.
+const loadDawn=src=>swapIn(src,s=>{const p=document.querySelector('.dawn-plate');p.src=s;p.hidden=false;$('lobby').classList.add('has-dawn-plate')});
+const portraitNight=portraitPlate()?MAN.corridor?.portrait:null;
+if(portraitNight)probe(portraitNight).then(ok=>{if(ok){document.querySelector('.corridor-plate').src=portraitNight;loadDawn(MAN.corridor?.portraitDawn)}else loadDawn(MAN.corridor?.dawn)});else loadDawn(MAN.corridor?.dawn);
 
 /* ---- night, clock and the roof ---------------------------------------------------------- */
 const done=()=>{const c=window.__dispenser.state.progress?.completed||{};return order.filter(id=>c[id]?.length)};

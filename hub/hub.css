@@ -16,7 +16,12 @@ button:focus-visible{outline:3px solid #fff4d0;outline-offset:4px}
 #lobby{position:fixed;inset:0;overflow:hidden;overflow:clip;background:#29393d}
 #world{position:absolute;inset:-3%;transform:translate3d(calc(var(--px)*-14px),calc(var(--py)*-7px),0);transition:transform .9s cubic-bezier(.2,.7,.2,1)}
 .corridor-plate{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:18% 62%;filter:saturate(calc(1 - var(--dawn)*.25)) brightness(calc(.96 + var(--dawn)*.08))}
-.dawn-plate{opacity:var(--dawn);transition:opacity 2.4s}
+/* Dawn plate (ART-AH-03a): only a hint of it through the night, so the lamp's pool keeps its warmth;
+   at the finale it takes over across the lamp-off beat. It replaces the coded shade and shaft. */
+.dawn-plate{opacity:calc(var(--dawn)*.36);transition:opacity 2.4s}
+#lobby.morning .dawn-plate{opacity:1;transition:opacity var(--lamp-t,0ms) ease-in-out}
+#lobby.has-dawn-plate .lamp-off,#lobby.has-dawn-plate .sunshaft{display:none}
+#lobby.has-dawn-plate .dawn{opacity:calc(var(--dawn)*.22)}
 @media(max-aspect-ratio:4/5){.corridor-plate{object-position:21% 62%}}
 .door-light{position:absolute;inset:0;background:radial-gradient(ellipse 34% 52% at 13% 70%,#ffb96a 0,#ff9f4a55 35%,transparent 70%);mix-blend-mode:screen;opacity:calc(.32 - var(--dawn)*.22);animation:lamp 7s ease-in-out infinite}
 @keyframes lamp{0%,100%{opacity:calc(.32 - var(--dawn)*.22)}47%{opacity:calc(.28 - var(--dawn)*.2)}50%{opacity:calc(.36 - var(--dawn)*.22)}53%{opacity:calc(.3 - var(--dawn)*.2)}}
@@ -35,6 +40,8 @@ button:focus-visible{outline:3px solid #fff4d0;outline-offset:4px}
 #lobby.morning .sunshaft{opacity:1;transform:none}
 #lobby.morning .door-light{animation:none;opacity:0;transition:opacity var(--lamp-t,0ms) ease-in}
 #lobby.morning .interior{filter:brightness(.5) saturate(.75);transition:filter .3s}
+/* The machine cools with the room (on the face layer: a filter on the 3D cabinet would flatten it). */
+#lobby.morning .face-art{filter:saturate(.8) brightness(.93);transition:filter var(--lamp-t,0ms) ease-in-out}
 #lobby.morning .glass .streak{opacity:0}
 #lobby.finale-run .interior{animation:tube-off var(--tube-t,700ms) steps(1) both}
 @keyframes tube-off{0%{filter:none}18%{filter:brightness(.55)}26%{filter:none}44%{filter:brightness(.6)}52%{filter:brightness(1.08)}70%,100%{filter:brightness(.5) saturate(.75)}}

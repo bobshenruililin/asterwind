@@ -6,10 +6,10 @@ Branch `claude/awesome-hypatia-6bf97q` (Last Light on the Floor / After Hours di
 
 | # | ID | What | Tool | Status | Unblocks |
 | --- | --- | --- | --- | --- | --- |
-| 1 | ART-AH-00 | The existing cabinet material study, committed as is | — | requested | Registration and look test for ART-AH-01 |
+| 1 | ART-AH-00 | The existing cabinet material study, committed as is | — | **delivered (review WebP), screening** — original PNG transfer pending | Registration and look test for ART-AH-01 |
 | 2 | ART-AH-01 | Machine face, layered (1200×2000) | Image 2.5 | requested | The whole lobby's material read |
 | 3 | ART-AH-02 | 3:00 AM Cold Brew opening pilot: body, cap, two seal halves, remnants, empty | Image 2.5 | requested | The layered drink pipeline; then the other five |
-| 4 | ART-AH-03a | Dawn corridor plate registered to the night plate (1672×941) | Image 2.5 | requested (lower priority) | The dawn finale's end state; K-02's last frame |
+| 4 | ART-AH-03a | Dawn corridor plate registered to the night plate (1672×941) | Image 2.5 | **delivered, screened, integrated as candidate** (provenance pending) | The dawn finale's end state; K-02's last frame |
 | 5 | K-01 | The Seam: the label's still breathes into the film (silent, 4–6 s) | Kling | **proposed, decide together** | A living threshold into the flagship film |
 | 6 | K-02 | Dawn finale: last light leaves the floor (silent, 8–10 s) | Kling | **proposed, decide together**, needs ART-AH-03a | The ending of the whole night |
 
@@ -90,7 +90,7 @@ Every slot has a working placeholder, so nothing here blocks play. Exact timings
 
 ## ART-AH-03a · Dawn corridor plate (priority 4)
 
-- **Status:** requested (lower priority than 00–02)
+- **Status:** delivered `c57f8bf` (5 Nov, on `codex/art-ah-03a-dawn-review-20261104`), screened, **integrated as the dawn candidate** in `hub/art/manifest.js` (`hub/art/corridor/corridor-dawn.webp`). Provenance file not yet supplied — please add tool, date, prompt and references. Screening results in Responses below.
 - **Purpose and emotional role:** "Last Light on the Floor." All night, the doorway's amber lamp spills across the corridor floor. When the sixth story ends, that pool of light goes out and the first daylight crosses the same floor. This plate is the room after that moment: tired, quiet, a little hopeful. Same objects, different light.
 - **Asset:** `corridor-dawn.png`, **1672×941**, registered **pixel-for-pixel** with `hub/assets/corridor.webp` (the code cross-fades them; any shift reads as a jump).
 - **Slot:** `corridor.dawn` (and later `corridor.portraitDawn` if we make a portrait crop).
@@ -134,3 +134,13 @@ Planning only; each becomes a request after the pilot is accepted.
 ## Responses
 
 _dot: reply below or in the delivery's `provenance.md`. I'll record registration and browser results here with the exact commit._
+
+### ART-AH-03a screening (5 Nov, Claude)
+
+- **File:** `corridor-dawn.webp`, 1672×941 RGB WebP, 337,874 bytes (≤ 350 KB), SHA-256 `c821e2151fa2f06aa2c4ce35e9379f5c3abe43e8a7f9843daa2f88228a847d83`.
+- **Registration with `hub/assets/corridor.webp`:** best-matching shift **0, 0 px** in all seven regions measured (door frame, coat, pinned drawing, baseboard, lamp, door knob, floor papers; gradient correlation, ±8 px search). A 50% cross-fade shows no edge doubling. **Pass.**
+- **Look:** lamp off, cool daylight through the window and the door's panes, a pale shaft across the floor, the wall lifted toward grey-lilac; every object in place. Matches the brief.
+- **How it is used:** through the night it shows only faintly (up to 30% at five stories), so the lamp's pool keeps its warmth; at the sixth real ending it takes over across the lamp-off beat (4.2 s), replacing the coded shade and shaft. Portrait screens showing the landscape plate now get it too (a pairing bug fixed in this change).
+- **Browser:** with the plate, `finale,dawn` 12/12 (candidate manifest), then wired in: `finale,mobile,offline,routes` **44/44** (Chromium 153; offline export embeds it as a data URL with no network requests).
+- **Open:** provenance file; a portrait dawn twin is not needed while portrait shows the landscape plate.
+
