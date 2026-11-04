@@ -1,3 +1,9 @@
+## Current film pilot: The Seam
+
+The latest film-first work now lives in [`film/`](film/README.md). Open `film/index.html`, or build an offline HTML with `python3 film/build.py`. It preserves the delivered V5 story, 14 runtime frames, 28 optional timing voices, one untimed choice and two distinct consequences. The older nine-scenario source-grounded experience below remains intact in `app/`.
+
+This is a playable illustrated animatic, not completed character animation. Read [fresh verification and limits](film/REPOSITORY-QA.md) before presenting. Authoring repository remains private; this integration does not publish a new site.
+
 # Asterwind
 
 A private, still-first paper theatre for leadership conversations: nine situations, 36 source-grounded responses, and small moments of reflection. The approved full-bleed paper stage, Kalam handwriting, sticker-note choices and corner controls are preserved.
@@ -64,3 +70,4 @@ The approved build was exercised in a real browser on 31 October 2026: all 36 br
 ## Private project and rights
 
 The authoring repository must remain private. Bob has separately approved a public playable website containing the runtime app and its delivery assets. Production prompts, the source workbook, internal notes and private history are outside that publication scope. Creating a separate public export repository still needs specific approval; see the [handoff](docs/HANDOFF.md). Kalam carries its included SIL Open Font License. No new license is assigned to the remaining project material; see the provenance document.
+

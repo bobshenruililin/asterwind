@@ -1,0 +1,250 @@
+*Thinking...*
+
+> **Synthesizing Creative Directives**
+> 
+> I'm consolidating the latest feedback on the 3:00 AM seam and its lamp interaction. My focus is on ensuring these elements are seamlessly integrated and impactful, reflecting the overall narrative vision.
+> 
+> **Directing Ambitious Vision**
+> 
+> I'm channeling my inner creative director, focusing on the core of *Asterwind's* narrative. My aim is to define an extraordinary experience that leverages the unique magic of paper, light, and physical objects, pushing the boundaries of what's possible while staying true to established character nuances.
+> 
+> **Refining Core Mechanics**
+> 
+> I'm refining the core interaction loop, ensuring the single consequential choice feels meaningful. My current thoughts are on how to present the two distinct paths and their genuine costs without overwhelming the viewer.
+> 
+> **Clarifying Collaborative Dynamics**
+> 
+> I'm distilling the core conflict around collaboration versus leadership. My thoughts now center on framing "The 3:00 AM Seam" pilot with Ren, Julian, and Mara, ensuring each character's motivations and the defensibility of their actions are crystal clear.
+> 
+> **Challenging Creative Assumptions**
+> 
+> I'm now focusing on separating the ambitious "dream version" from a pragmatic "first watchable version." My thoughts are on identifying essential assets for an initial prototype and defining clear, objective criteria for evaluating their success.
+> 
+> **Addressing Leadership Dilemmas**
+> 
+> I'm dissecting why past leadership games falter. My thoughts now center on how to avoid penalizing collaboration or making decisive action seem villainous within the narrative of "The 3:00 AM Seam."
+> 
+> **Recrafting Collaborative Stakes**
+> 
+> I'm focusing on Mara's actions at the spine. My thoughts now clarify that she's not being malicious but protecting her own work and Julian's reputation. She preemptively created a backup spine, making her intervention a pragmatic solution, not a power play.
+> 
+> **Prioritizing Collaborative Solutions**
+> 
+> I'm weighing the ramifications of different choices on Julian and Mara. My current focus is on how my decisions, like keeping Julian at the table, create a sense of relief but also subtle erasure for him, while validating Mara's protective instincts, even if it causes later issues.
+> 
+> **Moving Swing-Arm Lamp**
+> 
+> I'm focusing on the core interaction: the swing-arm drafting lamp. My thoughts are on how a simple shift of light dictates Julian's rest and Mara's showcase, avoiding precise dragging for a more theatrical paper-magic feel.
+> 
+> **Directing Interactive Narrative**
+> 
+> I'm exploring how to best represent player choice via the swing-arm lamp. My focus is on using its light to reveal individual character inner monologues and paper-layer secrets, making each decision deeply resonant.
+> 
+> **Distilling Key Insights**
+> 
+> I'm now processing the core takeaways regarding player emotions, understanding of leadership, and memorable elements for *The 3:00 AM Seam*. My focus is on the quiet intimacy of exhaustion and the nuanced cost of leadership decisions.
+> 
+> **Clarifying Character Motivations**
+> 
+> I'm analyzing the dramatic spine, focusing on the conflicting pressures on Julian, Mara, and Ren. My thoughts are currently on how Mara's actions are a protective measure for reliability, not malice, and how Ren's dilemma balances agency with team needs, making all choices defensible.
+> 
+> **Focusing on Audio and Visuals**
+> 
+> I'm now prioritizing audio feedback, emphasizing close-mic'd whispers and theatrical transitions. My focus is on capturing micro-movements in paper puppets and establishing essential visual assets for the characters and set.
+> 
+> **Testing Core Interactive Moment**
+> 
+> I'm concentrating on the swing-arm lamp interaction, deeming it the crucial 20-second prototype. My focus is on how its light shift across character faces and postures, leading to diverging table states, will prove the entire film's viability.
+> 
+
+
+As Creative Director, my first job is to protect you from making a polite classroom simulation. 
+
+Your professor has seen a hundred case studies where "good leadership" means listening nicely, building consensus, and watching everyone succeed together. Your fellow students have lived the messy reality of university group work—where deadlines are brutal, capacity is unequal, and saving a struggling teammate can actively punish a reliable one. 
+
+If *Asterwind* tells the room that collaboration is warm and taking over is cold, the room will nod, give you an A-, and forget it ten minutes later. If *Asterwind* makes them feel how **the exact same leadership choice can land as mercy to one person and betrayal to another**, nobody in that room will stop arguing about it when the lights come up.
+
+---
+
+### The Pilot Selection: *The 3:00 AM Seam*
+
+Looking across our concepts, we are locking **The 3:00 AM Seam**—the evolved, grounded core of *The Architect of Ghosts* and *The Glass Kite*. 
+
+**Why this one wins:**
+We are stripping out fantasy cliffs and clockwork birds and setting our paper theatre inside something every person in that room knows in their bones: **a university architecture studio at 3:14 AM, five hours before the wind-tunnel test.** 
+Yet the world itself—the drafting tables, the hoodies, the thermos cups, the characters’ faces, and the model they are building—is entirely crafted from tactile, layered, backlit paper. Because the setting is grounded in real university stakes while the medium is handmade paper, every tear, crease, and shadow carries double weight: it is both a literal model-making problem and a metaphor for how people hold up under pressure.
+
+#### Three Assumptions We Are Throwing Out Today
+1. **The "Secretly Right Answer" Trap:** Repairing the broken piece together will *not* secretly save the project. Taking over will *not* make you a monster. Both choices will break something valuable.
+2. **The "AI Over-Animation" Trap:** Kling is brilliant at subtle atmospheric motion, shifting light, and micro-expressions, and terrible at complex multi-character choreography. We will direct like stop-motion veterans: locked cameras, shallow macro depth-of-field, and stillness where a two-degree head drop breaks your heart.
+3. **The "Recut Time Paradox":** In earlier drafts, taking over meant magically rebuilding a piece from scratch with no time left. We fix that cleanly: **Mara already laser-cut a clean backup spine at midnight** because she saw Julian struggling. The choice isn't between magic and failure; it’s between installing a clean replacement while Julian sleeps, or spending the last hours splinting Julian’s fragile original together.
+
+---
+
+### 1. What the Audience Should Feel, Understand, and Remember
+
+* **What they will FEEL:** The claustrophobic intimacy of 3:00 AM exhaustion—that heavy, fluorescent-lit quiet where nobody is a villain, everyone is frayed, and you realize that as the lead, **you cannot protect everyone from the cost of the morning.**
+* **What they will UNDERSTAND:** Leadership is not a binary between "empathy" and "results." It is the stewardship of unequal burdens. Specifically:
+  * Taking over from a drowning teammate can be an act of genuine protection—yet it simultaneously brings **relief and quiet erasure**.
+  * Insisting on repairing work together preserves inclusion—yet it can **exhaust the struggling person further and unfairly tax the reliable teammate** whose own success depends on that joint holding.
+* **What they will REMEMBER:** The physical act of swinging the warm architect’s lamp toward one side of the table, watching the other side fall into cold blue shadow, and hearing what each teammate silently carried inside their chest during the wind test.
+
+---
+
+### 2. The Dramatic Spine & Why Both Actions Are Defensible
+
+#### The Setup & The Triangle of Stakes
+Three university students—**Ren** (player/project lead), **Julian**, and **Mara**—are assembling the *Asterwind Pavilion*, a delicate cantilevered paper canopy meant to open automatically when the morning wind-tunnel fan hits it at 8:00 AM.
+
+* **Julian’s Stake (Dignity vs. Drowning):** Julian designed the central load-bearing rib. He has been at the table for sixteen hours. The main glue seam along his rib has buckled, and he has crudely patched it twice with heavy brown parcel strips. His paper fingers are visibly trembling. He is caught in a spiral of perfectionism and panic—desperately wanting his work to matter, yet secretly praying someone will let him stop.
+* **Mara’s Stake (Legitimate Reliability):** Mara is not an arrogant perfectionist. She spent three weeks building the delicate kinetic louvres that sit *directly on top* of Julian’s rib—and she is applying for the department’s paid fellowship using footage from tomorrow’s test. If Julian’s rib flexes by even two millimeters under the wind load, *her* louvres will jam. At midnight, seeing Julian drowning, she quietly pre-cut a clean, stable backup rib from heavy cardstock. She needs a leader who won't sacrifice her three weeks of disciplined work on the altar of making Julian feel included.
+* **Ren’s Stake (The Leader’s Dilemma):** You stand at the center of the table. It is 3:14 AM. You have ninety minutes before the glue must cure.
+
+#### The 4-Beat Dramatic Spine (3 Minutes, 30 Seconds)
+1. **Beat 1: The Stress Test (0:00–1:00):** Ren and Mara dry-fit the canopy onto Julian’s central rib. Under the gentle draft of a small desk fan, the seam visibly buckles with a dry *crackle*, jamming Mara’s upper louvres. Julian reaches out to patch it again; his hand shakes so badly he drops the glue brush.
+2. **Beat 2: The Quiet Reckoning (1:00–1:45):** Mara steps in—not with anger, but with urgent honesty. She pulls out the pre-scored backup rib she cut earlier. *"Ren, if that seam flexes in the tunnel, my entire canopy locks up. I need that test footage. Let Julian sleep on the bench—you and I can swap in the clean backup in forty minutes."* Julian looks at the table: *"I can splint it. If we double-laminate the seam together right now, it stays my spine. Just... don't throw my week in the bin."*
+3. **Beat 3: The Lamp Choice (1:45–2:15):** Neither teammate yells. Both look to you. You make the single physical choice at the drafting table.
+4. **Beat 4: The 8:00 AM Wind Tunnel & Inner Worlds (2:15–3:30):** The morning test runs. No grade appears on screen. No professor lectures you. Instead, the mechanical wind hits the model, the physical consequence plays out in the paper structure and the posture of the three students, and the film pauses in a luminous final tableau where you can optionally inspect each character's inner state.
+
+#### Why Neither Path is "Correct"
+
+| Dimension | Path A: Install the Backup (Send Julian to Rest) | Path B: Splint the Seam Together (Keep Julian at the Table) |
+| :--- | :--- | :--- |
+| **Why It’s Defensible** | You protect reliability, honor Mara’s preparation, and mercifully pull a friend out of a spiral he can no longer productively survive. | You refuse to erase a struggling teammate's authorship, choosing shared ownership over pristine execution. |
+| **What Happens in the Wind Test** | The spine holds rock-steady. When the wind hits, Mara’s kinetic canopy unfolds like a glowing lotus. The model performs seamlessly. | The thick hand-splinted seam holds the structure upright, **but its added bulk jams half of Mara’s louvres.** The canopy opens halfway—lopsided, scarred, and trembling, yet standing. |
+| **The Cost to Julian** | **Relief & Erasure:** On the couch at 3:15 AM, his shoulders drop ten inches in pure relief. At 8:00 AM, watching a flawless model that contains zero percent of his hands, he stands half a step behind the table—grateful you saved him, quietly hollow that you didn't need him. | **Inclusion & Exhaustion:** He stays awake until 5:00 AM under your watchful eye. At 8:00 AM, his hand is on the table, proud his rib held—yet he carries the visible guilt of watching Mara’s jammed canopy fail because of his splint. |
+| **The Cost to Mara** | **Vindication & Distance:** She trusts your competence completely, though she quietly learns that when someone falls behind on your team, they get cut out of the frame. | **Grace Under Resentment:** She doesn't throw a tantrum. She stands professionally beside you as her half-jammed canopy shudders—quietly absorbing the career cost of *your* compassion toward Julian. |
+
+---
+
+### 3. The One Interaction Only This Story Could Have
+
+Forget dialogue trees, timers, and dragging tiny tools onto hitboxes. Our interaction uses the native language of paper theatre: **directing the light.**
+
+#### Core Choice Interaction: *The Swing-Arm Architect’s Lamp*
+Clamped to the center of the drafting table is an articulated brass-and-paper **Swing-Arm Lamp**—the sole warm light source in the dark studio. 
+* **Left side of the table:** Mara stands beside the clean, pre-scored backup spine and your assembly mat. Behind her, in the soft blue dark, is the studio bench.
+* **Right side of the table:** Julian sits hunched over his fractured, parcel-patched original rib.
+* **How it works:** The player simply moves the cursor (or touches/clicks) left or right to **swing the head of the lamp**. 
+  * **Hovering Left (Toward the Backup Spine):** The warm amber cone sweeps over the clean backup piece; backlit through the paper, you see a crisp, geometric shadow of the canopy opening cleanly. On the right, falling into cool indigo shadow, Julian’s puppet visibly exhales—his tense shoulders dropping as the spotlight leaves him.
+  * **Hovering Right (Over Julian’s Fractured Seam):** The warm amber cone pulls down low and tight over Julian’s trembling hands and the torn rib. Julian sits up, bracing himself; on the left, Mara’s backup piece falls into shadow and she slowly closes her calipers.
+  * **Locking the Choice:** Clicking (or holding for one beat) clicks the heavy brass lamp switch—*CLACK*—locking the light in place and triggering the transition into the night's work.
+
+#### Post-Choice Exploration: *The Shadowbox X-Ray*
+At the end of the 8:00 AM wind test, the image settles into a wide, breathing paper-theatre tableau of all three students watching the model in the wind. 
+* No "End Screen" appears. Instead, as the player moves the cursor over **Julian**, **Mara**, or **Ren**, a tight backstage pinpoint light illuminates their chest from behind.
+* Like a layered paper tunnel-book, the silhouette of their outer hoodie becomes translucent, revealing a small **interior paper vignette** inside their torso and playing a 2-sentence whispered inner monologue. 
+* You don't read a rubric about your leadership; you literally look through the paper grain of your team to hear how your single choice lived inside all three of them.
+
+---
+
+### 4. Directing Shots, Performances, Transitions, and Sound
+
+Because we are generating high-craft stills and animating selectively with **Kling**, we must direct *with* the medium rather than fighting it.
+
+#### Camera & Framing Rules
+* **The Lens Language:** Every shot should look like it was photographed on a real tabletop miniature stage using a **85mm macro lens at f/2.8**—crisp paper fibers and visible brass pin-joints on the subject, with the foreground proscenium arch and background studio shelves falling into creamy, tactile bokeh.
+* **2.5D Layering:** Keep characters at three-quarter profile or silhouette angles against strong rim light. Paper-sculpted faces look uncanny when turning 180 degrees in AI video, but look breathtakingly alive when catching side-light across folded cheek planes and layered hair.
+
+#### Directing Performances in Kling (Micro-Motion Over Macro-Action)
+Never ask Kling to animate a character walking across a room and picking up three props. Instead, use **6-second emotional loops and single-gesture transitions**:
+* **Exhaustion (Julian):** A slow, 3-second sink of the head into the collar; a subtle tremor in the paper fingers resting on the cutting mat.
+* **Urgent Restraint (Mara):** A sharp intake of breath where her chest rises, she glances from the broken seam to Ren, and taps her brass calipers once against the table.
+* **Wind Physics:** Let the environment carry the motion—tissue-paper wind ribbons streaming past the model, warm subsurface light flickering through vellum louvres.
+
+#### Practical Transitions
+Never use digital cross-dissolves. Use **theatrical lighting transitions**:
+* To jump from 3:14 AM to 8:00 AM, the Swing-Arm Lamp switches off (*click—blackout*), and two seconds later, cool morning daylight floods horizontally through the studio blinds, raking across the finished model.
+
+#### Sound Design (Carrying 70% of the Emotion)
+* **Paper Foley:** Every movement of a character has a subtle material texture—soft cardstock rustle for clothing, dry parchment creaks when Julian’s seam flexes, the crisp *snick* of Mara’s calipers.
+* **The Room Tone:** At 3:00 AM, a low, hypnotic refrigerator/fluorescent hum and distant radiator ticks. At 8:00 AM, the deep, rising turbine whoosh of the wind-tunnel fan.
+* **Voice Direction:** Record the dialogue close to the mic, low and intimate, as if spoken by tired twenty-one-year-olds trying not to wake the building. No theatrical projecting.
+
+---
+
+### 5. The Canonical Asset Bible: What to Create First & How to Reuse It
+
+To keep visual consistency rock-solid across Kling generations and interactive states, we build a tight, modular asset kit first.
+
+#### A. Canonical Characters (Character Turnarounds & Expression Sheets)
+All three are university-age architecture students rendered as **dimensional cut-paper puppets** (layered archival watercolor paper for skin, textured charcoal/kraft cardstock for clothing, subtle copper-foil or vellum accents).
+
+1. **REN (The Lead / Player Avatar):**
+   * *Design:* Rolled sleeves, dark indigo cardstock overshirt, a thin **brass drafting scale** clipped to the breast pocket (catches the light to mark the leader).
+   * *Communicates:* Grounded, observant, caught in the middle.
+   * *Reuse:* Mostly framed from over-the-shoulder or three-quarter silhouette in the foreground; requires only 2 neutral/attentive upper-body poses and 1 foreground reaching hand for the lamp switch.
+2. **JULIAN (The Struggling Builder):**
+   * *Design:* Oversized, crumpled oatmeal-colored paper hoodie; smudge of graphite on his cheek; warm, slightly frayed paper edges around his hair and sleeves.
+   * *Communicates:* Earnestness, sensory overload, physical depletion.
+   * *Alternate States:* Needs two key upper-body states: **Frayed/Trembling** (3:00 AM table) and **Softened/Hollow** (Path A morning) vs. **Braced/Guilty Pride** (Path B morning).
+3. **MARA (The Reliable Specialist):**
+   * *Design:* Clean-cut olive and charcoal cardstock jacket, hair pulled back with a wooden pencil, precise geometric folds on her collar.
+   * *Communicates:* Competence, sleepless focus, high stakes—never villainous coldness.
+   * *Alternate States:* **Urgent Appeal** (3:00 AM), **Relieved/Open** (Path A morning), **Quietly Guarded/Professional** (Path B morning).
+
+#### B. The Modular Set (One Environment, Three Lighting States)
+* **The Studio Worktable & Wind Box:** A single wide master environment of a miniature architecture worktable flanked by a glass-sided wind-tunnel box on the right and a shadowy studio couch in the left background.
+* **Maximum Reuse:** We don't build separate rooms. By changing only the lighting pass on this single environment reference, we get:
+  1. *State 1 (3:14 AM):* Warm amber pool in the center, deep indigo corners.
+  2. *State 2 (Choice Left / Right):* Light cone shifted left or right (achievable by compositing or generating two matched lighting variations from the same base image).
+  3. *State 3 (8:00 AM Test):* Cool, dramatic horizontal dawn shafts cutting through paper Venetian blinds.
+
+#### C. Hero Objects (Close-Up Macro References)
+1. **The Asterwind Pavilion Model (Two States):**
+   * *3:00 AM Unassembled State:* Mara’s delicate translucent vellum canopy hovering above Julian’s central rib.
+   * *Path A Finished State:* Clean, geometric cardstock spine; vellum louvres wide open and glowing like a lantern in the wind.
+   * *Path B Finished State:* Thick, hand-wrapped parcel-paper splint around the central spine; half the vellum louvres open and glowing, the other half visibly pinched shut and rattling in the gale.
+2. **The Swing-Arm Architect’s Lamp:** Brushed brass joints and a cone shade lined with reflective gold paper.
+
+---
+
+### 6. Three Ambitious Signature Moments (And Which to Prototype First)
+
+1. **Moment 1: *The Backlit Fracture* (Visual Storytelling)**
+   * A macro close-up of Julian’s rib under the canopy. As the small desk fan spins up, warm light from beneath the glass cutting mat shines *through* the translucent paper seam—so the audience literally watches an amber crack widen inside the paper fibers while Mara’s upper louvres lock and shudder.
+2. **Moment 2: *The Swing of the Lamp* (The Interactive Crucible)**
+   * The wide two-shot across the table. As the player slides the lamp left or right, the light sweeps across the paper grain of the table, dynamically changing Julian’s and Mara’s silhouettes and triggering subtle posture shifts (Julian exhaling into the dark vs. bracing in the light).
+3. **Moment 3: *The Shadowbox X-Ray* (The Emotional Payoff)**
+   * In the final wind-tunnel shot, hovering over a quiet, guarded Mara (in Path B) or a relieved, sidelined Julian (in Path A) backlights their torso like a cut-paper lantern, revealing the hidden paper diorama inside their chest as their inner voice speaks.
+
+#### Prototype First: **Moment 2 (*The Swing of the Lamp*)**
+**Why:** This 20-second interactive window is the thesis of the entire project. If we can prove that swinging a single light source between two paper characters—paired with a shift in posture, room tone, and shadow—makes a viewer feel the knot in their stomach *before* any outcome even plays, we have already won the professor and the class. Technically, it also tests our core pipeline: matching character consistency across two lighting states and blending interactive web transitions with Kling loops.
+
+---
+
+### 7. Dream Version vs. First Watchable Version
+
+Before we generate thirty shots, let’s separate the finish line from the vertical slice so your team never gets bogged down in production swamp.
+
+| Feature | The First Watchable Version (Vertical Slice) | The Dream Version (Final 3.5-Min Experience) |
+| :--- | :--- | :--- |
+| **Scope & Runtime** | **90 seconds.** Focused entirely on the 3:00 AM crisis, the Lamp Choice, and the immediate 8:00 AM Wind-Test tableau. | **3.5 minutes.** Full build-up, tactile montage of the night's work, extended wind test, and interactive post-choice exploration. |
+| **Core Shots** | **6 Anchor Shots total** (Setup Wide, Macro Seam, Mara/Julian Two-Shot, Interactive Lamp Table, Path A Morning, Path B Morning). | **14–16 Shots**, including close-up reaction inserts, hands working together/apart, and layered parallax camera pushes. |
+| **Kling Animation** | Selective **4-second subtle loops** only on the Interactive Table shot and the two Morning Wind-Test endings; key framing shots held as rich parallax stills. | Full image-to-video performance passes on every dialogue beat and physical transition. |
+| **Post-Choice Inner World** | **Audio-only hover:** Hovering over Julian or Mara in the final frame dims the room light and plays their two-line inner monologue. | **Full Shadowbox X-Ray:** Hovering triggers a backlit cutout state inside their paper torso with animated interior vignettes. |
+
+---
+
+### 8. The First-Generation Asset Batch & Judging Criteria
+
+Do not build the interactive player or record final voiceover yet. Generate **this exact 6-asset batch first** to lock our visual bible and prove the pipeline.
+
+#### The 6-Asset Starter Batch
+1. **Asset 1 — Master Style & Environment Frame:** The 3:14 AM Architecture Studio Drafting Table (wide view, empty of characters, lit only by the central brass Swing-Arm Lamp, glass wind-tunnel box on the right, studio couch in deep blue shadow on the left).
+2. **Asset 2 — Character Sheet: Julian & Mara:** Side-by-side three-quarter bust portraits under the same warm studio lamp, establishing their exact paper textures, facial plane sculpting, and scale relative to each other.
+3. **Asset 3 — Hero Macro Shot:** Close-up of the *Asterwind Pavilion* model on the backlit cutting mat—showing Mara’s delicate translucent vellum canopy sitting atop Julian’s crumpled, parcel-patched central rib.
+4. **Asset 4A & 4B — The Interactive Crucible Pair (Matched Keyframes):**
+   * *4A (Lamp Left):* Warm cone illuminating Mara and the clean backup spine on the left; Julian in cool blue shadow on the right, shoulders slumped in relief.
+   * *4B (Lamp Right):* Warm cone illuminating Julian and the fractured rib on the right; Mara and the backup spine in shadow on the left.
+5. **Asset 5 — Path A Outcome Frame (8:00 AM):** Dawn light through blinds; the model’s vellum canopy fully open and glowing in the wind box; Mara leaning in beside Ren; Julian standing two steps back near the edge of the frame, hands in pockets, expression a mix of peace and absence.
+6. **Asset 6 — Path B Outcome Frame (8:00 AM):** Dawn light through blinds; the model’s central spine wrapped in a thick splint, half the canopy glowing open and half jammed shut; Julian’s hand bracing the table edge beside Ren; Mara standing composed with arms folded, watching her jammed mechanism.
+
+#### How We Judge This Batch (Pass / Fail Criteria)
+When you pin these six images on the wall, reject and regenerate any asset that fails these four tests:
+1. **The Finger-Tip Test (Tactility):** Can you visually tell the difference between three paper stocks in a single frame (e.g., translucent vellum canopy, toothy watercolor skin, heavy corrugated table edge)? If it looks like smooth Pixar 3D plastic or flat 2D vector illustration, it fails.
+2. **The Light-As-Story Test:** In Assets 4A and 4B, can a stranger who hasn't read the script immediately tell *who is being called upon and who is being rested* purely from where the lamp light falls?
+3. **The No-Villain Face Test:** Look at Mara in Asset 2 and Asset 6, and Julian in Asset 5. Does Mara look mean or smug? Does Julian look melodramatically weeping? If yes, dial it back. University students under pressure hold their feelings in their shoulders and eyes; restraint is what makes them feel real.
+4. **The Kling Stability Test:** Take Assets 4A and 6 into Kling for a 5-second test generation (subtle breathing for 4A; wind ribbons and trembling vellum louvres for 6). Do the paper creases hold their geometry without melting into realistic human skin?
+
+Once those six frames pass on the wall, we write the exact production prompts and dialogue script. Let’s build something that stays with that room long after the projector turns off.

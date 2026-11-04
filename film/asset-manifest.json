@@ -1,0 +1,227 @@
+[
+  {
+    "path": "assets/brush.webp",
+    "bytes": 199324,
+    "sha256": "c0a4012e5fee0f84be443b29cbc985f6aad538e091b88bfbeb30b90ec8601c90"
+  },
+  {
+    "path": "assets/decisionPortrait.webp",
+    "bytes": 340698,
+    "sha256": "9c1047175bd552329f8f0cf61ade754710e10e14dfcd6e10120d6aa603a58c92"
+  },
+  {
+    "path": "assets/fatigue.webp",
+    "bytes": 317524,
+    "sha256": "a1020a7eacd30ce4f41714cb75ce1264e54bda25ea4fb12fc7e0c791e6911e28"
+  },
+  {
+    "path": "assets/julian.webp",
+    "bytes": 248990,
+    "sha256": "8b4fd5b0eec6511d13c92c7f22fe65c5c3f9fd0631ccf0478d27a18082a4a9d0"
+  },
+  {
+    "path": "assets/left.webp",
+    "bytes": 220736,
+    "sha256": "ac3fb999f88860c48da72f11258d774fa1b5b79afc927e6a71e300bb04a79894"
+  },
+  {
+    "path": "assets/morningA.webp",
+    "bytes": 256410,
+    "sha256": "42eeccef58431beb6c05408783d2142923adb45f97bb29a2ccd064ebb01751f0"
+  },
+  {
+    "path": "assets/morningB.webp",
+    "bytes": 224632,
+    "sha256": "7fc940aec98c338c33b86e052962611649fea808f958a58cee454d4bcd466718"
+  },
+  {
+    "path": "assets/offer.webp",
+    "bytes": 189374,
+    "sha256": "c179c7491980d82326dfa3d082077482b846bbd351db6d7079dd83f2794a26f3"
+  },
+  {
+    "path": "assets/payoffA.webp",
+    "bytes": 333340,
+    "sha256": "8a998aa4f43673649cf71a07743f4680ac9da416e019e2b16d6ba45bca04e9f9"
+  },
+  {
+    "path": "assets/payoffB.webp",
+    "bytes": 341870,
+    "sha256": "657b0c213f2ce445cec48e57adb82eaa248f0301781eb41f034f4a9250308c4e"
+  },
+  {
+    "path": "assets/reference/people.webp",
+    "bytes": 243654,
+    "sha256": "36e532f71f493ffbf4d82e3593341dee3fe82a274dbb1fedd9008dbec53ee0e2"
+  },
+  {
+    "path": "assets/reference/seam.webp",
+    "bytes": 126056,
+    "sha256": "ee0e3142be4ef2e76e1130b255b7d6def44858a424752af42726aa581c885cab"
+  },
+  {
+    "path": "assets/reference/studio.webp",
+    "bytes": 145042,
+    "sha256": "12379fe64b8c35deb09c6a8b0d31911fe6cd50d3a41a63f06483501b8420d92a"
+  },
+  {
+    "path": "assets/restOffer.webp",
+    "bytes": 293802,
+    "sha256": "8eb7324ebaf230a6982719a2b2da6f91108803074c0bb94d5c31fc4ff9cc49bf"
+  },
+  {
+    "path": "assets/right.webp",
+    "bytes": 170956,
+    "sha256": "358e0d5934990a5e9e3cfbfd05ceea6a2a3c2791f6f951936d7848c86f1deddb"
+  },
+  {
+    "path": "assets/workA.webp",
+    "bytes": 229800,
+    "sha256": "e736ddc53f74831d253d0307bc19573f7a6efd079e6c4ee5485da783f19a050c"
+  },
+  {
+    "path": "assets/workB.webp",
+    "bytes": 298678,
+    "sha256": "c3d314db1287d41deb7178a39150d707acc5b53267673e9fa88643237783e4a6"
+  },
+  {
+    "path": "audio/backup-00-00.mp3",
+    "bytes": 25388,
+    "sha256": "4d7a29fe1bea862f4a39a13aec80bf3d1a526515a2f1efb6bc2e3243f2126bf2"
+  },
+  {
+    "path": "audio/backup-01-00.mp3",
+    "bytes": 25580,
+    "sha256": "5760a2a700fb39aad77e825e7b52db06a095b059542080705e3f865f5dec430e"
+  },
+  {
+    "path": "audio/backup-04-00.mp3",
+    "bytes": 13676,
+    "sha256": "51baf459d6410191ec352f8102a2e23450b9e339720939a4e68ae4a92ab7121f"
+  },
+  {
+    "path": "audio/backup-06-00.mp3",
+    "bytes": 5996,
+    "sha256": "744ca8d4ec091242c15afabac92f1a0255cbdabf7fff03ab9fe8d5ef2ef04f2c"
+  },
+  {
+    "path": "audio/backup-07-00.mp3",
+    "bytes": 8684,
+    "sha256": "3d50cf67d535064ddd6a5281a373fef1cfea726f6d4a0ab04f9022d3513aaf16"
+  },
+  {
+    "path": "audio/backup-08-00.mp3",
+    "bytes": 17900,
+    "sha256": "01720787ab38c351bb68f917a38998a3d267874a5bc9fcda8fd9ec1fbed4bf5e"
+  },
+  {
+    "path": "audio/backup-09-00.mp3",
+    "bytes": 10028,
+    "sha256": "2d4fdc502be5ddc48074b6470188955c4d4f978e8b0effe3d24e62d5c8db870e"
+  },
+  {
+    "path": "audio/backup-10-00.mp3",
+    "bytes": 28076,
+    "sha256": "bc7262e826887949a4a31b3f5cdebf7e4b53f6fbd6516a08ac62f71ce7c251a9"
+  },
+  {
+    "path": "audio/backup-11-00.mp3",
+    "bytes": 16364,
+    "sha256": "73d374bf404927904444aacbd87f6a4121fe2075205e9f4a9659c3a0a5e28982"
+  },
+  {
+    "path": "audio/backup-12-00.mp3",
+    "bytes": 15212,
+    "sha256": "0e2452910271965f33994d075eb618abd35ed3234512894b143e71294588b44d"
+  },
+  {
+    "path": "audio/backup-checkin-00.mp3",
+    "bytes": 24236,
+    "sha256": "10158cf048c1b6bde541ca928053b9f6f585736e796ef4ebdb08c1f4130e0190"
+  },
+  {
+    "path": "audio/repair-00-00.mp3",
+    "bytes": 16172,
+    "sha256": "39a1fa7cebb3d5a642197ee5e2c68bd9693a8074566f85fb8e1f7b30599e9149"
+  },
+  {
+    "path": "audio/repair-01-00.mp3",
+    "bytes": 20204,
+    "sha256": "4a08adcf598a7eb5fca90c74f0466955079462293874cf1d2d8bd05beed2b3b9"
+  },
+  {
+    "path": "audio/repair-02-00.mp3",
+    "bytes": 10796,
+    "sha256": "545e47106ff337f88f5af81a10e4fb5a7c06943f2999a9413d8a8f8a6b2c08f6"
+  },
+  {
+    "path": "audio/repair-03-00.mp3",
+    "bytes": 7532,
+    "sha256": "d788e20f0c4556fdee92a82e6cb92e61df017a666270c73ef79ab7e36876b1e0"
+  },
+  {
+    "path": "audio/repair-06-00.mp3",
+    "bytes": 7148,
+    "sha256": "47cabcd5c9b1c7ed3661f323c2921e77bd478b0b18b6cbac3e703f70b75e7c6d"
+  },
+  {
+    "path": "audio/repair-07-00.mp3",
+    "bytes": 8876,
+    "sha256": "14f8d91f850d06102a4ddc8b4817b41363b0d526c3dff3bd8355c075c13569ce"
+  },
+  {
+    "path": "audio/repair-08-00.mp3",
+    "bytes": 26348,
+    "sha256": "c63b66e85cb6ed1a1489f8654a51b7635a8c4f329a9648c7910fc2ca191c009e"
+  },
+  {
+    "path": "audio/repair-09-00.mp3",
+    "bytes": 10028,
+    "sha256": "efe8ea7ff861d35552e6ada1b56f944cc3e4d4b9b93b50976ede1ce7f8768f4f"
+  },
+  {
+    "path": "audio/repair-10-00.mp3",
+    "bytes": 13484,
+    "sha256": "48d4bef12a4254d08a06e6c71cd75774fd420462a407e02d8573b2d6ffa85cde"
+  },
+  {
+    "path": "audio/setup-00-00.mp3",
+    "bytes": 6956,
+    "sha256": "378f7ec2025d29e53d3d26437ec78747a30403f07708578eb58fa4361b79419c"
+  },
+  {
+    "path": "audio/setup-01-00.mp3",
+    "bytes": 23084,
+    "sha256": "eefd1bae8499590b55ccbe31d10091bd86edcd9222fc13fc88a073ef58300661"
+  },
+  {
+    "path": "audio/setup-02-00.mp3",
+    "bytes": 25196,
+    "sha256": "6102afe9dfc5715bb85fc45dd3826a2541e079d6aca1becf97a1bbe27b9f3205"
+  },
+  {
+    "path": "audio/setup-03-00.mp3",
+    "bytes": 26540,
+    "sha256": "75358fc10deea91096bb7eb79be5f58b5c5771a94d4c74b7decf3f01be64c546"
+  },
+  {
+    "path": "audio/setup-04-00.mp3",
+    "bytes": 39020,
+    "sha256": "bee803760ae811bb2c18b577d7d6a729f048510748bce3d1734c926f92b350db"
+  },
+  {
+    "path": "audio/setup-05-00.mp3",
+    "bytes": 31148,
+    "sha256": "431d49fc47062e1d95c2a411f3c787bcf8054bd75eb560cf27964b95c2891e4e"
+  },
+  {
+    "path": "audio/setup-06-00.mp3",
+    "bytes": 31148,
+    "sha256": "d6ea98c9dc49a37d7e1a3c3cb06e9075cddf0aaae63edd7ea7b104ecb67784e1"
+  },
+  {
+    "path": "audio/setup-07-00.mp3",
+    "bytes": 29420,
+    "sha256": "3d3533c5f98a01d0937088d67554bc555f2cb223d2ed5dd233c89c2325eeebb7"
+  }
+]
