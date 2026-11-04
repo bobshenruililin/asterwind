@@ -42,7 +42,7 @@ Every slot has a working placeholder, so nothing here blocks play. Exact timings
 
 ## ART-AH-00 · The first cabinet material study
 
-- **Status:** requested (asking for the existing file, not new generation)
+- **Status:** delivered `4198ea0` (review WebP and provenance; the original PNG transfer is still pending), **screened, candidate ready, awaiting sign-off**. Results in Responses below.
 - **What:** the cabinet material study from Bob's chat with dot, as it is. It explores fibrous layered paperboard and warm/cool light to match the corridor.
 - **Please commit:** the original file unchanged to `hub/art/incoming/ART-AH-00-cabinet-study-v1/`, plus `provenance.md` with the prompt and any notes on what it was meant to test.
 - **What I will do with it:** register it against the 1200×2000 template in the alignment bench (`hub/qa/align.html`), export candidate face/glass/interior crops, screen them in the browser with `ART_MANIFEST=… node hub/qa/journey.cjs art-candidate` at 1440×900 and 390×844, and post the screenshots and a registration report here. It will not be wired into the manifest until it passes that review.
@@ -135,12 +135,35 @@ Planning only; each becomes a request after the pilot is accepted.
 
 _dot: reply below or in the delivery's `provenance.md`. I'll record registration and browser results here with the exact commit._
 
+### ART-AH-00 screening (5 Nov, Claude)
+
+- **File:** `cabinet-study.webp`, 971×1619 RGBA, 359,122 bytes; SHA-256 matches provenance (`bde7dbd8…71da1fda`). Original PNG not yet transferred.
+- **Look:** exactly the direction the review asked for. Fibrous layered paperboard with visible card edges, aged sage, rubbed brass fasteners, amber from the left falling to indigo on the right. It reads as a photographed miniature prop, like the corridor. In the composed lobby the machine finally belongs to the same world: [1440×900](after-hours/2026-11-05-ART-AH-00-candidate-lobby-1440x900.webp) · [390×844](after-hours/2026-11-05-ART-AH-00-candidate-lobby-390x844.webp) · [close-up](after-hours/2026-11-05-ART-AH-00-candidate-machine-closeup.webp) · [key lights and dial](after-hours/2026-11-05-ART-AH-00-candidate-keys-knob-alignment.webp).
+- **Alpha:** the board is effectively opaque (52% of pixels at alpha 250–254, so at most 2% shows through) and about 4% of pixels carry alpha 1–64 noise in areas meant to be clear. The candidate clamps both (<8 → 0, ≥248 → 255).
+- **Registration** (measured from alpha; controls by eye, ±3 px, in template pixels after one axis-aligned fit, ×1.2766 / ×1.2579, that makes the window exact):
+
+| Zone | Template | Study after fit |
+| --- | --- | --- |
+| Window | 80–860 × 428–1540 | exact (by construction) |
+| Chute | 140–800 × 1612–1836 | 132–799 × 1661–1851 (top 49 px lower) |
+| Keys | 78×104 at x 918/1012, y 472/598/724 | 89×116 at x 930/1040, y 473/615/757 |
+| Knob | centre 1004,1340 | centre 1027,1339, r 101 (a paper dial) |
+| Clock strip | dark strip 336–404 | none (a plain seam band 317–428) |
+| Base | feet to 1986 | no feet; the body reaches 2000 |
+
+- **Instead of warping the art,** the code now accepts a face-geometry declaration (`docs/AFTER-HOURS-CONTRACTS.md`): key lights, knob, flap and clock follow the art, and a code-drawn well holds the clock. Checked in the browser: all six key lights land on the six keys, and the knob's focus ring circles the dial.
+- **Candidate:** `hub/art/incoming/ART-AH-00-cabinet-study-v1/candidate/` — `machine-face-candidate.webp` (1200×2000, 324 KB), `recipe.json`, `candidate-manifest.json` and the script that made them (`make-candidate.py`, reproducible; no repaint or compositing).
+- **Browser with the candidate:** `ART_MANIFEST=…/candidate-manifest.json node hub/qa/journey.cjs art-candidate,routes,keyboard` **29/29** (Chromium 153; 1440×900 and 390×844).
+- **Not yet in the production manifest.** Your provenance says placeholders stay authoritative until review. To adopt it as the interim face, copy `candidate-manifest.json`'s `machine.face` entry into `hub/art/manifest.js`; I recommend doing so until ART-AH-01.
+- **For ART-AH-01, from this study:** keep this material and light exactly; either keep the study's control layout (now supported) or follow the template; add a dark recessed clock strip at 88,336 → 1112,404; optionally feet; decide whether the sign carries AFTER HOURS lettering or stays blank. It is a quiet, mature choice, but the place then has no name on the machine. The interior, glass and bottles still look vector against this face, so ART-AH-02 (the Cold Brew pilot) is now the most visible gap.
+
 ### ART-AH-03a screening (5 Nov, Claude)
 
 - **File:** `corridor-dawn.webp`, 1672×941 RGB WebP, 337,874 bytes (≤ 350 KB), SHA-256 `c821e2151fa2f06aa2c4ce35e9379f5c3abe43e8a7f9843daa2f88228a847d83`.
 - **Registration with `hub/assets/corridor.webp`:** best-matching shift **0, 0 px** in all seven regions measured (door frame, coat, pinned drawing, baseboard, lamp, door knob, floor papers; gradient correlation, ±8 px search). A 50% cross-fade shows no edge doubling. **Pass.**
 - **Look:** lamp off, cool daylight through the window and the door's panes, a pale shaft across the floor, the wall lifted toward grey-lilac; every object in place. Matches the brief.
 - **How it is used:** through the night it shows only faintly (up to 30% at five stories), so the lamp's pool keeps its warmth; at the sixth real ending it takes over across the lamp-off beat (4.2 s), replacing the coded shade and shaft. Portrait screens showing the landscape plate now get it too (a pairing bug fixed in this change).
+- **Finale with the plate:** [0.3 s · 2.6 s · 7.6 s, and 390×844](after-hours/2026-11-05-ART-AH-03a-finale-0.3s-2.6s-7.6s-and-390.webp).
 - **Browser:** with the plate, `finale,dawn` 12/12 (candidate manifest), then wired in: `finale,mobile,offline,routes` **44/44** (Chromium 153; offline export embeds it as a data URL with no network requests).
 - **Open:** provenance file; a portrait dawn twin is not needed while portrait shows the landscape plate.
 

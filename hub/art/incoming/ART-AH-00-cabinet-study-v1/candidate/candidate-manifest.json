@@ -1,0 +1,47 @@
+{
+ "schemaVersion": 2,
+ "machine": {
+  "face": {
+   "src": "art/incoming/ART-AH-00-cabinet-study-v1/candidate/machine-face-candidate.webp",
+   "geometry": {
+    "keys": [
+     930.2,
+     473.3,
+     89.4,
+     115.7,
+     109.8,
+     142.1
+    ],
+    "knob": [
+     1027.2,
+     1338.7,
+     101.4
+    ],
+    "chute": [
+     132.3,
+     1660.8,
+     666.4,
+     189.9
+    ],
+    "display": [
+     88,
+     340,
+     1024,
+     64
+    ],
+    "well": true
+   }
+  },
+  "interior": null,
+  "glass": null,
+  "side": null
+ },
+ "drinks": {},
+ "corridor": {
+  "portrait": null,
+  "dawn": "art/corridor/corridor-dawn.webp",
+  "portraitDawn": null
+ },
+ "hand": {},
+ "clips": {}
+}

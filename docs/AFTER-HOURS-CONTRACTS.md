@@ -21,6 +21,17 @@ What delivered art, clips and sound must fit. Timings live in one table, [`hub/t
 | 11 | Homecoming frame | `#homecoming` | — (the story's last frame) | Return |
 | 12 | Story screen: film, portal, Return | `#screen` | stories; `clips` | Reveal |
 
+## Face geometry (delivered machine faces)
+
+`machine.face` may be a path, or `{src, geometry}`, so a face can declare where its own controls sit, in template pixels (1200×2000). The live HTML controls follow the art; the window (80,428 → 860,1540) stays fixed because the drinks, glass and fog live there.
+
+- `keys`: `[x0, y0, w, h, dx, dy]`, six key lights in shelf order, two columns by three rows.
+- `knob`: `[cx, cy, r]`, the art's own dial; the turn control sits on it and keeps only a brass pointer notch, its accessible name and focus ring.
+- `chute`: `[x, y, w, h]`, the flap hangs from its top edge (flap height at most 140).
+- `display`: `[x, y, w, h]`, where the clock text sits; `well: true` draws a dark recessed well when the art has none.
+
+Missing or malformed entries keep the template positions. Example: `hub/art/incoming/ART-AH-00-cabinet-study-v1/candidate/candidate-manifest.json`.
+
 ## Beats
 
 Durations in milliseconds. "Replaceable by" names what delivered media may take over; the code beat stays as the fallback.
