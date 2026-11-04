@@ -7,3 +7,18 @@ h=harness(true);h.get('seam').onclick();h.get('film').onload();assert.equal(h.st
 console.log('PASS: preview honesty, cutaway, single selection, film/reveal readiness barrier, immediate response, no hidden autoplay, transition cancellation, retry, late load, return cleanup, Back, reduced motion.');
 
 h=harness();h.get('seam').onclick();const firstFrame=h.get('film'),firstLoad=firstFrame.onload;firstLoad();h.advance(2500);h.get('return').onclick();h.get('seam').onclick();assert.notStrictEqual(h.get('film'),firstFrame);firstLoad();assert(!h.state().filmReady);h.get('film').onload();h.advance(2500);assert.equal(h.state().phase,'playing');h.events.popstate();assert.equal(h.state().phase,'idle');assert.equal(h.c.document.getElementById('film'),null);console.log('PASS: Return/reopen creates a fresh iframe; old onload is inert; Back removes the frame without srcdoc navigation.');
+
+// Exercise repeated hub lifecycle separately from the real film's outcome suite.
+// This is DOM/state simulation, not a claim about browser session-history behavior.
+for(const reduced of [false,true]){
+ h=harness(reduced);let previousFrame=null;
+ for(let cycle=0;cycle<5;cycle++){
+  h.get('seam').onclick();const live=h.get('film');assert.notStrictEqual(live,previousFrame);live.onload();h.advance(2800);assert.equal(h.state().phase,'playing');h.get('return').onclick();assert.equal(h.state().phase,'idle');assert.equal(h.c.document.getElementById('film'),null);previousFrame=live;
+  // Cancel in both the drop and the picture-unfold phases on alternating cycles.
+  h.get('seam').onclick();const stale=h.get('film').onload;h.advance(cycle%2?1100:300);h.get('return').onclick();stale();h.advance(16000);assert.equal(h.state().phase,'idle');assert(h.get('screen').hidden);
+  // Timeout followed by retry, then error-return on the next failed load.
+  h.get('seam').onclick();const late=h.get('film').onload;h.advance(16000);assert.equal(h.state().phase,'error');late();assert.equal(h.state().phase,'error');h.get('retry').onclick();h.get('film').onload();assert.equal(h.state().phase,'playing');h.get('return').onclick();
+  h.get('seam').onclick();h.get('film').onerror();assert.equal(h.state().phase,'error');h.get('error-return').onclick();assert.equal(h.state().phase,'idle');assert(!h.get('lobby').inert);assert(h.drinks.every(b=>!b.disabled));assert.equal(h.c.document.getElementById('film'),null);
+ }
+}
+console.log('PASS: five repeated entry/return, cancellation, timeout/retry and error-return cycles in normal and reduced motion.');
