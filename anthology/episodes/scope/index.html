@@ -1,6 +1,6 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>One More Chair · Asterwind</title><link rel="stylesheet" href="scene.css"></head><body>
 <main id="stage" data-shot="wide" data-beat="open" aria-label="One More Chair, an original interactive paper story">
-<div id="picture"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice" role="img" aria-labelledby="title desc">
+<div id="picture"><img id="art-back" class="art-layer" alt="" hidden><img id="art-front" class="art-layer" alt="" hidden><div id="vector-fallback"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice" role="img" aria-labelledby="title desc">
 <title id="title">The student repair café, moments before closing</title><desc id="desc">A rain-dark window, warm lamps and a long workbench. Inez works on a lamp, Bo holds an umbrella, and Sam stands beside a torn bag. A spare chair and an appointment box sit within Ren's reach.</desc>
 <defs>
  <filter id="grain"><feTurbulence type="fractalNoise" baseFrequency=".65" numOctaves="3" seed="8" result="noise"/><feComposite in="noise" in2="SourceGraphic" operator="in" result="texture"/><feBlend in="SourceGraphic" in2="texture" mode="soft-light"/></filter>
@@ -40,7 +40,7 @@
 </g>
 </svg>
 </div>
-<div id="shade"></div><div id="clock" aria-hidden="true">5:42</div>
+<div id="shade"></div>
 <div id="hands" aria-hidden="true"><span></span><span></span></div>
 <div id="actions" hidden><p id="prompt">Make room for one more?</p><button id="extend" aria-label="Pull in the spare chair. Take the bag now; redistribute the work."><span>Pull in the chair</span></button><button id="return-slot" aria-label="Offer the return-slot box. Protect today's bookings; arrange a specific next step."><span>Offer a return slot</span></button></div>
 <div id="caption" aria-live="off"><strong id="speaker"></strong><span id="line"></span></div>
@@ -48,4 +48,4 @@
 <nav aria-label="Film controls"><button id="pause" hidden aria-label="Pause story">Pause</button><button id="replay" hidden>Replay</button></nav>
 <p id="ending" hidden role="status"></p>
 <div id="announcement" class="sr" aria-live="polite"></div>
-</main><script src="story-data.js"></script><script src="timeline.js"></script><script src="scene.js"></script></body></html>
+</main><script src="story-data.js"></script><script src="art-data.js"></script><script src="layout.js"></script><script src="timeline.js"></script><script src="scene.js"></script></body></html>

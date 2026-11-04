@@ -1,3 +1,5 @@
+> Paper-shot update: five inspected generated plates now drive Scope, including distinct outcomes. Original vector artwork remains a fallback. Shots dissolve/cut; they are not generated video or matched animation frames. Current visual integration notes: `episodes/scope/ART-INTEGRATION.md`.
+
 # Original anthology foundation
 
 This adds **One More Chair / Scope Creep Fizz**, an original fictional leadership story. It is not from, or a replacement for, Amanda and Hannah's source workbook. The Seam remains untouched. The registry has six intended drinks; only Seam and Scope currently run. The other four are outlined pitches, not finished episodes.
