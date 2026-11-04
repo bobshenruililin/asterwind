@@ -26,3 +26,7 @@ Reduced motion, direct `#seam` entry and retry bypass dispensing/unfolding. Retu
 `node hub/test-state.cjs` simulates five entry/return, cancel, timeout/retry and error-return cycles under normal and reduced motion. `node film/test-state.cjs` runs the **actual film script** through each outcome five times, plus its existing safeguards. These are separate state suites, not a real-browser integration test.
 
 Observed pre-fix browser behavior and unverified repairs are in `QA-TRANSITION.md`. Final screenshots, post-fix phone layout and actual repeated Back/Forward remain pending. A free-orbit 3D cabinet, five finished films, finished voices, a can-to-table animation and saved souvenirs are **not implemented**.
+
+## Optional bridge extension (disabled by default)
+
+`bridge-manifest.json` + `bridge-types.d.ts` describe the still/video choice; `build.py` validates and emits `bridge-data.js`. `bridge.js` owns silent media events, watchdogs and teardown. After unfolding, a configured video enters `bridging`; only its completion/fallback proceeds to `loading` then `playing`. Reduced motion skips it. See `VIDEO-BRIDGE.md` for exact behavior and testing limits. No clip is currently configured.

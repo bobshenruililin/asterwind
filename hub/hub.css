@@ -53,3 +53,6 @@ button:focus-visible,a:focus-visible{outline:3px solid #fff4d0;outline-offset:6p
 noscript{z-index:4;text-align:center}noscript a{color:#fff}
 @media(max-width:700px){.corridor-plate{object-position:35% 50%;filter:brightness(.7)}.brand{right:24px;top:24px;font-size:12px}#portal{clip-path:inset(35% 83% 38% 0)}#portal img{object-position:75% 50%}#return{bottom:auto;top:76px;left:12px;font-size:12px;padding:10px 12px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}.drink:hover .can-wrap,.drink:focus-visible .can-wrap{transform:rotate(-2deg)}}
+
+/* Optional reviewed silent clip stays below Return/loading/error in the same portal. */
+.bridge-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}

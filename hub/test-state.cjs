@@ -22,3 +22,8 @@ for(const reduced of [false,true]){
  }
 }
 console.log('PASS: five repeated entry/return, cancellation, timeout/retry and error-return cycles in normal and reduced motion.');
+
+// Optional video must finish by its own event, never by the 2.45s still timer.
+h=harness();let bridgeOptions,cancellations=0;h.c.window.ASTERWIND_BRIDGE={transition:{kind:'video'}};h.c.window.AsterwindBridge={create(options){bridgeOptions=options;return{cancel(){cancellations++}}}};h.get('seam').onclick();h.get('film').onload();h.advance(2500);assert.equal(h.state().phase,'bridging');assert(!h.hist.includes('start'));h.advance(14000);assert.equal(h.state().phase,'bridging','ready iframe watchdog must not end a longer bridge');bridgeOptions.onDone({reason:'ended'});assert.equal(h.state().phase,'playing');assert.equal(h.hist.filter(x=>x==='start').length,1);h.get('return').onclick();h.get('seam').onclick();h.get('film').onload();h.advance(2500);const cancelledCallback=bridgeOptions.onDone;h.get('return').onclick();assert(cancellations>0);cancelledCallback({reason:'ended'});assert.equal(h.state().phase,'idle');
+h=harness(true);h.c.window.ASTERWIND_BRIDGE={transition:{kind:'video'}};h.c.window.AsterwindBridge={create(){throw Error('Reduced motion must not construct a video')}};h.get('seam').onclick();h.get('film').onload();assert.equal(h.state().phase,'playing');
+console.log('PASS: optional bridge gates film beyond former timer, ready iframe timeout cannot interrupt it, cancellation invalidates completion, reduced motion bypasses video.');
