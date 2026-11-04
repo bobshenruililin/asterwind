@@ -13,3 +13,9 @@ Code repairs following those observations:
 Fresh dependency-free tests pass readiness barriers, no hidden autoplay, duplicate selection, timeout/retry, stale loads, transition cancellation, fresh iframe identity after Return/reopen, Back teardown and reduced motion. Syntax and offline export pass.
 
 These fixes have NOT been browser-retested. Previous testing stopped after the worker clarified a file-URL security-policy denial; its subsequent HTTP route had not adequately resolved that prohibition. No further alternate browser route is authorized or used. Do not claim corrected layout, mobile crop, actual Back/Forward or screen-reader behavior passed. Screenshots from before repairs exist only on the Mac; they are historical evidence, not final screenshots. No screenshot upload succeeded.
+
+## Independent static-review corrections
+
+The reveal image, frame host, loading state, error panel and Return now share one isolated screen stacking context, in that back-to-front order. Return no longer sits below a sibling portal despite a larger child z-index. Cabinet width/position follow one continuous formula across all viewport widths; 700/701 px now produce 630/630.9 px rather than the previous cliff. Short windows may scroll the lobby instead of crushing touch targets.
+
+Each can and lid shares a wrapper; a separate 30 px shelf row is reserved and stays still during dispensing. Duplicate legacy CSS overrides were removed. `node hub/test-layout.cjs` checks hierarchy, formula continuity from 320 through 1800 px, target bounds and wrapper structure. These are structural/math assertions, not rendered-pixel or browser proofs. Post-fix visual verification remains pending.
