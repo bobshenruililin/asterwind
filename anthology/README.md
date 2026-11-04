@@ -1,10 +1,10 @@
-> Current lineup: **The Seam**, **One More Chair** and **The Quiet Minute**, **Before the Doors Open** and **The Missing Name** are playable prototypes. Dead Pixel Tonic remains clearly in development. Run `python3 anthology/build-all.py` before the hub exporter.
+> Current lineup: all six drinks open playable review prototypes, not finished films. Run `python3 anthology/build-all.py` before the hub exporter. The Empty Square still needs lived-experience accessibility review.
 
 > Paper-shot update: five inspected generated plates now drive Scope, including distinct outcomes. Original vector artwork remains a fallback. Shots dissolve/cut; they are not generated video or matched animation frames. Current visual integration notes: `episodes/scope/ART-INTEGRATION.md`.
 
 # Original anthology foundation
 
-This adds **One More Chair / Scope Creep Fizz**, an original fictional leadership story. It is not from, or a replacement for, Amanda and Hannah's source workbook. The Seam remains untouched. The registry has six intended drinks; Seam, Scope, Standup, Ship and Slides currently run. Dead Pixel Tonic remains an outlined pitch, not a finished episode.
+This adds **One More Chair / Scope Creep Fizz**, an original fictional leadership story. It is not from, or a replacement for, Amanda and Hannah's source workbook. The Seam remains untouched. The registry has six intended drinks; All six registered episodes currently run. The Empty Square still requires lived-experience accessibility review.
 
 ## What runs
 
@@ -24,7 +24,7 @@ Registry `schemaVersion:1`; each entry has a stable ID, drink, title, origin and
 
 New modules emit `postMessage({channel:'asterwind.episode.v1', episodeId, session, type:'ready'|'completed', outcome?})`. Parent validates the exact iframe source, live session token and active episode; completion additionally validates outcome against the registry. These messages contain no secrets. For embedded offline `srcdoc`, the parent injects the session before script execution; hosted routes receive it as a query parameter. Return invalidates old sessions.
 
-`progress.js` keeps versioned, allowlisted local completion sets. Malformed, inaccessible or quota-exhausted storage does not stop play. The in-memory record still works. No identities, timestamps, analytics, virtue points or psychological ratings. No reset button or destructive save migration. No meta-puzzle is falsely claimed complete. Seam completion is deliberately not inferred from opening/choosing; it still needs an explicit legacy completion adapter.
+`progress.js` keeps versioned, allowlisted local completion sets. Malformed, inaccessible or quota-exhausted storage does not stop play. The in-memory record still works. No identities, timestamps, analytics, virtue points or psychological ratings. No reset button or destructive save migration. No meta-puzzle is falsely claimed complete. The read-only Seam adapter requires its terminal branch index, stopped timeline and visible ending before recording completion. Opening, choosing, pausing and stale iframe callbacks never count.
 
 ## Verification
 

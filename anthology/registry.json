@@ -47,9 +47,16 @@
       "id": "pixel",
       "drink": "Dead Pixel Tonic",
       "title": "The Empty Square",
-      "status": "outlined",
+      "status": "playable-prototype",
       "origin": "original-fiction",
-      "premise": "A visually flawless installation cannot be used by a visitor. A public demonstration becomes a test of whose experience counts."
+      "entry": "episodes/pixel/index.html",
+      "adapter": "anthology-v1",
+      "outcomes": [
+        "lower",
+        "connect"
+      ],
+      "arrival": "The next sequence should be Jo’s to choose.",
+      "review": "Fictional scenario; lived-experience accessibility review remains required."
     },
     {
       "id": "standup",
