@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "episodes": [
+    {"id":"seam","drink":"3:00 AM Cold Brew","title":"The 3:00 AM Seam","entry":"../film/index.html","status":"existing-playable","adapter":"seam-v1","origin":"original-fiction","outcomes":["backup","repair"]},
+    {"id":"scope","drink":"Scope Creep Fizz","title":"One More Chair","entry":"episodes/scope/index.html","status":"playable-prototype","adapter":"anthology-v1","origin":"original-fiction","outcomes":["extend","return"]},
+    {"id":"slides","drink":"Slide Deck Bitters","title":"The Missing Name","status":"outlined","origin":"original-fiction","premise":"A beautiful presentation erases the person whose research made it possible. Recognition and a deadline collide."},
+    {"id":"pixel","drink":"Dead Pixel Tonic","title":"The Empty Square","status":"outlined","origin":"original-fiction","premise":"A visually flawless installation cannot be used by a visitor. A public demonstration becomes a test of whose experience counts."},
+    {"id":"standup","drink":"Standup Seltzer","title":"The Quiet Minute","status":"outlined","origin":"original-fiction","premise":"A confident team agrees too quickly. Its least-heard member is holding evidence that changes the plan."},
+    {"id":"ship","drink":"Ship-It Ginger Ale","title":"Before the Doors Open","status":"outlined","origin":"original-fiction","premise":"The opening clock is running, and the team discovers an uncertainty they cannot honestly hide."}
+  ]
+}

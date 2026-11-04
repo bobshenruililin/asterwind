@@ -1,3 +1,5 @@
+> Anthology update: Scope Creep Fizz now opens the original **One More Chair** prototype. The Seam remains unchanged. The historical notes below describe earlier releases; current behavior, honest production limits and completion contract are in `../anthology/README.md`. Run `python3 anthology/build.py` before the hub exporter.
+
 # After Hours dispenser
 
 An additive tactile paper navigation study for Asterwind. The Seam is the only playable drink; four others are explicitly marked as development pitches. No payments, accounts, telemetry, external dependencies, generated media spend, or publication.

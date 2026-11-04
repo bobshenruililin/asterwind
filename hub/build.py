@@ -44,6 +44,10 @@ def build(root=ROOT):
         mime=MIMES.get(asset.suffix.lower())
         if mime and mime.startswith('image/'):
             page=page.replace('src="assets/'+asset.name+'"','src="'+data_url(asset,mime)+'"')
+    registry=json.loads((root.parent/'anthology/registry.json').read_text())
+    (root/'registry-data.js').write_text('window.ASTERWIND_REGISTRY='+dump(registry)+';\n')
+    anthology_script='window.ASTERWIND_REGISTRY='+dump(registry)+';\nwindow.ASTERWIND_EPISODES='+dump({'scope':(root.parent/'anthology/dist/scope.html').read_text()})+';\n'+(root.parent/'anthology/progress.js').read_text()
+    page=page.replace('<script src="registry-data.js"></script><script src="../anthology/progress.js"></script>','<script>'+anthology_script+'</script>')
     script='window.ASTERWIND_FILM='+dump(film)+';\nwindow.ASTERWIND_BRIDGE='+dump(encoded_manifest(root,manifest))+';\n'+(root/'bridge.js').read_text()+'\n'+(root/'hub.js').read_text()
     page=page.replace('<script src="bridge-data.js"></script><script src="bridge.js"></script><script src="hub.js"></script>','<script>'+script+'</script>')
     page=page.replace('<a href="../film/index.html">Open The Seam directly</a>.','Enable JavaScript in a full browser to play this offline preview.')
