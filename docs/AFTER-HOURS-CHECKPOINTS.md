@@ -1,6 +1,6 @@
 # After Hours journey: checkpoints
 
-Branch `opus/after-hours-journey`, based on `collab/opus-frontend-handoff-20261104` (`8f030f9`, itself on `main` `d203727`). Each checkpoint separates what was **built and tested** from what is **imagined or proposed**.
+Checkpoint 1 was made on branch `opus/after-hours-journey` (recovered by bundle; now continued on `claude/awesome-hypatia-6bf97q`), based on `collab/opus-frontend-handoff-20261104` (`8f030f9`, itself on `main` `d203727`). Each checkpoint separates what was **built and tested** from what is **imagined or proposed**.
 
 ## Direction
 
@@ -28,3 +28,15 @@ Other directions considered (Six Doors, Through the Glass, Take One Leave One) a
 **Not yet:**
 - Offline export (`hub/build.py`) has not been updated for the new scripts.
 - Full six-route browser QA, keyboard-only and reduced-motion runs, the turned cutaway, and completing a story to see an empty land on the roof all remain to check.
+
+## Checkpoint 2: review fixes and layered art (in progress)
+
+Imported bundle head `5cad5ea` (base `8f030f9` verified) and the follow-on patch (`679c19e`, verbatim). Upload SHA-256: bundle `1fd03039…9fe9fdb`, patch `0688e2cb…f4541e1`.
+
+**Fixed** (each reproduced in Chromium 153 first): retained `fill:'forwards'` flights made every later held drink invisible and shrunken, and focusing it scrolled the corridor ~170 px; the mobile QA read `innerWidth` in Node; the held dialog's Tab cycle skipped Sound; raster drinks drew sealed and open together; the tag ran off 320×568 screens.
+
+**Built:** layered delivered-art support (machine face / interior / glass / side; drink body, per-part cut-outs that the rituals animate, remnants, empty), stand-in layers rendered from the vector art with a registration check, an alignment bench for cabinet studies, and a candidate-manifest screening suite. Requests for dot: [AFTER-HOURS-ASSET-REQUESTS.md](AFTER-HOURS-ASSET-REQUESTS.md).
+
+**Tested so far:** see the commit messages for exact suites; the full matrix is recorded at the end of this checkpoint.
+
+**Known open:** turned-side rendering defect (lower side panel missing); code-native cabinet still reads as flat vector; story reassessment proposal pending.

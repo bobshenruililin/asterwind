@@ -1,0 +1,60 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Align cabinet art</title>
+<!-- Dev-only alignment bench for delivered cabinet art (ART-AH-01). Local, no network, not shipped.
+     Open over the local server: http://127.0.0.1:8731/hub/qa/align.html  (optionally ?src=path/relative/to/hub/)
+     Drop or choose a material study, register it to the 1200×2000 machine template, then export
+     the three independent layers for inspection: face (window and chute holes punched), glass
+     (the 780×1112 window) and interior (the window area as painted). Exports are candidates for
+     review, not accepted art; integration still goes through hub/art/manifest.js and browser QA. -->
+<style>
+:root{color-scheme:dark;font:14px/1.4 system-ui,sans-serif;background:#1b2027;color:#e9e2d0}
+body{margin:0;display:grid;grid-template-columns:minmax(0,1fr) 300px;height:100vh}
+#bench{position:relative;overflow:hidden;display:grid;place-items:center;background:repeating-conic-gradient(#232a33 0 25%,#1e242c 0 50%) 0 0/24px 24px}
+#stage{position:relative;width:min(56vh,90%);aspect-ratio:3/5}
+#stage>*{position:absolute;inset:0;width:100%;height:100%}
+#guide{opacity:.9}#cand{transform-origin:0 0;opacity:.6;pointer-events:none}
+#stage.diff #cand{mix-blend-mode:difference;opacity:1}
+#holes{pointer-events:none}
+aside{padding:14px;overflow:auto;border-left:1px solid #3a4350}
+label{display:grid;grid-template-columns:80px 1fr 52px;gap:6px;align-items:center;margin:6px 0}
+input[type=range]{width:100%}output{font:12px ui-monospace,monospace;text-align:right}
+button,input[type=file]{margin:4px 0;font:inherit}button{padding:8px 10px;border:1px solid #6d6046;background:#2e3640;color:inherit;min-height:40px;width:100%}
+button:focus-visible,input:focus-visible{outline:3px solid #fff4d0;outline-offset:2px}
+pre{white-space:pre-wrap;font:12px ui-monospace,monospace;background:#11151a;padding:8px}
+h1{font-size:16px;margin:0 0 8px}p{margin:6px 0;color:#c9c1ae}
+</style></head><body>
+<main id="bench" aria-label="Alignment bench"><div id="stage"><img id="guide" src="../art/templates/machine-guide.svg" alt="Machine template guide"><img id="cand" alt="Candidate cabinet art" hidden><svg id="holes" viewBox="0 0 1200 2000" aria-hidden="true"><g fill="none" stroke="#2bd6ff" stroke-width="4" stroke-dasharray="14 8"><rect x="80" y="428" width="780" height="1112"/><rect x="140" y="1612" width="660" height="224"/></g></svg></div></main>
+<aside><h1>Align cabinet art</h1><p>Drop an image anywhere, or choose one. Arrow keys nudge (Shift ×10), + / − scale, [ / ] rotate.</p>
+<input type="file" id="file" accept="image/*" aria-label="Choose candidate image">
+<label>x <input type="range" id="x" min="-600" max="600" step="1" value="0"><output for="x"></output></label>
+<label>y <input type="range" id="y" min="-1000" max="1000" step="1" value="0"><output for="y"></output></label>
+<label>scale <input type="range" id="s" min="0.2" max="3" step="0.001" value="1"><output for="s"></output></label>
+<label>rotate ° <input type="range" id="r" min="-5" max="5" step="0.05" value="0"><output for="r"></output></label>
+<label>opacity <input type="range" id="o" min="0" max="1" step="0.05" value="0.6"><output for="o"></output></label>
+<button id="diff" aria-pressed="false">Difference view</button><button id="fit">Fit width to template</button>
+<button id="face">Export face (holes punched)</button><button id="glass">Export glass crop</button><button id="interior">Export interior crop</button>
+<pre id="recipe" aria-live="polite"></pre></aside>
+<script>
+'use strict';
+const $=id=>document.getElementById(id),cand=$('cand'),stage=$('stage'),T={x:0,y:0,s:1,r:0};let natural=[1200,2000];
+const WINDOW=[80,428,780,1112],CHUTE=[140,1612,660,224];
+function apply(){const k=stage.clientWidth/1200;cand.style.width=natural[0]*k+'px';cand.style.height=natural[1]*k+'px';cand.style.inset='auto';cand.style.left='0';cand.style.top='0';cand.style.transform=`translate(${T.x*k}px,${T.y*k}px) rotate(${T.r}deg) scale(${T.s})`;cand.style.opacity=$('o').value;
+ for(const id of ['x','y','s','r','o'])document.querySelector(`output[for=${id}]`).textContent=(+$(id).value).toFixed(id==='s'?3:id==='r'?2:0);
+ $('recipe').textContent=JSON.stringify({template:'machine 1200×2000',source:cand.dataset.name||null,natural,translate:[T.x,T.y],scale:T.s,rotateDeg:T.r},null,1)}
+function load(src,name){cand.onload=()=>{natural=[cand.naturalWidth,cand.naturalHeight];cand.hidden=false;cand.dataset.name=name||src;fitWidth()};cand.src=src}
+function fitWidth(){T.s=1200/natural[0];T.x=0;T.y=0;T.r=0;sync()}
+function sync(){$('x').value=T.x;$('y').value=T.y;$('s').value=T.s;$('r').value=T.r;apply()}
+for(const id of ['x','y','s','r'])$(id).oninput=()=>{T[id]=+$(id).value;apply()};$('o').oninput=apply;
+$('file').onchange=e=>{const f=e.target.files[0];if(f)load(URL.createObjectURL(f),f.name)};
+addEventListener('dragover',e=>e.preventDefault());addEventListener('drop',e=>{e.preventDefault();const f=e.dataTransfer.files[0];if(f)load(URL.createObjectURL(f),f.name)});
+$('diff').onclick=()=>{const on=stage.classList.toggle('diff');$('diff').setAttribute('aria-pressed',String(on))};$('fit').onclick=fitWidth;
+addEventListener('keydown',e=>{if(e.target.tagName==='INPUT'&&e.target.type==='range')return;const m=e.shiftKey?10:1,k={ArrowLeft:['x',-m],ArrowRight:['x',m],ArrowUp:['y',-m],ArrowDown:['y',m],'+':['s',.002*m],'=':['s',.002*m],'-':['s',-.002*m],'[':['r',-.05*m],']':['r',.05*m]}[e.key];if(!k)return;e.preventDefault();T[k[0]]=+(T[k[0]]+k[1]).toFixed(4);sync()});
+// Render the registered candidate onto a 1200×2000 canvas, then crop or punch.
+function registered(){const c=document.createElement('canvas');c.width=1200;c.height=2000;const g=c.getContext('2d');g.translate(T.x,T.y);g.rotate(T.r*Math.PI/180);g.scale(T.s,T.s);g.drawImage(cand,0,0);return c}
+function save(canvas,name){canvas.toBlob(b=>{const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),2000)},'image/png')}
+function crop([x,y,w,h]){const src=registered(),c=document.createElement('canvas');c.width=w;c.height=h;c.getContext('2d').drawImage(src,x,y,w,h,0,0,w,h);return c}
+$('face').onclick=()=>{if(cand.hidden)return;const c=registered(),g=c.getContext('2d');g.globalCompositeOperation='destination-out';for(const [x,y,w,h] of [WINDOW,CHUTE])g.fillRect(x,y,w,h);save(c,'machine-face-candidate.png')};
+$('glass').onclick=()=>{if(!cand.hidden)save(crop(WINDOW),'machine-glass-candidate.png')};
+$('interior').onclick=()=>{if(cand.hidden)return;const c=document.createElement('canvas');c.width=1200;c.height=2000;c.getContext('2d').drawImage(crop(WINDOW),WINDOW[0],WINDOW[1]);save(c,'machine-interior-candidate.png')};
+new ResizeObserver(apply).observe(stage);
+const q=new URLSearchParams(location.search).get('src');if(q&&/^[\w./-]+$/.test(q)&&!q.includes('..'))load('../'+q,q);else apply();
+</script></body></html>
