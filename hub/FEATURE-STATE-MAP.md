@@ -30,3 +30,7 @@ Observed pre-fix browser behavior and unverified repairs are in `QA-TRANSITION.m
 ## Optional bridge extension (disabled by default)
 
 `bridge-manifest.json` + `bridge-types.d.ts` describe the still/video choice; `build.py` validates and emits `bridge-data.js`. `bridge.js` owns silent media events, watchdogs and teardown. After unfolding, a configured video enters `bridging`; only its completion/fallback proceeds to `loading` then `playing`. Reduced motion skips it. See `VIDEO-BRIDGE.md` for exact behavior and testing limits. No clip is currently configured.
+
+## Current anthology coda update
+
+The older decorative cutaway is replaced by the completion-gated six-fold alignment puzzle described in MECHANISM.md. All six drinks now route to playable review prototypes, not finished films. Both endings of each release its connector; aligning all six unlocks the paper worktable. localStorage remembers progression and folds, with memory fallback. This does not make the full anthology a five-minute demo. New test-mechanism.cjs covers the actual controller and progression gate; browser visual QA remains pending.

@@ -44,6 +44,7 @@ def build(root=ROOT):
         mime=MIMES.get(asset.suffix.lower())
         if mime and mime.startswith('image/'):
             page=page.replace('src="assets/'+asset.name+'"','src="'+data_url(asset,mime)+'"')
+    page=page.replace('<script src="mechanism.js"></script>','<script>'+(root/'mechanism.js').read_text()+'</script>')
     page=page.replace('<script src="legacy-seam.js"></script>','<script>'+(root/'legacy-seam.js').read_text()+'</script>')
     registry=json.loads((root.parent/'anthology/registry.json').read_text())
     (root/'registry-data.js').write_text('window.ASTERWIND_REGISTRY='+dump(registry)+';\n')
