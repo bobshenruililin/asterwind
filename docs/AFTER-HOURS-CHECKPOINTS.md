@@ -59,7 +59,9 @@ Imported bundle head `5cad5ea` (base `8f030f9` verified) and the follow-on patch
 - Browser, `node hub/qa/journey.cjs finale,storage,offline,routes,keyboard,reduced,complete`: **59/59**. That covers the finale played live to the sixth real ending (normal and reduced motion, reload opens at morning, the machine still works), blocked storage played to a real ending, the offline single file (two stories, Kalam embedded, zero network requests with the network cut), six routes, keyboard including Sound in the held dialog, reduced motion, and the first outcome of all six stories to its real ending with the clock reaching 03:41.
 - Looked at: held drink with condensation and tilt, house lights down, homecoming into the lit label, back in the corridor; the finale at 0.3 s, 2.6 s and 7.6 s.
 
-**Not tested this checkpoint:** the second outcome of each story (passed at checkpoint 2's runtime, rerun pending), mobile sizes with the new light layers, history/Back, the art suite and twelve-cycle repeat on this runtime; physical devices; screen readers; sound by ear (synthesized, checked only for errors).
+- Browser, on pushed `8e1875b`, `node hub/qa/journey.cjs complete-alt,mobile,history,dawn,repeat,art`: **55/55**. That covers the second outcome of all six stories to its real ending, 390×844, 320×568 and 844×390 (held view, tag, Put back, Sound, Return clear of film controls), Back/Forward, Return during the reveal, deep link, reload, saved dawn, corrupt saves, twelve mixed cycles, and layered art with fallbacks and registration. **Checkpoint 3 runtime total: 114/114.**
+
+**Not tested:** physical devices; screen readers; sound by ear (synthesized, checked only for errors); house lights and finale at phone sizes beyond the automated assertions; the turned side (known defect, deferred).
 
 **Honest limits:** the finale's light is CSS shading over a night plate with the lamp painted on. It reads as a change of light, not yet as dawn, and needs ART-AH-03a or K-02. Condensation and the sheen are code-native placeholders sized for the vector bottles.
 
