@@ -1,0 +1,12 @@
+/* Measured after inspecting the 1672x941 decision plate: live crank left, rehearsal reels right. Sensor is not actionable. */
+(function(root,factory){const api=factory();if(typeof module==='object')module.exports=api;else root.DoorsLayout=api})(typeof window==='object'?window:globalThis,()=>{
+ const width=1672,height=941;
+ const regions={live:{x:.02,y:.45,w:.32,h:.43},rehearsal:{x:.71,y:.28,w:.27,h:.60}};
+ function compute(w,h){
+  if(!Number.isFinite(w)||!Number.isFinite(h)||w<=0||h<=0)return{mode:'split',regions:{}};
+  if(w/h<1.35)return{mode:'split',regions:{}};
+  const scale=Math.max(w/width,h/height),dx=(w-width*scale)/2,dy=(h-height*scale)/2;
+  return{mode:'scene',regions:Object.fromEntries(Object.entries(regions).map(([id,r])=>{let x=Math.max(8,dx+r.x*width*scale),y=Math.max(100,dy+r.y*height*scale);return[id,{x,y,w:Math.max(44,Math.min(w-8-x,r.w*width*scale)),h:Math.max(44,Math.min(h-55-y,r.h*height*scale))}]}))};
+ }
+ return{compute,regions,width,height};
+});

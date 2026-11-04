@@ -9,3 +9,13 @@ const frame={contentWindow:{}};const event={source:frame.contentWindow,data:{cha
 assert.equal(new Set(registry.episodes.map(e=>e.id)).size,6);for(const e of registry.episodes)assert.equal(e.origin,'original-fiction');
 const html=fs.readFileSync(__dirname+'/dist/scope.html','utf8');assert(!/<script src=|<link rel="stylesheet"|src="scene.svg"/.test(html));assert(html.includes('<svg xmlns='));assert(html.includes('id="chair"')); 
 console.log('PASS: both full branches; one untimed choice; pause/replay; invalid actions; corruption/denied storage; idempotent completion; session/source validation; source attribution; offline export.');
+
+// Each registered modern episode must match its actual story, not just a menu label.
+for(const e of registry.episodes.filter(e=>e.adapter==='anthology-v1')){
+ const source=require('./episodes/'+e.id+'/story.json');
+ assert.equal(source.id,e.id);assert.equal(source.choice.actions.length,2);
+ assert.deepEqual([...e.outcomes].sort(),Object.keys(source.branches).sort());
+ assert.deepEqual(source.choice.actions.map(a=>a.id).sort(),[...e.outcomes].sort());
+ assert(fs.existsSync(__dirname+'/'+e.entry));
+}
+console.log('PASS: every registered modern episode has a real entry, matching story ID, two actions and exactly the declared outcome branches.');

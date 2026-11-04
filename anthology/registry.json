@@ -63,9 +63,15 @@
       "id": "ship",
       "drink": "Ship-It Ginger Ale",
       "title": "Before the Doors Open",
-      "status": "outlined",
+      "status": "playable-prototype",
       "origin": "original-fiction",
-      "premise": "The opening clock is running, and the team discovers an uncertainty they cannot honestly hide."
+      "entry": "episodes/ship/index.html",
+      "adapter": "anthology-v1",
+      "outcomes": [
+        "live",
+        "rehearsal"
+      ],
+      "arrival": "The doors are about to open."
     }
   ]
 }

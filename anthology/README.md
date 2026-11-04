@@ -1,10 +1,10 @@
-> Current lineup: **The Seam**, **One More Chair** and **The Quiet Minute** are playable prototypes. Three other drinks remain clearly in development. Run both anthology builders before the hub exporter.
+> Current lineup: **The Seam**, **One More Chair** and **The Quiet Minute** and **Before the Doors Open** are playable prototypes. Two other drinks remain clearly in development. Run `python3 anthology/build-all.py` before the hub exporter.
 
 > Paper-shot update: five inspected generated plates now drive Scope, including distinct outcomes. Original vector artwork remains a fallback. Shots dissolve/cut; they are not generated video or matched animation frames. Current visual integration notes: `episodes/scope/ART-INTEGRATION.md`.
 
 # Original anthology foundation
 
-This adds **One More Chair / Scope Creep Fizz**, an original fictional leadership story. It is not from, or a replacement for, Amanda and Hannah's source workbook. The Seam remains untouched. The registry has six intended drinks; Seam, Scope and Standup currently run. The other three are outlined pitches, not finished episodes.
+This adds **One More Chair / Scope Creep Fizz**, an original fictional leadership story. It is not from, or a replacement for, Amanda and Hannah's source workbook. The Seam remains untouched. The registry has six intended drinks; Seam, Scope, Standup and Ship currently run. The other two are outlined pitches, not finished episodes.
 
 ## What runs
 

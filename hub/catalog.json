@@ -38,7 +38,7 @@
     "id": "ship",
     "name": "Ship-It Ginger Ale",
     "story": "Before the Doors Open",
-    "status": "outlined",
+    "status": "playable-prototype",
     "color": "#c1ac79"
   }
 ]
