@@ -2,7 +2,7 @@
 from pathlib import Path
 import json, base64, re
 ROOT = Path(__file__).resolve().parent
-MIMES = {'.webp':'image/webp','.png':'image/png','.jpg':'image/jpeg','.jpeg':'image/jpeg','.svg':'image/svg+xml','.mp4':'video/mp4','.webm':'video/webm'}
+MIMES = {'.webp':'image/webp','.png':'image/png','.jpg':'image/jpeg','.jpeg':'image/jpeg','.svg':'image/svg+xml','.mp4':'video/mp4','.webm':'video/webm','.ttf':'font/ttf'}
 def local_asset(root, src, mime):
     if not isinstance(src,str) or not src: raise ValueError('Media src must be a local relative path')
     path=(root/src).resolve()
@@ -44,6 +44,18 @@ def build(root=ROOT):
         mime=MIMES.get(asset.suffix.lower())
         if mime and mime.startswith('image/'):
             page=page.replace('src="assets/'+asset.name+'"','src="'+data_url(asset,mime)+'"')
+    # Fonts and journey scripts. Cameo and delivered-art paths become exact data URLs.
+    for name in ('Kalam-Regular.ttf','Kalam-Bold.ttf'):
+        page=page.replace("url('../app/assets/fonts/"+name+"')","url('"+data_url(root.parent/'app/assets/fonts'/name,'font/ttf')+"')")
+    drinks=(root/'drinks.js').read_text()
+    for src in sorted(set(re.findall(r"'(\.\./[^']+\.webp)'",drinks))):
+        drinks=drinks.replace("'"+src+"'","'"+data_url((root/src).resolve(),'image/webp')+"'")
+    manifest_js=(root/'art/manifest.js').read_text()
+    for src in sorted(set(re.findall(r"'(art/[^']+\.(?:webp|png|jpg|jpeg))'",manifest_js))):
+        manifest_js=manifest_js.replace("'"+src+"'","'"+data_url(local_asset(root,src,MIMES[Path(src).suffix.lower()]),MIMES[Path(src).suffix.lower()])+"'")
+    inline=lambda text:'<script>'+text.replace('</script','<\\/script')+'</script>'
+    for name,text in (('drinks.js',drinks),('art.js',(root/'art.js').read_text()),('art/manifest.js',manifest_js),('sound.js',(root/'sound.js').read_text()),('journey.js',(root/'journey.js').read_text())):
+        page=page.replace('<script src="'+name+'"></script>',inline(text))
     page=page.replace('<script src="mechanism.js"></script>','<script>'+(root/'mechanism.js').read_text()+'</script>')
     page=page.replace('<script src="legacy-seam.js"></script>','<script>'+(root/'legacy-seam.js').read_text()+'</script>')
     registry=json.loads((root.parent/'anthology/registry.json').read_text())

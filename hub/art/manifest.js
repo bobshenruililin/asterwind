@@ -3,7 +3,7 @@
    is used. Paths are relative to hub/. A slot that fails to load falls back automatically. */
 window.ASTERWIND_ART={
  schemaVersion:1,
- machine:{face:null,interior:null,side:null},            // ART-AH-01, ART-AH-05: e.g. 'art/machine/machine-face.webp'
+ machine:{face:null,interior:null,side:null},            // ART-AH-01, ART-AH-05: for example art/machine/machine-face.webp
  drinks:{                                                 // ART-AH-02: transparent cameo hole required
   seam:{sealed:null,open:null,empty:null},
   standup:{sealed:null,open:null,empty:null},
