@@ -37,7 +37,7 @@ window.addEventListener('resize',layoutChoice);window.addEventListener('pagehide
 window.__asterwindEpisode={id:'ship',version:1,start,get assetsReady(){return assetsReady},get state(){return film.state()}};
 $('start').disabled=true;$('start').querySelector('span').textContent='Preparing the paper scene…';
 const timeout=new Promise(resolve=>setTimeout(()=>resolve(false),8000));
-const preload=Promise.all(Object.entries(art?.plates||{}).map(([id,plate])=>new Promise(resolve=>{const img=new Image();img.onload=()=>{loaded.set(id,img);resolve(true)};img.onerror=()=>resolve(false);img.src=plate.src}))).then(results=>results.length===4&&results.every(Boolean));
+const preload=Promise.all(Object.entries(art?.plates||{}).map(([id,plate])=>new Promise(resolve=>{const img=new Image();img.onload=()=>{loaded.set(id,img);resolve(true)};img.onerror=()=>resolve(false);img.src=plate.src}))).then(results=>results.length>=4&&['master','decision','live','rehearsal'].every(id=>loaded.has(id))&&results.every(Boolean));
 Promise.race([preload,timeout]).then(ok=>{
  if(stopped)return;assetsReady=true;raster=ok;$('stage').dataset.raster=String(ok);$('vector-fallback').hidden=ok;
  if(ok){$('stage').style.setProperty('--decision-art','url("'+art.plates.decision.src+'")');showArt('open')}

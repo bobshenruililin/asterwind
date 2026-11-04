@@ -38,3 +38,10 @@ const vm=require('node:vm');
  console.log('Doors DOM controller: '+(raster?'generated art':'vector fallback')+', session, playback, both actions and completion/replay pass.');
  }
 })().catch(err=>{console.error(err);process.exitCode=1});
+// Held performance states must not show the reset before visitor disclosure/consent.
+assert.equal(art.beats.live.plate,'ready');assert.equal(art.beats['visitor-disclosure'].plate,'ready');
+assert.equal(art.beats.repeat.plate,'double');assert.equal(art.beats.invite.plate,'double');
+assert.equal(art.beats['reset-reach'].plate,'reach');assert.equal(art.beats.reset.plate,'live');
+const stages=story.branches.live.map(b=>b.stage);assert(stages.indexOf('visitor-disclosure')<stages.indexOf('repeat'));assert(stages.indexOf('invite')<stages.indexOf('reset-reach'));assert(stages.indexOf('reset-reach')<stages.indexOf('reset'));
+assert.equal(Object.keys(art.plates).length,7);assert.equal(story.choice.actions.length,2);
+console.log('Doors performance: readiness → disclosure → double count → invitation → reach → response ordering passes; seven plates, one untimed choice.');

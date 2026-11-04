@@ -82,7 +82,7 @@
         "shot": "city",
         "duration": 4500,
         "speaker": "",
-        "line": "One visitor passes. The tower springs twice. The fault is still here."
+        "line": "A visitor passes a hand over the sensor. The tower springs twice. The fault is still here."
       },
       {
         "stage": "invite",
@@ -92,11 +92,18 @@
         "line": "That is the fault we’re still working on. Shall we try again together?"
       },
       {
+        "stage": "reset-reach",
+        "shot": "hands",
+        "duration": 1800,
+        "speaker": "",
+        "line": ""
+      },
+      {
         "stage": "reset",
         "shot": "hands",
         "duration": 4500,
         "speaker": "",
-        "line": "The visitor joins Dev at the reset. This time, one person lights one window."
+        "line": "The visitor joins Dev at the reset. This time, the tower rises once."
       },
       {
         "stage": "ending-live",

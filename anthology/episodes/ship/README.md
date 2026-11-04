@@ -15,3 +15,9 @@ Protocol: `anthology-v1`; id `ship`; outcomes `live`, `rehearsal`. No registry o
 ## Verification boundaries
 
 Node source/state/controller tests are not browser rendering tests. Browser review was not performed because the current browser route had an access-policy denial. No alternate route was used. Art dimensions and hotspot bounds are checked separately before integration.
+
+## Performance-state revision
+
+Three new inspected generated stills preserve the live-branch camera and separate anticipation from consequence. Role assignment and pre-use disclosure now show hands clear of the crank, roof down. Repeat fault and invitation show the visitor's hand near the tabletop sensor and double roof. A silent 1.8-second reach beat precedes the existing successful reset plate. Live consequence is now 37.8 seconds; setup and rehearsal unchanged. The visitor passes a hand near the sensor, not a body through a tabletop device.
+
+These are held cuts with mild generated material/pose variation, not interpolated stop-motion or continuous animation. Existing live/master/rehearsal/decision originals are retained. New source PNGs in assets/performance-v1, optimized WebPs in assets. All seven plates must preload; a failure selects the vector fallback. No new player choice, no timing pressure, no invented recorded speech. Browser assembled playback remains unverified.

@@ -24,6 +24,24 @@
       "alt": "The paper city stands still while a glowing recorded city appears on the screen. Dev explains the mechanism and Lio collects a future live-test request.",
       "width": 1672,
       "height": 941
+    },
+    "ready": {
+      "src": "assets/performance-ready.webp",
+      "alt": "The visitor keeps his hands clear of the crank while the team explains the live prototype; the roof is lowered.",
+      "width": 1672,
+      "height": 941
+    },
+    "double": {
+      "src": "assets/performance-double.webp",
+      "alt": "The visitor passes a hand near the tabletop sensor. Two roof sections rise; he and Dev look toward the fault.",
+      "width": 1671,
+      "height": 941
+    },
+    "reach": {
+      "src": "assets/performance-reach.webp",
+      "alt": "Dev points toward the reset crank; the visitor reaches toward it while the double roof remains raised.",
+      "width": 1670,
+      "height": 941
     }
   },
   "beats": {
@@ -70,21 +88,21 @@
       "focus": 50
     },
     "live": {
-      "plate": "live",
+      "plate": "ready",
       "zoom": 1.12,
       "x": 28,
       "y": 50,
       "focus": 30
     },
     "repeat": {
-      "plate": "master",
+      "plate": "double",
       "zoom": 1.6,
       "x": 51,
       "y": 30,
       "focus": 50
     },
     "invite": {
-      "plate": "live",
+      "plate": "double",
       "zoom": 1.25,
       "x": 23,
       "y": 48,
@@ -140,11 +158,18 @@
       "focus": 50
     },
     "visitor-disclosure": {
-      "plate": "live",
+      "plate": "ready",
       "zoom": 1.15,
       "x": 23,
       "y": 48,
       "focus": 25
+    },
+    "reset-reach": {
+      "plate": "reach",
+      "zoom": 1.18,
+      "x": 26,
+      "y": 60,
+      "focus": 26
     }
   }
 }
