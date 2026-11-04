@@ -76,3 +76,10 @@ Picked up by the scheduled resume at 04:11 UTC+8. Two deliveries were waiting on
 **ART-AH-00 cabinet study: screened, candidate ready, awaiting sign-off.** The material is right, and the machine finally belongs to the corridor. Instead of warping dot's art, a delivered face can now declare where its own controls sit (keys, knob, chute, clock well), and the live controls follow it; the window stays fixed. Key lights land on the six keys, and the knob's focus ring circles the paper dial. The candidate is reproducible from `make-candidate.py` and is **not** switched on in the production manifest, because the study's provenance keeps placeholders authoritative until review.
 
 **Tooling:** `ART_MANIFEST=<json>` now applies to every journey suite, so any delivery can be screened through the whole experience before it is wired in.
+
+**Tested** (Chromium 153 headless over local HTTP):
+- Shipped configuration (dawn plate on, code-native face), runtime `dba8e43`, `node hub/qa/journey.cjs all` after a full rebuild: **114/114**. Covers six routes; both outcomes of all six stories to their real endings; the live finale (normal and reduced motion, reload at morning); saved and corrupt dawn; keyboard including Sound; reduced motion; 390×844, 320×568, 844×390; Back/Forward, Return during the reveal, deep link, reload; blocked storage to a real ending; layered art and registration; twelve repeat cycles; and the offline single file with the dawn plate embedded and no network requests.
+- With the ART-AH-00 candidate manifest: `art-candidate,routes,keyboard` 29/29.
+- Source: contract, art-state, state, layout, mechanism, legacy-completion, bridge and build tests pass. `scripts/verify-repo.cjs` still fails only on the pre-existing paths in `film/audio/source-manifest.json`.
+
+**Not tested:** physical devices, screen readers, sound by ear; the cabinet candidate through the completion and finale suites (only lobby, held view, routes and keyboard).
