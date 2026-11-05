@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bottle crossing</title>
+<!-- ROUGH REVIEW PROOF for the Creative Exchange (classroom → corner → bottle → paper world). Not the hub, not a
+     build. Placeholders only: the paper corridor plate stands in for Bob's real HKU corner photos, and the studio
+     opening plate stands in for K-01's first frame. All label copy is a PROPOSAL, typeset in code over the art.
+     Serve the repository root over HTTP and open /docs/demos/bottle-crossing/ -->
+<style>
+@font-face{font-family:Kalam;src:url('../../../app/assets/fonts/Kalam-Regular.ttf') format('truetype');font-display:swap}
+:root{color-scheme:dark;--ink:#fbefd9;--gold:#e3b76d;--dim:#b9ad9c}
+*{box-sizing:border-box}
+html,body{margin:0;background:#0b0d12;color:var(--ink);font-family:Georgia,serif}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,#bottle:focus-visible{outline:2px solid var(--gold);outline-offset:4px}
+[hidden]{display:none!important}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+header{padding:14px 16px 8px;display:flex;flex-wrap:wrap;gap:6px 18px;align-items:baseline}
+header h1{font-weight:400;font-size:22px;margin:0}
+header p{margin:0;font:12px/1.5 system-ui;color:var(--dim);max-width:780px}
+.flag{font:10px system-ui;letter-spacing:.18em;text-transform:uppercase;color:#1b1610;background:var(--gold);padding:3px 7px;border-radius:2px}
+#frame{position:relative;width:min(calc(100% - 32px),calc((100vh - 140px)*1.7778));aspect-ratio:16/9;margin:0 auto;overflow:hidden;background:#07080c;user-select:none;-webkit-user-select:none;touch-action:none}
+#corridor{position:absolute;inset:-3%;width:106%;height:106%;object-fit:cover;filter:blur(5px) brightness(.5) saturate(.8);transition:filter 1.6s}
+#tube{position:absolute;left:50%;top:-14%;width:70%;height:46%;transform:translateX(-50%);background:radial-gradient(closest-side,#fff7e6c0,#ffe9c040 45%,transparent);opacity:.35;transition:opacity 1.4s;pointer-events:none;mix-blend-mode:screen}
+.lifted #tube{opacity:1}
+.lifted #corridor{filter:blur(7px) brightness(.32) saturate(.7)}
+#bottle{position:absolute;left:50%;top:-6%;height:118%;aspect-ratio:600/1100;transform:translateX(-50%);touch-action:none;cursor:grab;transition:transform 1.3s cubic-bezier(.3,.7,.2,1)}
+#bottle:active{cursor:grabbing}
+.lifted #bottle{transform:translateX(-50%) translateY(-9%) rotate(-5deg) scale(1.06)}
+#bottle svg{width:100%;height:100%;display:block;overflow:visible}
+#through{position:absolute;inset:0;pointer-events:none;opacity:0}
+#through img{position:absolute;transform-origin:50% 50%}
+#controls{position:absolute;left:0;right:0;bottom:5%;display:flex;justify-content:center;gap:12px;align-items:center}
+#controls button{background:#14182488;border:1px solid #bda77f99;border-radius:24px;padding:10px 18px;min-height:44px;font:14px system-ui}
+#turn{width:44px;padding:0!important;font-size:20px!important}
+#enter{position:absolute;right:5%;bottom:6%;background:#14182488;border:1px solid #bda77f99;border-radius:24px;padding:10px 18px;min-height:44px;font:14px system-ui;color:var(--ink);text-decoration:none}
+#slate{position:absolute;top:7%;left:6%;font:11px system-ui;letter-spacing:.25em;color:#eadac3;text-shadow:0 1px 4px #000;opacity:0;transition:opacity .9s}
+#review{max-width:820px;margin:12px auto 24px;padding:0 16px;font:12px/1.6 system-ui;color:var(--dim)}
+#review h2{font:15px Georgia;color:var(--ink);margin:14px 0 6px}
+#review ul{margin:4px 0 0;padding-left:18px}
+body.export header,body.export #review{display:none}
+body.export #frame{width:100vw;height:100vh;aspect-ratio:auto}
+@media (max-width:700px){#frame{aspect-ratio:9/14;width:calc(100% - 24px)}#bottle{top:4%;height:80%}#controls{bottom:3%}#enter{bottom:3%;right:50%;transform:translateX(50%)}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<header>
+ <span class="flag">Rough proof</span>
+ <h1>Bottle crossing</h1>
+ <p>One bottle, plausibly manufactured, with one impossible detail. Turn it to read the back. Hold it up to the light to cross into the paper world. Placeholder corridor and studio; all copy is proposed.</p>
+</header>
+<div id="frame">
+ <img id="corridor" src="../../../hub/assets/corridor.webp" alt="">
+ <div id="tube"></div>
+ <div id="bottle" tabindex="0" role="slider" aria-label="The bottle. Drag or use the arrow keys to turn it." aria-valuemin="0" aria-valuemax="359" aria-valuenow="0" aria-valuetext="Front label" aria-describedby="label-text"></div>
+ <div id="through"><img alt=""></div>
+ <div id="slate">03:14</div>
+ <div id="controls"><button id="turn" aria-label="Turn the bottle around">↻</button><button id="lift">Hold it up to the light</button></div>
+ <a id="enter" href="../seam-light-test/" hidden>Enter</a>
+</div>
+<p class="sr" id="label-text"></p>
+<p class="sr" id="live" aria-live="polite"></p>
+<section id="review" aria-label="Review notes">
+ <h2>What this proof asks</h2>
+ <ul>
+  <li><strong>Believable:</strong> amber glass, 330 ml, a paper wrapper with a glued seam, an ingredients panel and small print, all typeset in code so the copy stays editable.</li>
+  <li><strong>The one impossible detail:</strong> the label's little window looks into the coffee, and in it, faint and upside down, a lamp-lit room.</li>
+  <li><strong>The crossing:</strong> hold it up to the light and the bottle becomes a camera obscura. The room brightens, rights itself and becomes the first frame of the film.</li>
+  <li><strong>Placeholders:</strong> the paper corridor stands in for the real HKU corner photos, and the studio opening plate for K-01's first frame. Proposed copy: the hook, ingredients and small print.</li>
+ </ul>
+</section>
+<script>
+'use strict';
+const $=id=>document.getElementById(id),EXPORT=new URLSearchParams(location.search).has('export');
+if(EXPORT)document.body.classList.add('export');
+const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const STUDIO='../../../hub/assets/studio-opening.webp',GRAIN='../../../hub/art/textures/paper-grain.webp';
+// ---------- proposed copy (typeset in code; never baked into art) ----------
+const COPY={
+ kicker:'3:00 AM',name:'COLD BREW',under:'Steeped since midnight · 330 ml',
+ hook:['Drink when two good ideas','want the same hour.'],
+ ingredientsTitle:'INGREDIENTS',
+ ingredients:['Water, cold-brewed coffee,','cane sugar, someone else’s','deadline and a pinch of courage.'],
+ small:['Batch 03:14 · Best before dawn','Store away from direct light.'],
+ maker:['Bottled after hours','Corridor 3 · No. 1 of 6']
+};
+$('label-text').textContent=`Front: ${COPY.kicker}, ${COPY.name}. ${COPY.under}. A small clear window into the coffee. Side: ${COPY.hook.join(' ')} Back: ${COPY.ingredientsTitle}: ${COPY.ingredients.join(' ')} ${COPY.small.join(' ')} ${COPY.maker.join(' ')}.`;
+// ---------- the bottle: SVG, with a cylindrical wrapper drawn in vertical slices ----------
+const NS='http://www.w3.org/2000/svg',R=150,CX=300,C=2*Math.PI*R,BAND=[470,760],WIN={y:600,rx:62,ry:76},N=56;
+// The room inside: IMW wide in bottle units, shifted so its lamp (at 42%, 25% of the plate) sits in the window. FOCUS: where the final frame crops on a tall screen.
+const IMW=480,LAMP=[(.5-.42)*480,(.5-.25)*270],FOCUS=.27;
+const body='M255 105 h90 v18 q-6 4 -6 10 v118 q0 32 46 70 q65 52 65 122 v520 q0 52 -52 52 h-196 q-52 0 -52 -52 v-520 q0 -70 65 -122 q46 -38 46 -70 v-118 q0 -6 -6 -10 z';
+function strip(){
+ // The flat wrapper: u = 0 is the front centre; it is drawn three times so any rotation wraps.
+ const H=BAND[1]-BAND[0],y0=BAND[0],t=(x,y,s,txt,o='')=>`<text x="${x}" y="${y}" ${o} font-size="${s}">${txt}</text>`;
+ const panel=off=>`<g transform="translate(${off} 0)">
+  <path fill="#efe2c6" fill-rule="evenodd" d="M${-C/2} ${y0} h${C} v${H} h${-C} z M0 ${WIN.y-WIN.ry} a${WIN.rx} ${WIN.ry} 0 1 0 0.1 0 z"/>
+  <rect x="${-C/2}" y="${y0}" width="${C}" height="${H}" fill="url(#grain)" opacity=".55"/>
+  <rect x="${-C/2}" y="${y0+10}" width="${C}" height="2" fill="#7a5a36" opacity=".6"/><rect x="${-C/2}" y="${y0+H-12}" width="${C}" height="2" fill="#7a5a36" opacity=".6"/>
+  <ellipse cx="0" cy="${WIN.y}" rx="${WIN.rx+6}" ry="${WIN.ry+6}" fill="none" stroke="#6b4a2a" stroke-width="3"/>
+  <g fill="#3a2614" text-anchor="middle" font-family="Georgia,serif">
+   ${t(0,y0+44,22,COPY.kicker,'letter-spacing="6"')}
+   ${t(0,y0+H-62,44,COPY.name,'font-weight="700" letter-spacing="2"')}
+   ${t(0,y0+H-30,15,COPY.under,'font-style="italic"')}
+   <g font-family="Kalam,cursive">${t(C/4,y0+120,25,COPY.hook[0])}${t(C/4,y0+154,25,COPY.hook[1])}</g>
+   ${t(C/2-10,y0+64,15,COPY.ingredientsTitle,'letter-spacing="4"')}
+   ${COPY.ingredients.map((l,i)=>t(C/2-10,y0+100+i*26,18,l)).join('')}
+   ${COPY.small.map((l,i)=>t(C/2-10,y0+200+i*22,13,l,'font-style="italic" opacity=".8"')).join('')}
+   ${COPY.maker.map((l,i)=>t(-C/4,y0+110+i*24,16,l,'font-style="italic"')).join('')}
+   <g transform="translate(${-C/4-60} ${y0+160})">${[...Array(26)].map((_,i)=>`<rect x="${i*4.6}" y="0" width="${[2,1,3,1,2][i%5]}" height="56"/>`).join('')}</g>
+  </g>
+  <path d="M${C*0.36} ${y0} l6 ${H*0.2} l-5 ${H*0.2} l7 ${H*0.25} l-6 ${H*0.35}" stroke="#8b6a44" stroke-width="2" fill="none" opacity=".7"/>
+  <rect x="${C*0.36}" y="${y0}" width="10" height="${H}" fill="#d9c7a2" opacity=".55"/>
+ </g>`;
+ return `<g id="strip">${panel(-C)}${panel(0)}${panel(C)}</g>`;
+}
+function svg(){
+ const slices=[...Array(N)].map((_,i)=>`<clipPath id="s${i}" clipPathUnits="userSpaceOnUse"><rect class="sc" y="${BAND[0]-2}" height="${BAND[1]-BAND[0]+4}"/></clipPath><g clip-path="url(#s${i})"><use class="su" href="#strip"/></g>`).join('');
+ return `<svg viewBox="0 0 600 1100" aria-hidden="true" focusable="false"><defs>
+  <pattern id="grain" width="512" height="512" patternUnits="userSpaceOnUse"><image href="${GRAIN}" width="512" height="512"/></pattern>
+  <clipPath id="bodyclip"><path d="${body}"/></clipPath>
+  <linearGradient id="shade" x1="150" x2="450" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#000" stop-opacity=".6"/><stop offset=".16" stop-color="#000" stop-opacity=".18"/><stop offset=".3" stop-color="#fff3de" stop-opacity=".16"/><stop offset=".42" stop-color="#fff" stop-opacity="0"/><stop offset=".8" stop-color="#000" stop-opacity=".24"/><stop offset="1" stop-color="#000" stop-opacity=".62"/></linearGradient>
+  <radialGradient id="backlit" cx="300" cy="380" r="520" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffbd5e"/><stop offset=".45" stop-color="#a8561c"/><stop offset="1" stop-color="#2a1206"/></radialGradient>
+  <filter id="soft"><feGaussianBlur stdDeviation="1.4"/></filter>
+  ${strip()}
+ </defs>
+ <ellipse cx="300" cy="1024" rx="170" ry="13" fill="#000" opacity=".5"/>
+ <g clip-path="url(#bodyclip)">
+  <rect x="140" y="250" width="320" height="850" fill="#1a0d06"/>
+  <rect id="glow" x="140" y="250" width="320" height="850" fill="url(#backlit)" opacity="0"/>
+  <g id="obscura" opacity=".5"><image href="${STUDIO}" x="${CX-IMW/2}" y="${WIN.y-IMW*9/32}" width="${IMW}" height="${IMW*9/16}" preserveAspectRatio="xMidYMid slice" transform="rotate(180 ${CX} ${WIN.y}) translate(${LAMP[0]} ${LAMP[1]})" filter="url(#soft)" style="mix-blend-mode:screen"/></g>
+  <rect x="140" y="105" width="320" height="200" fill="#120904" opacity=".7"/>
+ </g>
+ <path d="${body}" fill="#8a4a1a" opacity=".22"/>
+ <g id="wrap">${slices}</g>
+ <rect x="150" y="${BAND[0]}" width="300" height="${BAND[1]-BAND[0]}" fill="url(#shade)"/>
+ <path d="${body}" fill="none" stroke="#f3c88a" stroke-opacity=".35" stroke-width="3"/>
+ <path d="M205 420 q-14 40 -12 160 M205 790 q-4 120 4 190" stroke="#fff2dc" stroke-opacity=".28" stroke-width="10" stroke-linecap="round" fill="none"/>
+ <path d="M268 130 v110" stroke="#fff2dc" stroke-opacity=".3" stroke-width="6" stroke-linecap="round"/>
+ <rect x="252" y="98" width="96" height="16" rx="5" fill="#2b1a10" opacity=".85"/>
+ </svg>`;
+}
+$('bottle').innerHTML=svg();
+const sc=[...document.querySelectorAll('#bottle .sc')],su=[...document.querySelectorAll('#bottle .su')];
+let phi=0,target=0,vel=0;
+function wrapLabel(){
+ // Cylindrical projection: each slice of the visible half shows its arc of the flat wrapper, foreshortened.
+ const p=((phi%(2*Math.PI))+3*Math.PI)%(2*Math.PI)-Math.PI;
+ for(let i=0;i<N;i++){const t0=-Math.PI/2+i*Math.PI/N,t1=t0+Math.PI/N,x0=CX+R*Math.sin(t0),x1=CX+R*Math.sin(t1),u0=R*(t0+p),u1=R*(t1+p),sx=(x1-x0)/(u1-u0);
+  sc[i].setAttribute('x',(x0-.4).toFixed(2));sc[i].setAttribute('width',(x1-x0+.8).toFixed(2));su[i].setAttribute('transform',`translate(${x0.toFixed(2)} 0) scale(${sx.toFixed(4)} 1) translate(${(-u0).toFixed(2)} 0)`)}
+ const deg=Math.round(((p*180/Math.PI)+360)%360),side=deg<45||deg>315?'Front label':deg<135?'Hook':deg<225?'Ingredients':'Maker and batch';
+ const b=$('bottle');b.setAttribute('aria-valuenow',deg);b.setAttribute('aria-valuetext',side);
+}
+// ---------- input: drag or arrow keys turn it; the turn button spins it round ----------
+let drag=null;
+$('bottle').addEventListener('pointerdown',e=>{if(state!=='rest')return;drag={x:e.clientX,phi:target};$('bottle').setPointerCapture(e.pointerId);Snd.rustle()});
+$('bottle').addEventListener('pointermove',e=>{if(!drag)return;const w=$('bottle').getBoundingClientRect().width;target=drag.phi-(e.clientX-drag.x)/(w*.5)*Math.PI*.9});
+const endDrag=()=>{drag=null};$('bottle').addEventListener('pointerup',endDrag);$('bottle').addEventListener('pointercancel',endDrag);
+$('bottle').addEventListener('keydown',e=>{if(state!=='rest')return;const d={ArrowLeft:-1,ArrowRight:1,ArrowUp:1,ArrowDown:-1}[e.key];if(d){e.preventDefault();target+=d*Math.PI/6;Snd.rustle()}});
+$('turn').onclick=()=>{if(state!=='rest')return;target=Math.round(target/Math.PI)*Math.PI+Math.PI;Snd.tink();announce('Turned around.')};
+// ---------- the crossing ----------
+let state='rest',T0=0;
+$('lift').onclick=()=>{if(state!=='rest')return;Snd.unlock();state='lift';T0=performance.now();target=Math.round(target/(2*Math.PI))*2*Math.PI;$('frame').classList.add('lifted');$('controls').hidden=true;Snd.slosh();announce('You hold the bottle up to the light. Inside the coffee, a small lamp-lit room appears, upside down.');
+ if(reduced){setTimeout(()=>{finishCrossing()},1200)}};
+function crossing(now){
+ const t=(now-T0)/1000;
+ if(state==='lift'){const g=Math.min(1,Math.max(0,(t-.5)/1.2));$('glow').setAttribute('opacity',(g*.85).toFixed(3));$('obscura').setAttribute('opacity',(.5+.45*g).toFixed(3));if(t>2&&!reduced)beginThrough()}
+ if(state==='through'&&!reduced){const u=Math.min(1,(t-2)/2.2),e=u<.5?4*u*u*u:1-Math.pow(-2*u+2,3)/2;through(e);if(u>=1)finishCrossing()}
+}
+let W0=null;
+function beginThrough(){
+ state='through';Snd.swell();
+ // Where the window is on screen right now (front facing): hand over from the SVG to a full-frame layer there.
+ const svgEl=$('bottle').querySelector('svg'),m=svgEl.getScreenCTM(),fr=$('frame').getBoundingClientRect(),pt=svgEl.createSVGPoint();pt.x=CX;pt.y=WIN.y;const s=pt.matrixTransform(m),k=Math.hypot(m.a,m.b);
+ // The final picture is a 16:9 box covering the frame (cropped on FOCUS when the screen is tall); it starts as the room in the window.
+ const fw=fr.width,fh=fr.height,w=Math.max(fw,fh*16/9),h=w*9/16,left=-(w-fw)*FOCUS,top=(fh-h)/2;
+ W0={x:s.x-fr.left,y:s.y-fr.top,r:WIN.rx*k,fw,fh,w,h,left,top,iw:IMW*k,ox:-LAMP[0]*k,oy:-LAMP[1]*k};
+ const img=$('through').querySelector('img');img.src=STUDIO;Object.assign(img.style,{width:w+'px',height:h+'px',left:left+'px',top:top+'px'});$('through').style.opacity=1;through(0);
+}
+function through(e){
+ const w=W0,img=$('through').querySelector('img');
+ // The window's centre travels to the frame's centre while the opening grows to the whole frame.
+ const fx=w.left+w.w/2,fy=w.top+w.h/2,wx=w.x+(w.fw/2-w.x)*e,wy=w.y+(w.fh/2-w.y)*e,r=w.r+(Math.hypot(w.fw,w.fh)*.6-w.r)*e;
+ // The picture starts small, inverted and framed on its lamp, and ends upright, covering the frame.
+ const scale=(w.iw/w.w)+(1-w.iw/w.w)*e,rot=180*(1-e),icx=(w.x+w.ox)+(fx-(w.x+w.ox))*e,icy=(w.y+w.oy)+(fy-(w.y+w.oy))*e;
+ $('through').style.clipPath=`ellipse(${r}px ${r*1.18}px at ${wx}px ${wy}px)`;
+ img.style.transform=`translate(${icx-fx}px,${icy-fy}px) rotate(${rot}deg) scale(${scale})`;
+ img.style.filter=`blur(${(1-e)*1.5}px) sepia(${(1-e)*.6}) brightness(${.8+.2*e})`;
+ $('bottle').style.opacity=String(1-e);$('corridor').style.opacity=String(1-e);$('tube').style.opacity=String(1-e);
+}
+function finishCrossing(){state='done';const img=$('through').querySelector('img'),fr=$('frame').getBoundingClientRect(),fw=fr.width,fh=fr.height,w=Math.max(fw,fh*16/9),h=w*9/16;img.src=STUDIO;Object.assign(img.style,{width:w+'px',height:h+'px',left:-(w-fw)*FOCUS+'px',top:(fh-h)/2+'px'});$('through').style.opacity=1;$('through').style.clipPath='none';img.style.transform='none';img.style.filter='none';$('bottle').style.opacity=0;$('corridor').style.opacity=0;$('tube').style.opacity=0;
+ $('slate').style.opacity=1;setTimeout(()=>{$('slate').style.opacity=0},3500);$('enter').hidden=false;Snd.room();announce('The studio, 3:14 AM. Enter when you are ready.')}
+function announce(t){$('live').textContent=t}
+// ---------- loop ----------
+let last=0;
+function frame(now){const dt=Math.min(.05,(now-(last||now))/1000);last=now;
+ const k=reduced?1:1-Math.exp(-dt*7);phi+=(target-phi)*k;wrapLabel();
+ // The impossible detail breathes: the tiny room's lamp flickers in the coffee.
+ if(state==='rest'&&!reduced)$('obscura').setAttribute('opacity',(.5+.06*Math.sin(now/310)+.03*Math.sin(now/97)).toFixed(3));
+ if(state!=='rest')crossing(now);
+ requestAnimationFrame(frame)}
+requestAnimationFrame(frame);
+// ---------- sound (synthesised; temp) ----------
+const Snd=(()=>{let c=null,out=null,hum=null;
+ const ns=(s)=>{const b=c.createBuffer(1,c.sampleRate*s,c.sampleRate),d=b.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;return b};
+ function burst(f,q,g,len,type='bandpass'){if(!c)return;const s=c.createBufferSource(),fl=c.createBiquadFilter(),gn=c.createGain(),t=c.currentTime;s.buffer=ns(len+.1);fl.type=type;fl.frequency.value=f;fl.Q.value=q;s.connect(fl);fl.connect(gn);gn.connect(out);gn.gain.setValueAtTime(0,t);gn.gain.linearRampToValueAtTime(g,t+.02);gn.gain.exponentialRampToValueAtTime(.0001,t+len);s.start(t);s.stop(t+len+.05)}
+ function tone(f,g,len){if(!c)return;const o=c.createOscillator(),gn=c.createGain(),t=c.currentTime;o.frequency.value=f;o.connect(gn);gn.connect(out);gn.gain.setValueAtTime(0,t);gn.gain.linearRampToValueAtTime(g,t+.005);gn.gain.exponentialRampToValueAtTime(.0001,t+len);o.start(t);o.stop(t+len+.05)}
+ return{unlock(){if(c)return;c=new AudioContext();out=c.createGain();out.gain.value=.9;out.connect(c.destination);
+   // The corridor: a cool fluorescent hum.
+   const o=c.createOscillator(),g=c.createGain();o.frequency.value=100;o.type='triangle';o.connect(g);g.connect(out);g.gain.value=.012;o.start();hum={o,g}},
+  rustle(){if(!c)this.unlock();burst(2600,.8,.05,.25)},
+  tink(){if(!c)this.unlock();tone(2350,.05,.5);tone(3520,.025,.35)},
+  slosh(){burst(420,1.2,.12,.6,'lowpass');setTimeout(()=>burst(300,1,.08,.5,'lowpass'),260)},
+  swell(){if(!c)return;const t=c.currentTime;hum.g.gain.linearRampToValueAtTime(0,t+2.2);const s=c.createBufferSource(),f=c.createBiquadFilter(),g=c.createGain();s.buffer=ns(3);f.type='lowpass';f.frequency.setValueAtTime(200,t);f.frequency.exponentialRampToValueAtTime(900,t+2);s.connect(f);f.connect(g);g.connect(out);g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.06,t+1.6);g.gain.linearRampToValueAtTime(.0,t+2.6);s.start(t);s.stop(t+2.8)},
+  room(){if(!c)return;const s=c.createBufferSource(),f=c.createBiquadFilter(),g=c.createGain(),t=c.currentTime;s.buffer=ns(4);s.loop=true;f.type='lowpass';f.frequency.value=320;s.connect(f);f.connect(g);g.connect(out);g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.05,t+1);s.start(t);setTimeout(()=>burst(600,10,.08,.4),900)}}})();
+// Review hook: jump to a state for screenshots.
+window.Proof={turn:d=>{target=phi=d*Math.PI/180},lift:()=>$('lift').click(),state:()=>state,
+ // Review: hold the crossing at t seconds after the lift (CSS lift transition assumed settled).
+ at:t=>{if(state==='rest')$('lift').click();T0=performance.now()-t*1000;if(t>2&&state==='lift')beginThrough();crossing(performance.now())}};
+</script>
+</body>
+</html>
