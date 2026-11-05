@@ -1,6 +1,6 @@
 // Rendered QA for the After Hours journey. Serve the repository first:
 //   python3 -m http.server 8731 --bind 127.0.0.1
-//   node hub/qa/journey.cjs [routes|repeat|complete|complete-alt|dawn|finale|keyboard|reduced|mobile|history|storage|art|offline|all]
+//   node hub/qa/journey.cjs [routes|repeat|complete|complete-alt|dawn|finale|side|keyboard|reduced|mobile|history|storage|art|offline|all]
 //   ART_MANIFEST=candidate.json node hub/qa/journey.cjs art-candidate   (screens a candidate manifest; not in 'all')
 // Screenshots and a JSON report go to hub/qa/after-hours/. Inspect the screenshots; passing
 // assertions are not visual approval. Browser emulation is not a physical-device or screen-reader test.
@@ -136,6 +136,25 @@ const SUITES={
    note(`finale${tag}: a later visit opens at morning without replaying`,reload.morning&&!reload.run&&reload.lamp>.95,{info:JSON.stringify(reload)});
    await toHeld(page,'seam');note(`finale${tag}: the machine still works at morning`,heldOk(await heldLook(page)));
    note(`no console errors (finale${tag})`,errors.length===0,{info:errors.join(' | ')});await ctx.close();
+  }
+ },
+ async side(browser){
+  // The turned side with all six folds released: what you see is what you touch, at every size.
+  const all={seam:['repair'],standup:['slips'],slides:['notebook'],scope:['return'],pixel:['connect'],ship:['live']},save={'asterwind.progress.v1':JSON.stringify({schemaVersion:1,completed:all})};
+  for(const [w,h,mobile,reduced] of [[1440,900,false,false],[390,844,true,false],[1440,900,false,true]]){
+   const tag=`${w}x${h}${reduced?'-reduced':''}`,how=mobile?'tap':'click',{ctx,page,errors}=await open(browser,{w,h,mobile,reduced,storage:save});
+   await page[how]('#turn');await page.waitForTimeout(reduced?300:1500);await shot(page,`23-side-${tag}`);
+   const hits=await page.evaluate(()=>[...document.querySelectorAll('#mechanism .paper-fold, #mechanism .paper-latch, #turn-back')].map(b=>{const r=b.getBoundingClientRect(),e=document.elementFromPoint(r.left+r.width/2,r.top+r.height/2);return{id:b.className||b.id,hit:!!e&&(e===b||b.contains(e)),w:Math.round(r.width),h:Math.round(r.height),on:r.left>=0&&r.right<=innerWidth&&r.top>=0&&r.bottom<=innerHeight}}));
+   note(`side ${tag}: every fold, the latch and the knob are on screen, hit where they are drawn, ≥ 40 px`,hits.every(x=>x.hit&&x.on&&Math.min(x.w,x.h)>=40),{info:JSON.stringify(hits.map(x=>[x.id.replace('paper-',''),x.hit,x.w,x.h]))});
+   const folds=page.locator('#mechanism .paper-fold');
+   for(let i=0;i<6;i++)for(let k=0;k<4;k++){if(/Channel aligned/.test(await folds.nth(i).getAttribute('aria-label')))break;await folds.nth(i)[how]();await page.waitForTimeout(reduced?20:120)}
+   const latch=await page.locator('#mechanism .paper-latch').isEnabled();if(latch)await page.locator('#mechanism .paper-latch')[how]();await page.waitForTimeout(reduced?200:900);await shot(page,`24-side-table-${tag}`);
+   const table=await page.evaluate(()=>({unfolded:document.getElementById('mechanism').classList.contains('unfolded'),focus:document.activeElement.className}));
+   note(`side ${tag}: align all six by ${how}, pull the latch, the shared table unfolds`,latch&&table.unfolded&&/refold/.test(table.focus),{info:JSON.stringify(table)});
+   await page.keyboard.press('Escape');await page.waitForTimeout(reduced?200:1300);
+   const back=await page.evaluate(()=>({turned:document.getElementById('cabinet').classList.contains('turned'),focus:document.activeElement.id}));
+   note(`side ${tag}: Escape turns the machine back and returns focus to the knob`,!back.turned&&back.focus==='turn',{info:JSON.stringify(back)});
+   note(`no console errors (side ${tag})`,errors.length===0,{info:errors.join(' | ')});await ctx.close();
   }
  },
  async keyboard(browser){

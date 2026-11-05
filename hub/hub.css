@@ -57,7 +57,10 @@ button:focus-visible{outline:3px solid #fff4d0;outline-offset:4px}
 .face{position:absolute;transform-style:preserve-3d;pointer-events:none}
 #turn,#turn-back,#mechanism{pointer-events:auto}
 .face.front{inset:0}
-.face.side{top:0;right:100%;width:calc(var(--W)*.5);height:100%;transform-origin:100% 50%;transform:rotateY(-90deg);border-radius:1.4cqw 0 0 1.4cqw;background:linear-gradient(90deg,#3b3a2f,#4a4a3c 18%,#3a4440 70%,#26302e);box-shadow:inset 0 0 0 .5cqw #182220;backface-visibility:hidden}
+/* The side's contents (plate, folds, latch, knob) lie flat on its wall. Flattening its subtree keeps
+   them out of the cabinet's 3D depth sort, where they intersected the front's inner layers: the
+   lower panel stopped painting, slivers of the front showed through and focus rings drifted. */
+.face.side{transform-style:flat;top:0;right:100%;width:calc(var(--W)*.5);height:100%;transform-origin:100% 50%;transform:rotateY(-90deg);border-radius:1.4cqw 0 0 1.4cqw;background:linear-gradient(90deg,#3b3a2f,#4a4a3c 18%,#3a4440 70%,#26302e);box-shadow:inset 0 0 0 .5cqw #182220;backface-visibility:hidden}
 .layer{position:absolute;inset:0;pointer-events:none}.layer svg,.layer img{display:block;width:100%;height:100%}
 .interior{transform:translateZ(calc(var(--W)*-.2)) scale(1.05)}
 #drinks{position:absolute;inset:0;transform-style:preserve-3d;transform:translateZ(calc(var(--W)*-.12)) scale(1.03);pointer-events:none}
