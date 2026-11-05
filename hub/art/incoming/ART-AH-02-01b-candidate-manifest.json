@@ -1,0 +1,68 @@
+{
+ "schemaVersion": 2,
+ "machine": {
+  "face": {
+   "src": "art/machine/machine-face-interim.webp",
+   "geometry": {
+    "keys": [
+     930.2,
+     473.3,
+     89.4,
+     115.7,
+     109.8,
+     142.1
+    ],
+    "knob": [
+     1027.2,
+     1338.7,
+     101.4
+    ],
+    "chute": [
+     132.3,
+     1660.8,
+     666.4,
+     189.9
+    ],
+    "display": [
+     96,
+     332,
+     1008,
+     56
+    ],
+    "well": true,
+    "sign": [
+     42,
+     95,
+     1118,
+     227
+    ]
+   },
+   "lettering": "AFTER HOURS"
+  },
+  "interior": "art/incoming/ART-AH-01b-interior-v1/machine-interior.webp",
+  "glass": null,
+  "side": null
+ },
+ "drinks": {
+  "seam": {
+   "body": "art/incoming/ART-AH-02-seam-pilot-v1/seam-body.webp",
+   "opened": null,
+   "empty": null,
+   "parts": {
+    "cap": "art/incoming/ART-AH-02-seam-pilot-v1/seam-cap.webp",
+    "seal-l": "art/incoming/ART-AH-02-seam-pilot-v1/seam-seal-l.webp",
+    "seal-r": "art/incoming/ART-AH-02-seam-pilot-v1/seam-seal-r.webp"
+   }
+  }
+ },
+ "corridor": {
+  "portrait": null,
+  "dawn": "art/corridor/corridor-dawn.webp",
+  "portraitDawn": null
+ },
+ "hand": {},
+ "clips": {},
+ "textures": {
+  "paper": "art/textures/paper-grain.webp"
+ }
+}

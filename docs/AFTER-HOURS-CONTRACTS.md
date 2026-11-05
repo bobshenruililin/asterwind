@@ -30,7 +30,15 @@ What delivered art, clips and sound must fit. Timings live in one table, [`hub/t
 - `chute`: `[x, y, w, h]`, the flap hangs from its top edge (flap height at most 140).
 - `display`: `[x, y, w, h]`, where the clock text sits; `well: true` draws a dark recessed well when the art has none.
 
-Missing or malformed entries keep the template positions. Example: `hub/art/incoming/ART-AH-00-cabinet-study-v1/candidate/candidate-manifest.json`.
+- `sign`: `[x, y, w, h]`, a plain sign panel; with a manifest `lettering` string the code cuts that text in card on it (`Art.signLetters`). Leave `lettering` out when finished art letters the sign itself.
+
+Missing or malformed entries keep the template positions. In use: the interim face in `hub/art/manifest.js` (keys, knob, chute, clock well 96,332 → 1104,388, sign 42,95 → 1160,322, lettering AFTER HOURS).
+
+## Other layer rules
+
+- **Delivered interior:** when `machine.interior` loads, the code's shelf lips step aside (the art paints its own shelves); the coils and the coloured price tabs stay, because they move or carry meaning.
+- **Paper grain:** `textures.paper` (a transparent light/dark overlay, `hub/art/textures/`) gives code-native layers a photographed fibre: vector bottles, interior wall, shelves, cabinet side and chute flap. Delivered art never receives it. Without the texture they render smooth.
+- **Torn-paper reveal and homecoming:** during `reveal` and `homecoming.shrink`, the frame is clipped by `Art.tornClip` (72 points; ellipse for round cameos, rectangle otherwise; ellipse and rectangle share vertex order and morph), with a drop-shadow on the parent. Removed when the film plays; reduced motion keeps the instant change.
 
 ## Beats
 

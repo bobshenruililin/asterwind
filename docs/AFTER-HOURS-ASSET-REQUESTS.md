@@ -6,13 +6,13 @@ Branch `claude/awesome-hypatia-6bf97q` (Last Light on the Floor / After Hours di
 
 | # | ID | What | Tool | Status | Unblocks |
 | --- | --- | --- | --- | --- | --- |
-| 1 | ART-AH-00 | The existing cabinet material study, committed as is | — | **delivered (review WebP), screening** — original PNG transfer pending | Registration and look test for ART-AH-01 |
+| 1 | ART-AH-00 | The existing cabinet material study, committed as is | — | **delivered; adopted 5 Nov as the interim face** (registered, lettered by code); original PNG still pending | Registration and look test for ART-AH-01 |
 | 2 | ART-AH-01 | Machine face, layered (1200×2000) | Image 2.5 | requested | The whole lobby's material read |
-| 3 | ART-AH-02 | 3:00 AM Cold Brew opening pilot: body, cap, two seal halves, remnants, empty | Image 2.5 | requested | The layered drink pipeline; then the other five |
+| 3 | ART-AH-02 | 3:00 AM Cold Brew opening pilot: body, cap, two seal halves, remnants, empty | Image 2.5 | **candidates previewed in chat 5 Nov; files not received** — commit to `hub/art/incoming/ART-AH-02-seam-pilot-v1/` | The layered drink pipeline; then the other five |
 | 4 | ART-AH-03a | Dawn corridor plate registered to the night plate (1672×941) | Image 2.5 | **delivered, screened, integrated as candidate** (provenance pending) | The dawn finale's end state; K-02's last frame |
 | 5 | K-01 | The Seam: the label's still breathes into the film (silent, 4–6 s) | Kling | **proposed, decide together** | A living threshold into the flagship film |
 | 6 | K-02 | Dawn finale: last light leaves the floor (silent, 8–10 s) | Kling | **proposed, decide together**, needs ART-AH-03a | The ending of the whole night |
-| 7 | ART-AH-01b | Machine interior: back wall, tube, two shelves, chute well; no drinks or coils (1200×2000; only the window and chute show) | Image 2.5 | requested next, after ART-AH-02 | The view through the glass matching the paper face |
+| 7 | ART-AH-01b | Machine interior: back wall, tube, two shelves, chute well; no drinks or coils (1200×2000; only the window and chute show) | Image 2.5 | **candidate previewed in chat 5 Nov; file not received** — commit to `hub/art/incoming/ART-AH-01b-interior-v1/` | The view through the glass matching the paper face |
 
 **Update 5 Nov after screening (Claude):** ART-AH-00 is now the **material and light reference for every machine and drink asset** that follows. With that face in place, the vector interior behind the glass and the vector bottles are the most visible mismatch. So the next asks, in order, are ART-AH-02 (Cold Brew pilot), ART-AH-01 (a finished face; it may keep the study's control layout, which the code now accepts) and ART-AH-01b (interior), one asset each. Still open from deliveries: the ART-AH-00 original PNG (`f535262e…0643e0`) and an ART-AH-03a `provenance.md`.
 
@@ -148,6 +148,22 @@ Planning only; each becomes a request after the pilot is accepted.
 ## Responses
 
 _dot: reply below or in the delivery's `provenance.md`. I'll record registration and browser results here with the exact commit._
+
+### ART-AH-02 pilot and ART-AH-01b interior candidates (5 Nov, Claude)
+
+- **What arrived:** in Bob's chat message, previews of `seam-body.webp` (960×2080), `seam-cap.webp` (188×160), `seam-seal-l.webp` and `seam-seal-r.webp` (88×42 each), and `machine-interior.webp` (1200×2000). Stated with them: drink set 118,850 bytes, interior 80,698 bytes; static registration checks passed; source PNGs, prompts, recipe and review guidance are in `Asterwind-Final-Sprint-Asset-Candidates.zip` in Bob's ChatGPT Space. **The files themselves did not reach the working session** (searched the filesystem and the remote), so no pixels, alpha or byte sizes were inspected here and nothing was integrated.
+- **From the previews only:** the body has an open mouth and a clean rectangular cameo window; cap and seal halves match their boxes; the interior's shelves sit at y 960 and 1500 with a chute well matching the interim face's chute. The code now hides its own shelf lips when a delivered interior loads, so painted and code shelves do not double up.
+- **To screen:** commit the files to the folders above, then `ART_MANIFEST=hub/art/incoming/ART-AH-02-01b-candidate-manifest.json node hub/qa/journey.cjs art-candidate,routes,mobile,reduced` (and `art` for registration). Adoption stays gated on that and on your sign-off.
+
+### Kling: provisional decisions (5 Nov, Claude; no purchase made)
+
+| Shot | Decision | Why |
+| --- | --- | --- |
+| **K-01** Seam label breathes into the film | **Yes, first** | The single highest-value moment: the threshold into the flagship film, already supported by the silent bridge contract with still fallback. 4–6 s, first and last frame = `film/assets/performanceStable.webp`. Reject any take with hand or face drift. |
+| **K-02** Dawn finale clip | **Later, optional** | The dawn plate (ART-AH-03a) already makes the finale read as dawn through a real cross-fade. A clip would add the lamp clicking off and the shaft sliding; worth it only after K-01 proves the pipeline. |
+| K-01b label breaths for other drinks | Only if K-01 lands | Strongest candidates: Slide Deck Bitters (the showcase hall) and Ship-It (the city lights). |
+| Dispense, catch, opening rituals | **No** | These are interactive and layered; video would freeze what the player does and break replaceable parts. |
+| House lights, homecoming | **No** | Code-driven light and the torn-paper morph already carry them and stay in sync with the player's input. |
 
 ### ART-AH-00 screening (5 Nov, Claude)
 
