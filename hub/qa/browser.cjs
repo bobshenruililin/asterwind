@@ -1,5 +1,8 @@
-// Run in a browser-capable environment: node hub/qa/browser.cjs
-// Serve the repo first: python3 -m http.server 8000
-const {chromium}=require('playwright');
-const assert=require('assert');
-(async()=>{const browser=await chromium.launch();const page=await browser.newPage({viewport:{width:1440,height:1000}});const errors=[];page.on('pageerror',e=>errors.push(e.message));await page.goto('http://localhost:8000/hub/');await page.screenshot({path:'hub/qa/desktop.png'});await page.locator('#turn').click();await page.screenshot({path:'hub/qa/mechanism.png'});await page.locator('#turn').click();await page.locator('[data-id="seam"]').click();await page.locator('#film').waitFor({state:'visible'});await page.waitForTimeout(700);await page.screenshot({path:'hub/qa/film.png'});assert(await page.frameLocator('#film').locator('#entry').isHidden());await page.locator('#return').click();await page.setViewportSize({width:390,height:844});await page.screenshot({path:'hub/qa/mobile.png'});await page.locator('[data-id="nod"]').click();assert.match(await page.locator('#status').textContent(),/not a playable/);await page.emulateMedia({reducedMotion:'reduce'});await page.locator('[data-id="seam"]').click();await page.locator('#film').waitFor({state:'visible'});await page.goBack();assert(await page.locator('#screen').isHidden());assert.deepEqual(errors,[]);await browser.close();console.log('PASS browser paths and screenshot capture; inspect every screenshot manually.');})().catch(e=>{console.error(e);process.exitCode=1});
+// Superseded hub smoke test, kept as an entry point. The original clicked a removed "nod" preview drink
+// and expected an unavailable story; all six drinks now play. It now runs the current journey suites
+// that cover what it checked: lobby, every route, the machine turning to its folds, keyboard, phone
+// sizes, and Back. Serve the repository first, then run it:
+//   python3 -m http.server 8731 --bind 127.0.0.1
+//   node hub/qa/browser.cjs            (or pass suites, e.g. node hub/qa/browser.cjs routes,history)
+process.argv[2]=process.argv[2]||'routes,keyboard,mobile,history';
+require('./journey.cjs');

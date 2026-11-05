@@ -16,3 +16,4 @@ anthology/dist/
 hub/dist/
 hub/qa/after-hours/
 __pycache__/
+film/qa/*.png
