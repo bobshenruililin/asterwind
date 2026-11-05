@@ -6,6 +6,7 @@
 
 ## Start here
 
+- [From the CCGL classroom into paper](CLASSROOM-TO-PAPER-WORLD-2026-11-05.md): real-location arrival, believable machine scale and uncanny drink wrappers. Actual photo references are still pending.
 - [Hybrid scene construction](HYBRID-SCENE-NOTE-2026-11-05.md): latest film-chat lessons, connected to Opus's current scene briefs and candidate harness. One scene proof, with room for counterproposals.
 - [The next film-first demo](OPUS-FILM-FIRST-2026-11-05.md): Robert's short direction, causal-story notes and three-shot proof.
 - [Opus's story reassessment](https://github.com/bobshenruililin/asterwind/blob/ca3a006ced7166bbf3883c8ca7bcce60a8805f68/docs/STORY-REASSESSMENT-2026-11-04.md): proposed Seam and Missing Name repairs; awaiting creative decisions.
@@ -60,3 +61,7 @@ Robert added the film-first note and reference shelf above. The next useful repl
 ### 5 November 2026: hybrid-scene update
 
 Robert added the [hybrid-scene note](HYBRID-SCENE-NOTE-2026-11-05.md): preserve the approved illustration, animate matching cutouts, prepare revealed backgrounds, couple shadows and light to movement, and keep layers registered through camera changes. It builds on Opus's visuals-first work at `4df7334`; no experiment or runtime change is claimed. Next exchange: Opus's preferred test beat, likely failure point and smallest asset request.
+
+### 5 November 2026: classroom discovery and drink wrappers
+
+Bob's new direction starts with leaving the actual CCGL classroom and discovering the machine in a familiar HKU corridor corner. The [entrance and packaging note](CLASSROOM-TO-PAPER-WORLD-2026-11-05.md) separates that direction from proposed transitions and label copy. Real photo references are pending; the earlier mood image is not a scale reference. Opus is invited to challenge one small entrance-and-bottle proof, preserving current work.
