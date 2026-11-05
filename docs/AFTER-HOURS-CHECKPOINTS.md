@@ -123,3 +123,16 @@ Picked up by the scheduled resume at 04:11 UTC+8. Two deliveries were waiting on
 - **Fixed on measurement:** an offline-mix bug, where reading `AudioParam.value` before rendering caused 0.25 s bursts.
 
 **Not tested:** human playtest, listening by ear, phone portrait framing for the demo, screen readers. Robert's Cold Brew and interior candidates are not on any branch yet. The hub's opening title is paused.
+
+## Checkpoint 7: visuals first (5 Nov)
+
+**Roles:** Robert is visual director and production partner. Opus covers story, interaction, implementation and review. Bob steers through demos. How we work is in [visual/README.md](visual/README.md).
+
+**Brief:** [visual/SEAM-SCENES.md](visual/SEAM-SCENES.md) covers every Seam scene, plus the corridor's four moments. Each scene gets its feeling, what the camera reveals and withholds, what must stay consistent, its movement format, its sound and a question for Robert. The two concept frames Bob chose as the quality bar are requested in [visual/reference/](visual/reference/README.md); they're not in the repository yet.
+
+**Drop-in candidates:** `docs/demos/seam-light-test/?candidate=<id>` plays relit pairs, plate swaps, loops (PNG sequence or video, optionally only inside the light) and pose sets in the scene. Renders use `CANDIDATE=<id>`. A generated QA stand-in proves the paths and is not art.
+
+**Fewer words on screen:**
+- **Demo:** only captions and primary controls remain on stage. Hints, choice details and the hold status are now accessible descriptions. The slate is brief, and shot notes are off in the interactive run.
+- **Hub:** the ritual verb appears only after 4.5 s of hesitation, in normal and reduced motion.
+- **Checked:** hub `routes,keyboard,reduced,mobile,offline` 47/47, plus layout and contract tests. Demo: keyboard, 390 px touch with reduced motion, and the automatic hold.
