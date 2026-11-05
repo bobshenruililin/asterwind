@@ -142,6 +142,7 @@ Kling is for physics, never for the interactive moments. For every clip: the fir
 
 **Other films' canon (when their turn comes).**
 - *One More Chair:* Inez, Sam, Bo and the café in rain. **Proposal:** the umbrella's owner, a new face at the door at 5:50, so the cost has a person.
+- **Echo layers (proposal, cheap):** two RGBA figures registered to One More Chair's `master.webp` (1672×941) at the window table: Julian with his cracked original (after the Seam's backup), and Mara with her phone (after the repair). Both use C1/C2 canon, in the café's light, at the background scale of the existing customers. They show whether the world remembering you moves anyone.
 - Every other film follows the same pattern: canon sheets first, then a relit decision master.
 
 **Transitions.**

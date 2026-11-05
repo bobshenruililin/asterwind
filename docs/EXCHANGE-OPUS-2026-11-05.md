@@ -38,6 +38,15 @@ A fifth verb, *Widen*, is for later. At the shared ending you would widen the ph
 
 **The hardest moment, proved small.** The demo's *Hold* beat runs on `workB`. Julian says "Hold it there." Mara says "I am." Then the player holds the light on three working hands while the paper wrap rasps, and if they let go, the lamp droops and the work waits. If that beat doesn't make you feel present, the pitch is wrong and we should know now.
 
+### 2b. Story level: one modest echo, "the rib walks into the café"
+
+Robert asked to "first test one modest later echo" before any recurring-cast rewrite. The two candidate films could share a day. Nothing in canon says they do, so this is a proposal: The Seam runs from 3 AM to 8 AM, One More Chair is set at 5:50 PM, and both are led by someone named Ren. So the echo can be one background figure in One More Chair's existing wide plate, chosen by what you did that morning:
+
+- **After the backup:** Julian sits at the café's window table, his cracked original in front of him, waiting his turn. Nobody comments.
+- **After the repair:** Mara is at that table, scrubbing through her phone footage of a canopy that opened halfway.
+
+There's no dialogue, no score and no change to One More Chair's choice or outcomes. The point is that people carry your choices into the rest of their day. A player who notices will feel the world remember them; a player who doesn't loses nothing. Proving it costs one RGBA character layer per route, registered to `master.webp`, and a lookup of the saved Seam outcome. It's cheap, and it tells us whether continuity of people moves anyone before we commit to a recurring cast.
+
 ## 3. Causal beat sheet (Seam, light version)
 
 Approved lines unless marked **proposal**.
