@@ -109,3 +109,17 @@ Picked up by the scheduled resume at 04:11 UTC+8. Two deliveries were waiting on
 - Sound: rendered offline and measured; **not heard by ear**. WAVs are in `hub/qa/after-hours/sound/` after `node hub/qa/sound-render.cjs`.
 
 **Not tested:** physical devices, screen readers, real speakers; the Cold Brew and interior candidates (files not received).
+
+## Checkpoint 6: hand-cut drinks and the Creative Exchange (5 Nov)
+
+**Hub (runtime change):** vector bottles are hand-cut card. They have a deterministic rough silhouette (`cutPath`, browser only; Node keeps the exact path), a card-edge layer for thickness, a softer outline and a stacked shadow under each label card. Stand-in layers now render in the page, so the layered-registration check compares like with like (worst 1.9%, limit 2%). `routes,art,mobile,reduced` pass (43/43 after the stand-in fix), and the art-state, layout, state and contract tests pass.
+
+**Film direction (proposals only):**
+- [EXCHANGE-OPUS-2026-11-05.md](EXCHANGE-OPUS-2026-11-05.md): The Seam as flagship and One More Chair as runner-up, the *Hold the Light* pitch, a causal beat sheet, the three-shot critique and counterproposal, requests and challenges.
+- [VISUAL-WISHLIST-2026-11-05.md](VISUAL-WISHLIST-2026-11-05.md): the art department brief.
+
+**Rough demo:** [`docs/demos/seam-light-test/`](demos/seam-light-test/README.md) has the interactive light test, Cut A and Cut B, and a deterministic MP4 renderer. It uses existing stills and approved lines only.
+- **Checked:** keyboard-only, touch at 390 px with reduced motion, the automatic hold, no console errors; levels measured.
+- **Fixed on measurement:** an offline-mix bug, where reading `AudioParam.value` before rendering caused 0.25 s bursts.
+
+**Not tested:** human playtest, listening by ear, phone portrait framing for the demo, screen readers. Robert's Cold Brew and interior candidates are not on any branch yet. The hub's opening title is paused.
