@@ -83,3 +83,22 @@ Picked up by the scheduled resume at 04:11 UTC+8. Two deliveries were waiting on
 - Source: contract, art-state, state, layout, mechanism, legacy-completion, bridge and build tests pass. `scripts/verify-repo.cjs` still fails only on the pre-existing paths in `film/audio/source-manifest.json`.
 
 **Not tested:** physical devices, screen readers, sound by ear; the cabinet candidate through the completion and finale suites (only lobby, held view, routes and keyboard).
+
+## Checkpoint 5: final sprint (5 Nov)
+
+**Repository and fixes**
+- `scripts/verify-repo.cjs` passes: the 28 voice cues pointed at the private workspace they were rendered in; all 28 repository copies are byte-identical to the recorded hashes, so each cue now names its repository copy and keeps the origin as provenance. `hub/qa/browser.cjs` (stale `nod` drink) now runs the current journey suites. `qa/browser-qa.cjs` (app, 36 branches) and `film/qa/browser.cjs` (The Seam) pass in Chromium.
+- **Turned side fixed** (root cause measured): the side face's preserve-3d subtree joined the cabinet's depth sort and intersected the front's inner layers. Flattening only `.face.side` matches a reference render exactly; the alternatives tested did not. New `side` suite at desktop, phone (touch) and reduced motion.
+
+**The machine and its world**
+- The ART-AH-00 study is the **interim face**, with its own control geometry, and the plain sign is lettered **AFTER HOURS** in code-cut card: it names the place above the clock that carries the night.
+- Code-native layers take a **photographed paper grain** from the corridor's own wall (a transparent overlay that works inside the 3D cabinet; a first blend-mode attempt drew opaque grey and was caught in review), with lit cut edges on bottles and box depth in the interior.
+- The reveal and homecoming are **torn paper**: the label's photo grows with a rough edge that relaxes into the frame, and folds back the same way.
+
+**Sound** (rendered offline; not heard by ear): the six rituals now peak within -16.6 to -20.5 dBFS (Scope's swing was -5.9 and Ship's cork -7.4); a high-pass fizz bed that rang at onset (spikes up to 0.85 FS) is a high band-pass; the dawn chord is 6 dB louder. No clipping anywhere.
+
+**Films, as director and player:** every film and both outcomes captured beat by beat at 1440×900 and 390×844 through the real hub (24 playthroughs, all to real endings). Three phone crops lost the subject of their beat and are fixed (presentation only): Before the Doors Open's two endings and Jo choosing her sequence in The Empty Square.
+
+**Deliveries:** Cold Brew pilot and interior candidates were shown in chat as previews only; the files did not reach the session. Folders, READMEs and a ready candidate manifest await them.
+
+**Push blocked:** from `ee4910a` on, GitHub refused every push with `fatal error in commit_refs` (pack accepted, ref update failing; access and proxy healthy, remote unmoved). Verified recovery bundles were delivered with a recovery note.
