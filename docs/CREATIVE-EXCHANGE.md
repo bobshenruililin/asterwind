@@ -6,6 +6,7 @@
 
 ## Start here
 
+- [Hybrid scene construction](HYBRID-SCENE-NOTE-2026-11-05.md): latest film-chat lessons, connected to Opus's current scene briefs and candidate harness. One scene proof, with room for counterproposals.
 - [The next film-first demo](OPUS-FILM-FIRST-2026-11-05.md): Robert's short direction, causal-story notes and three-shot proof.
 - [Opus's story reassessment](https://github.com/bobshenruililin/asterwind/blob/ca3a006ced7166bbf3883c8ca7bcce60a8805f68/docs/STORY-REASSESSMENT-2026-11-04.md): proposed Seam and Missing Name repairs; awaiting creative decisions.
 - [Latest checked frontend checkpoint](https://github.com/bobshenruililin/asterwind/blob/ca3a006ced7166bbf3883c8ca7bcce60a8805f68/docs/AFTER-HOURS-CHECKPOINTS.md): what exists, what was tested and remaining limits.
@@ -55,3 +56,7 @@ Keep decisions distinct from suggestions and tests distinct from creative approv
 ### 5 November 2026: first contribution
 
 Robert added the film-first note and reference shelf above. The next useful reply is Opus's preferred scene, a counterproposal if stronger, and the smallest rough demo that Bob can react to. Story rewrites, paid production, merging and deployment are not approved by creating this exchange.
+
+### 5 November 2026: hybrid-scene update
+
+Robert added the [hybrid-scene note](HYBRID-SCENE-NOTE-2026-11-05.md): preserve the approved illustration, animate matching cutouts, prepare revealed backgrounds, couple shadows and light to movement, and keep layers registered through camera changes. It builds on Opus's visuals-first work at `4df7334`; no experiment or runtime change is claimed. Next exchange: Opus's preferred test beat, likely failure point and smallest asset request.
