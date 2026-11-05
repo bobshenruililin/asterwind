@@ -172,6 +172,14 @@ function drink(d,{state='sealed',src=null,layers=null,held=false}={}){
  return `<svg class="drink-art" data-drink="${d.id}" data-state="${state}" data-art="${layered?'layered':'vector'}" data-closure="${d.closure}" viewBox="${DRINK_VIEW}" aria-hidden="true" focusable="false"><defs><clipPath id="${body}"><path d="${p.body}"/></clipPath></defs><ellipse class="contact" cx="480" cy="2002" rx="250" ry="20" fill="#05060a" opacity=".55"/>${art}${held&&state!=='empty'?cold(d,p,body):''}${state!=='empty'?fizz:''}<g class="sparkle"><circle cx="480" cy="${p.mouth||700}" r="0" fill="#fff"/></g></svg>`;
 }
 
+/* A torn paper edge as a CSS polygon (72 points by angle from the centre): an ellipse or the exact
+   rectangle boundary, each point pulled inward by a seeded tear. Ellipse and rectangle share vertex
+   order, so the browser can morph a torn label photo into the clean full frame and back. */
+function tornClip(kind='rect',tear=0,seed=1){
+ const r=rand(seed*131+17),pts=[];
+ for(let i=0;i<72;i++){const a=-Math.PI/2+i*Math.PI/36,c=Math.cos(a),s=Math.sin(a),m=kind==='ellipse'?1:Math.max(Math.abs(c),Math.abs(s)),k=1-tear*(.25+.75*r()),x=50+50*c/m*k,y=50+50*s/m*k;pts.push(`${x.toFixed(2)}% ${y.toFixed(2)}%`)}
+ return `polygon(${pts.join(',')})`;
+}
 /* Hand-cut card lettering for a plain sign panel (face geometry `sign`, manifest `lettering`). Each
    letter is a cut-out standing off the panel: a soft cast shadow, the card's cut edge, then its face,
    lit warm from the doorway side and cooling to the right. A low-frequency wobble and a few degrees
@@ -263,5 +271,5 @@ function defs(){
  <pattern id="aw-grain" width="48" height="48" patternUnits="userSpaceOnUse">${(()=>{const r=rand(3);let s='';for(let i=0;i<46;i++)s+=`<rect x="${(r()*48).toFixed(1)}" y="${(r()*48).toFixed(1)}" width="${(1+r()*2.4).toFixed(1)}" height="${(1+r()*1.6).toFixed(1)}" fill="${r()>.5?'#fff':'#000'}" opacity="${(.06+r()*.12).toFixed(2)}"/>`;return s})()}</pattern>
  </defs></svg>`;
 }
-return{defs,drink,signLetters,layersFor,partSlot,LAYERS,SLOTS,machineFace,machineBack,coilsFront,coverBox,CELLS,KEYS,PLATE,DRINK_VIEW,PARTS};
+return{defs,drink,tornClip,signLetters,layersFor,partSlot,LAYERS,SLOTS,machineFace,machineBack,coilsFront,coverBox,CELLS,KEYS,PLATE,DRINK_VIEW,PARTS};
 });

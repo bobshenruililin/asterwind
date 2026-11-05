@@ -219,7 +219,9 @@ async function returned(id,{lastFrame=null,finished:ended=false}={}){
  if(!reduced){
   const hc=$('homecoming'),fr=hc.querySelector('.frame'),img=fr.querySelector('img');img.src=src;img.style.objectPosition=lastFrame?.position||'50% 50%';hc.hidden=false;sound.play('homecoming');
   const round=['circle','oval'].includes(d.cameo.shape)?'50%':'6px';
-  const a=fr.animate([{left:'0px',top:'0px',width:innerWidth+'px',height:innerHeight+'px',borderRadius:'0px'},{left:target.left+'px',top:target.top+'px',width:target.width+'px',height:target.height+'px',borderRadius:round}],{duration:T.homecoming.shrink,easing:'cubic-bezier(.6,0,.2,1)',fill:'forwards'});
+  // The film folds back into the label as torn paper: the clean frame tears inward as it shrinks.
+  const rnd=round==='50%',seed=(d.cameo.src||'').length;
+  const a=fr.animate([{left:'0px',top:'0px',width:innerWidth+'px',height:innerHeight+'px',borderRadius:'0px',clipPath:Art.tornClip('rect',0,seed)},{left:target.left+'px',top:target.top+'px',width:target.width+'px',height:target.height+'px',borderRadius:'0px',clipPath:Art.tornClip(rnd?'ellipse':'rect',.05,seed)}],{duration:T.homecoming.shrink,easing:'cubic-bezier(.6,0,.2,1)',fill:'forwards'});
   await finished(a);await finished(fr.animate([{opacity:1},{opacity:0}],{duration:T.homecoming.fade,fill:'forwards'}));hc.hidden=true;a.cancel();fr.getAnimations().forEach(x=>x.cancel());
  }
  houseLights(false,T.homecoming.lightsUp);await wait(T.homecoming.settle);
