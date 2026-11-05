@@ -32,21 +32,24 @@ header p{margin:0;font:12px/1.5 system-ui;color:var(--dim);max-width:760px}
 #glow{position:absolute;inset:0;pointer-events:none;mix-blend-mode:screen;opacity:0}
 #vignette{position:absolute;inset:0;pointer-events:none;background:radial-gradient(120% 90% at 50% 45%,transparent 55%,#05060ab0)}
 #black{position:absolute;inset:0;background:#050608;opacity:0;pointer-events:none}
-#slate{position:absolute;top:7%;left:6%;font:11px system-ui;letter-spacing:.25em;color:#eadac3;text-shadow:0 1px 4px #000}
+#slate{position:absolute;top:7%;left:6%;font:11px system-ui;letter-spacing:.25em;color:#eadac3;text-shadow:0 1px 4px #000;transition:opacity .9s}
+#loops,#loops-lit{position:absolute;inset:0;pointer-events:none}
+#loops-lit{-webkit-mask-image:var(--mask);mask-image:var(--mask)}
+#loops>*,#loops-lit>*{position:absolute;display:block}
+#review-note{max-width:760px;margin:10px auto 0;font:12px/1.55 system-ui;color:var(--dim)}
+#end-q{font:15px/1.5 Georgia;color:#eadfcd;margin:14px 0 0}
 #note{position:absolute;top:3.5%;right:3%;max-width:42%;font:12px/1.45 system-ui;color:#f1e3cb;background:#0b0e16c8;padding:8px 11px;border-left:2px solid var(--gold)}
 #caption{position:absolute;left:50%;bottom:6.5%;transform:translateX(-50%);width:min(760px,86%);margin:0;text-align:center;text-shadow:0 2px 7px #000;font-size:clamp(16px,2.2vw,28px);line-height:1.35;pointer-events:none}
 #who{display:block;color:var(--gold);font:10px system-ui;letter-spacing:.2em;text-transform:uppercase;margin-bottom:6px}
 #prompt{position:absolute;top:7%;width:100%;text-align:center;font:italic clamp(18px,2.6vw,34px) Georgia;text-shadow:0 2px 12px #000;pointer-events:none}
-#prompt small{display:block;font:11px system-ui;font-style:normal;color:#ddd4c9;letter-spacing:.1em;margin-top:8px}
 .spot{position:absolute;border:0;background:none;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;text-shadow:0 2px 8px #000;padding:8px}
 .spot::before{content:'';width:20px;height:20px;margin-bottom:10px;border:1px solid #ffe5ad;border-radius:50%;box-shadow:0 0 16px #ffcd7555;transition:transform .2s}
 .spot:hover::before,.spot:focus-visible::before{transform:scale(1.4);background:#e8c08044}
 .spot strong{font-weight:400;font-size:clamp(15px,2vw,26px)}
-.spot small{font:11px system-ui;color:#e6d5bc;margin-top:4px}
 #spot-backup{left:4%;top:56%;width:42%;height:40%}
 #spot-repair{left:60%;top:38%;width:38%;height:50%}
 #holdbar{position:absolute;left:50%;bottom:20%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;font:12px system-ui;color:#eadfcd;text-shadow:0 1px 4px #000}
-#hold{background:#14182499;border:1px solid #bda77f;border-radius:22px;padding:9px 16px;min-height:44px}
+#hold{background:#14182466;border:1px solid #bda77f88;border-radius:22px;padding:9px 16px;min-height:44px;font:13px system-ui}
 #hold[aria-pressed=true]{background:#e3b76d33;color:#fff3dc}
 #frame{position:relative;width:min(100%,calc((100vh - 150px)*1.7778));margin:0 auto}
 #frame #stage{width:100%}
@@ -62,7 +65,7 @@ body.export header,body.export nav{display:none}
 body.export #wrap{padding:0}
 body.export #frame,body.export #stage{width:100vw;height:100vh;aspect-ratio:auto}
 body.export *{transition:none!important}
-@media (max-width:700px){#note{max-width:62%;font-size:10px}.spot small{display:none}#end{position:static;background:none;padding:16px 2px 4px}#end h2{font-size:24px}#holdbar{bottom:4%}#holdhint{display:none}}
+@media (max-width:700px){#note{max-width:62%;font-size:10px}#end{position:static;background:none;padding:16px 2px 4px}#end h2{font-size:24px}#holdbar{bottom:4%}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
@@ -75,20 +78,21 @@ body.export *{transition:none!important}
 <div id="wrap">
  <div id="frame">
  <div id="stage" aria-label="Film frame. Move the light with the pointer or the arrow keys.">
-  <div id="cam"><img id="base" alt=""><div id="shade"></div><img id="lit" alt=""><div id="glow"></div></div>
+  <div id="cam"><img id="base" alt=""><div id="shade"></div><div id="loops"></div><img id="lit" alt=""><div id="loops-lit"></div><div id="glow"></div></div>
   <div id="vignette"></div>
   <div id="black"></div>
   <div id="slate"></div>
   <div id="note" hidden></div>
   <div id="prompt" hidden></div>
-  <button class="spot" id="spot-backup" hidden data-choice="backup"><strong>Fit the backup</strong><small>Mara’s pre-cut rib</small></button>
-  <button class="spot" id="spot-repair" hidden data-choice="repair"><strong>Repair together</strong><small>Julian’s original rib</small></button>
-  <div id="holdbar" hidden><button id="hold" aria-pressed="false">Hold the light steady</button><span id="holdhint">or press and hold on the picture, or hold Space</span></div>
+  <button class="spot" id="spot-backup" hidden data-choice="backup" aria-describedby="d-backup"><strong>Fit the backup</strong></button><span class="sr" id="d-backup">Mara’s pre-cut rib, on the left.</span>
+  <button class="spot" id="spot-repair" hidden data-choice="repair" aria-describedby="d-repair"><strong>Repair together</strong></button><span class="sr" id="d-repair">Julian’s original rib, on the right.</span>
+  <div id="holdbar" hidden><button id="hold" aria-pressed="false" aria-describedby="d-hold">Hold the light</button><span class="sr" id="d-hold">Or press and hold on the picture, or hold Space.</span></div>
   <p id="caption" aria-hidden="true"><span id="who"></span><span id="line"></span></p>
  </div>
-  <div id="end" hidden><h2 id="end-title"></h2><p id="end-text"></p><p id="end-q">What did each person want? What did you choose? Who paid the cost?</p><div class="row"><button id="again">Play again</button><button id="other">Try the other light</button></div></div>
+  <div id="end" hidden><h2 id="end-title">The Seam</h2><div class="row"><button id="again">Play again</button><button id="other">Try the other light</button><button id="reflect" aria-expanded="false" aria-controls="end-q">Reflect</button></div><p id="end-q" hidden>What did each person want? What did you choose? Who paid the cost?</p></div>
  </div>
  <p class="sr" id="live" aria-live="polite"></p>
+ <p id="review-note" hidden></p>
 </div>
 <nav aria-label="Demo controls">
  <button id="play-light">Light test (interactive)</button>
@@ -97,11 +101,16 @@ body.export *{transition:none!important}
  <span class="sep" aria-hidden="true"></span>
  <button id="pause" aria-pressed="false">Pause</button>
  <button id="voices" aria-pressed="false">Temp voices</button>
- <button id="notes" aria-pressed="true">Shot notes</button>
+ <button id="notes" aria-pressed="false">Shot notes</button>
 </nav>
 <script>
 'use strict';
-const IMG=n=>`../../../film/assets/${n}.webp`,VO=id=>`../../../film/audio/${id}.mp3`;
+// A candidate folder (candidates/<id>/candidate.json, opened with ?candidate=<id>) can replace plates, supply
+// relit pairs (lit / unlit / day), add authored loops (PNG sequence or video, optionally seen only in the light)
+// and override pose frames for a segment. Files are relative to the candidate folder. See candidates/README.md.
+const CAND={id:null,base:'',title:'',plates:{},loops:[],poses:{},replace:{}};
+const IMG=n=>n.includes('.')?CAND.base+n:CAND.replace[n]?CAND.base+CAND.replace[n]:`../../../film/assets/${n}.webp`,VO=id=>`../../../film/audio/${id}.mp3`;
+const plateArt=(n,mode)=>{const c=CAND.plates[n]||{};const f=c[mode];return f?CAND.base+f:null};
 // Approved lines, verbatim from film/story.json, with their temp-voice durations (film/audio/manifest.json).
 const L={
  's00':['setup-00-00','Julian','Again.',.84],
@@ -188,7 +197,13 @@ const ENDS={
 const $=id=>document.getElementById(id),EXPORT=new URLSearchParams(location.search).has('export');
 if(EXPORT)document.body.classList.add('export');
 const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
-const prefs={voices:false,notes:true};
+const prefs={voices:false,notes:false};
+async function loadCandidate(id){
+ try{const r=await fetch(`candidates/${encodeURIComponent(id)}/candidate.json`);if(!r.ok)throw new Error(r.status);const j=await r.json();
+  Object.assign(CAND,{id,base:`candidates/${encodeURIComponent(id)}/`,title:j.title||id,plates:j.plates||{},loops:j.loops||[],poses:j.poses||{},replace:j.replace||{}});
+  for(const l of CAND.loops)if(l.frames){l._f=[...Array(l.count)].map((_,i)=>CAND.base+l.frames.replace(/%0?(\d)d/,(m,w)=>String(i).padStart(+w||1,'0')));l._f.forEach(u=>{const im=new Image();im.src=u})}
+  const n=$('review-note');n.hidden=false;n.textContent=`Candidate: ${CAND.title} (candidates/${id}/)`;return true}
+ catch(e){const n=$('review-note');n.hidden=false;n.textContent=`Candidate “${id}” could not be loaded (${e.message}). Showing the current stills.`;return false}}
 // ---------- deterministic randomness ----------
 function rng(seed){let s=seed>>>0;return()=>{s=(s+0x6D2B79F5)>>>0;let t=s;t=Math.imul(t^t>>>15,t|1);t^=t+Math.imul(t^t>>>7,t|61);return((t^t>>>14)>>>0)/4294967296}}
 // ---------- runner: a pure function of time and input, so a scripted run renders frame by frame ----------
@@ -206,10 +221,10 @@ function emit(e){e.T=S.T;S.log.push(e);live(e)}
 function enter(){const g=seg();if(!g){finish();return}
  if(g.room!==undefined&&g.room!==S.room){S.room=g.room;emit({type:'room',kind:g.room})}
  S.t=0;S.gateT=0;S.progress=0;S.lastWrap=0;S.auto=false;S.toggle=false;$('hold').setAttribute('aria-pressed','false');
- if(g.gate==='choice')announce('Where will you put the light? Fit the backup, Mara’s pre-cut rib, or repair together, Julian’s original rib.');
+ if(g.gate==='choice')announce('Where will you put the light? Move it with the pointer or the arrow keys. Choose Fit the backup, Mara’s pre-cut rib, or Repair together, Julian’s original rib.');
  if(g.gate==='hold')announce('Hold the light steady while they work.');}
 function next(){S.i++;enter()}
-function finish(){S.done=true;const k=S.P.branches?S.choice:S.name;const [t,x]=ENDS[k];$('end-title').textContent=t;$('end-text').textContent=x;$('end').hidden=false;$('other').hidden=!S.P.branches;announce(t+'. '+x);emit({type:'room',kind:null})}
+function finish(){S.done=true;const k=S.P.branches?S.choice:S.name;const [t,x]=ENDS[k];$('end-q').hidden=true;$('reflect').setAttribute('aria-expanded','false');$('end').hidden=false;const rn=$('review-note');if(!CAND.id){rn.hidden=false;rn.textContent=t+'. '+x}$('other').hidden=!S.P.branches;announce(t+'. '+x);emit({type:'room',kind:null})}
 function choose(c){if(!S||seg()?.gate!=='choice'||S.choice)return;S.choice=c;emit({type:'sfx',kind:'swing'});
  S.chosenAt=S.T;S.segs.splice(S.i+1,0,...S.P.branches[c]);S.hover=c;}
 function keyAt(keys,t){if(!keys)return null;let a=keys[0];if(t<=a[0])return a.slice(1);for(let k=1;k<keys.length;k++){const b=keys[k];if(t<=b[0]){const u=(t-a[0])/(b[0]-a[0]),e=u<.5?2*u*u:1-Math.pow(-2*u+2,2)/2;return a.slice(1).map((v,j)=>v+(b[j+1]-v)*e)}a=b}return a.slice(1)}
@@ -221,7 +236,7 @@ function step(dt){
   if(S.choice&&S.T-S.chosenAt>=1.3){next();return}
  }else if(g.gate==='hold'){S.gateT+=dt;
   if(sc&&S.gateT>=sc.holdAt)S.pressed=true;
-  if(!S.auto&&!holding()&&S.gateT>8)S.auto=true; // nobody is stuck: after 8 s Ren holds it anyway
+  if(!S.auto&&!holding()&&S.gateT>8){S.auto=true;announce('Ren holds the light.')} // nobody is stuck: after 8 s Ren holds it anyway
   if(holding()){S.progress+=dt;if(S.progress-S.lastWrap>=.85||S.lastWrap===0){S.lastWrap=S.progress||.001;emit({type:'sfx',kind:'wrap'})}}
   if(S.progress>=g.need){S.pressed=false;next();return}
  }else{S.t+=dt;
@@ -248,22 +263,43 @@ const holding=()=>S.pressed||S.toggle||S.auto;
 let shownImg=null;
 async function render(){
  if(!S)return;const g=seg()||{};const base=$('base'),lit=$('lit');
- let img=g.img;if(g.frames)for(const [at,f] of g.frames)if(S.t>=at)img=f;
- if(img&&img!==shownImg){shownImg=img;base.src=IMG(img);lit.src=IMG(img);try{await Promise.all([base.decode(),lit.decode()])}catch{}}
+ let img=g.img;const fr=CAND.poses[S.segs[S.i]]||g.frames;if(fr)for(const [at,f] of fr)if(S.t>=at)img=f;
+ const dark=!!g.dark,key=img+'|'+dark;
+ if(img&&key!==shownImg){shownImg=key;const un=dark&&plateArt(img,'unlit'),li=plateArt(img,'lit'),dy=!dark&&plateArt(img,'day');
+  base.src=un||dy||IMG(img);lit.src=li||IMG(img);base.dataset.art=un?'unlit':'';try{await Promise.all([base.decode(),lit.decode()])}catch{}}
  $('black').style.opacity=g.black||!img?1:0;
- const dark=!!g.dark;base.classList.toggle('dark',dark);lit.hidden=!dark;$('glow').style.opacity=dark?.5*S.inten:0;
+ // Delivered unlit art replaces the CSS night grade; without it the grade stands in.
+ base.classList.toggle('dark',dark&&!base.dataset.art);lit.hidden=!dark;$('glow').style.opacity=dark?.5*S.inten:0;
+ await loops(img,dark);
  const cam=g.cam||[[1,50,50],[1,50,50]],u=g.dur?Math.min(1,S.t/g.dur):0,c=reduced?cam[0]:cam[0].map((v,j)=>v+(cam[1][j]-v)*u);
  const C=$('cam');C.style.transformOrigin=`${c[1]}% ${c[2]}%`;C.style.transform=`scale(${c[0]})`;
  if(dark){const W=$('stage').clientWidth,H=$('stage').clientHeight,r=S.pool.r/100*W,x=S.pool.x+'%',y=S.pool.y+'%',a=(g.dim||1)*S.inten;
-  const sp=SRC[shownImg],srcMask=sp?`,radial-gradient(${sp[2]/100*W}px ${sp[2]/100*W}px at ${sp[0]}% ${sp[1]}%,#000 0%,rgba(0,0,0,.7) 50%,transparent 100%)`:'';
-  lit.style.setProperty('--mask',`radial-gradient(${r}px ${r*.92}px at ${x} ${y},rgba(0,0,0,${a}) 0%,rgba(0,0,0,${a*.82}) 42%,rgba(0,0,0,${a*.3}) 74%,transparent 100%)`+srcMask);
+  const sp=(CAND.plates[img]||{}).src||SRC[img],srcMask=sp?`,radial-gradient(${sp[2]/100*W}px ${sp[2]/100*W}px at ${sp[0]}% ${sp[1]}%,#000 0%,rgba(0,0,0,.7) 50%,transparent 100%)`:'';
+  C.style.setProperty('--mask',`radial-gradient(${r}px ${r*.92}px at ${x} ${y},rgba(0,0,0,${a}) 0%,rgba(0,0,0,${a*.82}) 42%,rgba(0,0,0,${a*.3}) 74%,transparent 100%)`+srcMask);
   $('glow').style.background=`radial-gradient(${r*.8}px ${r*.72}px at ${x} ${y},#ffb45a22,transparent 100%)`;}
- $('slate').textContent=g.gate==='choice'?'':(g.slate||'');
+ // Time and place are said once, briefly, then the picture carries them.
+ const sl=$('slate');sl.textContent=g.gate==='choice'?'':(g.slate||'');sl.style.opacity=g.black||S.t<3.5?1:0;
  const n=$('note');n.hidden=!prefs.notes||!g.note;if(g.note)n.textContent=g.note;
- const pr=$('prompt');pr.hidden=g.gate!=='choice'||!!S.choice;if(g.gate==='choice')pr.innerHTML=`${g.prompt}<small>${g.hint}</small>`;
+ const pr=$('prompt');pr.hidden=g.gate!=='choice'||!!S.choice;if(g.gate==='choice')pr.textContent=g.prompt;
  for(const b of document.querySelectorAll('.spot'))b.hidden=g.gate!=='choice'||!!S.choice;
- const hb=$('holdbar');hb.hidden=g.gate!=='hold';if(g.gate==='hold')$('holdhint').textContent=S.auto?'Ren holds it.':holding()?'Holding…':'or press and hold on the picture, or hold Space';
+ $('holdbar').hidden=g.gate!=='hold';
  $('caption').style.visibility=S.cap?'visible':'hidden';if(S.cap){$('who').textContent=S.cap.who;$('line').textContent=S.cap.text}
+}
+// ---------- authored loops ----------
+const loopEls=new Map();
+async function loops(img,dark){
+ const want=new Set(),jobs=[];
+ CAND.loops.forEach((l,i)=>{if(l.plate!==img||(l.when&&l.when!==(dark?'night':'day')))return;want.add(i);
+  let el=loopEls.get(i);
+  if(!el){const vid=/\.(webm|mp4)$/i.test(l.src||'');el=document.createElement(vid?'video':'img');if(vid){el.muted=true;el.loop=true;el.playsInline=true;el.preload='auto';el.src=CAND.base+l.src}else if(!l.frames)el.src=CAND.base+l.src;el.alt='';el.setAttribute('aria-hidden','true');
+   const [x,y,w,h]=l.box||[0,0,100,100];Object.assign(el.style,{left:x+'%',top:y+'%',width:w+'%',height:h+'%',mixBlendMode:l.blend||'normal',opacity:l.opacity??1,objectFit:'fill'});
+   $(l.inLight?'loops-lit':'loops').appendChild(el);loopEls.set(i,el)}
+  el.hidden=false;
+  if(l._f){const k=reduced?0:Math.floor(S.T*(l.fps||12))%l._f.length;if(el.getAttribute('src')!==l._f[k])el.src=l._f[k]}
+  else if(el.tagName==='VIDEO'){if(reduced||EXPORT){el.pause();const d=el.duration||0;const t=reduced?0:(d?S.T%d:0);if(Math.abs(el.currentTime-t)>.02)jobs.push(new Promise(r=>{el.addEventListener('seeked',r,{once:true});el.currentTime=t;setTimeout(r,400)}))}else if(el.paused)el.play().catch(()=>{})}
+  else if(reduced&&l.still&&!el.src.endsWith(l.still))el.src=CAND.base+l.still;});
+ for(const [i,el] of loopEls)if(!want.has(i)){el.hidden=true;if(el.tagName==='VIDEO')el.pause()}
+ await Promise.all(jobs);
 }
 // ---------- live loop ----------
 let last=0,raf=0;
@@ -329,22 +365,24 @@ addEventListener('keydown',e=>{if(!S)return;const g=seg();
  const d={ArrowLeft:[-3,0],ArrowRight:[3,0],ArrowUp:[0,-3],ArrowDown:[0,3]}[e.key];
  if(d&&g?.dark&&!e.target.closest?.('nav')){e.preventDefault();const p=S.user||[S.pool.x,S.pool.y];S.user=[Math.max(0,Math.min(100,p[0]+d[0])),Math.max(0,Math.min(100,p[1]+d[1]))];S.userAt=S.T;S.hover=null}});
 addEventListener('keyup',e=>{if(e.key===' '&&S)S.pressed=false});
-function play(name,opt){Audio_.unlock();start(name,opt);for(const n of ['light','A','B'])$('play-'+n).setAttribute('aria-pressed',String(n===name));stage.focus?.()}
+function play(name,opt){Audio_.unlock();prefs.notes=name!=='light';$('notes').setAttribute('aria-pressed',String(prefs.notes));start(name,opt);for(const n of ['light','A','B'])$('play-'+n).setAttribute('aria-pressed',String(n===name));stage.focus?.()}
 $('play-light').onclick=()=>play('light');$('play-A').onclick=()=>play('A');$('play-B').onclick=()=>play('B');
 $('again').onclick=()=>play(S?.name||'light');
 $('other').onclick=()=>play('light',{from:'choice'});
 $('pause').onclick=()=>{if(!S)return;S.paused=!S.paused;$('pause').setAttribute('aria-pressed',String(S.paused));$('pause').textContent=S.paused?'Resume':'Pause';S.paused?Audio_.suspend():Audio_.resume()};
+$('reflect').onclick=()=>{const q=$('end-q'),open=q.hidden;q.hidden=!open;$('reflect').setAttribute('aria-expanded',String(open))};
 $('voices').onclick=()=>{prefs.voices=!prefs.voices;$('voices').setAttribute('aria-pressed',String(prefs.voices))};
 $('notes').onclick=()=>{prefs.notes=!prefs.notes;$('notes').setAttribute('aria-pressed',String(prefs.notes))};
 // ---------- export hooks (docs/demos/seam-light-test/render.cjs) ----------
 window.Demo={
- async begin(name,script){start(name,{script});await render();return true},
+ async begin(name,script,candidate){if(candidate)await loadCandidate(candidate);prefs.notes=name!=='light';start(name,{script});await render();return true},
  async frame(dt){step(dt);await render();return{done:S.done,T:S.T}},
  audio(voices){return Audio_.offline(S.log,S.T,voices)},
  log(){return S.log}
 };
 // Idle frame before anything is played: the decision plate in the dark.
-if(!EXPORT){start('light');S.paused=true;render();$('end').hidden=true}
+const CQ=new URLSearchParams(location.search).get('candidate');
+if(!EXPORT){(CQ?loadCandidate(CQ):Promise.resolve()).then(()=>{start('light');S.paused=true;render();$('end').hidden=true})}
 requestAnimationFrame(loop);
 </script>
 </body>

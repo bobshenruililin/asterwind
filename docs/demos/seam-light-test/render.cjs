@@ -5,6 +5,8 @@
 const {chromium}=require('playwright'),fs=require('fs'),path=require('path'),{execFileSync}=require('child_process');
 const BASE=process.env.DEMO_URL||'http://127.0.0.1:8731/docs/demos/seam-light-test/?export';
 const OUT=process.argv[2]||path.join(__dirname,'renders'),ONLY=process.argv[3];
+// CANDIDATE=<id> renders with candidates/<id>/ (Robert's experiments) in place; outputs get the id as a suffix.
+const CAND=process.env.CANDIDATE||null,SUF=CAND?'--'+CAND:'';
 const RUNS=[
  {file:'light-test-repair',program:'light',script:{choice:'repair',choiceAt:2.4,holdAt:1.4}},
  {file:'light-test-backup',program:'light',script:{choice:'backup',choiceAt:2.4,holdAt:1.4}},
@@ -15,18 +17,18 @@ const RUNS=[
  fs.mkdirSync(OUT,{recursive:true});const b=await chromium.launch();
  for(const r of RUNS){if(ONLY&&!r.file.includes(ONLY))continue;
   const p=await b.newPage({viewport:{width:1280,height:720},deviceScaleFactor:1});await p.goto(BASE);
-  const dir=fs.mkdtempSync(path.join(OUT,'.f-'));await p.evaluate(([n,s])=>Demo.begin(n,s),[r.program,r.script||null]);
+  const dir=fs.mkdtempSync(path.join(OUT,'.f-'));await p.evaluate(([n,s,c])=>Demo.begin(n,s,c),[r.program,r.script||null,CAND]);
   let i=0,st={done:false};const fps=24,sheet=[];
   while(!st.done&&i<fps*180){st=await p.evaluate(dt=>Demo.frame(dt),1/fps);const f=path.join(dir,String(i).padStart(5,'0')+'.jpg');await p.screenshot({path:f,type:'jpeg',quality:93});if(i%(fps*2)===0)sheet.push(f);i++}
   for(let k=0;k<fps*2;k++){fs.copyFileSync(path.join(dir,String(i-1).padStart(5,'0')+'.jpg'),path.join(dir,String(i).padStart(5,'0')+'.jpg'));i++} // hold the end card
   for(const voices of [false,true]){const w=await p.evaluate(v=>Demo.audio(v),voices);const wf=path.join(dir,'a.wav');fs.writeFileSync(wf,Buffer.from(w,'base64'));
-   const mp4=path.join(OUT,r.file+(voices?'-tempvoice':'')+'.mp4');
+   const mp4=path.join(OUT,r.file+SUF+(voices?'-tempvoice':'')+'.mp4');
    execFileSync('ffmpeg',['-y','-loglevel','error','-framerate',String(fps),'-i',path.join(dir,'%05d.jpg'),'-i',wf,'-c:v','libx264','-preset','slow','-crf','23','-pix_fmt','yuv420p','-af','apad','-c:a','aac','-b:a','128k','-shortest','-movflags','+faststart',mp4]);
    console.log(mp4,(fs.statSync(mp4).size/1e6).toFixed(2)+' MB',(i/fps).toFixed(1)+' s')}
-  fs.writeFileSync(path.join(OUT,r.file+'.events.json'),JSON.stringify(await p.evaluate(()=>Demo.log()),null,0));
-  fs.writeFileSync(path.join(OUT,r.file+'.sheet.txt'),sheet.map(f=>path.basename(f)).join('\n'));
+  fs.writeFileSync(path.join(OUT,r.file+SUF+'.events.json'),JSON.stringify(await p.evaluate(()=>Demo.log()),null,0));
+  fs.writeFileSync(path.join(OUT,r.file+SUF+'.sheet.txt'),sheet.map(f=>path.basename(f)).join('\n'));
   // Keep a frame every 2 s for a contact sheet, then drop the frame folder.
-  const keep=path.join(OUT,r.file+'-frames');fs.mkdirSync(keep,{recursive:true});for(const f of sheet)fs.copyFileSync(f,path.join(keep,path.basename(f)));
+  const keep=path.join(OUT,r.file+SUF+'-frames');fs.mkdirSync(keep,{recursive:true});for(const f of sheet)fs.copyFileSync(f,path.join(keep,path.basename(f)));
   fs.rmSync(dir,{recursive:true,force:true});await p.close()}
  await b.close();
 })();
