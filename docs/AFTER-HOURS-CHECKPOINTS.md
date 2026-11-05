@@ -112,7 +112,7 @@ Picked up by the scheduled resume at 04:11 UTC+8. Two deliveries were waiting on
 
 ## Checkpoint 6: hand-cut drinks and the Creative Exchange (5 Nov)
 
-**Hub (runtime change):** vector bottles are hand-cut card. They have a deterministic rough silhouette (`cutPath`, browser only; Node keeps the exact path), a card-edge layer for thickness, a softer outline and a stacked shadow under each label card. Stand-in layers now render in the page, so the layered-registration check compares like with like (worst 1.9%, limit 2%). `routes,art,mobile,reduced` pass (43/43 after the stand-in fix), and the art-state, layout, state and contract tests pass.
+**Hub (runtime change):** vector bottles are hand-cut card. They have a deterministic rough silhouette (`cutPath`, browser only; Node keeps the exact path), a card-edge layer for thickness, a softer outline and a stacked shadow under each label card. Stand-in layers now render in the page, so the layered-registration check compares like with like (worst 1.9%, limit 2%). `routes,art,mobile,reduced` pass (43/43 after the stand-in fix), and so does the full matrix: `node hub/qa/journey.cjs all` **126/126** (Chromium 153, hub code as of `17caec5`, run at `ed436b2`). The art-state, layout, state and contract tests also pass.
 
 **Film direction (proposals only):**
 - [EXCHANGE-OPUS-2026-11-05.md](EXCHANGE-OPUS-2026-11-05.md): The Seam as flagship and One More Chair as runner-up, the *Hold the Light* pitch, a causal beat sheet, the three-shot critique and counterproposal, requests and challenges.
