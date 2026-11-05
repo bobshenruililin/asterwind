@@ -8,6 +8,7 @@ The cuts were rendered from `docs/demos/seam-light-test/` at `ed436b2`. The two 
 | `light-test-backup.mp4` | The same, choosing the spare (the approved backup lines, causal problem visible on purpose) | 65.7 s |
 | `cut-A-robert.mp4` / `-tempvoice` | Robert's *Hold it there*, as written | 23.2 s |
 | `cut-B-opus.mp4` / `-tempvoice` | Opus's *Where the light goes* | 26.2 s |
+| `light-test-repair--standin-lamp-rig.mp4` | The repair run with the **stand-in lamp rig** (`CANDIDATE=standin-lamp-rig`, at `8de1e5c`): the head turns toward whoever the light rests on. The kit is cut from one still on purpose, to show the failures a real kit must avoid. | 68.5 s |
 | `*-sheet.jpg` | A frame every 2 s | — |
 
 Audio was measured, not heard. Peak levels: -4.3 to -5.3 dBFS with voices, -12.6 to -17.2 dBFS without; no clipped samples. `SHA256SUMS` lists the files.
