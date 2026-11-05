@@ -102,3 +102,10 @@ Picked up by the scheduled resume at 04:11 UTC+8. Two deliveries were waiting on
 **Deliveries:** Cold Brew pilot and interior candidates were shown in chat as previews only; the files did not reach the session. Folders, READMEs and a ready candidate manifest await them.
 
 **Push blocked:** from `ee4910a` on, GitHub refused every push with `fatal error in commit_refs` (pack accepted, ref update failing; access and proxy healthy, remote unmoved). Verified recovery bundles were delivered with a recovery note.
+
+**Tested** (Chromium 153 headless over local HTTP, runtime `8a81fae`, after a full rebuild):
+- `node hub/qa/journey.cjs all`: **126/126**. Six routes; both outcomes of all six stories to their real endings; the live finale in normal and reduced motion with reload at morning; saved and corrupt dawn; the turned side at 1440×900, 390×844 (touch) and reduced motion; keyboard including Sound in the held dialog; three phone sizes; Back/Forward, Return during the reveal, deep link, reload; blocked storage to a real ending; layered art and registration; twelve repeat cycles; the offline single file (face, dawn plate and paper grain embedded, no network requests).
+- Source: all 16 checks and `hub/test-build.py` pass, including `scripts/verify-repo.cjs`. `qa/browser-qa.cjs` and `film/qa/browser.cjs` pass. Film review: 24 playthroughs, no errors.
+- Sound: rendered offline and measured; **not heard by ear**. WAVs are in `hub/qa/after-hours/sound/` after `node hub/qa/sound-render.cjs`.
+
+**Not tested:** physical devices, screen readers, real speakers; the Cold Brew and interior candidates (files not received).
