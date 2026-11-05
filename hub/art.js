@@ -30,6 +30,9 @@ function bubbles(n,seed,x0,x1,y0,y1){const r=rand(seed);let out='';for(let i=0;i
 const T=(x,y,size,txt,{w=700,ls=0,fill='#2a2018',family='Georgia,serif',style='',anchor='middle',cls='',fit=0}={})=>`<text${cls?` class="${cls}"`:''}${fit?` textLength="${fit}" lengthAdjust="spacingAndGlyphs"`:''} x="${x}" y="${y}" font-family="${family}" font-size="${size}" font-weight="${w}" letter-spacing="${ls}" fill="${fill}" text-anchor="${anchor}"${style?` font-style="${style}"`:''}>${esc(txt)}</text>`;
 
 /* --- the six objects ---------------------------------------------------------------------- */
+// Where each separate paper label sits (x, y, w, h); printed labels (standup, ship) have none.
+const LABEL_CARD={seam:[224,1246,514,414],slides:[266,1296,428,472],scope:[330,1372,300,308],pixel:[344,1348,272,392]};
+const labelShadow=(id,clip)=>{const b=LABEL_CARD[id];if(!b)return'';const [x,y,w,h]=b;return `<g clip-path="url(#${clip})" aria-hidden="true">${[[14,18,.12],[9,12,.16],[5,7,.22]].map(([dx,dy,o])=>`<rect x="${x+dx}" y="${y+dy}" width="${w}" height="${h}" rx="6" fill="#08060c" opacity="${o}"/>`).join('')}</g>`};
 const PARTS={
  seam:{hx:236,
   body:'M412 820 L412 880 C412 950 206 968 206 1110 L206 1934 Q206 2000 272 2000 L688 2000 Q754 2000 754 1934 L754 1110 C754 968 548 950 548 880 L548 820 Z',
@@ -154,13 +157,26 @@ function cold(d,p,clipId){
  return `<g class="cold" clip-path="url(#${clipId})"><rect class="haze" x="180" y="${(p.mouth||700)+40}" width="600" height="1400" fill="#eef4f6" opacity=".06"/><g class="frost" opacity=".55">${beads(30,d.id.length*41,300,660,(p.mouth||700)+90,top,1.6,5.5)}${beads(34,d.id.length*43,300,660,bottom,1990,1.6,6)}</g>${drips}</g><g clip-path="url(#${clipId})"><rect class="sheen" x="${(p.hx||330)-70}" y="560" width="140" height="1480" fill="url(#aw-sheen)"/></g>`;
 }
 const img=(cls,src,x,y,w,h)=>`<image class="${cls}" href="${esc(src)}" x="${x}" y="${y}" width="${w}" height="${h}" preserveAspectRatio="none"/>`;
+/* Hand-cut silhouettes. In a browser each vessel outline is resampled once into a slightly irregular
+   polygon: a slow random walk for the wander of the scissors and a fine tear for the fibre. Cached per
+   drink, so it costs nothing per frame. Geometry stays within a few template units of the exact path;
+   Node (tests, guides) and any failure keep the exact path. */
+const CUTS=new Map();
+function cutPath(id,d){
+ if(CUTS.has(id))return CUTS.get(id);let out=d;
+ try{const doc=globalThis.document;if(doc?.body&&doc.createElementNS){const ns='http://www.w3.org/2000/svg',svg=doc.createElementNS(ns,'svg'),path=doc.createElementNS(ns,'path');svg.setAttribute('style','position:absolute;width:0;height:0;overflow:hidden');path.setAttribute('d',d);svg.appendChild(path);doc.body.appendChild(svg);
+  const L=path.getTotalLength();if(L>100){const r=rand(id.length*977+13),n=Math.round(L/6),pts=[];let walk=0;
+   for(let i=0;i<n;i++){const t=i/n*L,a=path.getPointAtLength(t),b=path.getPointAtLength(Math.min(L,t+.8));let nx=a.y-b.y,ny=b.x-a.x;const m=Math.hypot(nx,ny)||1;walk=(walk+(r()-.5)*.8)*.9;const off=walk*1.8+(r()-.5)*1.3;pts.push((a.x+nx/m*off).toFixed(1)+' '+(a.y+ny/m*off).toFixed(1))}
+   out='M'+pts.join('L')+'Z'}svg.remove()}}catch{out=d}
+ CUTS.set(id,out);return out;
+}
 function drink(d,{state='sealed',src=null,layers=null,held=false}={}){
- const p=PARTS[d.id],u='aw'+(++serial),clip=u+'c',body=u+'b';
+ const p=PARTS[d.id],u='aw'+(++serial),clip=u+'c',body=u+'b',B=cutPath(d.id,p.body);
  const x={...d,_src:src,_clip:clip};
  const liquid=p.liquid?`<g clip-path="url(#${body})"><rect class="liquid" x="180" y="${state==='empty'?p.liquid.empty:p.liquid.top}" width="600" height="1200" fill="${p.liquid.fill}" opacity="${p.liquid.alpha||.9}"/><rect x="180" y="${(state==='empty'?p.liquid.empty:p.liquid.top)-4}" width="600" height="10" fill="${p.liquid.surface}" opacity=".7"/>${p.inside&&state!=='empty'?`<g class="fizz-in">${bubbles(16,d.id.length*31,350,610,p.liquid.top+60,1940)}</g>`:''}</g>`:'';
- const light=`<path d="${p.body}" fill="url(#aw-light)"/>${p.glossy?`<path d="M${p.hx} ${p.liquid.top+170} q-6 380 0 720" stroke="#fff" stroke-opacity=".22" stroke-width="22" stroke-linecap="round" fill="none"/><path d="M${p.hx+26} ${p.liquid.top+190} v120" stroke="#fff" stroke-opacity=".35" stroke-width="8" stroke-linecap="round"/>`:''}${p.metal?'<rect x="356" y="660" width="30" height="1290" rx="15" fill="#fff" opacity=".24"/><rect x="600" y="660" width="14" height="1290" rx="7" fill="#1d2a22" opacity=".25"/>':''}`;
+ const light=`<path d="${B}" fill="url(#aw-light)"/>${p.glossy?`<path d="M${p.hx} ${p.liquid.top+170} q-6 380 0 720" stroke="#fff" stroke-opacity=".22" stroke-width="22" stroke-linecap="round" fill="none"/><path d="M${p.hx+26} ${p.liquid.top+190} v120" stroke="#fff" stroke-opacity=".35" stroke-width="8" stroke-linecap="round"/>`:''}${p.metal?'<rect x="356" y="660" width="30" height="1290" rx="15" fill="#fff" opacity=".24"/><rect x="600" y="660" width="14" height="1290" rx="7" fill="#1d2a22" opacity=".25"/>':''}`;
  const fizz=p.fizz?`<g class="fizz">${bubbles(12,d.id.length*17,p.fizz[0],p.fizz[1],p.fizz[2],p.fizz[3])}</g>`:'';
- const vector=`<path d="${p.body}" transform="translate(16 14)" fill="#0a0910" opacity=".38"/><path d="${p.body}" fill="${p.glass}"/>${liquid}${p.over?`<g clip-path="url(#${body})">${p.over}</g>`:''}${p.lip}${p.label(x)}<g clip-path="url(#${body})">${light}<path d="${p.body}" fill="url(#aw-grain)" opacity=".35"/><rect class="paper" x="150" y="480" width="660" height="1580" fill="url(#aw-paper-fine)" opacity=".6"/></g><path d="${p.body}" fill="none" stroke="#120f16" stroke-opacity=".55" stroke-width="5"/><path class="cut-edge" d="${p.body}" fill="none" stroke="url(#aw-cutedge)" stroke-width="9" clip-path="url(#${body})"/>`;
+ const vector=`<path d="${B}" transform="translate(16 14)" fill="#0a0910" opacity=".38"/><path class="card-edge" d="${B}" transform="translate(5 7)" fill="#3a2b1e" opacity=".8"/><path d="${B}" fill="${p.glass}"/>${liquid}${p.over?`<g clip-path="url(#${body})">${p.over}</g>`:''}${p.lip}${labelShadow(d.id,body)}${p.label(x)}<g clip-path="url(#${body})">${light}<path d="${B}" fill="url(#aw-grain)" opacity=".35"/><rect class="paper" x="150" y="480" width="660" height="1580" fill="url(#aw-paper-fine)" opacity=".6"/></g><path d="${B}" fill="none" stroke="#120f16" stroke-opacity=".3" stroke-width="3"/><path class="cut-edge" d="${B}" fill="none" stroke="url(#aw-cutedge)" stroke-width="9" clip-path="url(#${body})"/>`;
  const layered=!!layers?.base;
  let art;
  if(layered){
@@ -169,7 +185,7 @@ function drink(d,{state='sealed',src=null,layers=null,held=false}={}){
   const top=state==='sealed'?`<g class="closure" data-part="${d.closure}">${(layers.parts||[]).map(q=>img(q.cls,q.src,q.x,q.y,q.w,q.h)).join('')}${bits}</g>`:layers.over?img('opened layer-opened',layers.over,0,0,960,2080):'';
   art=`${cameo(x,src,clip).replace('class="cameo-frame"','class="cameo-frame" opacity="0"')}${img('layer-body',layers.base,0,0,960,2080)}${top}`;
  }else art=vector+(state==='sealed'?p.closure:p.opened);
- return `<svg class="drink-art" data-drink="${d.id}" data-state="${state}" data-art="${layered?'layered':'vector'}" data-closure="${d.closure}" viewBox="${DRINK_VIEW}" aria-hidden="true" focusable="false"><defs><clipPath id="${body}"><path d="${p.body}"/></clipPath></defs><ellipse class="contact" cx="480" cy="2002" rx="250" ry="20" fill="#05060a" opacity=".55"/>${art}${held&&state!=='empty'?cold(d,p,body):''}${state!=='empty'?fizz:''}<g class="sparkle"><circle cx="480" cy="${p.mouth||700}" r="0" fill="#fff"/></g></svg>`;
+ return `<svg class="drink-art" data-drink="${d.id}" data-state="${state}" data-art="${layered?'layered':'vector'}" data-closure="${d.closure}" viewBox="${DRINK_VIEW}" aria-hidden="true" focusable="false"><defs><clipPath id="${body}"><path d="${B}"/></clipPath></defs><ellipse class="contact" cx="480" cy="2002" rx="250" ry="20" fill="#05060a" opacity=".55"/>${art}${held&&state!=='empty'?cold(d,p,body):''}${state!=='empty'?fizz:''}<g class="sparkle"><circle cx="480" cy="${p.mouth||700}" r="0" fill="#fff"/></g></svg>`;
 }
 
 /* A torn paper edge as a CSS polygon (72 points by angle from the centre): an ellipse or the exact
