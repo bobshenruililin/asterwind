@@ -120,7 +120,7 @@
       "zoom": 1,
       "x": 50,
       "y": 50,
-      "focus": 50
+      "focus": 10
     },
     "rehearsal": {
       "plate": "rehearsal",
@@ -155,7 +155,7 @@
       "zoom": 1,
       "x": 50,
       "y": 50,
-      "focus": 50
+      "focus": 88
     },
     "visitor-disclosure": {
       "plate": "ready",
