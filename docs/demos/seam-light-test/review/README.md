@@ -1,6 +1,6 @@
 # Review renders (rough demo)
 
-Rendered from `docs/demos/seam-light-test/` at `ed436b2` with `render.cjs`: Chromium 153 headless, 1280×720, 24 fps, H.264 + AAC. These are review copies for the Creative Exchange, not delivered film. Every line is approved. Voices, where present, are the existing flite timing guides (`-tempvoice`); all other sound is synthesised in the page. Captions are burned in, and the director's shot notes are shown in the top-right corner.
+The cuts were rendered from `docs/demos/seam-light-test/` at `ed436b2`. The two light tests were re-rendered at `8ee1c4d`, with only captions and primary controls on stage and shot notes off; both with `render.cjs`: Chromium 153 headless, 1280×720, 24 fps, H.264 + AAC. These are review copies for the Creative Exchange, not delivered film. Every line is approved. Voices, where present, are the existing flite timing guides (`-tempvoice`); all other sound is synthesised in the page. Captions are burned in. In the cuts, the director's shot notes are shown in the top-right corner.
 
 | File | What it is | Length |
 | --- | --- | --- |
