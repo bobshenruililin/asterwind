@@ -1,0 +1,8 @@
+{
+  "name": "asterwind-leadership-opening-study",
+  "version": "0.1.0",
+  "private": true,
+  "description": "A self-contained original paper-theatre opening and interaction study",
+  "scripts": { "test": "node qa/state-tests.cjs" },
+  "devDependencies": { "jsdom": "26.1.0" }
+}

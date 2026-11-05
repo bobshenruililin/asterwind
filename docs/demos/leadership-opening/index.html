@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<title>Leadership, unfinished · Asterwind opening study</title>
+<style>
+:root{--ink:#ece4cd;--gold:#e6b668;--night:#1a2b2d;--paper:#dfd2ab}*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#152426;color:var(--ink);font-family:Arial,Helvetica,sans-serif}button{font:inherit;color:inherit;cursor:pointer;touch-action:manipulation}button:focus-visible,a:focus-visible{outline:3px solid #fff0bd;outline-offset:5px}button[hidden],[hidden]{display:none!important}#stage{position:fixed;inset:0;isolation:isolate;background:#142426}#world{width:100%;height:100%;display:block}#frame{position:absolute;inset:18px;pointer-events:none;border:1px solid #e0cda025;z-index:5}#frame:after{content:"";position:absolute;inset:5px;border:1px solid #e0cda010}.masthead{position:absolute;top:max(35px,env(safe-area-inset-top));left:40px;font:11px/1.4 Arial,sans-serif;letter-spacing:.25em;text-transform:uppercase;color:#efe2c4b3;z-index:6}.masthead span{display:block;margin-top:6px;font-size:9px;letter-spacing:.13em;color:#d9d0bc80}#opening{position:absolute;left:50%;top:66%;transform:translateX(-50%);text-align:center;z-index:7}#begin{padding:14px 25px;border:1px solid #d1bb8b8c;background:#132a2db0;border-radius:2px;font:13px Georgia,serif;letter-spacing:.08em;min-height:48px;white-space:nowrap}#opening p{font-size:10px;color:#e7dfce8c;letter-spacing:.12em;margin-top:18px;white-space:nowrap}.controls{position:absolute;left:36px;right:36px;bottom:max(30px,env(safe-area-inset-bottom));display:flex;justify-content:space-between;align-items:center;gap:14px;z-index:8}.controls-group{display:flex;gap:7px}.controls button{display:grid;place-items:center;min-width:44px;height:44px;border:1px solid transparent;background:#10262999;border-radius:50%;font-size:17px}.controls button:hover{border-color:#f1d6a266;background:#294246}.controls button[aria-pressed=true]{border-color:#e6b66899;color:#ffe0a3}.controls svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.5}.controls button:disabled{opacity:.3;cursor:default}.control-label{font-size:10px!important;letter-spacing:.03em}.progress{height:1px;background:#f5e1b622;width:92px;overflow:hidden}.progress span{display:block;height:1px;background:#e4c185;width:0}#caption{position:absolute;left:50%;bottom:102px;transform:translateX(-50%);width:min(560px,calc(100% - 58px));margin:0;text-align:center;font:italic 17px/1.5 Georgia,serif;text-shadow:0 1px 8px #001418;z-index:6;pointer-events:none}#caption:not(:empty){padding:8px 14px;background:#11272ba3;border-radius:2px}#about{margin:auto;max-width:540px;width:calc(100% - 42px);max-height:calc(100% - 42px);color:#e8deca;background:#203639;border:1px solid #c4ad7a80;padding:30px;border-radius:3px;line-height:1.65;font-size:14px}#about::backdrop{background:#061316b8}#about h2{font:normal 29px Georgia,serif;margin:0 0 20px}#about p{color:#ded6c4}#about button{background:#385155;border:1px solid #d0ba87aa;padding:9px 18px;min-height:44px}#about .keys{font-size:12px}#about form{text-align:right;margin-top:20px}#choicePrompt{position:absolute;left:50%;top:18%;transform:translateX(-50%);text-align:center;width:min(500px,85%);font:italic 18px/1.45 Georgia,serif;color:#f8e4bd;text-shadow:0 1px 10px #122b2d;z-index:3}#enterScene,#choiceOne,#choiceTwo{position:absolute;z-index:4;padding:11px 15px;min-height:48px;border:1px solid #b5a174;box-shadow:0 4px 14px #061c2345;color:#22383b;background:#e2d2ac;font:italic 16px/1.15 Georgia,serif;border-radius:1px;white-space:normal}#enterScene{left:50%;top:71%;transform:translateX(-50%);background:#29474b;color:#f1d5a1;border:1px solid #dcb36d;min-width:165px}#choiceOne,#choiceTwo{width:156px;top:73%}#choiceOne{left:calc(50% - 176px);transform:rotate(-3deg)}#choiceTwo{left:calc(50% + 20px);transform:rotate(2deg)}#choiceOne:hover,#choiceTwo:hover{background:#f5e5bd;box-shadow:0 6px 20px #08191b70}#after{position:absolute;left:50%;top:73%;transform:translateX(-50%);display:flex;align-items:center;gap:18px;z-index:5}#after button{color:#f0dfbc;border:1px solid #b9a477;background:#254145;padding:10px 13px;min-height:44px;font-size:12px;white-space:nowrap;border-radius:2px}.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}#filmTitle{font:13px Georgia,serif;letter-spacing:.13em;fill:#e9d7b9}#word{font:normal 70px Georgia,'Times New Roman',serif;letter-spacing:-3px}.paper-line{fill:none;stroke:#6a777166;stroke-width:1}.thin-line{fill:none;stroke:#cbb990;stroke-width:2;stroke-linecap:round}.soft-seam{stroke:#f1d498;stroke-width:2;fill:none;stroke-dasharray:4 5}.cut-text{font:italic 22px Georgia,serif;fill:#3c5557}.notebook-fine{font:11px Arial,sans-serif;letter-spacing:3px;fill:#677268}.little-type{font:12px Arial,sans-serif;letter-spacing:2px}.grain{pointer-events:none;mix-blend-mode:soft-light}#body[data-mode="still"] #motionIcon{opacity:.5}@media(max-width:600px){.masthead{top:29px;left:28px;font-size:9px}.masthead span{font-size:8px}#frame{inset:12px}.controls{left:22px;right:22px;bottom:max(22px,env(safe-area-inset-bottom));gap:5px}.controls-group{gap:1px}.controls button{min-width:40px;height:44px}.progress{width:44px}#caption{bottom:88px;font-size:15px}#choicePrompt{font-size:16px;top:22%}#choiceOne,#choiceTwo{width:137px;font-size:14px;top:69%}#choiceOne{left:calc(50% - 148px)}#choiceTwo{left:calc(50% + 11px)}#enterScene{top:67%}#after{top:73%;gap:13px}#opening{top:61%}#opening p{font-size:9px}#about{font-size:13px;padding:23px}#about h2{font-size:24px}}
+@media(max-width:360px){.controls{left:15px;right:15px}.progress{display:none}.controls-group{gap:0}.controls{gap:4px}.masthead{left:23px}#choiceOne,#choiceTwo{width:131px}#choiceOne{left:calc(50% - 141px)}#choiceTwo{left:calc(50% + 10px)}}
+@media(max-height:500px){.masthead{top:20px;font-size:9px}.masthead span{display:none}.controls{bottom:15px}.controls button{height:40px;min-width:40px}#choiceOne,#choiceTwo{top:auto;bottom:78px;min-height:44px;font-size:14px}#after{top:auto;bottom:78px}#choicePrompt{top:12%;font-size:15px}#caption{bottom:128px;font-size:14px}#opening{top:59%}#opening p{display:none}#begin{min-height:40px;padding:9px 16px}#enterScene{top:auto;bottom:78px;min-height:44px}#about{max-height:calc(100% - 22px);padding:20px}#frame{inset:10px}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
+</style>
+</head>
+<body id="body">
+<main id="stage" aria-label="Leadership, unfinished. An interactive paper-theatre opening study.">
+<svg id="world" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice" role="img" aria-labelledby="sceneTitle sceneDescription">
+<title id="sceneTitle">A word waiting to become a world.</title><desc id="sceneDescription">Leadership is written in cream against dark paper. Begin to follow it into a notebook, a fictional classroom, and a magical dispenser.</desc>
+<defs>
+<linearGradient id="night" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#30494b"/><stop offset=".5" stop-color="#1c3438"/><stop offset="1" stop-color="#10262b"/></linearGradient>
+<linearGradient id="paper" x1="0" y1="0" x2=".85" y2="1"><stop stop-color="#eee1be"/><stop offset=".6" stop-color="#d7c7a0"/><stop offset="1" stop-color="#b8a77e"/></linearGradient>
+<linearGradient id="page" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#ded5b6"/><stop offset=".45" stop-color="#f1e7c9"/><stop offset=".5" stop-color="#ac9f80"/><stop offset=".53" stop-color="#dfd2af"/><stop offset="1" stop-color="#f0e4c4"/></linearGradient>
+<linearGradient id="floor" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#3d5552"/><stop offset="1" stop-color="#122a30"/></linearGradient>
+<linearGradient id="glow" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#efcf83" stop-opacity=".3"/><stop offset="1" stop-color="#f3d9a1" stop-opacity="0"/></linearGradient>
+<linearGradient id="cabinet" x1="0" y1="0" x2="1" y2=".25"><stop stop-color="#446160"/><stop offset=".5" stop-color="#2c494b"/><stop offset="1" stop-color="#19353a"/></linearGradient>
+<radialGradient id="vignette"><stop offset=".4" stop-color="#071317" stop-opacity="0"/><stop offset="1" stop-color="#071317" stop-opacity=".7"/></radialGradient>
+<radialGradient id="halo"><stop stop-color="#e8c17a" stop-opacity=".28"/><stop offset="1" stop-color="#d7b96c" stop-opacity="0"/></radialGradient>
+<filter id="shadow" x="-35%" y="-35%" width="180%" height="180%"><feDropShadow dx="5" dy="10" stdDeviation="6" flood-color="#06161a" flood-opacity=".55"/></filter>
+<filter id="fineShadow" x="-25%" y="-25%" width="150%" height="150%"><feDropShadow dx="2" dy="3" stdDeviation="1.5" flood-color="#091d20" flood-opacity=".45"/></filter>
+<filter id="grain"><feTurbulence baseFrequency=".67" numOctaves="3" seed="17" type="fractalNoise"/><feColorMatrix type="saturate" values="0"/></filter>
+<pattern id="wallLines" width="80" height="62" patternUnits="userSpaceOnUse"><path d="M0 61.5H80M0 0V62" stroke="#aeb496" stroke-width="1" opacity=".08"/></pattern>
+<g id="screw"><circle r="4" fill="#ae9e72"/><path d="M-2 -2L2 2" stroke="#51605a" stroke-width="1"/></g>
+<g id="can"><path d="M-21-43Q0-49 21-43L23 38Q0 47-23 38Z" fill="#ddd0a6"/><ellipse cy="-43" rx="21" ry="5" fill="#83968b"/><path d="M-20-32Q0-27 20-32M-20 29Q0 34 20 29" fill="none" stroke="#836e4f"/><path d="M-12-13L0-23 12-13 5 2 13 13-1 22-13 12-6-1Z" fill="#55797a"/><path d="M0-23V21M-13-13L12 13" stroke="#e9ce8c" fill="none"/></g>
+<g id="paperPerson"><path d="M-20 51L-28 145-13 148 0 94 12 148 28 145 18 51Z" fill="#162c31"/><path d="M-22-7L-39 57-14 67 1 53 22 68 39 57 23-7Z" fill="var(--coat, #a97549)"/><path d="M-23-6L0 27 24-7 9-19H-9Z" fill="#c89e6a"/><path d="M-8-19V-34H9V-19L0-9Z" fill="#a9774e"/><path d="M-22-66Q-22-88 3-89L23-72 18-41 3-29-15-39Z" fill="#c39a68"/><path d="M-24-61L-28-82-12-98 10-96 28-78 18-58 8-75-7-67-13-54Z" fill="#27383a"/><path d="M-5-52L3-50M14-51L19-53" stroke="#233a3d" stroke-width="2"/><path d="M4-43L11-42" stroke="#74583e" stroke-width="2"/><path d="M-14 10L-5 42M17 7L8 43" stroke="#dfbc7c" opacity=".5" fill="none"/></g>
+</defs>
+<rect width="1600" height="1000" fill="url(#night)"/>
+<g id="titleSet"><ellipse cx="800" cy="470" rx="460" ry="330" fill="url(#halo)" opacity=".2"/><path d="M737 346H863M783 333H817" class="thin-line" opacity=".45"/><text x="800" y="320" text-anchor="middle" id="filmTitle">ASTERWIND</text><path d="M744 542H856" class="thin-line" opacity=".35"/><text x="800" y="580" text-anchor="middle" fill="#c9b991" font-size="13" font-family="Georgia" font-style="italic">unfinished</text></g>
+<g id="classroom" class="hidden-set">
+<rect width="1600" height="710" fill="#4b615b"/><rect width="1600" height="710" fill="url(#wallLines)"/>
+<path d="M0 0L360 135V650L0 950ZM1600 0L1240 135V650L1600 950Z" fill="#30494b"/>
+<path d="M0 950L360 650H1240L1600 950V1000H0Z" fill="url(#floor)"/>
+<path d="M0 1000L560 650M355 1000L675 650M800 1000V650M1245 1000L925 650M1600 1000L1040 650M125 835H1475M257 727H1343" stroke="#a99d73" opacity=".17"/>
+<path d="M360 135H1240V650H360Z" fill="#60766a"/><path d="M375 150H1225V635H375Z" fill="none" stroke="#c2b681" opacity=".3"/>
+<path d="M420 207H658V430H420Z" fill="#b2ad83" filter="url(#fineShadow)"/><path d="M434 221H644V414H434Z" fill="#8eaca0"/><path d="M504 220V414M574 220V414M434 309H644" stroke="#d9c796" stroke-width="8"/><path d="M428 207L439 427M640 207L630 424" stroke="#747f6d" stroke-width="3"/>
+<path d="M444 243L621 374M444 291L596 414" stroke="#ecdda5" opacity=".13" stroke-width="20"/>
+<path d="M918 214H1175V426H918Z" fill="#263f40" filter="url(#fineShadow)"/><path d="M930 225H1163V412H930Z" fill="none" stroke="#809084" opacity=".6"/>
+<path d="M949 259H1114M949 278H1084M949 298H1131M950 354H1037" stroke="#d8d9bb" opacity=".2" stroke-width="2"/><path d="M1072 350L1095 330 1117 359 1139 339" stroke="#e3c989" stroke-width="2" fill="none" opacity=".45"/>
+<path d="M702 230H896V650H702Z" fill="#223b3e" filter="url(#shadow)"/><path d="M715 242H883V650H715Z" fill="#112b31"/>
+<g id="doorLeaf"><path d="M715 242H883V650H715Z" fill="#6e8272"/><path d="M730 263H868V427H730ZM730 451H868V626H730Z" fill="#526d63" stroke="#9a9f7c"/><path d="M743 278H855V412H743Z" fill="#a1af92" opacity=".5"/><circle cx="858" cy="465" r="6" fill="#dfbf7a"/></g>
+<path d="M700 650H899" stroke="#d5bd82" stroke-width="8"/>
+<path d="M790 0V144" stroke="#20383b" stroke-width="4"/><path d="M755 145Q790 115 825 145L848 165H732Z" fill="#c4b486" filter="url(#fineShadow)"/><path d="M739 164H841L956 650H624Z" fill="url(#glow)" opacity=".6"/>
+<g fill="#6b7c68" stroke="#b1ac84" stroke-width="2"><path d="M311 499L568 497 602 525 295 529Z"/><path d="M1013 499L1270 497 1300 529 1001 525Z"/><path d="M246 656L591 653 639 693 211 701Z"/><path d="M1008 653L1353 656 1388 701 960 693Z"/></g>
+<g fill="none" stroke="#263e3f" stroke-width="9"><path d="M325 529L315 637M561 525L571 637M1034 525L1024 637M1258 529L1268 637M253 698L237 849M589 691L605 840M1008 692L992 840M1345 698L1360 849"/></g>
+<g fill="#294546" stroke="#647f72" stroke-width="3"><path d="M366 580L484 580 501 666H350Z"/><path d="M1113 580L1231 580 1246 666H1099Z"/></g>
+<path d="M1133 559L1150 570 1175 633 1146 649 1121 619Z" fill="#ad8b5b"/>
+<path d="M943 467L975 456 996 471 977 483Z" fill="#d8c799"/><path d="M374 444L407 438 405 466 379 470Z" fill="#d7cba2" transform="rotate(-8 390 455)"/>
+</g>
+<g id="stairs" class="hidden-set">
+<rect width="1600" height="1000" fill="#314d4d"/>
+<path d="M0 0H1600L1205 260H395Z" fill="#243e40"/><path d="M0 0L395 260V1000H0ZM1600 0L1205 260V1000H1600Z" fill="#1b383c"/>
+<path d="M395 260H1205V1000H395Z" fill="#6c8172"/>
+<path d="M480 160H1118V455H480Z" fill="#d3cba3" filter="url(#shadow)"/><path d="M496 176H1102V438H496Z" fill="#91a799"/><path d="M649 176V438M799 176V438M949 176V438M496 305H1102" stroke="#cbbf94" stroke-width="12"/>
+<path d="M497 421L688 272 865 374 985 243 1103 342V438H497Z" fill="#6c928a"/><path d="M498 431L699 358 876 408 1102 368V438H498Z" fill="#567d77"/>
+<g id="stepFlight">
+<path d="M515 482H1085L1450 1000H150Z" fill="#738c7f"/>
+<path d="M515 482H1085L1128 550H472Z" fill="#8e9d87"/><path d="M472 550H1128" stroke="#314e4f" stroke-width="5"/>
+<path d="M472 554H1128L1185 638H415Z" fill="#a3ab8f"/><path d="M415 638H1185" stroke="#314e4f" stroke-width="6"/>
+<path d="M415 644H1185L1259 750H341Z" fill="#b6b597"/><path d="M341 750H1259" stroke="#314e4f" stroke-width="7"/>
+<path d="M341 757H1259L1352 888H248Z" fill="#c7c09d"/><path d="M248 888H1352" stroke="#314e4f" stroke-width="8"/>
+<path d="M248 896H1352L1445 1030H155Z" fill="#d6c8a3"/>
+<path d="M515 483H1085M472 556H1128M415 646H1185M341 759H1259M248 898H1352" stroke="#ead7a5" opacity=".45" stroke-width="2"/>
+<g stroke="#c9b884" stroke-width="6" fill="none"><path d="M492 416L95 933M1108 416L1505 933"/><path d="M476 436V541M411 522V633M322 638V755M214 777V903M1124 436V541M1189 522V633M1278 638V755M1386 777V903"/></g>
+</g>
+<path d="M494 196L1000 1000H1260L1100 196" fill="url(#glow)" opacity=".45"/>
+<path d="M379 260H395V1000H379M1205 260H1221V1000H1205" fill="#b4af89" opacity=".35"/>
+</g>
+<g id="corridor" class="hidden-set">
+<rect width="1600" height="1000" fill="#1d3a3e"/>
+<path d="M0 0L435 230H1165L1600 0Z" fill="#182f34"/><path d="M0 0L435 230V700L0 1000Z" fill="#2c4b4e"/><path d="M1600 0L1165 230V700L1600 1000Z" fill="#304d4c"/>
+<path d="M435 230H1165V700H435Z" fill="#45625b"/><path d="M0 1000L435 700H1165L1600 1000Z" fill="url(#floor)"/>
+<path d="M435 230H1165V700H435Z" fill="url(#wallLines)"/><path d="M458 246H1142V681H458Z" fill="none" stroke="#b2ac85" opacity=".22"/>
+<path d="M0 1000L635 700M350 1000L725 700M800 1000V700M1250 1000L875 700M1600 1000L965 700M180 875H1420M340 765H1260" stroke="#c0b087" opacity=".12"/>
+<path d="M118 250L325 316V602L118 674Z" fill="#738f83"/><path d="M133 270L312 327V589L133 650Z" fill="#a6baa2" opacity=".5"/><path d="M218 297V620M132 450L312 455" stroke="#354f4f" stroke-width="10"/>
+<path d="M1282 288L1481 225V717L1282 648Z" fill="#172f34" stroke="#72877a" stroke-width="4"/><path d="M1302 302L1464 251V687L1302 635Z" fill="#32524f"/><path d="M1332 325L1432 293V461L1332 472Z" fill="#809a89" opacity=".45"/><circle cx="1322" cy="527" r="5" fill="#d9b975"/>
+<path d="M535 310L634 300 640 421 530 433Z" fill="#bcba94" filter="url(#fineShadow)"/><path d="M550 336L612 326M549 349L620 340M546 363L599 355" stroke="#55746d" stroke-width="3" opacity=".5"/><path d="M569 405L576 379 604 397" stroke="#a28b5e" fill="none" stroke-width="2"/>
+<path d="M562 298L608 294 609 308 561 313Z" fill="#ded2a7" opacity=".6"/>
+<path d="M800 0V249" stroke="#142e32" stroke-width="5"/><path d="M764 250Q800 229 837 250L850 267H751Z" fill="#b4aa80"/><ellipse cx="800" cy="268" rx="45" ry="5" fill="#ecd494"/><path d="M756 273L520 868H1080L846 273Z" fill="url(#glow)"/>
+<path d="M480 700H1115" stroke="#d2b678" opacity=".4"/>
+<g id="machine" filter="url(#shadow)">
+<ellipse cx="804" cy="749" rx="191" ry="38" fill="#0e282d" opacity=".6"/>
+<path d="M660 331L696 307 968 329 951 739 925 758 660 738Z" fill="#142f35"/>
+<path d="M660 331L696 307 968 329 932 352Z" fill="#80917b"/><path d="M932 352L968 329 951 739 925 758Z" fill="#233f41"/>
+<path d="M660 331L932 352 925 758 660 738Z" fill="url(#cabinet)" stroke="#aaab80" stroke-width="2"/>
+<path d="M675 347L916 366 910 735 675 719Z" fill="none" stroke="#8e9b7e" opacity=".7"/>
+<path d="M690 375L897 390 894 559 690 545Z" fill="#132e34" stroke="#98a084" stroke-width="3"/>
+<path d="M705 391L880 404 877 542 705 531Z" fill="#c3c097" opacity=".13"/>
+<path d="M716 399L778 404 853 539 791 535Z" fill="#decd9c" opacity=".08"/>
+<use href="#can" transform="translate(741 468) scale(.66) rotate(4)"/><use href="#can" transform="translate(797 472) scale(.66) rotate(4)"/><use href="#can" transform="translate(852 476) scale(.66) rotate(4)"/>
+<path d="M698 553L887 566 886 574 698 561Z" fill="#b2a67c"/>
+<path d="M697 596L827 605 826 670 697 661Z" fill="#132e34" stroke="#87967b"/><path d="M712 613L814 620 812 649 712 643Z" fill="#0b242a"/>
+<path d="M851 596L888 599 888 640 851 637Z" fill="#ad9a65"/><ellipse cx="869" cy="617" rx="12" ry="13" fill="#46615b" stroke="#e5c987"/><path d="M863 617H875" stroke="#e4c38b" stroke-width="3"/>
+<path d="M681 691L902 706 902 716 681 702Z" fill="#6b8170"/><path d="M701 693L702 704M715 694L716 705M730 695L730 706M744 696L744 707M758 697L759 708M773 698L773 709M787 699L787 710M801 700L801 711M816 701L816 712M830 702L830 713M844 703L844 714M859 704L859 715M873 705L873 716" stroke="#304e4b" stroke-width="3"/>
+<use href="#screw" x="683" y="358"/><use href="#screw" x="906" y="377"/><use href="#screw" x="684" y="711"/><use href="#screw" x="900" y="726"/>
+<path d="M663 388V652M929 406L925 687" stroke="#e6c483" opacity=".5" stroke-width="2"/>
+<path d="M731 355L849 363" stroke="#e8d9b2" opacity=".6" stroke-width="1"/>
+<path d="M710 761V774M893 774V787" stroke="#142d33" stroke-width="12"/>
+</g>
+<g id="canDrop" opacity="0"><use href="#can" transform="translate(794 671) rotate(-8) scale(.6)"/></g>
+<path d="M581 783L607 776 621 784 596 791Z" fill="#abaf8d" opacity=".6"/><path d="M1042 722L1063 717 1061 731Z" fill="#b4b48d" opacity=".6"/>
+</g>
+<g id="choiceSet" class="hidden-set">
+<rect width="1600" height="1000" fill="#324d4c"/>
+<path d="M350 0H1250V755H350Z" fill="#557064"/><path d="M350 0H1250V755H350Z" fill="url(#wallLines)"/>
+<path d="M0 1000L470 755H1130L1600 1000Z" fill="url(#floor)"/>
+<path d="M695 250H1040V756H695Z" fill="#1c3a3e" filter="url(#shadow)"/><path d="M714 268H1022V756H714Z" fill="#97a38a"/><path d="M729 283H1006V740H729Z" fill="#718b79"/>
+<path d="M729 284L1006 740H846L729 541Z" fill="url(#glow)"/>
+<path d="M706 756H1039" stroke="#d1ba83" stroke-width="10"/>
+<g id="choiceDoor"><path d="M1018 270L894 296V762L1018 744Z" fill="#3d6059" stroke="#9aab89" stroke-width="2"/><path d="M1001 294L911 313V490L1001 477Z" fill="#a7b79a" opacity=".4"/><path d="M1001 512L911 525V735L1001 722Z" fill="#30544f"/><circle cx="918" cy="523" r="5" fill="#dfc080"/></g>
+<g id="carrier" transform="translate(790 568)"><use href="#paperPerson"/><path d="M-24 2L-58 38-28 54-12 40M22 3L53 39 21 48 10 35" fill="#ae7c50" stroke="#d1a66a" stroke-width="2"/></g>
+<g id="carriedModel" transform="translate(790 573)">
+<path d="M-102-34L83-47 118-16-68 2Z" fill="#b8aa80" stroke="#e0cf9d" stroke-width="2"/>
+<path d="M-68 2L118-16V-10L-68 8Z" fill="#807e63"/>
+<path d="M-65-35L-65-92-32-111 0-87V-39Z" fill="#dfcfa5"/><path d="M-65-92L-31-71 0-87-32-111Z" fill="#b6ba9a"/><path d="M-32-71V-41" stroke="#8e9d87"/>
+<path d="M-18-42L-18-140 15-165 48-144V-47Z" fill="#b0b897"/><path d="M-18-140L15-120 48-144 15-165Z" fill="#e6d8ad"/><path d="M15-120V-45" stroke="#718b7d"/>
+<path d="M48-43V-93L75-107 99-84V-31Z" fill="#cabd95"/><path d="M48-93L71-72 99-84 75-107Z" fill="#e7d6ab"/>
+<path d="M-3-92L59-102 63-93 1-83Z" fill="#e9d8ac"/><path d="M-41-55L-8-63" stroke="#8e8264" stroke-width="2"/>
+<path d="M36-157L41-179 47-155Z" fill="#e9c881"/>
+</g>
+<g id="helper" transform="translate(618 620)"><use href="#paperPerson" transform="scale(-.92 .92)" style="--coat:#608b80"/><path id="helperArm" d="M17 2L45 36 27 48 4 25" fill="#9baa84" stroke="#bdc19a" stroke-width="2"/></g>
+<path d="M510 754H668M1095 754H1191" stroke="#b2ad83" opacity=".4"/>
+<path d="M549 376H622V469H549Z" fill="#b4b693" transform="rotate(-4 585 422)"/><path d="M565 396H606M565 410H600M565 424H609M565 448H587" stroke="#597c71" opacity=".5" stroke-width="2"/>
+</g>
+<g id="notebook" class="hidden-set">
+<path d="M60 260L1500 295 1660 1050H-60Z" fill="#665f47"/><path d="M60 277L1500 312M20 480L1537 514M-20 702L1580 735M-59 925L1624 958" stroke="#b1a376" opacity=".23" stroke-width="2"/>
+<path d="M305 311L1267 299 1284 819 320 835Z" fill="#1e484b" filter="url(#shadow)"/>
+<path d="M321 316L798 330 1260 308 1268 797 804 822 329 817Z" fill="#9eaa8b"/>
+<path d="M337 309L797 324 1242 302 1253 782 803 809 345 801Z" fill="#e7d9b3"/>
+<path d="M347 300L798 315 1234 295 1242 770 803 799 355 787Z" fill="url(#page)" stroke="#eddfb9" stroke-width="1"/>
+<path d="M798 315L803 799" stroke="#847c62" opacity=".6" stroke-width="2"/>
+<path d="M381 380L770 392M382 420L771 432M383 460L772 472M384 500L773 512M386 540L774 552M387 580L775 592M388 620L776 632M389 660L777 672M391 700L778 712M392 740L779 752M829 380L1205 360M830 420L1206 400M831 460L1207 440M832 500L1208 480M833 540L1209 520M834 580L1210 560M835 620L1211 600M836 660L1212 640M837 700L1213 680M838 740L1214 720" class="paper-line"/>
+<path d="M423 340L433 763M868 337L876 746" stroke="#b7836b" opacity=".3"/>
+<text x="455" y="365" class="notebook-fine">CCGL · FIELD NOTES</text>
+<path d="M482 509Q665 521 798 512" stroke="#ad8d51" stroke-width="3" fill="none"/>
+<text id="beforeQuestion" x="479" y="570" class="cut-text">What is it?</text>
+<g id="annotations" opacity="0"><path d="M473 565L630 580M471 580L632 562" stroke="#617b76" stroke-width="1" opacity=".6"/><text id="resultNote" x="478" y="632" class="cut-text" style="font-size:18px">make room</text><text x="480" y="685" fill="#6d7e70" font-family="Georgia" font-size="19" font-style="italic">What did they need?</text><path d="M907 492L1016 558 936 616 1050 690" stroke="#a28a52" stroke-width="2" fill="none"/><path d="M903 487L921 491 912 508M1040 680L1050 690 1056 674" fill="none" stroke="#a28a52" stroke-width="2"/></g>
+<path d="M1192 746L1242 719 1242 770Z" fill="#c6b68e"/><path d="M1242 719L1200 746 1242 770" fill="#f3e6c4"/>
+<g transform="rotate(-16 1300 610)"><path d="M1291 390H1309V743L1300 775 1291 743Z" fill="#bc9a54" filter="url(#fineShadow)"/><path d="M1300 390H1309V743L1300 775Z" fill="#8d764b"/><path d="M1291 744L1300 775 1309 744Z" fill="#e5cda0"/><path d="M1297 766L1300 775 1303 766Z" fill="#293d3f"/></g>
+<path d="M871 800L881 800 896 848 881 841 872 851Z" fill="#b17e4c"/>
+<path d="M279 408L306 408M281 451L309 451M283 494L310 494M285 537L312 537M287 580L313 580M289 623L314 623M291 666L316 666M293 709L317 709M295 752L319 752" stroke="#aab194" stroke-width="4"/>
+</g>
+<!-- The word is one persistent object. At the match cut only its material changes. -->
+<g id="wordAnchor"><text id="word" x="640" y="483" text-anchor="middle" fill="#eee1c5">Leadership</text></g>
+<g id="paperFold" opacity="0"><path d="M800 100L1300 500 800 900 300 500Z" fill="#d8cba6"/><path d="M800 100V900L1300 500Z" fill="#aeb497"/><path d="M300 500H1300" stroke="#677e71" opacity=".4"/></g>
+<rect width="1600" height="1000" fill="url(#vignette)" pointer-events="none"/>
+<rect width="1600" height="1000" filter="url(#grain)" opacity=".09" class="grain"/>
+<rect id="cutMask" width="1600" height="1000" fill="#11282d" opacity="0" pointer-events="none"/>
+</svg>
+<div class="masthead" aria-hidden="true">Asterwind<span>An opening study</span></div><div id="frame" aria-hidden="true"></div>
+<div id="opening"><button id="begin">Open the notebook</button><p id="openingHint">A silent paper-theatre study</p></div>
+<p id="choicePrompt" hidden></p>
+<button id="enterScene" hidden>Take the paper story</button>
+<button id="choiceOne" hidden aria-label="Hold the door open. Leave the model in their hands.">Hold the door</button>
+<button id="choiceTwo" hidden aria-label="Take the other end of the model. Share its weight.">Take the other end</button>
+<div id="after" hidden><button id="revisit">Try the other gesture</button><button id="restart">Return to the word</button></div>
+<p id="caption" aria-hidden="true"></p>
+<p id="live" class="sr" role="status" aria-live="polite" aria-atomic="true"></p>
+<nav class="controls" aria-label="Film controls">
+<div class="controls-group">
+<button id="pause" aria-label="Pause" title="Pause (Space)" disabled><svg viewBox="0 0 20 20" aria-hidden="true"><path id="pauseIcon" d="M7 4V16M13 4V16"/></svg></button>
+<button id="back" aria-label="Previous shot" title="Previous shot (Left arrow)" disabled><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M13 4L6 10 13 16"/></svg></button>
+<button id="next" aria-label="Next shot" title="Next shot (Right arrow)" disabled><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M7 4L14 10 7 16"/></svg></button>
+<button id="replay" aria-label="Replay opening" title="Replay opening (R)" disabled><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 7A7 7 0 1 1 3 12M4 3V8H9"/></svg></button>
+</div>
+<div class="progress" role="progressbar" aria-label="Opening progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="progress"></span></div>
+<div class="controls-group">
+<button id="captions" class="control-label" aria-label="Show captions" aria-pressed="false" title="Captions">CC</button>
+<button id="motion" aria-label="Use still shots instead of camera motion" aria-pressed="false" title="Still shots / camera motion"><svg id="motionIcon" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 5H11M3 10H8M3 15H11M12 5L17 10 12 15"/></svg></button>
+<button id="info" class="control-label" aria-label="About this study and keyboard controls" title="About">i</button>
+</div>
+</nav>
+<noscript><div style="position:absolute;inset:20%;padding:24px;background:#203639;z-index:20;line-height:1.6">This study needs JavaScript to play. A word becomes a notebook heading. The student looks up, leaves a fictional classroom, descends a stairway and discovers a paper dispenser. A short optional scene asks whether to hold a door or share the weight of a fragile model. Both endings return to an unfinished notebook, without a leadership score.</div></noscript>
+</main>
+<dialog id="about" aria-labelledby="aboutTitle"><h2 id="aboutTitle">A word is only the beginning.</h2><p>This is an original, silent paper-theatre prototype for Asterwind. The same “Leadership” lettering becomes a notebook heading, then a question the player has to live with.</p><p>The classroom, stairs and corridor are deliberately invented placeholders. They do not depict HKU or a verified campus route. Real photographs can replace these sets after they arrive.</p><p>The optional doorway scene is an original concept, not a source-workbook question or a validated leadership assessment. Its two consequences are authored possibilities. There are no scores or correct-answer signals.</p><p class="keys"><strong>Keyboard:</strong> Tab and Enter activate controls. Space pauses or resumes. Left / Right move between shots. R replays. At the doorway, 1 holds the door and 2 takes the other end. Escape closes this note.<br><br><strong>Still shots:</strong> respects your device’s reduced-motion preference and advances only when you choose Next. No audio, accounts, network requests, tracking or saved progress.</p><form method="dialog"><button>Back to the paper stage</button></form></dialog>
+<script>
+(() => {
+'use strict';
+const $ = id => document.getElementById(id);
+const nodes = ['titleSet','classroom','stairs','corridor','choiceSet','notebook','wordAnchor','paperFold','cutMask'].reduce((a,id)=>(a[id]=$(id),a),{});
+const media = matchMedia('(prefers-reduced-motion: reduce)');
+const SHOTS = [0,1.4,5.4,9.3,12.4,17.3];
+const END = 25;
+const durations = {consequence:4.8,return:7.2};
+let phase='idle', time=0, paused=true, still=media.matches, captions=false, choice=null, elapsed=0, previous=0, lastShot=-1, lastDescription='', returnFocus=null;
+const clamp=(n,a=0,b=1)=>Math.max(a,Math.min(b,n));
+const smooth=n=>{n=clamp(n);return n*n*(3-2*n)};
+const lerp=(a,b,t)=>a+(b-a)*t;
+function opacity(id,n){nodes[id].setAttribute('opacity',clamp(n));}
+function transform(id,value){$(id).setAttribute('transform',value);}
+function hideInputs(){['enterScene','choiceOne','choiceTwo','choicePrompt','after'].forEach(id=>$(id).hidden=true)}
+function announce(text){if(text!==lastDescription){$('live').textContent=text;lastDescription=text;}}
+function describe(title,description,caption=''){$('sceneTitle').textContent=title;$('sceneDescription').textContent=description;announce(description);$('caption').textContent=captions?caption:'';}
+function notebookTransform(s=1,y=0,focusX=(innerWidth/innerHeight<.9?660:800)){const tr=`translate(800 ${483+y}) scale(${s}) translate(${-focusX} -483)`;transform('notebook',tr);transform('wordAnchor',tr)}
+function resetSets(){Object.keys(nodes).forEach(id=>opacity(id,0));transform('classroom','');transform('stairs','');transform('stepFlight','');transform('corridor','');transform('machine','');transform('doorLeaf','');transform('choiceDoor','');transform('helper','translate(618 620)');transform('carrier','translate(790 568)');transform('carriedModel','translate(790 573)');$('annotations').setAttribute('opacity','0');$('canDrop').setAttribute('opacity','0');$('word').setAttribute('fill','#eee1c5');notebookTransform();}
+function shotAt(t){let n=0;SHOTS.forEach((v,i)=>{if(t>=v)n=i});return n;}
+function controls(){
+ const idle=phase==='idle', opening=phase==='opening', result=phase==='result', running=opening||phase==='consequence';
+ $('pause').disabled=!running||still; $('back').disabled=!opening||time<=0; $('next').disabled=!opening&&phase!=='consequence';$('replay').disabled=idle;
+ $('pause').setAttribute('aria-label',paused?'Resume':'Pause');$('pause').title=paused?'Resume (Space)':'Pause (Space)';$('pauseIcon').setAttribute('d',paused?'M6 3L16 10 6 17Z':'M7 4V16M13 4V16');
+ $('motion').setAttribute('aria-pressed',String(still));$('motion').setAttribute('aria-label',still?'Enable camera motion':'Use still shots instead of camera motion');document.body.dataset.mode=still?'still':'motion';
+ const pct=idle?0:opening?Math.round(time/END*100):100;$('progress').style.width=`${pct}%`;document.querySelector('.progress').setAttribute('aria-valuenow',String(pct));
+ $('openingHint').textContent=still?'Still-shot mode · advance with the arrows':'A silent paper-theatre study';
+}
+function renderOpening(){
+ resetSets();hideInputs();const t=time, shot=shotAt(t);const stable=still;opacity('wordAnchor',1);
+ if(t<1.4){opacity('titleSet',1);notebookTransform(1.35,0,640);describe('A word waiting to become a world.','Leadership is written in cream against dark paper.','');}
+ else if(t<5.4){
+  const u=stable?1:smooth((t-1.4)/3.7);opacity('notebook',1);$('word').setAttribute('fill','#30494a');notebookTransform(lerp(1.35,1,u),0,lerp(640,innerWidth/innerHeight<.9?660:800,u));
+  describe('The word lands on a notebook.','The exact same word now sits in an open, ruled notebook. Its heading says CCGL field notes. Under Leadership, someone has written: What is it?','A definition, not yet an answer.');
+ }else if(t<9.3){
+  const u=stable?1:smooth((t-5.4)/3.3);opacity('classroom',1);transform('classroom',`translate(0 ${lerp(-270,0,u)})`);opacity('notebook',1);$('word').setAttribute('fill','#30494a');notebookTransform(lerp(1,.76,u),lerp(0,650,u));
+  describe('Look up.','The view lifts from the notebook. An empty, paper-built classroom unfolds: a warm window, abandoned desks and an openable door. This is an invented set, not HKU.','The class is over. The question is not.');
+ }else if(t<12.4){
+  const u=stable?1:smooth((t-9.3)/2.7);opacity('wordAnchor',0);opacity('classroom',1);transform('doorLeaf',`translate(883 0) scale(${lerp(1,.08,clamp(u*2))} 1) translate(-883 0)`);const s=lerp(1,2.6,smooth((u-.3)/.7));transform('classroom',`translate(800 490) scale(${s}) translate(-800 -490)`);opacity('cutMask',stable?0:smooth((u-.85)/.15));
+  describe('Leave the room.','The classroom door opens. The view follows the threshold, leaving the lesson behind.','');
+ }else if(t<17.3){
+  const u=stable?1:smooth((t-12.4)/4.5);opacity('wordAnchor',0);opacity('stairs',1);transform('stairs',`translate(0 ${lerp(90,-125,u)})`);transform('stepFlight',`translate(800 680) scale(${lerp(.94,1.17,u)}) translate(-800 -680)`);opacity('cutMask',stable?0:1-smooth((t-12.4)/.7));
+  describe('Down the paper stairway.','A folded stairway leads down. Afternoon light catches its brass-coloured handrail. The fictional geography will be replaced after location references arrive.','A line on the page becomes a way through.');
+ }else{
+  const u=stable?1:smooth((t-17.3)/5.3);opacity('wordAnchor',0);opacity('corridor',1);const s=lerp(.85,1.34,u);transform('corridor',`translate(800 510) scale(${s}) translate(-800 -510)`);opacity('cutMask',stable?0:1-smooth((t-17.3)/.7));
+  describe('Something is still awake.','At the foot of the stairs, a little paper dispenser glows beneath a lamp. Three folded cans wait behind the glass.','Something is still awake.');
+ }
+ if(shot!==lastShot){lastShot=shot;controls()}
+}
+function renderDiscovery(){resetSets();hideInputs();opacity('corridor',1);transform('corridor','translate(800 510) scale(1.34) translate(-800 -510)');$('enterScene').hidden=false;describe('A paper story waits.','The dispenser has no prices and no score. Take the paper story to enter a short, untimed scene with two possible gestures.','No instructions. Just a little room to enter.');}
+function frameChoice(){transform('choiceSet',innerWidth/innerHeight<.9?'translate(800 560) scale(.8) translate(-800 -560)':'')}
+function renderChoice(){resetSets();hideInputs();frameChoice();opacity('choiceSet',1);$('choiceOne').hidden=false;$('choiceTwo').hidden=false;$('choicePrompt').hidden=false;$('choicePrompt').textContent='“Could you give me a hand?”';describe('A model at a narrow doorway.','A student carries a wide, fragile paper model through a partly open door. They ask for a hand. You can hold the door open, leaving the model in their hands, or take the other end of the model and share its weight. No choice is timed.','A wide model. A narrow doorway.');}
+function resultNotebook(){innerHeight<500?notebookTransform(1.45,-210,640):notebookTransform(.9,10)}
+function renderConsequence(){
+ resetSets();hideInputs();frameChoice();let u=still?1:smooth(elapsed/3.8);
+ if(elapsed<durations.consequence||still){
+  opacity('choiceSet',1);
+  if(choice==='door'){
+   transform('choiceDoor',`translate(1018 0) scale(${lerp(1,.16,u)} 1) translate(-1018 0)`);transform('helper',`translate(${lerp(618,985,u)} ${lerp(620,604,u)})`);transform('carrier',`translate(790 ${lerp(568,530,u)}) scale(${lerp(1,.9,u)})`);transform('carriedModel',`translate(790 ${lerp(573,535,u)}) scale(${lerp(1,.9,u)})`);
+   describe('The opening widens.','You hold the door. The opening widens, and the student keeps their own grip. They still carry the weight.','The doorway widens. They keep their own grip.');
+  }else{
+   transform('helper',`translate(${lerp(618,697,u)} ${lerp(620,596,u)})`);transform('carriedModel',`translate(790 573) rotate(${lerp(0,-7,u)})`);transform('carrier',`translate(${lerp(790,811,u)} 568)`);$('helperArm').setAttribute('d','M17 2L53 -28 67 -18 29 23');
+   describe('The balance changes.','You take the other end. The weight is shared, but the model tilts as both people adjust their grip. The narrow door remains.','The weight shifts. So does the balance.');
+  }
+ }else{const v=smooth((elapsed-durations.consequence)/1.8);opacity('notebook',v);opacity('wordAnchor',v);$('word').setAttribute('fill','#30494a');resultNotebook();$('annotations').setAttribute('opacity',v);$('resultNote').textContent=choice==='door'?'make room, leave the weight?':'share the weight, find a balance?';describe('The definition stays unfinished.','Back in the notebook, Leadership is still the heading. The original question remains visible under a pencil cross-out. A new action note and the question What did they need? have been added. There is no score.','');}
+}
+function renderResult(){resetSets();hideInputs();opacity('notebook',1);opacity('wordAnchor',1);$('word').setAttribute('fill','#30494a');resultNotebook();$('annotations').setAttribute('opacity','1');$('resultNote').textContent=choice==='door'?'make room, leave the weight?':'share the weight, find a balance?';$('after').hidden=false;describe('Leadership, still unfinished.',`The notebook now asks ${choice==='door'?'make room, leave the weight?':'share the weight, find a balance?'} and What did they need? You can try the other gesture or return to the word.`,'');}
+function render(){if(phase==='opening'||phase==='idle')renderOpening();else if(phase==='discovery')renderDiscovery();else if(phase==='choice')renderChoice();else if(phase==='consequence')renderConsequence();else renderResult();controls();}
+function start(){phase='opening';time=0;choice=null;elapsed=0;paused=still;lastShot=-1;lastDescription='';$('opening').hidden=true;$('helperArm').setAttribute('d','M17 2L45 36 27 48 4 25');render();$('next').focus();}
+function discovery(focus=true){phase='discovery';time=END;paused=true;render();if(focus&&['next','back','pause','begin'].includes(document.activeElement.id))$('enterScene').focus();}
+function choose(value){if(phase!=='choice')return;choice=value;phase='consequence';elapsed=0;paused=still;render();if(still)$('next').focus();else $('pause').focus();}
+function move(direction){
+ if(phase==='consequence'&&direction>0){phase='result';paused=true;render();$('revisit').focus();return;}
+ if(phase!=='opening')return;
+ const current=shotAt(time);const n=current+direction;
+ if(n>=SHOTS.length){discovery();return;}
+ time=SHOTS[Math.max(0,n)];paused=still||paused;render();
+}
+function pauseToggle(){if(still||!['opening','consequence'].includes(phase))return;paused=!paused;controls();announce(paused?'Paused. Resume or move to the next shot.':'Playing.');}
+function setStill(value){still=value;if(still){paused=true;if(phase==='opening')time=SHOTS[shotAt(time)];}render();announce(still?'Still-shot mode. Use Next to advance without camera movement.':'Camera motion enabled. Press Resume to continue.');}
+$('begin').addEventListener('click',start);$('replay').addEventListener('click',start);$('restart').addEventListener('click',start);$('next').addEventListener('click',()=>move(1));$('back').addEventListener('click',()=>move(-1));$('pause').addEventListener('click',pauseToggle);
+$('enterScene').addEventListener('click',()=>{if(phase!=='discovery')return;phase='choice';paused=true;render();$('choiceOne').focus();});
+$('choiceOne').addEventListener('click',()=>choose('door'));$('choiceTwo').addEventListener('click',()=>choose('weight'));
+$('revisit').addEventListener('click',()=>{phase='choice';choice=null;elapsed=0;paused=true;$('helperArm').setAttribute('d','M17 2L45 36 27 48 4 25');render();$('choiceOne').focus();});
+$('captions').addEventListener('click',()=>{captions=!captions;$('captions').setAttribute('aria-pressed',String(captions));$('captions').setAttribute('aria-label',captions?'Hide captions':'Show captions');render();});
+$('motion').addEventListener('click',()=>setStill(!still));
+$('info').addEventListener('click',()=>{returnFocus=document.activeElement;paused=true;controls();$('about').showModal();});$('about').addEventListener('close',()=>{returnFocus?.focus();});
+media.addEventListener?.('change',e=>{if(e.matches)setStill(true)});
+// A background tab never silently consumes the film. Returning leaves it paused.
+document.addEventListener('visibilitychange',()=>{if(document.hidden){paused=true;controls();}});
+window.addEventListener('resize',()=>render());
+document.addEventListener('keydown',e=>{
+ if($('about').open||e.altKey||e.ctrlKey||e.metaKey)return;
+ const onButton=e.target.closest?.('button');
+ if(e.key===' '&&!onButton){e.preventDefault();pauseToggle()}
+ else if(e.key==='ArrowRight'){e.preventDefault();move(1)}
+ else if(e.key==='ArrowLeft'){e.preventDefault();move(-1)}
+ else if((e.key==='r'||e.key==='R')&&phase!=='idle'){e.preventDefault();start()}
+ else if(phase==='choice'&&(e.key==='1'||e.key==='2')){e.preventDefault();choose(e.key==='1'?'door':'weight')}
+});
+function tick(now){const delta=previous?Math.min((now-previous)/1000,.08):0;previous=now;if(!paused&&!still&&!$('about').open){if(phase==='opening'){time=Math.min(END,time+delta);if(time>=END)discovery();else renderOpening()}else if(phase==='consequence'){elapsed+=delta;if(elapsed>=durations.return){phase='result';paused=true;render();$('revisit').focus();}else renderConsequence()}controls();}requestAnimationFrame(tick)}
+// Read-only diagnostic state is useful for deterministic QA. Playback controls remain real buttons.
+Object.defineProperty(window,'openingStudy',{value:Object.freeze({getState:()=>({phase,time,paused,still,choice,elapsed,shot:shotAt(time)})}),writable:false});
+render();requestAnimationFrame(tick);
+})();
+</script>
+</body>
+</html>

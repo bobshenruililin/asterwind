@@ -1,0 +1,69 @@
+{
+  "source": "../index.html",
+  "generatedAt": "2026-11-05T17:30:16.608Z",
+  "passed": 14,
+  "failed": 0,
+  "limitations": [
+    "jsdom has no SVG glyph metrics or rendered geometry.",
+    "Dialog API is stubbed; native focus trap and scroll behavior require browser QA.",
+    "Responsive overlap and visual composition require browser QA."
+  ],
+  "results": [
+    {
+      "name": "Reduced motion: all six shot stops are visible and untimed",
+      "status": "pass"
+    },
+    {
+      "name": "Still branch door: repeated activation, consequence, result, revisit",
+      "status": "pass"
+    },
+    {
+      "name": "Still branch weight: repeated activation, consequence, result, revisit",
+      "status": "pass"
+    },
+    {
+      "name": "Motion branch automatically returns and focuses revisit",
+      "status": "pass"
+    },
+    {
+      "name": "Replay resets branch, clock, annotation and arm without losing caption preference",
+      "status": "pass"
+    },
+    {
+      "name": "Modal pauses playback, suppresses shortcuts and restores initiating focus",
+      "status": "pass"
+    },
+    {
+      "name": "Caption toggle preserves timing, pause state and accessible description",
+      "status": "pass"
+    },
+    {
+      "name": "Pause and motion announcements preserve scene description",
+      "status": "pass"
+    },
+    {
+      "name": "OS reduced-motion activation snaps to shot and does not automatically restart when removed",
+      "status": "pass"
+    },
+    {
+      "name": "Autoplay discovery transfers disabled playback-control focus",
+      "status": "pass"
+    },
+    {
+      "name": "Autoplay discovery does not steal unrelated control focus",
+      "status": "pass"
+    },
+    {
+      "name": "Keyboard choices and previous-shot boundaries are guarded",
+      "status": "pass"
+    },
+    {
+      "name": "Exact match cut keeps word DOM, glyph definition and affine transform at 1.4s (1280px)",
+      "status": "pass"
+    },
+    {
+      "name": "Exact match cut keeps word DOM, glyph definition and affine transform at 1.4s (390px)",
+      "status": "pass"
+    }
+  ]
+}
