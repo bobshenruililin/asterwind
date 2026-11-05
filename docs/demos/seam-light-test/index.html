@@ -123,6 +123,8 @@ const L={
  'r06':['repair-06-00','Julian','It held.',.9],
  'r07':['repair-07-00','Mara','Half of it.',1.08]
 };
+// Light holds: [from,to,x,y,r] per subject become key pairs, so the light rests on whoever matters and travels between.
+const hold=list=>list.flatMap(([a,b,...v])=>[[a,...v],[b,...v]]);
 // Hotspots on the decision plate (percent of the frame).
 const SPARE=[25,77],ORIG=[77,60],LAMP=[42,62];
 // The lamp is always its own source: its shade glows wherever the pool goes.
@@ -132,7 +134,7 @@ const SRC={performanceOffer:[35,24,7],performanceReachSpare:[35,24,7],performanc
 const SEG={
  setup:{img:'performanceOffer',dur:31.5,dark:true,room:'night',slate:'03:14 · ARCHITECTURE STUDIO',
   note:'Setup plays by itself. The light follows whoever matters; move it and it is yours.',
-  pool:[[0,LAMP[0],LAMP[1],15],[1.2,...ORIG,13],[3.6,26,35,13],[7.8,...SPARE,12],[12,26,37,13],[17.6,64,30,13],[22.4,50,58,24],[27,50,58,24],[30.5,LAMP[0],LAMP[1],18]],
+  pool:hold([[0,1,LAMP[0],LAMP[1],15],[1.2,3.5,...ORIG,13],[3.9,7.7,26,35,13],[8.1,12.1,...SPARE,12],[12.4,17.6,26,37,13],[17.9,22.6,64,30,13],[22.9,30,50,58,24],[30.4,31.5,LAMP[0],LAMP[1],18]]),
   lines:[[1.5,'s00'],[4.2,'s02'],[8.2,'s03'],[12.4,'s04'],[18,'s05'],[23,'s06'],[27.4,'s07']],sfx:[[1.2,'creak'],[1.9,'creak',.6]]},
  choice:{img:'performanceOffer',dark:true,gate:'choice',prompt:'Where will you put the light?',hint:'Move the light to look. Set it down on one rib to choose.',pool:[[0,LAMP[0],LAMP[1],18]]},
  // Repair
