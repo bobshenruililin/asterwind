@@ -48,6 +48,8 @@ header p{margin:0;font:12px/1.5 system-ui;color:var(--dim);max-width:760px}
 #holdbar{position:absolute;left:50%;bottom:20%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;font:12px system-ui;color:#eadfcd;text-shadow:0 1px 4px #000}
 #hold{background:#14182499;border:1px solid #bda77f;border-radius:22px;padding:9px 16px;min-height:44px}
 #hold[aria-pressed=true]{background:#e3b76d33;color:#fff3dc}
+#frame{position:relative;width:min(100%,calc((100vh - 150px)*1.7778));margin:0 auto}
+#frame #stage{width:100%}
 #end{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:5% 6%;background:linear-gradient(0deg,#07090ff0,#07090f90 55%,transparent);text-shadow:0 2px 7px #000}
 #end h2{font-weight:400;font-size:clamp(22px,3vw,40px);margin:0 0 10px}
 #end p{font:13px/1.55 system-ui;color:#d9ccba;max-width:640px;margin:0 0 8px}
@@ -58,9 +60,9 @@ nav button[aria-pressed=true]{background:#e3b76d2a;color:#fff3dc}
 nav .sep{width:1px;background:#3a3428;margin:0 4px}
 body.export header,body.export nav{display:none}
 body.export #wrap{padding:0}
-body.export #stage{width:100vw;height:100vh;aspect-ratio:auto}
+body.export #frame,body.export #stage{width:100vw;height:100vh;aspect-ratio:auto}
 body.export *{transition:none!important}
-@media (max-width:600px){#note{max-width:62%;font-size:10px}.spot small{display:none}}
+@media (max-width:700px){#note{max-width:62%;font-size:10px}.spot small{display:none}#end{position:static;background:none;padding:16px 2px 4px}#end h2{font-size:24px}#holdbar{bottom:4%}#holdhint{display:none}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
@@ -71,6 +73,7 @@ body.export *{transition:none!important}
  <p>Existing stills, temporary sound, approved lines only. Not the approved film, not a build. It tests two things: whether holding the light can make the player present, and which three-shot edit lands the cost.</p>
 </header>
 <div id="wrap">
+ <div id="frame">
  <div id="stage" aria-label="Film frame. Move the light with the pointer or the arrow keys.">
   <div id="cam"><img id="base" alt=""><div id="shade"></div><img id="lit" alt=""><div id="glow"></div></div>
   <div id="vignette"></div>
@@ -82,6 +85,7 @@ body.export *{transition:none!important}
   <button class="spot" id="spot-repair" hidden data-choice="repair"><strong>Repair together</strong><small>Julian’s original rib</small></button>
   <div id="holdbar" hidden><button id="hold" aria-pressed="false">Hold the light steady</button><span id="holdhint">or press and hold on the picture, or hold Space</span></div>
   <p id="caption" aria-hidden="true"><span id="who"></span><span id="line"></span></p>
+ </div>
   <div id="end" hidden><h2 id="end-title"></h2><p id="end-text"></p><p id="end-q">What did each person want? What did you choose? Who paid the cost?</p><div class="row"><button id="again">Play again</button><button id="other">Try the other light</button></div></div>
  </div>
  <p class="sr" id="live" aria-live="polite"></p>
@@ -252,7 +256,7 @@ async function render(){
   const sp=SRC[shownImg],srcMask=sp?`,radial-gradient(${sp[2]/100*W}px ${sp[2]/100*W}px at ${sp[0]}% ${sp[1]}%,#000 0%,rgba(0,0,0,.7) 50%,transparent 100%)`:'';
   lit.style.setProperty('--mask',`radial-gradient(${r}px ${r*.92}px at ${x} ${y},rgba(0,0,0,${a}) 0%,rgba(0,0,0,${a*.82}) 42%,rgba(0,0,0,${a*.3}) 74%,transparent 100%)`+srcMask);
   $('glow').style.background=`radial-gradient(${r*.8}px ${r*.72}px at ${x} ${y},#ffb45a22,transparent 100%)`;}
- $('slate').textContent=g.slate||(S.name==='light'&&S.segs[S.i]==='choice'?SEG.setup.slate:'');
+ $('slate').textContent=g.gate==='choice'?'':(g.slate||'');
  const n=$('note');n.hidden=!prefs.notes||!g.note;if(g.note)n.textContent=g.note;
  const pr=$('prompt');pr.hidden=g.gate!=='choice'||!!S.choice;if(g.gate==='choice')pr.innerHTML=`${g.prompt}<small>${g.hint}</small>`;
  for(const b of document.querySelectorAll('.spot'))b.hidden=g.gate!=='choice'||!!S.choice;
@@ -276,21 +280,22 @@ const Audio_=(()=>{let ctx=null,out=null,bed=null;const bufs={};
  function sfx(c,dst,kind,arg,t,r){
   const f=c.createBiquadFilter(),g=c.createGain();f.connect(g);g.connect(dst);
   if(kind==='creak'){const s=src(c,false);s.connect(f);f.type='bandpass';f.Q.value=11;const len=.32+(arg||.4)*.3;f.frequency.setValueAtTime(760,t);f.frequency.exponentialRampToValueAtTime(380,t+len);
-   g.gain.setValueAtTime(0,t);for(let i=0;i<14;i++)g.gain.setValueAtTime((.05+r()*.22)*(arg||1),t+i*len/14);g.gain.linearRampToValueAtTime(0,t+len);s.start(t);s.stop(t+len+.05)}
-  else if(kind==='wrap'){const s=src(c,false);s.connect(f);f.type='bandpass';f.frequency.value=1700+r()*500;f.Q.value=.9;const len=.42;g.gain.setValueAtTime(0,t);for(let i=0;i<12;i++)g.gain.setValueAtTime(i%2?.012:.07*(1-i/12),t+i*len/12);g.gain.linearRampToValueAtTime(0,t+len);s.start(t);s.stop(t+len+.05)}
+   g.gain.setValueAtTime(0,t);for(let i=0;i<14;i++)g.gain.setValueAtTime((.12+r()*.45)*(arg||1),t+i*len/14);g.gain.linearRampToValueAtTime(0,t+len);s.start(t);s.stop(t+len+.05)}
+  else if(kind==='wrap'){const s=src(c,false);s.connect(f);f.type='bandpass';f.frequency.value=1700+r()*500;f.Q.value=.9;const len=.42;g.gain.setValueAtTime(0,t);for(let i=0;i<12;i++)g.gain.setValueAtTime(i%2?.02:.12*(1-i/12),t+i*len/12);g.gain.linearRampToValueAtTime(0,t+len);s.start(t);s.stop(t+len+.05)}
   else if(kind==='swing'){const s=src(c,false);s.connect(f);f.type='bandpass';f.Q.value=18;f.frequency.setValueAtTime(1400,t);f.frequency.linearRampToValueAtTime(980,t+.55);env(c,g,t,.08,.06,.5);s.start(t);s.stop(t+.7)}
   else if(kind==='thock'||kind==='settle'){const o=c.createOscillator();o.type='sine';o.frequency.setValueAtTime(kind==='thock'?150:110,t);o.frequency.exponentialRampToValueAtTime(70,t+.18);o.connect(g);f.disconnect();env(c,g,t,.004,kind==='thock'?.22:.14,.22);o.start(t);o.stop(t+.3);
    const s=src(c,false),f2=c.createBiquadFilter(),g2=c.createGain();f2.type='lowpass';f2.frequency.value=900;s.connect(f2);f2.connect(g2);g2.connect(dst);env(c,g2,t,.002,.08,.08);s.start(t);s.stop(t+.15)}
-  else if(kind==='fan'){const s=src(c,true);s.connect(f);f.type='lowpass';f.frequency.setValueAtTime(140,t);f.frequency.exponentialRampToValueAtTime(1300,t+2.4);const d=arg||4;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.16,t+2.2);g.gain.setValueAtTime(.16,t+d-.6);g.gain.linearRampToValueAtTime(.11,t+d);s.start(t);s.stop(t+d+.05);
-   const o=c.createOscillator(),og=c.createGain();o.type='triangle';o.frequency.setValueAtTime(30,t);o.frequency.linearRampToValueAtTime(58,t+2.2);o.connect(og);og.connect(dst);og.gain.setValueAtTime(0,t);og.gain.linearRampToValueAtTime(.025,t+2.2);og.gain.linearRampToValueAtTime(.018,t+d);o.start(t);o.stop(t+d+.05)}
-  else if(kind==='fanDown'){const s=src(c,true);s.connect(f);f.type='lowpass';f.frequency.setValueAtTime(1300,t);f.frequency.exponentialRampToValueAtTime(120,t+2.6);g.gain.setValueAtTime(.11,t);g.gain.linearRampToValueAtTime(0,t+2.8);s.start(t);s.stop(t+2.9)}
-  else if(kind==='flutter'){f.disconnect();const n=arg||5;let tt=t;for(let i=0;i<n;i++){const s=src(c,false,false),bp=c.createBiquadFilter(),gg=c.createGain();bp.type='bandpass';bp.frequency.value=2600+r()*1600;bp.Q.value=3;s.connect(bp);bp.connect(gg);gg.connect(dst);env(c,gg,tt,.001,.11+r()*.08,.025);s.start(tt,r()*3);s.stop(tt+.06);tt+=1/15+r()*.03}}
+  else if(kind==='fan'){const s=src(c,true);s.connect(f);f.type='lowpass';f.frequency.setValueAtTime(140,t);f.frequency.exponentialRampToValueAtTime(1300,t+2.4);const d=arg||4;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.09,t+2.2);g.gain.setValueAtTime(.09,t+d-.6);g.gain.linearRampToValueAtTime(.065,t+d);s.start(t);s.stop(t+d+.05);
+   const o=c.createOscillator(),og=c.createGain();o.type='triangle';o.frequency.setValueAtTime(30,t);o.frequency.linearRampToValueAtTime(58,t+2.2);o.connect(og);og.connect(dst);og.gain.setValueAtTime(0,t);og.gain.linearRampToValueAtTime(.015,t+2.2);og.gain.linearRampToValueAtTime(.011,t+d);o.start(t);o.stop(t+d+.05)}
+  else if(kind==='fanDown'){const s=src(c,true);s.connect(f);f.type='lowpass';f.frequency.setValueAtTime(1300,t);f.frequency.exponentialRampToValueAtTime(120,t+2.6);g.gain.setValueAtTime(.065,t);g.gain.linearRampToValueAtTime(0,t+2.8);s.start(t);s.stop(t+2.9)}
+  else if(kind==='flutter'){f.disconnect();const n=arg||5;let tt=t;for(let i=0;i<n;i++){const s=src(c,false,false),bp=c.createBiquadFilter(),gg=c.createGain();bp.type='bandpass';bp.frequency.value=2600+r()*1600;bp.Q.value=3;s.connect(bp);bp.connect(gg);gg.connect(dst);env(c,gg,tt,.001,.2+r()*.1,.03);s.start(tt,r()*3);s.stop(tt+.06);tt+=1/15+r()*.03}}
  }
  function startBed(c,dst,kind,t){if(!kind)return null;const s=src(c,true),f=c.createBiquadFilter(),g=c.createGain();s.connect(f);f.connect(g);g.connect(dst);
-  if(kind==='night'){f.type='lowpass';f.frequency.value=320;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.05,t+.8)}
-  else{f.type='bandpass';f.frequency.value=900;f.Q.value=.4;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.012,t+.6)}
-  s.start(t,(kind.length*.37)%3);return{s,g}}
- function stopBed(b,t){if(!b)return;b.g.gain.cancelScheduledValues(t);b.g.gain.setValueAtTime(b.g.gain.value,t);b.g.gain.linearRampToValueAtTime(0,t+.25);b.s.stop(t+.3)}
+  const level=kind==='night'?.05:.012;
+  if(kind==='night'){f.type='lowpass';f.frequency.value=320;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(level,t+.8)}
+  else{f.type='bandpass';f.frequency.value=900;f.Q.value=.4;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(level,t+.6)}
+  s.start(t,(kind.length*.37)%3);return{s,g,level}}
+ function stopBed(b,t){if(!b)return;b.g.gain.cancelScheduledValues(t);b.g.gain.setValueAtTime(b.level,t);b.g.gain.linearRampToValueAtTime(0,t+.25);b.s.stop(t+.3)}
  async function load(c,ids){const m={};await Promise.all(ids.map(async id=>{try{const a=await(await fetch(VO(id))).arrayBuffer();m[id]=await c.decodeAudioData(a)}catch{}}));return m}
  function voiceAt(c,dst,buf,t){if(!buf)return;const s=c.createBufferSource(),g=c.createGain();s.buffer=buf;g.gain.value=.85;s.connect(g);g.connect(dst);s.start(t)}
  function ensure(){if(ctx)return;ctx=new AudioContext();out=ctx.createDynamicsCompressor();out.threshold.value=-14;out.ratio.value=3;out.connect(ctx.destination);load(ctx,Object.values(L).map(v=>v[0])).then(m=>Object.assign(bufs,m))}
