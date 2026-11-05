@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Seam light test</title>
+<!-- ROUGH REVIEW DEMO, not the approved film and not part of any build or export.
+     Reuses the existing Seam stills (film/assets) and temporary flite timing voices (film/audio)
+     under their existing provenance; all other sound is synthesised here. Approved lines only:
+     no story text is added or changed. Serve the repository root over HTTP:
+       python3 -m http.server 8731 --bind 127.0.0.1   →   http://127.0.0.1:8731/docs/demos/seam-light-test/ -->
+<style>
+:root{color-scheme:dark;--ink:#fbefd9;--gold:#e3b76d;--dim:#b9ad9c}
+*{box-sizing:border-box}
+html,body{margin:0;background:#0b0d12;color:var(--ink);font-family:Georgia,serif}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible{outline:2px solid var(--gold);outline-offset:4px}
+[hidden]{display:none!important}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+header{padding:14px 16px 8px;display:flex;flex-wrap:wrap;gap:6px 18px;align-items:baseline}
+header h1{font-weight:400;font-size:22px;margin:0}
+header p{margin:0;font:12px/1.5 system-ui;color:var(--dim);max-width:760px}
+.flag{font:10px system-ui;letter-spacing:.18em;text-transform:uppercase;color:#1b1610;background:var(--gold);padding:3px 7px;border-radius:2px}
+#wrap{padding:0 16px}
+#stage{position:relative;width:min(100%,calc((100vh - 150px)*1.7778));aspect-ratio:16/9;margin:0 auto;overflow:hidden;background:#07080c;touch-action:none;user-select:none;-webkit-user-select:none}
+#cam{position:absolute;inset:0;transform-origin:50% 50%}
+#cam img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+#base.dark{filter:brightness(.36) saturate(.52) contrast(1.05)}
+#shade{position:absolute;inset:0;background:#18204f;mix-blend-mode:multiply;opacity:0}
+.dark~#shade{opacity:.36}
+#lit{-webkit-mask-image:var(--mask);mask-image:var(--mask);filter:brightness(1.07) saturate(1.04)}
+#glow{position:absolute;inset:0;pointer-events:none;mix-blend-mode:screen;opacity:0}
+#vignette{position:absolute;inset:0;pointer-events:none;background:radial-gradient(120% 90% at 50% 45%,transparent 55%,#05060ab0)}
+#black{position:absolute;inset:0;background:#050608;opacity:0;pointer-events:none}
+#slate{position:absolute;top:7%;left:6%;font:11px system-ui;letter-spacing:.25em;color:#eadac3;text-shadow:0 1px 4px #000}
+#note{position:absolute;top:3.5%;right:3%;max-width:42%;font:12px/1.45 system-ui;color:#f1e3cb;background:#0b0e16c8;padding:8px 11px;border-left:2px solid var(--gold)}
+#caption{position:absolute;left:50%;bottom:6.5%;transform:translateX(-50%);width:min(760px,86%);margin:0;text-align:center;text-shadow:0 2px 7px #000;font-size:clamp(16px,2.2vw,28px);line-height:1.35;pointer-events:none}
+#who{display:block;color:var(--gold);font:10px system-ui;letter-spacing:.2em;text-transform:uppercase;margin-bottom:6px}
+#prompt{position:absolute;top:7%;width:100%;text-align:center;font:italic clamp(18px,2.6vw,34px) Georgia;text-shadow:0 2px 12px #000;pointer-events:none}
+#prompt small{display:block;font:11px system-ui;font-style:normal;color:#ddd4c9;letter-spacing:.1em;margin-top:8px}
+.spot{position:absolute;border:0;background:none;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;text-shadow:0 2px 8px #000;padding:8px}
+.spot::before{content:'';width:20px;height:20px;margin-bottom:10px;border:1px solid #ffe5ad;border-radius:50%;box-shadow:0 0 16px #ffcd7555;transition:transform .2s}
+.spot:hover::before,.spot:focus-visible::before{transform:scale(1.4);background:#e8c08044}
+.spot strong{font-weight:400;font-size:clamp(15px,2vw,26px)}
+.spot small{font:11px system-ui;color:#e6d5bc;margin-top:4px}
+#spot-backup{left:4%;top:56%;width:42%;height:40%}
+#spot-repair{left:60%;top:38%;width:38%;height:50%}
+#holdbar{position:absolute;left:50%;bottom:20%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;font:12px system-ui;color:#eadfcd;text-shadow:0 1px 4px #000}
+#hold{background:#14182499;border:1px solid #bda77f;border-radius:22px;padding:9px 16px;min-height:44px}
+#hold[aria-pressed=true]{background:#e3b76d33;color:#fff3dc}
+#end{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:5% 6%;background:linear-gradient(0deg,#07090ff0,#07090f90 55%,transparent);text-shadow:0 2px 7px #000}
+#end h2{font-weight:400;font-size:clamp(22px,3vw,40px);margin:0 0 10px}
+#end p{font:13px/1.55 system-ui;color:#d9ccba;max-width:640px;margin:0 0 8px}
+#end .row{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+#end button,nav button{background:none;border:1px solid #bda77f;padding:10px 15px;font:13px system-ui;min-height:44px;border-radius:2px}
+nav{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;padding:12px 16px 20px}
+nav button[aria-pressed=true]{background:#e3b76d2a;color:#fff3dc}
+nav .sep{width:1px;background:#3a3428;margin:0 4px}
+body.export header,body.export nav{display:none}
+body.export #wrap{padding:0}
+body.export #stage{width:100vw;height:100vh;aspect-ratio:auto}
+body.export *{transition:none!important}
+@media (max-width:600px){#note{max-width:62%;font-size:10px}.spot small{display:none}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<header>
+ <span class="flag">Rough demo</span>
+ <h1>The Seam: light test</h1>
+ <p>Existing stills, temporary sound, approved lines only. Not the approved film, not a build. It tests two things: whether holding the light can make the player present, and which three-shot edit lands the cost.</p>
+</header>
+<div id="wrap">
+ <div id="stage" aria-label="Film frame. Move the light with the pointer or the arrow keys.">
+  <div id="cam"><img id="base" alt=""><div id="shade"></div><img id="lit" alt=""><div id="glow"></div></div>
+  <div id="vignette"></div>
+  <div id="black"></div>
+  <div id="slate"></div>
+  <div id="note" hidden></div>
+  <div id="prompt" hidden></div>
+  <button class="spot" id="spot-backup" hidden data-choice="backup"><strong>Fit the backup</strong><small>Mara’s pre-cut rib</small></button>
+  <button class="spot" id="spot-repair" hidden data-choice="repair"><strong>Repair together</strong><small>Julian’s original rib</small></button>
+  <div id="holdbar" hidden><button id="hold" aria-pressed="false">Hold the light steady</button><span id="holdhint">or press and hold on the picture, or hold Space</span></div>
+  <p id="caption" aria-hidden="true"><span id="who"></span><span id="line"></span></p>
+  <div id="end" hidden><h2 id="end-title"></h2><p id="end-text"></p><p id="end-q">What did each person want? What did you choose? Who paid the cost?</p><div class="row"><button id="again">Play again</button><button id="other">Try the other light</button></div></div>
+ </div>
+ <p class="sr" id="live" aria-live="polite"></p>
+</div>
+<nav aria-label="Demo controls">
+ <button id="play-light">Light test (interactive)</button>
+ <button id="play-A">Cut A · Robert, “Hold it there”</button>
+ <button id="play-B">Cut B · Opus, “Where the light goes”</button>
+ <span class="sep" aria-hidden="true"></span>
+ <button id="pause" aria-pressed="false">Pause</button>
+ <button id="voices" aria-pressed="false">Temp voices</button>
+ <button id="notes" aria-pressed="true">Shot notes</button>
+</nav>
+<script>
+'use strict';
+const IMG=n=>`../../../film/assets/${n}.webp`,VO=id=>`../../../film/audio/${id}.mp3`;
+// Approved lines, verbatim from film/story.json, with their temp-voice durations (film/audio/manifest.json).
+const L={
+ 's00':['setup-00-00','Julian','Again.',.84],
+ 's02':['setup-02-00','Mara',"Ren, you're leading this. I need your call.",3.12],
+ 's03':['setup-03-00','Mara','I cut the spare at midnight. Forty minutes to fit it.',3.29],
+ 's04':['setup-04-00','Mara','My fellowship application closes at noon. This test is the footage I have.',4.85],
+ 's05':['setup-05-00','Julian','I know. I just… wanted to be here when my design moved.',3.86],
+ 's06':['setup-06-00','Ren','Hands off at four-thirty. It needs the rest of the night to set.',3.86],
+ 's07':['setup-07-00','Ren','We can fit the spare, or spend that time on this seam.',3.65],
+ 'b00':['backup-00-00','Ren','Use the spare. Julian, do you want a break?',3.14],
+ 'b01':['backup-01-00','Julian','Yeah. Just a minute. Keep my drawing here.',3.17],
+ 'b04':['backup-04-00','Ren','Leave his original here.',1.68],
+ 'b06':['backup-06-00','Mara','There.',.72],
+ 'b07':['backup-07-00','Julian','I missed it.',1.0],
+ 'r00':['repair-00-00','Ren',"Let's splint it. Together.",1.9],
+ 'r01':['repair-01-00','Mara','Then I need you on the canopy with me.',2.3],
+ 'r02':['repair-02-00','Julian','Hold it there.',1.32],
+ 'r03':['repair-03-00','Mara','I am.',.91],
+ 'r06':['repair-06-00','Julian','It held.',.9],
+ 'r07':['repair-07-00','Mara','Half of it.',1.08]
+};
+// Hotspots on the decision plate (percent of the frame).
+const SPARE=[25,77],ORIG=[77,60],LAMP=[42,62];
+// The lamp is always its own source: its shade glows wherever the pool goes.
+const SRC={performanceOffer:[35,24,7],performanceReachSpare:[35,24,7],performanceGraspSpare:[35,24,7],offer:[7,11,8],workB:[93,10,7],workA:[92,8,7]};
+// Segment: img, dur (s), dark (lamp-lit night: light follows `pool` keys [t,x,y,r]), cam [[s,x,y],[s,x,y]],
+// lines [[t,key]], sfx [[t,kind,arg]], room, slate, note, frames [[t,img]], gate.
+const SEG={
+ setup:{img:'performanceOffer',dur:31.5,dark:true,room:'night',slate:'03:14 · ARCHITECTURE STUDIO',
+  note:'Setup plays by itself. The light follows whoever matters; move it and it is yours.',
+  pool:[[0,LAMP[0],LAMP[1],15],[1.2,...ORIG,13],[3.6,26,35,13],[7.8,...SPARE,12],[12,26,37,13],[17.6,64,30,13],[22.4,50,58,24],[27,50,58,24],[30.5,LAMP[0],LAMP[1],18]],
+  lines:[[1.5,'s00'],[4.2,'s02'],[8.2,'s03'],[12.4,'s04'],[18,'s05'],[23,'s06'],[27.4,'s07']],sfx:[[1.2,'creak'],[1.9,'creak',.6]]},
+ choice:{img:'performanceOffer',dark:true,gate:'choice',prompt:'Where will you put the light?',hint:'Move the light to look. Set it down on one rib to choose.',pool:[[0,LAMP[0],LAMP[1],18]]},
+ // Repair
+ rA:{img:'offer',dur:6.6,dark:true,dim:.55,pool:[[0,38,44,26],[6.6,40,46,26]],lines:[[.4,'r00'],[3,'r01']],
+  note:'Reaction: Mara hears the call with the spare she cut at midnight in her hands and her phone on its stand.'},
+ rB:{img:'workB',dur:4.8,dark:true,pool:[[0,90,12,14],[1.3,36,48,21],[4.8,36,49,21]],lines:[[1.6,'r02'],[3.3,'r03']],sfx:[[.2,'swing'],[1.2,'thock'],[2.4,'wrap']],
+  note:'Action: three hands, three burdens. The spare lies unused in frame. The light is yours.'},
+ rHold:{img:'workB',dark:true,gate:'hold',target:[36,49,21],need:3.6,pool:[[0,36,49,21]]},
+ rC:{img:'workB',dur:2.2,dark:true,pool:[[0,36,49,21],[2.2,36,50,22]],sfx:[[.2,'creak',.5],[.9,'settle']]},
+ blk:{black:true,dur:1.1,slate:'08:00 · WIND TEST',room:null},
+ rD:{img:'morningB',dur:5.2,room:'morning',lines:[[3,'r06']],sfx:[[.25,'fan',4.9],[2.1,'flutter',7],[2.9,'flutter',5],[4.3,'flutter',4]],
+  note:'Result: daylight reaches everything; the light is no longer yours to place. The rib holds; the louvres catch.'},
+ rE:{img:'payoffB',dur:5,room:'morning',lines:[[1.2,'r07']],sfx:[[0,'fanDown']],
+  note:'The cost gets a face. Her phone is in the foreground. She does not look at it.'},
+ // Backup, canonical lines (the causal problem in the Story Reassessment is visible here on purpose)
+ bA:{img:'performanceGraspSpare',dur:1.6,dark:true,frames:[[0,'performanceReachSpare'],[.5,'performanceGraspSpare']],pool:[[0,...SPARE,13],[1.6,...SPARE,13]],sfx:[[.1,'thock']]},
+ bB:{img:'restOffer',dur:7.6,dark:true,dim:.6,pool:[[0,60,40,30],[7.6,62,40,30]],lines:[[.3,'b00'],[3.9,'b01']]},
+ bHold:{img:'workA',dark:true,gate:'hold',target:[46,52,21],need:3.6,pool:[[0,46,52,21]],
+  note:'Julian is asleep in the dark at the edge of this plate. The light can find him; the work cannot include him.'},
+ bC:{img:'workA',dur:3.4,dark:true,pool:[[0,46,52,21],[3.4,45,52,22]],lines:[[.5,'b04']],sfx:[[.2,'settle']]},
+ bD:{img:'morningA',dur:4.6,room:'morning',lines:[[2,'b06']],sfx:[[.25,'fan',4.3]]},
+ bE:{img:'morningA',dur:3.8,cam:[[1.16,83,30],[1.16,83,30]],lines:[[.6,'b07']],sfx:[[0,'fanDown']]},
+ // Cut A: Robert's three shots as written in the Creative Exchange
+ aA:{img:'performanceBraceOriginal',dur:4.6,room:'night',sfx:[[1,'creak',.7],[2.8,'creak',.5]],
+  note:'A1 · Locked medium-wide: Ren braces the damaged original; the unused spare remains in view.'},
+ aB:{img:'workB',dur:7,lines:[[1,'r02'],[2.8,'r03']],sfx:[[.2,'wrap'],[3.8,'wrap'],[5.4,'creak',.5]],
+  note:'A2 · Close: Julian places the splint while Mara steadies the canopy.'},
+ aC:{img:'morningB',dur:8.4,room:'morning',lines:[[5,'r07']],sfx:[[.3,'fan',7.8],[2.4,'flutter',7],[3.2,'flutter',5],[4.4,'flutter',4]],
+  note:'A3 · Morning: the repaired rib holds, the louvres catch, the canopy opens only partly.'},
+ // Cut B: Opus's three shots
+ xA:{img:'offer',dur:6.2,dark:true,dim:.55,room:'night',pool:[[0,38,44,26],[6.2,40,46,26]],lines:[[.3,'r00'],[2.7,'r01']],
+  note:'B1 · Reaction: Mara’s stake is in her hands (the spare) and in front of her (the phone).'},
+ xB:{img:'workB',dur:7.2,dark:true,pool:[[0,90,12,14],[1.2,36,48,21],[4.4,36.4,49.3,21],[7.2,36,49,21]],lines:[[1.5,'r02'],[3.1,'r03']],sfx:[[.1,'swing'],[1.1,'thock'],[2.2,'wrap'],[4.6,'wrap'],[6.2,'creak',.5]],
+  note:'B2 · Action: Ren’s part is the light. The spare lies unused in frame.'},
+ xD:{img:'morningB',dur:4.8,room:'morning',lines:[[2.9,'r06']],sfx:[[.2,'fan',4.6],[2,'flutter',7],[2.8,'flutter',5]],
+  note:'B3a · Morning, no lamp: everything is visible, including what it cost.'},
+ xE:{img:'payoffB',dur:4.8,room:'morning',lines:[[1.1,'r07']],sfx:[[0,'fanDown']],
+  note:'B3b · The result gets a face: Mara, the phone, the footage she has.'}
+};
+const PROGRAMS={
+ light:{title:'Light test',seq:['setup','choice'],branches:{repair:['rA','rB','rHold','rC','blk','rD','rE'],backup:['bA','bB','bHold','bC','blk','bD','bE']}},
+ A:{title:'Cut A · Hold it there',seq:['aA','aB','blk','aC']},
+ B:{title:'Cut B · Where the light goes',seq:['xA','xB','blk','xD','xE']}
+};
+const ENDS={
+ repair:['Repair together','Julian’s seam moves and half of it holds. Mara’s footage is the cost. Every line here is from the approved film.'],
+ backup:['Fit the backup','Mara has her footage and the canopy opens on time. This route still plays the approved lines, so Julian’s absence comes from a check-in Ren never chose to skip: the causal problem the Story Reassessment proposes to fix (Julian awake, guiding the spare).'],
+ A:['Cut A · Robert','Three shots, as written in the Creative Exchange, from existing stills.'],
+ B:['Cut B · Opus','Reaction, action, result, and the result given a face. Same stills, a different edit.']
+};
+const $=id=>document.getElementById(id),EXPORT=new URLSearchParams(location.search).has('export');
+if(EXPORT)document.body.classList.add('export');
+const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const prefs={voices:false,notes:true};
+// ---------- deterministic randomness ----------
+function rng(seed){let s=seed>>>0;return()=>{s=(s+0x6D2B79F5)>>>0;let t=s;t=Math.imul(t^t>>>15,t|1);t^=t+Math.imul(t^t>>>7,t|61);return((t^t>>>14)>>>0)/4294967296}}
+// ---------- runner: a pure function of time and input, so a scripted run renders frame by frame ----------
+let S=null;
+function start(name,{script=null,from=null}={}){
+ const P=PROGRAMS[name];
+ S={name,P,segs:from?P.seq.slice(P.seq.indexOf(from)):P.seq.slice(),i:0,t:0,T:0,fired:new Set(),log:[],choice:null,hover:null,script,
+    pool:{x:LAMP[0],y:LAMP[1],r:15},user:null,userAt:-99,pressed:false,toggle:false,auto:false,
+    gateT:0,progress:0,lastWrap:0,inten:1,cap:null,done:false,paused:false,room:null,noise:rng(7)};
+ $('end').hidden=true;$('pause').setAttribute('aria-pressed','false');$('pause').textContent='Pause';
+ emit({type:'room',kind:null});if(from){S.room='night';emit({type:'room',kind:'night'})}enter();
+}
+const seg=()=>SEG[S.segs[S.i]];
+function emit(e){e.T=S.T;S.log.push(e);live(e)}
+function enter(){const g=seg();if(!g){finish();return}
+ if(g.room!==undefined&&g.room!==S.room){S.room=g.room;emit({type:'room',kind:g.room})}
+ S.t=0;S.gateT=0;S.progress=0;S.lastWrap=0;S.auto=false;S.toggle=false;$('hold').setAttribute('aria-pressed','false');
+ if(g.gate==='choice')announce('Where will you put the light? Fit the backup, Mara’s pre-cut rib, or repair together, Julian’s original rib.');
+ if(g.gate==='hold')announce('Hold the light steady while they work.');}
+function next(){S.i++;enter()}
+function finish(){S.done=true;const k=S.P.branches?S.choice:S.name;const [t,x]=ENDS[k];$('end-title').textContent=t;$('end-text').textContent=x;$('end').hidden=false;$('other').hidden=!S.P.branches;announce(t+'. '+x);emit({type:'room',kind:null})}
+function choose(c){if(!S||seg()?.gate!=='choice'||S.choice)return;S.choice=c;emit({type:'sfx',kind:'swing'});
+ S.chosenAt=S.T;S.segs.splice(S.i+1,0,...S.P.branches[c]);S.hover=c;}
+function keyAt(keys,t){if(!keys)return null;let a=keys[0];if(t<=a[0])return a.slice(1);for(let k=1;k<keys.length;k++){const b=keys[k];if(t<=b[0]){const u=(t-a[0])/(b[0]-a[0]),e=u<.5?2*u*u:1-Math.pow(-2*u+2,2)/2;return a.slice(1).map((v,j)=>v+(b[j+1]-v)*e)}a=b}return a.slice(1)}
+function step(dt){
+ if(!S||S.done||S.paused)return;const g=seg();if(!g){finish();return}
+ S.T+=dt;const sc=S.script;
+ if(g.gate==='choice'){S.gateT+=dt;
+  if(sc&&!S.choice&&S.gateT>=sc.choiceAt){S.hover=sc.choice;if(S.gateT>=sc.choiceAt+1.2)choose(sc.choice)}
+  if(S.choice&&S.T-S.chosenAt>=1.3){next();return}
+ }else if(g.gate==='hold'){S.gateT+=dt;
+  if(sc&&S.gateT>=sc.holdAt)S.pressed=true;
+  if(!S.auto&&!holding()&&S.gateT>8)S.auto=true; // nobody is stuck: after 8 s Ren holds it anyway
+  if(holding()){S.progress+=dt;if(S.progress-S.lastWrap>=.85||S.lastWrap===0){S.lastWrap=S.progress||.001;emit({type:'sfx',kind:'wrap'})}}
+  if(S.progress>=g.need){S.pressed=false;next();return}
+ }else{S.t+=dt;
+  for(const [at,k] of g.lines||[])if(S.t>=at&&!S.fired.has(S.i+':'+k)){S.fired.add(S.i+':'+k);const [id,who,text,d]=L[k];S.cap={who,text,until:S.T+Math.max(1.6,d+.9)};emit({type:'line',id,who,text,d})}
+  for(const [at,kind,arg] of g.sfx||[]){const key=S.i+':'+kind+at;if(S.t>=at&&!S.fired.has(key)){S.fired.add(key);emit({type:'sfx',kind,arg})}}
+  if(S.t>=g.dur){next();return}
+ }
+ // The light: keyframes, the hovered choice, or the player's hand; a heavy lamp head eases toward it.
+ let tgt=keyAt(g.pool,S.t)||[S.pool.x,S.pool.y,S.pool.r];
+ if(g.gate==='choice'){if(S.hover)tgt=[...(S.hover==='backup'?SPARE:ORIG),S.choice?11:13];}
+ const mine=S.user&&(S.T-S.userAt<2.5||g.gate)&&g.dark&&!(g.gate==='choice'&&S.hover);
+ if(mine)tgt=[S.user[0],S.user[1],g.gate==='hold'?g.target[2]:15];
+ let inten=1;
+ if(g.gate==='hold'){
+  if(holding()){if(!mine)tgt=[g.target[0],g.target[1],g.target[2]];const w=reduced?0:.35;tgt=[tgt[0]+Math.sin(S.T*7.3)*w,tgt[1]+Math.sin(S.T*5.1+1)*w,tgt[2]]}
+  else{const sag=Math.min(1,S.gateT/2.5);if(!mine)tgt=[g.target[0]+2*sag,g.target[1]+14*sag,g.target[2]*(1+.45*sag)];inten=1-.38*sag}
+ }
+ const k=reduced?1:1-Math.exp(-dt*(g.gate==='choice'&&S.choice?6:3.2));
+ S.pool.x+=(tgt[0]-S.pool.x)*k;S.pool.y+=(tgt[1]-S.pool.y)*k;S.pool.r+=(tgt[2]-S.pool.r)*k;S.inten+=(inten-S.inten)*k;
+ if(S.cap&&S.T>S.cap.until)S.cap=null;
+}
+const holding=()=>S.pressed||S.toggle||S.auto;
+// ---------- render ----------
+let shownImg=null;
+async function render(){
+ if(!S)return;const g=seg()||{};const base=$('base'),lit=$('lit');
+ let img=g.img;if(g.frames)for(const [at,f] of g.frames)if(S.t>=at)img=f;
+ if(img&&img!==shownImg){shownImg=img;base.src=IMG(img);lit.src=IMG(img);try{await Promise.all([base.decode(),lit.decode()])}catch{}}
+ $('black').style.opacity=g.black||!img?1:0;
+ const dark=!!g.dark;base.classList.toggle('dark',dark);lit.hidden=!dark;$('glow').style.opacity=dark?.5*S.inten:0;
+ const cam=g.cam||[[1,50,50],[1,50,50]],u=g.dur?Math.min(1,S.t/g.dur):0,c=reduced?cam[0]:cam[0].map((v,j)=>v+(cam[1][j]-v)*u);
+ const C=$('cam');C.style.transformOrigin=`${c[1]}% ${c[2]}%`;C.style.transform=`scale(${c[0]})`;
+ if(dark){const W=$('stage').clientWidth,H=$('stage').clientHeight,r=S.pool.r/100*W,x=S.pool.x+'%',y=S.pool.y+'%',a=(g.dim||1)*S.inten;
+  const sp=SRC[shownImg],srcMask=sp?`,radial-gradient(${sp[2]/100*W}px ${sp[2]/100*W}px at ${sp[0]}% ${sp[1]}%,#000 0%,rgba(0,0,0,.7) 50%,transparent 100%)`:'';
+  lit.style.setProperty('--mask',`radial-gradient(${r}px ${r*.92}px at ${x} ${y},rgba(0,0,0,${a}) 0%,rgba(0,0,0,${a*.82}) 42%,rgba(0,0,0,${a*.3}) 74%,transparent 100%)`+srcMask);
+  $('glow').style.background=`radial-gradient(${r*.8}px ${r*.72}px at ${x} ${y},#ffb45a22,transparent 100%)`;}
+ $('slate').textContent=g.slate||(S.name==='light'&&S.segs[S.i]==='choice'?SEG.setup.slate:'');
+ const n=$('note');n.hidden=!prefs.notes||!g.note;if(g.note)n.textContent=g.note;
+ const pr=$('prompt');pr.hidden=g.gate!=='choice'||!!S.choice;if(g.gate==='choice')pr.innerHTML=`${g.prompt}<small>${g.hint}</small>`;
+ for(const b of document.querySelectorAll('.spot'))b.hidden=g.gate!=='choice'||!!S.choice;
+ const hb=$('holdbar');hb.hidden=g.gate!=='hold';if(g.gate==='hold')$('holdhint').textContent=S.auto?'Ren holds it.':holding()?'Holding…':'or press and hold on the picture, or hold Space';
+ $('caption').style.visibility=S.cap?'visible':'hidden';if(S.cap){$('who').textContent=S.cap.who;$('line').textContent=S.cap.text}
+}
+// ---------- live loop ----------
+let last=0,raf=0;
+function loop(ts){const dt=Math.min(.05,(ts-(last||ts))/1000);last=ts;if(!EXPORT){step(dt);render()}raf=requestAnimationFrame(loop)}
+function live(e){if(EXPORT)return;
+ if(e.type==='line'){announce(e.who+': '+e.text);if(prefs.voices)Audio_.voice(e.id)}
+ else if(e.type==='sfx')Audio_.sfx(e.kind,e.arg);
+ else if(e.type==='room')Audio_.room(e.kind)}
+function announce(t){$('live').textContent=t}
+// ---------- sound: one synth for live play and for offline export ----------
+const Audio_=(()=>{let ctx=null,out=null,bed=null;const bufs={};
+ function noise(c,sec,brown){const b=c.createBuffer(1,Math.ceil(c.sampleRate*sec),c.sampleRate),d=b.getChannelData(0),r=rng(sec*1000|0);let l=0;for(let i=0;i<d.length;i++){const w=r()*2-1;if(brown){l=(l+.02*w)/1.02;d[i]=l*3.5}else d[i]=w}return b}
+ const NB=new WeakMap();function nb(c,brown){const m=NB.get(c)||{};NB.set(c,m);return m[brown?'b':'w']||(m[brown?'b':'w']=noise(c,4,brown))}
+ function src(c,brown,loop=true){const s=c.createBufferSource();s.buffer=nb(c,brown);s.loop=loop;return s}
+ function env(c,g,t,a,peak,d){g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(peak,t+a);g.gain.exponentialRampToValueAtTime(.0001,t+a+d)}
+ function sfx(c,dst,kind,arg,t,r){
+  const f=c.createBiquadFilter(),g=c.createGain();f.connect(g);g.connect(dst);
+  if(kind==='creak'){const s=src(c,false);s.connect(f);f.type='bandpass';f.Q.value=11;const len=.32+(arg||.4)*.3;f.frequency.setValueAtTime(760,t);f.frequency.exponentialRampToValueAtTime(380,t+len);
+   g.gain.setValueAtTime(0,t);for(let i=0;i<14;i++)g.gain.setValueAtTime((.05+r()*.22)*(arg||1),t+i*len/14);g.gain.linearRampToValueAtTime(0,t+len);s.start(t);s.stop(t+len+.05)}
+  else if(kind==='wrap'){const s=src(c,false);s.connect(f);f.type='bandpass';f.frequency.value=1700+r()*500;f.Q.value=.9;const len=.42;g.gain.setValueAtTime(0,t);for(let i=0;i<12;i++)g.gain.setValueAtTime(i%2?.012:.07*(1-i/12),t+i*len/12);g.gain.linearRampToValueAtTime(0,t+len);s.start(t);s.stop(t+len+.05)}
+  else if(kind==='swing'){const s=src(c,false);s.connect(f);f.type='bandpass';f.Q.value=18;f.frequency.setValueAtTime(1400,t);f.frequency.linearRampToValueAtTime(980,t+.55);env(c,g,t,.08,.06,.5);s.start(t);s.stop(t+.7)}
+  else if(kind==='thock'||kind==='settle'){const o=c.createOscillator();o.type='sine';o.frequency.setValueAtTime(kind==='thock'?150:110,t);o.frequency.exponentialRampToValueAtTime(70,t+.18);o.connect(g);f.disconnect();env(c,g,t,.004,kind==='thock'?.22:.14,.22);o.start(t);o.stop(t+.3);
+   const s=src(c,false),f2=c.createBiquadFilter(),g2=c.createGain();f2.type='lowpass';f2.frequency.value=900;s.connect(f2);f2.connect(g2);g2.connect(dst);env(c,g2,t,.002,.08,.08);s.start(t);s.stop(t+.15)}
+  else if(kind==='fan'){const s=src(c,true);s.connect(f);f.type='lowpass';f.frequency.setValueAtTime(140,t);f.frequency.exponentialRampToValueAtTime(1300,t+2.4);const d=arg||4;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.16,t+2.2);g.gain.setValueAtTime(.16,t+d-.6);g.gain.linearRampToValueAtTime(.11,t+d);s.start(t);s.stop(t+d+.05);
+   const o=c.createOscillator(),og=c.createGain();o.type='triangle';o.frequency.setValueAtTime(30,t);o.frequency.linearRampToValueAtTime(58,t+2.2);o.connect(og);og.connect(dst);og.gain.setValueAtTime(0,t);og.gain.linearRampToValueAtTime(.025,t+2.2);og.gain.linearRampToValueAtTime(.018,t+d);o.start(t);o.stop(t+d+.05)}
+  else if(kind==='fanDown'){const s=src(c,true);s.connect(f);f.type='lowpass';f.frequency.setValueAtTime(1300,t);f.frequency.exponentialRampToValueAtTime(120,t+2.6);g.gain.setValueAtTime(.11,t);g.gain.linearRampToValueAtTime(0,t+2.8);s.start(t);s.stop(t+2.9)}
+  else if(kind==='flutter'){f.disconnect();const n=arg||5;let tt=t;for(let i=0;i<n;i++){const s=src(c,false,false),bp=c.createBiquadFilter(),gg=c.createGain();bp.type='bandpass';bp.frequency.value=2600+r()*1600;bp.Q.value=3;s.connect(bp);bp.connect(gg);gg.connect(dst);env(c,gg,tt,.001,.11+r()*.08,.025);s.start(tt,r()*3);s.stop(tt+.06);tt+=1/15+r()*.03}}
+ }
+ function startBed(c,dst,kind,t){if(!kind)return null;const s=src(c,true),f=c.createBiquadFilter(),g=c.createGain();s.connect(f);f.connect(g);g.connect(dst);
+  if(kind==='night'){f.type='lowpass';f.frequency.value=320;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.05,t+.8)}
+  else{f.type='bandpass';f.frequency.value=900;f.Q.value=.4;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.012,t+.6)}
+  s.start(t,(kind.length*.37)%3);return{s,g}}
+ function stopBed(b,t){if(!b)return;b.g.gain.cancelScheduledValues(t);b.g.gain.setValueAtTime(b.g.gain.value,t);b.g.gain.linearRampToValueAtTime(0,t+.25);b.s.stop(t+.3)}
+ async function load(c,ids){const m={};await Promise.all(ids.map(async id=>{try{const a=await(await fetch(VO(id))).arrayBuffer();m[id]=await c.decodeAudioData(a)}catch{}}));return m}
+ function voiceAt(c,dst,buf,t){if(!buf)return;const s=c.createBufferSource(),g=c.createGain();s.buffer=buf;g.gain.value=.85;s.connect(g);g.connect(dst);s.start(t)}
+ function ensure(){if(ctx)return;ctx=new AudioContext();out=ctx.createDynamicsCompressor();out.threshold.value=-14;out.ratio.value=3;out.connect(ctx.destination);load(ctx,Object.values(L).map(v=>v[0])).then(m=>Object.assign(bufs,m))}
+ const R=rng(11);
+ return{unlock(){ensure();ctx.resume()},
+  sfx(kind,arg){if(!ctx)return;sfx(ctx,out,kind,arg,ctx.currentTime+.01,R)},
+  room(kind){if(!ctx)return;stopBed(bed,ctx.currentTime);bed=startBed(ctx,out,kind,ctx.currentTime+.01)},
+  voice(id){if(ctx&&bufs[id])voiceAt(ctx,out,bufs[id],ctx.currentTime+.01)},
+  suspend(){ctx?.suspend()},resume(){ctx?.resume()},
+  // Offline: the same events, scheduled at their logged times, rendered to a WAV for the export.
+  async offline(log,dur,voices){const SR=44100,c=new OfflineAudioContext(2,Math.ceil(SR*(dur+.5)),SR),o=c.createDynamicsCompressor();o.threshold.value=-14;o.ratio.value=3;o.connect(c.destination);
+   const vb=voices?await load(c,log.filter(e=>e.type==='line').map(e=>e.id)):{};const r=rng(11);let b=null;
+   for(const e of log){const t=e.T+.01;if(e.type==='sfx')sfx(c,o,e.kind,e.arg,t,r);else if(e.type==='room'){stopBed(b,t);b=startBed(c,o,e.kind,t)}else if(e.type==='line'&&voices)voiceAt(c,o,vb[e.id],t)}
+   const buf=await c.startRendering();return wav(buf)}};
+ function wav(buf){const ch=buf.numberOfChannels,len=buf.length,v=new DataView(new ArrayBuffer(44+len*ch*2)),w=(o,s)=>[...s].forEach((x,i)=>v.setUint8(o+i,x.charCodeAt(0)));w(0,'RIFF');v.setUint32(4,36+len*ch*2,true);w(8,'WAVEfmt ');v.setUint32(16,16,true);v.setUint16(20,1,true);v.setUint16(22,ch,true);v.setUint32(24,buf.sampleRate,true);v.setUint32(28,buf.sampleRate*ch*2,true);v.setUint16(32,ch*2,true);v.setUint16(34,16,true);w(36,'data');v.setUint32(40,len*ch*2,true);let p=44;const D=[...Array(ch)].map((_,i)=>buf.getChannelData(i));for(let i=0;i<len;i++)for(let k=0;k<ch;k++){v.setInt16(p,Math.max(-1,Math.min(1,D[k][i]))*32767,true);p+=2}
+  let s='';const u=new Uint8Array(v.buffer);for(let i=0;i<u.length;i+=32768)s+=String.fromCharCode(...u.subarray(i,i+32768));return btoa(s)}
+})();
+// ---------- input ----------
+const stage=$('stage');
+function toImage(e){const r=$('base').getBoundingClientRect();return[(e.clientX-r.left)/r.width*100,(e.clientY-r.top)/r.height*100]}
+stage.addEventListener('pointermove',e=>{if(!S||e.target.closest('button'))return;S.user=toImage(e);S.userAt=S.T});
+stage.addEventListener('pointerdown',e=>{if(!S||e.target.closest('button'))return;S.user=toImage(e);S.userAt=S.T;if(seg()?.gate==='hold'){S.pressed=true;stage.setPointerCapture(e.pointerId)}});
+const release=()=>{if(S)S.pressed=false};stage.addEventListener('pointerup',release);stage.addEventListener('pointercancel',release);
+for(const b of document.querySelectorAll('.spot')){b.addEventListener('pointerenter',()=>S&&(S.hover=b.dataset.choice));b.addEventListener('focus',()=>S&&(S.hover=b.dataset.choice));
+ b.addEventListener('pointerleave',()=>S&&!S.choice&&(S.hover=null));b.addEventListener('blur',()=>S&&!S.choice&&(S.hover=null));b.addEventListener('click',()=>choose(b.dataset.choice))}
+$('hold').addEventListener('click',()=>{if(!S)return;S.toggle=!S.toggle;$('hold').setAttribute('aria-pressed',String(S.toggle))});
+addEventListener('keydown',e=>{if(!S)return;const g=seg();
+ if(e.key===' '&&g?.gate==='hold'&&!e.target.closest?.('button')){e.preventDefault();S.pressed=true;return}
+ const d={ArrowLeft:[-3,0],ArrowRight:[3,0],ArrowUp:[0,-3],ArrowDown:[0,3]}[e.key];
+ if(d&&g?.dark&&!e.target.closest?.('nav')){e.preventDefault();const p=S.user||[S.pool.x,S.pool.y];S.user=[Math.max(0,Math.min(100,p[0]+d[0])),Math.max(0,Math.min(100,p[1]+d[1]))];S.userAt=S.T;S.hover=null}});
+addEventListener('keyup',e=>{if(e.key===' '&&S)S.pressed=false});
+function play(name,opt){Audio_.unlock();start(name,opt);for(const n of ['light','A','B'])$('play-'+n).setAttribute('aria-pressed',String(n===name));stage.focus?.()}
+$('play-light').onclick=()=>play('light');$('play-A').onclick=()=>play('A');$('play-B').onclick=()=>play('B');
+$('again').onclick=()=>play(S?.name||'light');
+$('other').onclick=()=>play('light',{from:'choice'});
+$('pause').onclick=()=>{if(!S)return;S.paused=!S.paused;$('pause').setAttribute('aria-pressed',String(S.paused));$('pause').textContent=S.paused?'Resume':'Pause';S.paused?Audio_.suspend():Audio_.resume()};
+$('voices').onclick=()=>{prefs.voices=!prefs.voices;$('voices').setAttribute('aria-pressed',String(prefs.voices))};
+$('notes').onclick=()=>{prefs.notes=!prefs.notes;$('notes').setAttribute('aria-pressed',String(prefs.notes))};
+// ---------- export hooks (docs/demos/seam-light-test/render.cjs) ----------
+window.Demo={
+ async begin(name,script){start(name,{script});await render();return true},
+ async frame(dt){step(dt);await render();return{done:S.done,T:S.T}},
+ audio(voices){return Audio_.offline(S.log,S.T,voices)},
+ log(){return S.log}
+};
+// Idle frame before anything is played: the decision plate in the dark.
+if(!EXPORT){start('light');S.paused=true;render();$('end').hidden=true}
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>
