@@ -33,6 +33,9 @@ const soundBtn=$('sound'),soundHome=soundBtn.parentNode,soundAfter=soundBtn.next
 
 /* ---- build the machine ---------------------------------------------------------------- */
 document.body.insertAdjacentHTML('afterbegin',Art.defs());
+// Photographed paper grain (manifest textures.paper) for code-native layers; absent, they stay smooth.
+const PAPER=MAN.textures?.paper;
+if(typeof PAPER==='string'&&PAPER){const img=new Image();img.onload=()=>{document.querySelectorAll('#aw-defs .aw-paper-tex').forEach(t=>t.setAttribute('href',PAPER));root.style.setProperty('--paper-grain','url("'+PAPER.replace(/"/g,'%22')+'")');root.classList.add('has-paper')};img.src=PAPER}
 front.querySelector('.interior').innerHTML=Art.machineBack();
 front.querySelector('.coils').innerHTML=Art.coilsFront(D.DRINKS);
 front.querySelector('.face-art').innerHTML=Art.machineFace(D.DRINKS);
@@ -55,9 +58,12 @@ function fitControls(g){
  if(ok(g.chute,4)){const [x,y,w,h]=g.chute;Object.assign(front.querySelector('.flap').style,{left:X(x),top:Y(y),width:X(w),height:Y(Math.min(h,140))})}
  if(ok(g.display,4)){const [x,y,w,h]=g.display;Object.assign($('display').style,{left:X(x),top:Y(y),width:X(w),height:Y(h)})}
  $('display').classList.toggle('well',!!g.well);
+ // A plain sign panel can carry hand-cut lettering drawn by code (manifest `lettering`).
+ if(ok(g.sign,4)&&typeof faceSlot.lettering==='string'&&faceSlot.lettering.trim())front.querySelector('.face-art').insertAdjacentHTML('beforeend',Art.signLetters(faceSlot.lettering.trim().slice(0,24),g.sign));
 }
 swapIn(faceSlot?.src,src=>{front.querySelector('.face-art').innerHTML='<img src="'+esc(src)+'" alt="">';$('cabinet').classList.add('has-face-art');fitControls(faceSlot.geometry)});
-swapIn(MAN.machine?.interior,src=>{front.querySelector('.interior').innerHTML='<img src="'+esc(src)+'" alt="">'});
+// A delivered interior paints its own shelves; the code's shelf lips step aside (coils and tabs stay).
+swapIn(MAN.machine?.interior,src=>{front.querySelector('.interior').innerHTML='<img src="'+esc(src)+'" alt="">';$('cabinet').classList.add('has-interior-art')});
 // Glass is its own layer (780×1112, the window): reflections and grime over the drinks, under the fog.
 swapIn(MAN.machine?.glass,src=>{glass.insertAdjacentHTML('afterbegin','<img class="glass-art" src="'+esc(src)+'" alt="">');glass.classList.add('has-art')});
 swapIn(MAN.machine?.side,src=>{$('side').querySelector('.side-plate').style.background='url("'+src+'") center/100% 100%'});

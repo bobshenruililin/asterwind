@@ -160,7 +160,7 @@ function drink(d,{state='sealed',src=null,layers=null,held=false}={}){
  const liquid=p.liquid?`<g clip-path="url(#${body})"><rect class="liquid" x="180" y="${state==='empty'?p.liquid.empty:p.liquid.top}" width="600" height="1200" fill="${p.liquid.fill}" opacity="${p.liquid.alpha||.9}"/><rect x="180" y="${(state==='empty'?p.liquid.empty:p.liquid.top)-4}" width="600" height="10" fill="${p.liquid.surface}" opacity=".7"/>${p.inside&&state!=='empty'?`<g class="fizz-in">${bubbles(16,d.id.length*31,350,610,p.liquid.top+60,1940)}</g>`:''}</g>`:'';
  const light=`<path d="${p.body}" fill="url(#aw-light)"/>${p.glossy?`<path d="M${p.hx} ${p.liquid.top+170} q-6 380 0 720" stroke="#fff" stroke-opacity=".22" stroke-width="22" stroke-linecap="round" fill="none"/><path d="M${p.hx+26} ${p.liquid.top+190} v120" stroke="#fff" stroke-opacity=".35" stroke-width="8" stroke-linecap="round"/>`:''}${p.metal?'<rect x="356" y="660" width="30" height="1290" rx="15" fill="#fff" opacity=".24"/><rect x="600" y="660" width="14" height="1290" rx="7" fill="#1d2a22" opacity=".25"/>':''}`;
  const fizz=p.fizz?`<g class="fizz">${bubbles(12,d.id.length*17,p.fizz[0],p.fizz[1],p.fizz[2],p.fizz[3])}</g>`:'';
- const vector=`<path d="${p.body}" transform="translate(16 14)" fill="#0a0910" opacity=".38"/><path d="${p.body}" fill="${p.glass}"/>${liquid}${p.over?`<g clip-path="url(#${body})">${p.over}</g>`:''}${p.lip}${p.label(x)}<g clip-path="url(#${body})">${light}<path d="${p.body}" fill="url(#aw-grain)" opacity=".35"/></g><path d="${p.body}" fill="none" stroke="#120f16" stroke-opacity=".55" stroke-width="5"/>`;
+ const vector=`<path d="${p.body}" transform="translate(16 14)" fill="#0a0910" opacity=".38"/><path d="${p.body}" fill="${p.glass}"/>${liquid}${p.over?`<g clip-path="url(#${body})">${p.over}</g>`:''}${p.lip}${p.label(x)}<g clip-path="url(#${body})">${light}<path d="${p.body}" fill="url(#aw-grain)" opacity=".35"/><rect class="paper" x="150" y="480" width="660" height="1580" fill="url(#aw-paper-fine)" opacity=".6"/></g><path d="${p.body}" fill="none" stroke="#120f16" stroke-opacity=".55" stroke-width="5"/><path class="cut-edge" d="${p.body}" fill="none" stroke="url(#aw-cutedge)" stroke-width="9" clip-path="url(#${body})"/>`;
  const layered=!!layers?.base;
  let art;
  if(layered){
@@ -170,6 +170,18 @@ function drink(d,{state='sealed',src=null,layers=null,held=false}={}){
   art=`${cameo(x,src,clip).replace('class="cameo-frame"','class="cameo-frame" opacity="0"')}${img('layer-body',layers.base,0,0,960,2080)}${top}`;
  }else art=vector+(state==='sealed'?p.closure:p.opened);
  return `<svg class="drink-art" data-drink="${d.id}" data-state="${state}" data-art="${layered?'layered':'vector'}" data-closure="${d.closure}" viewBox="${DRINK_VIEW}" aria-hidden="true" focusable="false"><defs><clipPath id="${body}"><path d="${p.body}"/></clipPath></defs><ellipse class="contact" cx="480" cy="2002" rx="250" ry="20" fill="#05060a" opacity=".55"/>${art}${held&&state!=='empty'?cold(d,p,body):''}${state!=='empty'?fizz:''}<g class="sparkle"><circle cx="480" cy="${p.mouth||700}" r="0" fill="#fff"/></g></svg>`;
+}
+
+/* Hand-cut card lettering for a plain sign panel (face geometry `sign`, manifest `lettering`). Each
+   letter is a cut-out standing off the panel: a soft cast shadow, the card's cut edge, then its face,
+   lit warm from the doorway side and cooling to the right. A low-frequency wobble and a few degrees
+   of seeded rotation keep it hand-made. Decorative and replaceable: finished art can bake it in. */
+function signLetters(text,[x,y,w,h]){
+ const chars=[...String(text)],adv=chars.map(c=>c===' '?.55:1),total=adv.reduce((a,b)=>a+b,0)||1,r=rand(chars.length*97+7);
+ const size=Math.min(h*.62,w*.92/total*1.32),unit=Math.min(w*.84/total,size*.86),base=y+h/2+size*.34;let gx=x+w/2-unit*total/2;
+ const glyphs=chars.map((c,i)=>{const cx=gx+unit*adv[i]/2;gx+=unit*adv[i];if(c===' ')return'';const rot=((r()-.5)*5).toFixed(2),dy=((r()-.5)*size*.06).toFixed(1),t=`x="${cx.toFixed(1)}" y="${base.toFixed(1)}"`,g=esc(c);
+  return `<g transform="translate(0 ${dy}) rotate(${rot} ${cx.toFixed(1)} ${(base-size*.35).toFixed(1)})"><text ${t} class="cut-shadow" transform="translate(${(size*.07).toFixed(1)} ${(size*.09).toFixed(1)})">${g}</text><text ${t} class="cut-edge" transform="translate(${(size*.025).toFixed(1)} ${(size*.035).toFixed(1)})">${g}</text><text ${t} class="cut-face">${g}</text><text ${t} class="cut-grain">${g}</text></g>`}).join('');
+ return `<svg class="sign-letters" viewBox="0 0 1200 2000" preserveAspectRatio="none" aria-hidden="true" focusable="false"><defs><linearGradient id="aw-sign-light" gradientUnits="userSpaceOnUse" x1="${x}" y1="0" x2="${x+w}" y2="0"><stop offset="0" stop-color="#f8e3b3"/><stop offset=".45" stop-color="#eadcbc"/><stop offset="1" stop-color="#cdcac6"/></linearGradient><filter id="aw-sign-cut" x="-10%" y="-30%" width="120%" height="160%"><feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="2" seed="11"/><feDisplacementMap in="SourceGraphic" scale="${(size*.05).toFixed(1)}" xChannelSelector="R" yChannelSelector="G"/></filter><filter id="aw-sign-shadow" x="-10%" y="-30%" width="130%" height="170%"><feGaussianBlur stdDeviation="${(size*.035).toFixed(1)}"/></filter></defs><g font-family="Georgia,'Times New Roman',serif" font-weight="700" font-size="${size.toFixed(1)}" text-anchor="middle" filter="url(#aw-sign-cut)">${glyphs}</g></svg>`;
 }
 
 /* --- the machine (1200×2000 template) ---------------------------------------------------- */
@@ -202,7 +214,7 @@ const CELLS=[[210,960],[470,960],[730,960],[210,1500],[470,1500],[730,1500]];
 function machineBack(){
  const back=CELLS.map(([cx,y])=>`<path d="${coilArc(cx,y-14,false)}" stroke="#9aa2a6" stroke-width="7" fill="none"/><path d="${coilArc(cx,y-40,false).replace(/A108 30/,'A96 24')}" stroke="#7d868a" stroke-width="5" fill="none" opacity=".7"/>`).join('');
  return `<svg class="machine-back" viewBox="0 0 1200 2000" aria-hidden="true" focusable="false" preserveAspectRatio="none">
- <rect x="30" y="360" width="880" height="1240" fill="url(#aw-backwall)"/><path d="${Array.from({length:8},(_,i)=>`M${120+i*100} 440 V1540`).join(' ')}" stroke="#0f1a1b" stroke-width="3" opacity=".5"/>
+ <rect x="30" y="360" width="880" height="1240" fill="url(#aw-backwall)"/><rect x="30" y="360" width="880" height="1240" fill="url(#aw-paper)" opacity=".55"/><rect x="30" y="360" width="880" height="1240" fill="url(#aw-box-depth)"/><path d="${Array.from({length:8},(_,i)=>`M${120+i*100} 440 V1540`).join(' ')}" stroke="#0f1a1b" stroke-width="3" opacity=".5"/>
  <rect x="40" y="380" width="860" height="260" fill="url(#aw-tubeglow)"/><rect x="100" y="438" width="740" height="18" rx="9" fill="#fff3d2" class="tube"/>
  ${[960,1500].map(y=>`<path d="M60 ${y-8} H880 V${y+12} H60Z" fill="#7d6d52"/><path d="M60 ${y-8} H880" stroke="#b9a37a" stroke-width="4"/>`).join('')}
  ${back}
@@ -212,7 +224,7 @@ function machineBack(){
 }
 function coilsFront(drinks){
  return `<svg class="coils-front" viewBox="0 0 1200 2000" aria-hidden="true" focusable="false" preserveAspectRatio="none">${CELLS.map(([cx,y],i)=>`<g class="coil" data-coil="${drinks[i].id}"><path d="${coilArc(cx,y-14,true)}" stroke="#d3d9dc" stroke-width="8" fill="none"/><path class="coil-glint" d="${coilArc(cx,y-14,true)}" stroke="#fff" stroke-width="8" fill="none" stroke-dasharray="26 400" stroke-linecap="round"/></g>`).join('')}
- ${[960,1500].map(y=>`<rect x="72" y="${y+8}" width="796" height="28" rx="3" fill="#cdb78c"/><rect x="72" y="${y+8}" width="796" height="28" rx="3" fill="url(#aw-grain)" opacity=".6"/><path d="M72 ${y+36} H868" stroke="#6d5c40" stroke-width="3"/>`).join('')}
+ ${[960,1500].map(y=>`<g class="shelf-lip"><rect x="72" y="${y+8}" width="796" height="28" rx="3" fill="#cdb78c"/><rect x="72" y="${y+8}" width="796" height="28" rx="3" fill="url(#aw-grain)" opacity=".6"/><rect x="72" y="${y+8}" width="796" height="28" rx="3" fill="url(#aw-paper-fine)" opacity=".8"/><path d="M72 ${y+36} H868" stroke="#6d5c40" stroke-width="3"/></g>`).join('')}
  ${CELLS.map(([cx,y],i)=>`<rect x="${cx-22}" y="${y+14}" width="44" height="16" rx="3" fill="${drinks[i].tint}" opacity=".85"/>`).join('')}</svg>`;
 }
 
@@ -240,12 +252,16 @@ function defs(){
  ${g('aw-warm-rim',[[0,'#ffb766',.38],[1,'#ffb766',0]])}
  ${g('aw-indigo-rim',[[0,'#1a1840',0],[1,'#1a1840',.5]])}
  ${g('aw-backwall',[[0,'#203234'],[.5,'#172628'],[1,'#0e1819']],{x2:0,y2:1})}
+ <radialGradient id="aw-box-depth" cx=".48" cy=".5" r=".72"><stop offset=".55" stop-color="#050909" stop-opacity="0"/><stop offset="1" stop-color="#050909" stop-opacity=".55"/></radialGradient>
  ${g('aw-sidewall-l',[[0,'#05090a',.9],[1,'#05090a',0]])}${g('aw-sidewall-r',[[0,'#05090a',0],[1,'#05090a',.9]])}
  <radialGradient id="aw-vellum" cx=".5" cy=".55" r=".7"><stop offset="0" stop-color="#fff0c8"/><stop offset=".6" stop-color="#f0d394"/><stop offset="1" stop-color="#c79a5a"/></radialGradient>
  <radialGradient id="aw-tubeglow" cx=".5" cy=".12" r=".8"><stop offset="0" stop-color="#ffe3a8" stop-opacity=".55"/><stop offset="1" stop-color="#ffe3a8" stop-opacity="0"/></radialGradient>
  <pattern id="aw-corr" width="22" height="18" patternUnits="userSpaceOnUse"><rect width="22" height="18" fill="#8a7754"/><path d="M0 9 Q11 -3 22 9 Q11 21 0 9" fill="none" stroke="#5a4a30" stroke-width="3"/></pattern>
+ <pattern id="aw-paper" width="640" height="640" patternUnits="userSpaceOnUse"><image class="aw-paper-tex" width="640" height="640" preserveAspectRatio="none"/></pattern>
+ <pattern id="aw-paper-fine" width="360" height="360" patternUnits="userSpaceOnUse" patternTransform="rotate(90)"><image class="aw-paper-tex" width="360" height="360" preserveAspectRatio="none"/></pattern>
+ ${g('aw-cutedge',[[0,'#fff1d4',.62],[.16,'#fff1d4',.12],[.5,'#fff1d4',0],[.84,'#141428',.1],[1,'#141428',.55]])}
  <pattern id="aw-grain" width="48" height="48" patternUnits="userSpaceOnUse">${(()=>{const r=rand(3);let s='';for(let i=0;i<46;i++)s+=`<rect x="${(r()*48).toFixed(1)}" y="${(r()*48).toFixed(1)}" width="${(1+r()*2.4).toFixed(1)}" height="${(1+r()*1.6).toFixed(1)}" fill="${r()>.5?'#fff':'#000'}" opacity="${(.06+r()*.12).toFixed(2)}"/>`;return s})()}</pattern>
  </defs></svg>`;
 }
-return{defs,drink,layersFor,partSlot,LAYERS,SLOTS,machineFace,machineBack,coilsFront,coverBox,CELLS,KEYS,PLATE,DRINK_VIEW,PARTS};
+return{defs,drink,signLetters,layersFor,partSlot,LAYERS,SLOTS,machineFace,machineBack,coilsFront,coverBox,CELLS,KEYS,PLATE,DRINK_VIEW,PARTS};
 });

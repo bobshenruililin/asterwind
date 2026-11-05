@@ -89,8 +89,14 @@ button:focus-visible{outline:3px solid #fff4d0;outline-offset:4px}
    a dark well holds the clock, and the flap is finished as painted card to sit with the art. */
 #turn.on-art .knob{inset:0;background:radial-gradient(circle at 50% 50%,#0000 0 62%,#00000014 63%,#0000 70%);box-shadow:none}
 #turn.on-art .knob:after{left:47.5%;top:8%;width:5%;height:36%;border-radius:1cqw;background:linear-gradient(#e7c98a,#9b7a3c);box-shadow:0 .15cqw .3cqw #0007}
+.has-interior-art .coils .shelf-lip{display:none}
+.face-art .sign-letters{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+.sign-letters .cut-shadow{fill:#1a1006;opacity:.5;filter:url(#aw-sign-shadow)}.sign-letters .cut-edge{fill:#8f7650}.sign-letters .cut-face{fill:url(#aw-sign-light)}.sign-letters .cut-grain{fill:url(#aw-grain);opacity:.55}
 #display.well{background:linear-gradient(180deg,#071011,#0f1819);border-radius:.8cqw;box-shadow:inset 0 .5cqw .9cqw #000d,inset 0 -.2cqw .3cqw #ffffff0d,0 .15cqw 0 #ffffff17}
 .has-face-art .face.side{background:linear-gradient(90deg,#3c4033,#50553f 18%,#474b39 70%,#2c2f25);box-shadow:inset 0 0 0 .5cqw #262a1f}
+.has-paper .has-face-art .face.side{background:var(--paper-grain) 0 0/24cqw auto,linear-gradient(90deg,#3c4033,#50553f 18%,#474b39 70%,#2c2f25)}
+.has-face-art .side-plate{background:repeating-linear-gradient(0deg,#0000 0 10cqh,#0000002e 10cqh calc(10cqh + .25cqw),#ffffff12 calc(10cqh + .25cqw) calc(10cqh + .45cqw)),radial-gradient(circle at 18% 6%,#c9a865 0 1cqw,transparent 1.2cqw),radial-gradient(circle at 82% 6%,#c9a865 0 1cqw,transparent 1.2cqw),radial-gradient(circle at 18% 95%,#c9a865 0 1cqw,transparent 1.2cqw),radial-gradient(circle at 82% 95%,#c9a865 0 1cqw,transparent 1.2cqw)}
+.has-paper .has-face-art .flap{background-image:var(--paper-grain),linear-gradient(180deg,#46503f,#353d30 66%,#2a3126);background-size:20cqw auto,auto}
 .has-face-art .flap{background:linear-gradient(180deg,#46503f,#353d30 66%,#2a3126),url("data:image/svg+xml,%3Csvg viewBox='0 0 120 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='120' height='120' fill='%23332a1c' opacity='.18' filter='url(%23n)'/%3E%3C/svg%3E");background-blend-mode:multiply;border-bottom:.45cqw solid #5f6853;box-shadow:inset 0 .4cqw 0 #ffffff12,inset 0 0 0 .2cqw #242b20}
 #turn:focus-visible{outline-offset:2px}
 

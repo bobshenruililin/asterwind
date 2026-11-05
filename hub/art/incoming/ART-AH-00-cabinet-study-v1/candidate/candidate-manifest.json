@@ -2,7 +2,7 @@
  "schemaVersion": 2,
  "machine": {
   "face": {
-   "src": "art/incoming/ART-AH-00-cabinet-study-v1/candidate/machine-face-candidate.webp",
+   "src": "art/machine/machine-face-interim.webp",
    "geometry": {
     "keys": [
      930.2,
@@ -24,13 +24,20 @@
      189.9
     ],
     "display": [
-     88,
-     340,
-     1024,
-     64
+     96,
+     332,
+     1008,
+     56
     ],
-    "well": true
-   }
+    "well": true,
+    "sign": [
+     42,
+     95,
+     1118,
+     227
+    ]
+   },
+   "lettering": "AFTER HOURS"
   },
   "interior": null,
   "glass": null,

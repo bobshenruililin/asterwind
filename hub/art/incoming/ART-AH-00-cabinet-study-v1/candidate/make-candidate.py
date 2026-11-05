@@ -1,4 +1,4 @@
-"""Review candidate for ART-AH-00 (dev/QA only; not a build step, not accepted art).
+"""Interim machine face from ART-AH-00 (dev tool; not a build step; adopted 5 Nov pending ART-AH-01).
 
 Registers the cabinet study to the 1200x2000 machine template with one axis-aligned fit that makes
 the window exact, cleans alpha noise, and writes the face-geometry declaration so live controls
@@ -22,7 +22,9 @@ im = Image.merge('RGBA', (r, g, b, a))
 face = im.transform((1200, 2000), Image.AFFINE, (1 / sx, 0, -tx / sx, 0, 1 / sy, -ty / sy), resample=Image.BICUBIC)
 # The template window must be fully clear: drinks, glass and fog live there.
 fa = face.getchannel('A'); fa.paste(0, (80, 428, 860, 1540)); face.putalpha(fa)
-face.save(here / 'machine-face-candidate.webp', 'WEBP', quality=90, method=6, exact=True)
+# Adopted 5 Nov as the interim face: written where the manifest reads it.
+out = here.parents[2] / 'machine' / 'machine-face-interim.webp'
+face.save(out, 'WEBP', quality=90, method=6, exact=True)
 # Controls measured in study pixels (+/-3 px), mapped to template pixels.
 k0 = T(742, 374); k1 = T(828, 487); kw = 70 * sx; kh = 92 * sy
 knob = T(818, 1062); chute0 = T(117, 1318); chute1 = T(639, 1469)
@@ -30,13 +32,15 @@ geometry = {
     'keys': [round(k0[0], 1), round(k0[1], 1), round(kw, 1), round(kh, 1), round(k1[0] - k0[0], 1), round(k1[1] - k0[1], 1)],
     'knob': [round(knob[0], 1), round(knob[1], 1), round(80 * (sx + sy) / 2, 1)],
     'chute': [round(chute0[0], 1), round(chute0[1], 1), round(chute1[0] - chute0[0], 1), round(chute1[1] - chute0[1], 1)],
-    'display': [88, 340, 1024, 64],
+    # Clock well inside the seam band between the sign (95..322) and the window frame (from ~390).
+    'display': [96, 332, 1008, 56],
     'well': True,
+    'sign': [42, 95, 1118, 227],
 }
 recipe = {'source': 'cabinet-study.webp', 'sha256_source': 'bde7dbd83618d279aca13638036b03b91b78b1b9c1e74a8d4b13c0df71da1fda',
           'scale': [sx, sy], 'translate': [tx, ty], 'alpha': 'v<8 -> 0, v>=248 -> 255', 'windowCleared': [80, 428, 860, 1540], 'geometry': geometry}
 (here / 'recipe.json').write_text(json.dumps(recipe, indent=1) + '\n')
-manifest = {'schemaVersion': 2, 'machine': {'face': {'src': 'art/incoming/ART-AH-00-cabinet-study-v1/candidate/machine-face-candidate.webp', 'geometry': geometry}, 'interior': None, 'glass': None, 'side': None},
+manifest = {'schemaVersion': 2, 'machine': {'face': {'src': 'art/machine/machine-face-interim.webp', 'geometry': geometry, 'lettering': 'AFTER HOURS'}, 'interior': None, 'glass': None, 'side': None},
             'drinks': {}, 'corridor': {'portrait': None, 'dawn': 'art/corridor/corridor-dawn.webp', 'portraitDawn': None}, 'hand': {}, 'clips': {}}
 (here / 'candidate-manifest.json').write_text(json.dumps(manifest, indent=1) + '\n')
-print(json.dumps(geometry), (here / 'machine-face-candidate.webp').stat().st_size, 'bytes')
+print(json.dumps(geometry), out.stat().st_size, 'bytes')
