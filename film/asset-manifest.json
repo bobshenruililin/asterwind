@@ -145,21 +145,6 @@
     "sha256": "744ca8d4ec091242c15afabac92f1a0255cbdabf7fff03ab9fe8d5ef2ef04f2c"
   },
   {
-    "path": "audio/backup-07-00.mp3",
-    "bytes": 8684,
-    "sha256": "3d50cf67d535064ddd6a5281a373fef1cfea726f6d4a0ab04f9022d3513aaf16"
-  },
-  {
-    "path": "audio/backup-08-00.mp3",
-    "bytes": 17900,
-    "sha256": "01720787ab38c351bb68f917a38998a3d267874a5bc9fcda8fd9ec1fbed4bf5e"
-  },
-  {
-    "path": "audio/backup-09-00.mp3",
-    "bytes": 10028,
-    "sha256": "2d4fdc502be5ddc48074b6470188955c4d4f978e8b0effe3d24e62d5c8db870e"
-  },
-  {
     "path": "audio/backup-10-00.mp3",
     "bytes": 28076,
     "sha256": "bc7262e826887949a4a31b3f5cdebf7e4b53f6fbd6516a08ac62f71ce7c251a9"
@@ -175,9 +160,24 @@
     "sha256": "0e2452910271965f33994d075eb618abd35ed3234512894b143e71294588b44d"
   },
   {
-    "path": "audio/backup-checkin-00.mp3",
-    "bytes": 24236,
-    "sha256": "10158cf048c1b6bde541ca928053b9f6f585736e796ef4ebdb08c1f4130e0190"
+    "path": "audio/backup-mine-00.mp3",
+    "bytes": 16749,
+    "sha256": "258ca256fef9256fc96196cc80b0adabeea5e483aa781eedd7cceaf2fbd1e9f3"
+  },
+  {
+    "path": "audio/backup-moved-00.mp3",
+    "bytes": 8301,
+    "sha256": "d9bb6a7e450db0e2cdff1ba1fe1316ac0744bec7542bab41b2878d9d8bf03e7f"
+  },
+  {
+    "path": "audio/backup-next-00.mp3",
+    "bytes": 15597,
+    "sha256": "130900ab99daf740ddcf273c2dc175abd5393e55dc1834e7ee59e3f23a72131d"
+  },
+  {
+    "path": "audio/backup-spare-00.mp3",
+    "bytes": 25773,
+    "sha256": "b4ff465f20c6ecd1dc233238cd7207e0d5b6cbd6ab15f09e884b69e03ab03696"
   },
   {
     "path": "audio/repair-00-00.mp3",

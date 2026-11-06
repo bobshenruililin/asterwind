@@ -33,7 +33,7 @@
     "id": "setup-05-00",
     "file": "setup-05-00.mp3",
     "duration": 3.864,
-    "text": "I know. I just\u2026 wanted to be here when my design moved."
+    "text": "I know. I just… wanted to be here when my design moved."
   },
   {
     "id": "setup-06-00",
@@ -72,28 +72,28 @@
     "text": "There."
   },
   {
-    "id": "backup-07-00",
-    "file": "backup-07-00.mp3",
-    "duration": 1.056,
-    "text": "I missed it."
+    "id": "backup-moved-00",
+    "file": "backup-moved-00.mp3",
+    "duration": 1.008,
+    "text": "It moved."
   },
   {
-    "id": "backup-08-00",
-    "file": "backup-08-00.mp3",
-    "duration": 2.208,
-    "text": "The test? We can run it again."
+    "id": "backup-spare-00",
+    "file": "backup-spare-00.mp3",
+    "duration": 3.192,
+    "text": "On Mara's spare. Your rib is still on the table."
   },
   {
-    "id": "backup-09-00",
-    "file": "backup-09-00.mp3",
-    "duration": 1.224,
-    "text": "Finishing it."
+    "id": "backup-mine-00",
+    "file": "backup-mine-00.mp3",
+    "duration": 2.064,
+    "text": "I wanted to see mine move."
   },
   {
-    "id": "backup-checkin-00",
-    "file": "backup-checkin-00.mp3",
-    "duration": 3.0,
-    "text": "We kept going. I should have checked with you."
+    "id": "backup-next-00",
+    "file": "backup-next-00.mp3",
+    "duration": 1.92,
+    "text": "Then that's the next test."
   },
   {
     "id": "backup-10-00",

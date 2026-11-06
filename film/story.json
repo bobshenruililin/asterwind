@@ -422,8 +422,8 @@
           "at": 500,
           "until": 3100,
           "who": "Julian",
-          "text": "I missed it.",
-          "id": "backup-07-00"
+          "text": "It moved.",
+          "id": "backup-moved-00"
         }
       ],
       "alt": "Julian looks at the finished model."
@@ -444,11 +444,11 @@
           "at": 500,
           "until": 4000,
           "who": "Ren",
-          "text": "The test? We can run it again.",
-          "id": "backup-08-00"
+          "text": "On Mara's spare. Your rib is still on the table.",
+          "id": "backup-spare-00"
         }
       ],
-      "alt": "Ren turns toward Julian."
+      "alt": "Ren turns toward Julian and the rib on the table."
     },
     {
       "asset": "morningA",
@@ -463,18 +463,18 @@
       ],
       "lines": [
         {
-          "at": 600,
-          "until": 2300,
+          "at": 500,
+          "until": 3100,
           "who": "Julian",
-          "text": "Finishing it.",
-          "id": "backup-09-00"
+          "text": "I wanted to see mine move.",
+          "id": "backup-mine-00"
         }
       ],
-      "alt": "Julian names what he missed."
+      "alt": "Julian says what he wanted."
     },
     {
       "asset": "morningA",
-      "ms": 5800,
+      "ms": 4200,
       "camera": [
         1.12,
         35,
@@ -485,14 +485,14 @@
       ],
       "lines": [
         {
-          "id": "backup-checkin-00",
+          "id": "backup-next-00",
           "at": 500,
-          "until": 5400,
+          "until": 3600,
           "who": "Ren",
-          "text": "We kept going. I should have checked with you."
+          "text": "Then that's the next test."
         }
       ],
-      "alt": "Ren acknowledges that continuing without checking in was avoidable."
+      "alt": "Ren names the next test: Julian's own rib."
     },
     {
       "asset": "payoffA",

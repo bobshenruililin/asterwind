@@ -138,48 +138,48 @@
       "sha256": "744ca8d4ec091242c15afabac92f1a0255cbdabf7fff03ab9fe8d5ef2ef04f2c"
     },
     {
-      "id": "backup-07-00",
+      "id": "backup-moved-00",
       "speaker": "Julian",
       "voice": "rms",
-      "text": "I missed it.",
-      "path": "film/audio/backup-07-00.mp3",
-      "durationSeconds": 1.056,
+      "text": "It moved.",
+      "path": "film/audio/backup-moved-00.mp3",
+      "durationSeconds": 1.008,
       "cueWindowSeconds": 2.6,
       "overrunSeconds": 0,
-      "sha256": "3d50cf67d535064ddd6a5281a373fef1cfea726f6d4a0ab04f9022d3513aaf16"
+      "sha256": "d9bb6a7e450db0e2cdff1ba1fe1316ac0744bec7542bab41b2878d9d8bf03e7f"
     },
     {
-      "id": "backup-08-00",
+      "id": "backup-spare-00",
       "speaker": "Ren",
       "voice": "awb",
-      "text": "The test? We can run it again.",
-      "path": "film/audio/backup-08-00.mp3",
-      "durationSeconds": 2.208,
+      "text": "On Mara's spare. Your rib is still on the table.",
+      "path": "film/audio/backup-spare-00.mp3",
+      "durationSeconds": 3.192,
       "cueWindowSeconds": 3.5,
       "overrunSeconds": 0,
-      "sha256": "01720787ab38c351bb68f917a38998a3d267874a5bc9fcda8fd9ec1fbed4bf5e"
+      "sha256": "b4ff465f20c6ecd1dc233238cd7207e0d5b6cbd6ab15f09e884b69e03ab03696"
     },
     {
-      "id": "backup-09-00",
+      "id": "backup-mine-00",
       "speaker": "Julian",
       "voice": "rms",
-      "text": "Finishing it.",
-      "path": "film/audio/backup-09-00.mp3",
-      "durationSeconds": 1.224,
-      "cueWindowSeconds": 1.7,
+      "text": "I wanted to see mine move.",
+      "path": "film/audio/backup-mine-00.mp3",
+      "durationSeconds": 2.064,
+      "cueWindowSeconds": 2.6,
       "overrunSeconds": 0,
-      "sha256": "2d4fdc502be5ddc48074b6470188955c4d4f978e8b0effe3d24e62d5c8db870e"
+      "sha256": "258ca256fef9256fc96196cc80b0adabeea5e483aa781eedd7cceaf2fbd1e9f3"
     },
     {
-      "id": "backup-checkin-00",
+      "id": "backup-next-00",
       "speaker": "Ren",
       "voice": "awb",
-      "text": "We kept going. I should have checked with you.",
-      "path": "film/audio/backup-checkin-00.mp3",
-      "durationSeconds": 3.0,
-      "cueWindowSeconds": 4.9,
+      "text": "Then that's the next test.",
+      "path": "film/audio/backup-next-00.mp3",
+      "durationSeconds": 1.92,
+      "cueWindowSeconds": 3.1,
       "overrunSeconds": 0,
-      "sha256": "10158cf048c1b6bde541ca928053b9f6f585736e796ef4ebdb08c1f4130e0190"
+      "sha256": "130900ab99daf740ddcf273c2dc175abd5393e55dc1834e7ee59e3f23a72131d"
     },
     {
       "id": "backup-10-00",
@@ -314,5 +314,6 @@
       "sha256": "48d4bef12a4254d08a06e6c71cd75774fd420462a407e02d8573b2d6ffa85cde"
     }
   ],
-  "decodeVerified": true
+  "decodeVerified": true,
+  "revision": "6 Nov 2026: four backup morning cues replaced after the approved line change (FFmpeg flite, same voices and format)."
 }

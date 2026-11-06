@@ -11,3 +11,14 @@ The closing composition now visibly includes Julian's marked original drawing. T
 The player still makes exactly one untimed decision. Other characters retain agency within the ensuing narrative. No morality score is assigned.
 
 Optional synthetic temp voice remains off by default. All 28 cues fit their windows; no final acting or listening-quality claim is made.
+
+## 6 November 2026: the backup morning (approved by Bob)
+
+The player chooses the spare, so the morning's cost is now the one that choice carries: Julian's own rib is not the one that moves. The added check-in mistake ("We kept going. I should have checked with you.") is removed; the stills, the break Julian chooses, and the closing comparison with his drawing are unchanged.
+
+- "I missed it." → "It moved." (`backup-moved-00`)
+- "The test? We can run it again." → "On Mara's spare. Your rib is still on the table." (`backup-spare-00`)
+- "Finishing it." → "I wanted to see mine move." (`backup-mine-00`)
+- "We kept going. I should have checked with you." → "Then that's the next test." (`backup-next-00`, shot 5.8 s → 4.2 s)
+
+The four temporary voice cues were regenerated with the same FFmpeg flite voices (Julian rms, Ren awb, 24 kHz mono MP3). See `audio/source-manifest.json`. Reasoning: `docs/demos/unfolded/INTERACTION-AUDIT.md`.
