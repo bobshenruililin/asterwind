@@ -1,0 +1,503 @@
+{
+  "source": "anthology/episodes/standup/assets/reference-v1/02-turn-or-pass-decision.webp",
+  "source_sha256": "30749b7e877c461d5407f9537ecb26a2af2b9c097354fc8dd3d89acf123794f9",
+  "source_dimensions": [
+    1672,
+    941
+  ],
+  "method": "Integer-pixel normalized cross-correlation in +/-8px search windows over 10 preserved detail patches. Coordinates are source [x,y,width,height]. This tests local translation only; it does not prove nonrigid identity preservation. No images transformed.",
+  "takes": [
+    {
+      "file": "quiet-clean-take-01.png",
+      "sha256": "a15e960fe17384840514cfc550aff0ca6fc6a79eed3fe3a46ff4fd23a4b90f4b",
+      "dimensions": [
+        1672,
+        941
+      ],
+      "native_dimensions_pass": true,
+      "patches": {
+        "left_face": {
+          "source_xywh": [
+            180,
+            30,
+            80,
+            100
+          ],
+          "best_shift_xy": [
+            -1,
+            0
+          ],
+          "normalized_correlation": 0.9844,
+          "unshifted_mean_absolute_channel_error_0_255": 7.007,
+          "unshifted_exact_rgb_pixel_percent": 0.213
+        },
+        "center_face": {
+          "source_xywh": [
+            810,
+            10,
+            80,
+            90
+          ],
+          "best_shift_xy": [
+            0,
+            0
+          ],
+          "normalized_correlation": 0.98419,
+          "unshifted_mean_absolute_channel_error_0_255": 7.301,
+          "unshifted_exact_rgb_pixel_percent": 0.028
+        },
+        "right_glasses": {
+          "source_xywh": [
+            1415,
+            30,
+            100,
+            100
+          ],
+          "best_shift_xy": [
+            0,
+            0
+          ],
+          "normalized_correlation": 0.97937,
+          "unshifted_mean_absolute_channel_error_0_255": 7.925,
+          "unshifted_exact_rgb_pixel_percent": 0.07
+        },
+        "center_resting_hand": {
+          "source_xywh": [
+            780,
+            180,
+            90,
+            70
+          ],
+          "best_shift_xy": [
+            0,
+            0
+          ],
+          "normalized_correlation": 0.90737,
+          "unshifted_mean_absolute_channel_error_0_255": 12.215,
+          "unshifted_exact_rgb_pixel_percent": 0.048
+        },
+        "left_foreground_hand": {
+          "source_xywh": [
+            340,
+            725,
+            100,
+            95
+          ],
+          "best_shift_xy": [
+            0,
+            0
+          ],
+          "normalized_correlation": 0.98594,
+          "unshifted_mean_absolute_channel_error_0_255": 5.563,
+          "unshifted_exact_rgb_pixel_percent": 0.253
+        },
+        "right_foreground_hand": {
+          "source_xywh": [
+            995,
+            735,
+            100,
+            100
+          ],
+          "best_shift_xy": [
+            0,
+            0
+          ],
+          "normalized_correlation": 0.98855,
+          "unshifted_mean_absolute_channel_error_0_255": 5.572,
+          "unshifted_exact_rgb_pixel_percent": 0.14
+        },
+        "wooden_token": {
+          "source_xywh": [
+            615,
+            780,
+            90,
+            85
+          ],
+          "best_shift_xy": [
+            0,
+            0
+          ],
+          "normalized_correlation": 0.95735,
+          "unshifted_mean_absolute_channel_error_0_255": 10.032,
+          "unshifted_exact_rgb_pixel_percent": 0.0
+        },
+        "background_window": {
+          "source_xywh": [
+            1100,
+            20,
+            100,
+            90
+          ],
+          "best_shift_xy": [
+            0,
+            0
+          ],
+          "normalized_correlation": 0.96254,
+          "unshifted_mean_absolute_channel_error_0_255": 3.828,
+          "unshifted_exact_rgb_pixel_percent": 0.2
+        },
+        "left_map": {
+          "source_xywh": [
+            170,
+            290,
+            95,
+            85
+          ],
+          "best_shift_xy": [
+            0,
+            0
+          ],
+          "normalized_correlation": 0.89329,
+          "unshifted_mean_absolute_channel_error_0_255": 9.131,
+          "unshifted_exact_rgb_pixel_percent": 0.062
+        },
+        "right_map": {
+          "source_xywh": [
+            1350,
+            330,
+            100,
+            50
+          ],
+          "best_shift_xy": [
+            0,
+            0
+          ],
+          "normalized_correlation": 0.94592,
+          "unshifted_mean_absolute_channel_error_0_255": 8.094,
+          "unshifted_exact_rgb_pixel_percent": 0.08
+        }
+      },
+      "maximum_patch_shift_pixels": 1,
+      "minimum_patch_correlation": 0.89329,
+      "exact_preserved_pixels_pass": false
+    },
+    {
+      "file": "quiet-clean-take-02.png",
+      "sha256": "913d6b70177b7b3b9c491c9b5dd7f8f498314eb18a283a97d811536b9245a755",
+      "dimensions": [
+        1672,
+        941
+      ],
+      "native_dimensions_pass": true,
+      "patches": {
+        "left_face": {
+          "source_xywh": [
+            180,
+            30,
+            80,
+            100
+          ],
+          "best_shift_xy": [
+            0,
+            0
+          ],
+          "normalized_correlation": 0.98885,
+          "unshifted_mean_absolute_channel_error_0_255": 5.458,
+          "unshifted_exact_rgb_pixel_percent": 0.112
+        },
+        "center_face": {
+          "source_xywh": [
+            810,
+            10,
+            80,
+            90
+          ],
+          "best_shift_xy": [
+            0,
+            0
+          ],
+          "normalized_correlation": 0.98709,
+          "unshifted_mean_absolute_channel_error_0_255": 4.816,
+          "unshifted_exact_rgb_pixel_percent": 0.097
+        },
+        "right_glasses": {
+          "source_xywh": [
+            1415,
+            30,
+            100,
+            100
+          ],
+          "best_shift_xy": [
+            0,
+            0
+          ],
+          "normalized_correlation": 0.98,
+          "unshifted_mean_absolute_channel_error_0_255": 6.703,
+          "unshifted_exact_rgb_pixel_percent": 0.1
+        },
+        "center_resting_hand": {
+          "source_xywh": [
+            780,
+            180,
+            90,
+            70
+          ],
+          "best_shift_xy": [
+            0,
+            0
+          ],
+          "normalized_correlation": 0.90583,
+          "unshifted_mean_absolute_channel_error_0_255": 11.199,
+          "unshifted_exact_rgb_pixel_percent": 0.048
+        },
+        "left_foreground_hand": {
+          "source_xywh": [
+            340,
+            725,
+            100,
+            95
+          ],
+          "best_shift_xy": [
+            0,
+            0
+          ],
+          "normalized_correlation": 0.98251,
+          "unshifted_mean_absolute_channel_error_0_255": 5.914,
+          "unshifted_exact_rgb_pixel_percent": 0.074
+        },
+        "right_foreground_hand": {
+          "source_xywh": [
+            995,
+            735,
+            100,
+            100
+          ],
+          "best_shift_xy": [
+            0,
+            1
+          ],
+          "normalized_correlation": 0.98769,
+          "unshifted_mean_absolute_channel_error_0_255": 6.566,
+          "unshifted_exact_rgb_pixel_percent": 0.02
+        },
+        "wooden_token": {
+          "source_xywh": [
+            615,
+            780,
+            90,
+            85
+          ],
+          "best_shift_xy": [
+            0,
+            1
+          ],
+          "normalized_correlation": 0.94989,
+          "unshifted_mean_absolute_channel_error_0_255": 9.353,
+          "unshifted_exact_rgb_pixel_percent": 0.065
+        },
+        "background_window": {
+          "source_xywh": [
+            1100,
+            20,
+            100,
+            90
+          ],
+          "best_shift_xy": [
+            0,
+            0
+          ],
+          "normalized_correlation": 0.96371,
+          "unshifted_mean_absolute_channel_error_0_255": 3.724,
+          "unshifted_exact_rgb_pixel_percent": 0.189
+        },
+        "left_map": {
+          "source_xywh": [
+            170,
+            290,
+            95,
+            85
+          ],
+          "best_shift_xy": [
+            0,
+            0
+          ],
+          "normalized_correlation": 0.91677,
+          "unshifted_mean_absolute_channel_error_0_255": 7.138,
+          "unshifted_exact_rgb_pixel_percent": 0.087
+        },
+        "right_map": {
+          "source_xywh": [
+            1350,
+            330,
+            100,
+            50
+          ],
+          "best_shift_xy": [
+            0,
+            0
+          ],
+          "normalized_correlation": 0.94025,
+          "unshifted_mean_absolute_channel_error_0_255": 5.579,
+          "unshifted_exact_rgb_pixel_percent": 0.24
+        }
+      },
+      "maximum_patch_shift_pixels": 1,
+      "minimum_patch_correlation": 0.90583,
+      "exact_preserved_pixels_pass": false
+    },
+    {
+      "file": "quiet-clean-take-03.png",
+      "sha256": "698477e62542cb20ad2ec28cc9f9c9e80e698a85700366815223297f2d1f52d9",
+      "dimensions": [
+        1672,
+        941
+      ],
+      "native_dimensions_pass": true,
+      "patches": {
+        "left_face": {
+          "source_xywh": [
+            180,
+            30,
+            80,
+            100
+          ],
+          "best_shift_xy": [
+            0,
+            0
+          ],
+          "normalized_correlation": 0.98862,
+          "unshifted_mean_absolute_channel_error_0_255": 5.629,
+          "unshifted_exact_rgb_pixel_percent": 0.275
+        },
+        "center_face": {
+          "source_xywh": [
+            810,
+            10,
+            80,
+            90
+          ],
+          "best_shift_xy": [
+            0,
+            0
+          ],
+          "normalized_correlation": 0.98275,
+          "unshifted_mean_absolute_channel_error_0_255": 6.083,
+          "unshifted_exact_rgb_pixel_percent": 0.028
+        },
+        "right_glasses": {
+          "source_xywh": [
+            1415,
+            30,
+            100,
+            100
+          ],
+          "best_shift_xy": [
+            0,
+            0
+          ],
+          "normalized_correlation": 0.97632,
+          "unshifted_mean_absolute_channel_error_0_255": 7.812,
+          "unshifted_exact_rgb_pixel_percent": 0.07
+        },
+        "center_resting_hand": {
+          "source_xywh": [
+            780,
+            180,
+            90,
+            70
+          ],
+          "best_shift_xy": [
+            0,
+            0
+          ],
+          "normalized_correlation": 0.91011,
+          "unshifted_mean_absolute_channel_error_0_255": 12.191,
+          "unshifted_exact_rgb_pixel_percent": 0.016
+        },
+        "left_foreground_hand": {
+          "source_xywh": [
+            340,
+            725,
+            100,
+            95
+          ],
+          "best_shift_xy": [
+            0,
+            0
+          ],
+          "normalized_correlation": 0.98737,
+          "unshifted_mean_absolute_channel_error_0_255": 5.432,
+          "unshifted_exact_rgb_pixel_percent": 0.168
+        },
+        "right_foreground_hand": {
+          "source_xywh": [
+            995,
+            735,
+            100,
+            100
+          ],
+          "best_shift_xy": [
+            0,
+            0
+          ],
+          "normalized_correlation": 0.9882,
+          "unshifted_mean_absolute_channel_error_0_255": 5.661,
+          "unshifted_exact_rgb_pixel_percent": 0.01
+        },
+        "wooden_token": {
+          "source_xywh": [
+            615,
+            780,
+            90,
+            85
+          ],
+          "best_shift_xy": [
+            0,
+            0
+          ],
+          "normalized_correlation": 0.9581,
+          "unshifted_mean_absolute_channel_error_0_255": 8.84,
+          "unshifted_exact_rgb_pixel_percent": 0.039
+        },
+        "background_window": {
+          "source_xywh": [
+            1100,
+            20,
+            100,
+            90
+          ],
+          "best_shift_xy": [
+            0,
+            0
+          ],
+          "normalized_correlation": 0.95584,
+          "unshifted_mean_absolute_channel_error_0_255": 4.1,
+          "unshifted_exact_rgb_pixel_percent": 0.256
+        },
+        "left_map": {
+          "source_xywh": [
+            170,
+            290,
+            95,
+            85
+          ],
+          "best_shift_xy": [
+            0,
+            0
+          ],
+          "normalized_correlation": 0.88353,
+          "unshifted_mean_absolute_channel_error_0_255": 8.613,
+          "unshifted_exact_rgb_pixel_percent": 0.087
+        },
+        "right_map": {
+          "source_xywh": [
+            1350,
+            330,
+            100,
+            50
+          ],
+          "best_shift_xy": [
+            0,
+            0
+          ],
+          "normalized_correlation": 0.90037,
+          "unshifted_mean_absolute_channel_error_0_255": 7.82,
+          "unshifted_exact_rgb_pixel_percent": 0.1
+        }
+      },
+      "maximum_patch_shift_pixels": 0,
+      "minimum_patch_correlation": 0.88353,
+      "exact_preserved_pixels_pass": false
+    }
+  ]
+}
