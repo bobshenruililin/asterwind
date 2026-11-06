@@ -155,6 +155,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--gold);outline-o
 </div></div>
 <p class="sr" id="live" aria-live="polite"></p>
 <script src="../../../hub/legacy-seam.js"></script>
+<script src="art-layers.js"></script>
 <script>
 'use strict';
 const $=id=>document.getElementById(id),Q=new URLSearchParams(location.search),EXPORT=Q.has('export');
@@ -217,12 +218,14 @@ const POSES={heard:{
  you:{hold:{arm:-12,fore:-26},speak:{head:-4,arm:-40,fore:-20},setdown:{arm:28,fore:20,head:12},sit:{arm:16,fore:8,head:8}}}};
 ST.heard={word:'HEARD',title:'The Listening Tide',desc:'Night at the harbour wall, where tomorrow’s route ends. Ellis sits holding a folded paper. You sit across, holding a lantern. Paper waves rise as Ellis talks.',
  trace:'<path d="M20 140 q40 -60 80 0 t80 0" stroke="#e8dcc4" stroke-width="5" fill="none"/><circle cx="100" cy="120" r="16" fill="#e9c27a"/>',
- build(){const A=k=>artFig('heard',k),plate=artPlate('heard','night');
-  const fig=(who,o)=>A(who)?`<image id="h-${who}-art" href="${A(who)[o.pose]||Object.values(A(who))[0]}" width="1600" height="900" preserveAspectRatio="none"/>`:`<g filter="url(#lift)">${person('h-'+who,o)}</g>`;
-  return `${plate?`<image href="${plate}" width="1600" height="900" preserveAspectRatio="none"/>`:`<rect width="1600" height="900" fill="url(#nightsky)"/>${P(ell(300,170,44,44),'#efe6c8',EDGE)}
-  ${P([[-20,480],[300,440],[620,470],[980,430],[1300,462],[1620,436],[1620,560],[-20,560]],'#232847')}
-  <g id="h-back"></g>${P([[380,592],[1220,588],[1226,640],[374,646]],'#7d7769',EDGE)}${P([[374,640],[1226,636],[1230,700],[370,706]],'#5f5a52')}`}
-  ${fig('ellis',{pose:'talk',x:610,y:596,s:1.75,coat:'#6a4a68',coat2:'#523a52',hair:'#1c1a22',hairStyle:'wavy',glasses:1,skin:'#c99772',held:'<g id="h-note" transform="translate(116 -64)"></g>'})}
+ build(){const art=roomArt('heard'),plate=art.plate?.night?.src,wall=art.scenery?.wall?.src;
+  const fig=(who,o)=>{const a=artPose('heard',who,o.pose);return `<image id="h-${who}-art" ${a?`href="${a.src}"`:''} visibility="${a?'visible':'hidden'}" width="1600" height="900" preserveAspectRatio="none" pointer-events="none"/><g id="h-${who}-fallback" visibility="${a?'hidden':'visible'}" filter="url(#lift)">${person('h-'+who,o)}</g>`};
+  const sky=`<rect width="1600" height="900" fill="url(#nightsky)"/>${P(ell(300,170,44,44),'#efe6c8',EDGE)}${P([[-20,480],[300,440],[620,470],[980,430],[1300,462],[1620,436],[1620,560],[-20,560]],'#232847')}`;
+  const cutWall=`<g id="h-wall-fallback">${P([[380,592],[1220,588],[1226,640],[374,646]],'#7d7769',EDGE)}${P([[374,640],[1226,636],[1230,700],[370,706]],'#5f5a52')}</g>`;
+  // Legacy combined plates remain intact. An explicit scenery.wall slot opts into the split stack.
+  return `${plate?`<image id="h-plate-art" href="${plate}" width="1600" height="900" preserveAspectRatio="none"/>`:sky}
+  ${!plate||art.splitWall?`<g id="h-back"></g>${wall?`<image id="h-wall-art" href="${wall}" width="1600" height="900" preserveAspectRatio="none"/>`:cutWall}`:''}
+  ${fig('ellis',{pose:'talk',x:610,y:596,s:1.75,coat:'#6a4a68',coat2:'#523a52',hair:'#1c1a22',hairStyle:'wavy',glasses:1,skin:'#c99772',held:'<g id="h-note" visibility="visible" transform="translate(116 -64)"></g>'})}
   ${fig('you',{pose:'hold',x:990,y:596,s:1.75,flip:1,...PEOPLE.you,held:''})}
   <g id="h-lantern">${lantern('h-lamp',0,0,1.25)}</g>
   <path id="h-bridge" d="" fill="#f3e7cc" opacity=".95" stroke="#fff6e4" stroke-opacity=".3"/>
@@ -244,7 +247,7 @@ ST.heard={word:'HEARD',title:'The Listening Tide',desc:'Night at the harbour wal
   at('h-bridge',{d:S.bridge>0?cutd([[1080,470],[1080-430*S.bridge,470-30*S.bridge],[1080-430*S.bridge,494-30*S.bridge],[1080,496]],1):''});
   at('h-peek',{opacity:S.peek.toFixed(2)});
   const n=$('h-note');if(n){n.innerHTML=S.note>=1?P([[-22,-14],[22,-14],[22,14],[-22,14]],'#f3e7cc',EDGE)+'<path d="M-14 6 v-6 a4 4 0 0 1 8 0 v6 M-6 0 q8 -8 14 -2 t10 -4" stroke="#6b6474" stroke-width="1.6" fill="none"/>':S.note<0?P([[-6,-5],[6,-5],[6,5],[-6,5]],'#f3e7cc',EDGE):P([[-10,-8],[10,-8],[10,8],[-10,8]],'#f3e7cc',EDGE);n.style.display=S.herboat>0?'none':''}
-  for(const who of ['ellis','you']){const img=$('h-'+who+'-art');if(img){const set=artFig('heard',who);img.setAttribute('href',set[S[who+'Pose']]||Object.values(set)[0])}else pose('h-'+who,S[who],f)}},
+  for(const who of ['ellis','you']){pose('h-'+who,S[who],f);const a=showArtFigure('heard',who,S[who+'Pose']);if(who==='ellis'&&n)n.setAttribute('visibility',a?.owns.includes('route')?'hidden':'visible')}},
  poses:POSES.heard,
  intro:[
   {dur:5.5,reveal:1,lines:[[1,'Ellis','Theo’s route ends here. At the harbour.','heard-01']],to:{amp:14},pose:{ellis:'talk'}},
@@ -499,11 +502,20 @@ ST.ship={word:'SHIP',exitAt:[[1160,690],[660,700]],title:'The Lantern and the Ho
  notes:{keep:'kept the flame',share:'shared the flame'},
  question:'Who holds a light because of you? And who will they call when it flickers?'};
 // ---------- painted layers: used where they exist, code-cut everywhere else (see art/README.md) ----------
-const ARTDIR=(Q.get('art')||'art').replace(/[^a-z0-9-]/gi,'');let ARTIDX={};
-const artReady=fetch(ARTDIR+'/index.json').then(r=>r.ok?r.json():{}).then(j=>{ARTIDX=j.rooms||{}}).catch(()=>{});
-const artUrl=(room,f)=>f?ARTDIR+'/'+room+'/'+f:null;
-const artPlate=(room,light)=>artUrl(room,ARTIDX[room]?.plate?.[light]);
-function artFig(room,who){const set=ARTIDX[room]?.figures?.[who];if(!set)return null;const o={};for(const [k,v] of Object.entries(set))o[k]=artUrl(room,v);return o}
+const ARTDIR=(Q.get('art')||'art').replace(/[^a-z0-9-]/gi,'');let ARTIDX={},ARTVIEW={};
+const artLoader=window.AsterwindRoomArt?.create({directory:ARTDIR});
+// HEARD is the only painted room integration today. Do not preload other rooms or block play.
+const artReady=artLoader?artLoader.prepare('heard').then(snapshot=>{ARTIDX={heard:snapshot};return ARTIDX}):Promise.resolve(ARTIDX);
+const roomArt=room=>ARTVIEW[room]||{};
+const artPose=(room,who,name)=>roomArt(room).figures?.[who]?.[name]||null;
+function showArtFigure(room,who,name){const img=$('h-'+who+'-art'),fallback=$('h-'+who+'-fallback');if(!img||!fallback)return null;
+ const candidate=artPose(room,who,name),a=candidate&&!img._failed?.has(candidate.src)?candidate:null;
+ if(a&&img.getAttribute('href')!==a.src)img.setAttribute('href',a.src);
+ img.setAttribute('visibility',a?'visible':'hidden');fallback.setAttribute('visibility',a?'hidden':'visible');
+ // Retain the actual puppet and prop transforms, including if SVG image presentation fails later.
+ if(a)img.onerror=()=>{(img._failed??=new Set()).add(a.src);img.setAttribute('visibility','hidden');fallback.setAttribute('visibility','visible');if(who==='ellis')$('h-note')?.setAttribute('visibility','visible');if(R)R.force=1};
+ return a;
+}
 // ---------- the six words, their bottles and their films (the pairing is a proposal: Bob decides) ----------
 const WORD='LEADERSHIP',TARGETS=['HEARD','LEAD','SHARED','SHIELD','HELP','SHIP'];
 const PLACE={HEARD:[950,300],LEAD:[1220,300],SHARED:[950,480],SHIELD:[1220,480],HELP:[950,660],SHIP:[1220,660]};
@@ -624,7 +636,7 @@ function crossInto(el,box,done,from){const pAR=box.querySelector('svg')?.getAttr
  a.onfinish=()=>{if(svg){if(pAR)svg.setAttribute('preserveAspectRatio',pAR);else svg.removeAttribute('preserveAspectRatio')}el.classList.remove('crossing');done()}}
 // ---------- a room: the choice, the consequence, the threshold into its film ----------
 let R=null;
-function enterRoom(key,o={}){Snd.stopScene();$('pause').setAttribute('aria-pressed','false');$('pause').textContent='Pause';const st=ST[key];G.screen='story';$('note').textContent='';Snd.play('page');Snd.music(key==='help'?'dawn':'night');
+function enterRoom(key,o={}){Snd.stopScene();ARTVIEW=ARTIDX;$('pause').setAttribute('aria-pressed','false');$('pause').textContent='Pause';const st=ST[key];G.screen='story';$('note').textContent='';Snd.play('page');Snd.music(key==='help'?'dawn':'night');
  const story=$('story');story.classList.toggle('ghost',!!o.ghost);$('ghost-slate').hidden=!o.ghost;$('thought').textContent='';
  $('st-svg').innerHTML=st.build();$('desc').textContent=st.title+'. '+st.desc;story.setAttribute('aria-label',st.title);
  R={key,word:st.word,st,seq:st.intro.slice(),i:0,t:0,T:0,S:JSON.parse(JSON.stringify(st.state)),from:null,to:null,fired:new Set(),cap:null,choice:null,paused:false,hold:!!o.cross,noReveal:!!(o.cross||o.ghost),ghost:o.ghost};
@@ -783,7 +795,7 @@ requestAnimationFrame(loop);
 window.Game={find:w=>{G.picked=[...w].map(ch=>[...WORD].findIndex((c,j)=>c===ch&&!G.picked.includes(j)));check()},enter:k=>enterRoom(k),corridor:showCorridor,choose,exit:chooseExit,begin:()=>$('begin').onclick(),
  open:async w=>{const J=HUB.frame.contentWindow.AsterwindJourney;await J.dispense(DRINK[w]);await new Promise(r=>setTimeout(r,400));J.openHeld()},hub:()=>HUB,
  state:()=>({screen:G.screen,found:G.found,done:G.done,film:G.film,walked:G.walked,dawn:G.dawn,hubReady:HUB.ready,beat:R?.i,choice:R?.choice,ghost:R?.ghost,gate:!!(R&&R.seq[R.i]?.gate),exitGate:!!(R&&R.seq[R.i]?.exit),filmReady:FILM?.ready,filmStarted:FILM?.started}),
- step(dt){stepStory(dt);if(R)R.force=1;renderStory()},seek(t){while(R&&R.T<t&&R.seq[R.i]&&!R.seq[R.i].gate)this.step(1/24)},toGate(){while(R&&R.seq[R.i]&&!R.seq[R.i].gate&&!R.hold)this.step(1/12)},leaveFilm,dawn,art:()=>ARTIDX,room:()=>R,poses:()=>POSES};
+ step(dt){stepStory(dt);if(R)R.force=1;renderStory()},seek(t){while(R&&R.T<t&&R.seq[R.i]&&!R.seq[R.i].gate)this.step(1/24)},toGate(){while(R&&R.seq[R.i]&&!R.seq[R.i].gate&&!R.hold)this.step(1/12)},leaveFilm,dawn,art:()=>ARTIDX,artReady:()=>artReady,artReport:()=>artLoader?.report()||[],room:()=>R,poses:()=>POSES};
 
 </script>
 </body>

@@ -97,14 +97,31 @@ def verify_play(root):
             for _, url in CSS_URL.findall(style):
                 require(owner, url)
 
-    # This matches artUrl(room, filename), including transparent PNG pose sets.
-    art, data = read('docs/demos/unfolded/art/index.json')
-    for room, layers in data.get('rooms', {}).items():
-        for filename in layers.get('plate', {}).values():
-            require(art, filename, art.parent / room)
-        for poses in layers.get('figures', {}).values():
-            for filename in poses.values():
-                require(art, filename, art.parent / room)
+    # Validate every packaged opt-in art index, including candidate folders.
+    # {src, owns} and string specifications have the same local-file contract.
+    read('docs/demos/unfolded/art/index.json')
+    def art_asset(owner, room, spec):
+        src = spec.get('src') if isinstance(spec, dict) else spec
+        if (not isinstance(room, str) or not re.fullmatch(r'[a-z][a-z0-9-]*', room)
+                or not isinstance(src, str)
+                or not re.fullmatch(r'[-a-zA-Z0-9_./]+\.(?:png|webp|jpe?g|avif)', src, re.I)
+                or src.startswith('/') or any(p in ('', '.', '..') for p in src.split('/'))):
+            errors.append(f'{owner.relative_to(root)} -> {src} (invalid local art path; escapes playable folder or unsupported URL)')
+            return
+        require(owner, src, owner.parent / room)
+
+    for art in (root / 'docs/demos/unfolded').glob('*/index.json'):
+        data = json.loads(art.read_text(encoding='utf-8'))
+        if not isinstance(data, dict) or 'rooms' not in data:
+            continue
+        for room, layers in data.get('rooms', {}).items():
+            for spec in layers.get('plate', {}).values():
+                art_asset(art, room, spec)
+            if 'wall' in layers.get('scenery', {}):
+                art_asset(art, room, layers['scenery']['wall'])
+            for poses in layers.get('figures', {}).values():
+                for spec in poses.values():
+                    art_asset(art, room, spec)
 
     sound, data = read('docs/demos/unfolded/sound/manifest.json')
     for cue in data.get('cues', {}).values():
