@@ -1,0 +1,183 @@
+{
+  "id": "ship",
+  "title": "Before the Doors Open",
+  "origin": "Original fictional proposal, thematically linked to workbook Q3 named ownership under pressure. Not a direct adaptation or answer mapping.",
+  "setup": [
+    {
+      "stage": "open",
+      "shot": "wide",
+      "duration": 7500,
+      "speaker": "",
+      "line": "One minute before opening, your exhibition team tests its paper city. A hand passes the sensor; a tower should rise once."
+    },
+    {
+      "stage": "fault",
+      "shot": "city",
+      "duration": 4500,
+      "speaker": "Dev",
+      "line": "Twice again. One hand, two triggers. I thought I’d fixed that."
+    },
+    {
+      "stage": "reel",
+      "shot": "reel",
+      "duration": 6500,
+      "speaker": "Lio",
+      "line": "We have the rehearsal recording. It shows the whole movement. But I told people they could come and try it."
+    },
+    {
+      "stage": "dev",
+      "shot": "dev",
+      "duration": 7500,
+      "speaker": "Dev",
+      "line": "I can stay here and reset it between turns. It might still double-count. Please don’t tell them it’s fixed."
+    },
+    {
+      "stage": "disclose",
+      "shot": "lead",
+      "duration": 7000,
+      "speaker": "You",
+      "line": "I won’t. We’ll explain the fault before anyone tries it. If we show the recording, we’ll say it’s a recording."
+    },
+    {
+      "stage": "choice",
+      "shot": "wide",
+      "duration": 6500,
+      "speaker": "",
+      "line": "Visitors wait outside. At the table are the live controls and a recording of the city working in rehearsal."
+    }
+  ],
+  "choice": {
+    "prompt": "How will you open the exhibit?",
+    "actions": [
+      {
+        "id": "live",
+        "label": "Run it live",
+        "description": "Operate the live exhibit, with resets and one visitor at a time.",
+        "hint": "Let visitors try the sensor"
+      },
+      {
+        "id": "rehearsal",
+        "label": "Play the rehearsal",
+        "description": "Show the recorded demonstration and offer inspection of the mechanism.",
+        "hint": "Show the recorded demonstration"
+      }
+    ]
+  },
+  "branches": {
+    "live": [
+      {
+        "stage": "live",
+        "shot": "hands",
+        "duration": 8000,
+        "speaker": "You",
+        "line": "Dev, stay with the reset. Lio, one visitor at a time. I’ll explain the fault. Tell me if you need us to stop."
+      },
+      {
+        "stage": "visitor-disclosure",
+        "shot": "dev",
+        "duration": 7000,
+        "speaker": "You",
+        "line": "You can try the sensor. It sometimes triggers the tower twice, so we may have to stop and reset. Still want a turn?"
+      },
+      {
+        "stage": "repeat",
+        "shot": "city",
+        "duration": 6500,
+        "speaker": "",
+        "line": "The visitor tries the sensor. The tower springs twice. Dev watches it settle; the fault has not gone away."
+      },
+      {
+        "stage": "invite",
+        "shot": "dev",
+        "duration": 7000,
+        "speaker": "You",
+        "line": "There it is. Sorry, that should have been one movement. Would you like to reset it with Dev and have another go?"
+      },
+      {
+        "stage": "reset-reach",
+        "shot": "hands",
+        "duration": 1800,
+        "speaker": "",
+        "line": ""
+      },
+      {
+        "stage": "reset",
+        "shot": "hands",
+        "duration": 5500,
+        "speaker": "",
+        "line": "The visitor joins Dev at the reset and tries again. This time, the tower rises once."
+      },
+      {
+        "stage": "ending-live",
+        "shot": "wide",
+        "duration": 8000,
+        "speaker": "",
+        "line": "The visitor has made the city move. The next person is still waiting. Dev stays by the reset; one good run has not fixed the fault."
+      }
+    ],
+    "rehearsal": [
+      {
+        "stage": "rehearsal",
+        "shot": "reel",
+        "duration": 8000,
+        "speaker": "You",
+        "line": "We’re showing a recorded rehearsal. The live sensor still double-counts. Dev, show how it works. Lio, take requests for a later test."
+      },
+      {
+        "stage": "playback",
+        "shot": "wide",
+        "duration": 6500,
+        "speaker": "",
+        "line": "On the screen, the city moves smoothly from start to finish. On the table, the real mechanism stays still."
+      },
+      {
+        "stage": "request",
+        "shot": "hands",
+        "duration": 4000,
+        "speaker": "Visitor",
+        "line": "Can I make it do that? I wanted to try the sensor."
+      },
+      {
+        "stage": "limit",
+        "shot": "dev",
+        "duration": 7500,
+        "speaker": "Dev",
+        "line": "Not during this demonstration, I’m afraid. I can show you the mechanism, but we haven’t fixed the double trigger yet."
+      },
+      {
+        "stage": "ending-rehearsal",
+        "shot": "wide",
+        "duration": 7000,
+        "speaker": "",
+        "line": "The visitor leans in to inspect the mechanism. The labelled recording plays again. The controls remain unavailable."
+      }
+    ]
+  },
+  "briefing": {
+    "heading": "One minute before opening",
+    "text": "You lead a student exhibition team. Visitors will use a sensor to move a paper city, but it sometimes triggers the same movement twice. Dev can reset it, not guarantee a fix. Lio has a smooth rehearsal recording, but visitors expected to try the controls themselves. The doors are about to open.",
+    "audioNote": "Revised script: captions and room sound. New dialogue recordings are still to come."
+  },
+  "reflections": {
+    "live": {
+      "title": "You opened the live prototype.",
+      "happened": "You explained the fault and gave Dev and Lio clear jobs. A visitor helped reset a double count. The queue waited, and the next run was still uncertain.",
+      "tradeoff": "Visitors could participate in the actual work, including its limits. Your team carried the workload of explaining, supervising and resetting an unreliable demonstration.",
+      "alternative": "The clearly labelled recording could show the intended movement reliably. Visitors could inspect the mechanism, but would not control it in that demonstration.",
+      "question": "What failure or queue length would make you stop the live session, and who would have the authority to call that?"
+    },
+    "rehearsal": {
+      "title": "You showed the recorded rehearsal.",
+      "happened": "The recording ran smoothly and was labelled as a recording. A visitor could inspect the mechanism but could not make it move.",
+      "tradeoff": "This gave the team a dependable demonstration without pretending the live fault was fixed. It also removed the hands-on experience the visitor came for.",
+      "alternative": "A supervised live run could offer participation and useful feedback. It would still bring resets, a waiting queue and a result no one could guarantee.",
+      "question": "What would you promise about a later live test, and what would you need to verify before making that promise?"
+    }
+  },
+  "revision": "leadership-dialogue-2026-11-06",
+  "audio": {
+    "status": "awaiting-recording",
+    "requiredCaptions": true,
+    "reason": "The previous scratch recordings belong to an earlier script. Revised captions remain on until matching recordings are reviewed."
+  }
+}

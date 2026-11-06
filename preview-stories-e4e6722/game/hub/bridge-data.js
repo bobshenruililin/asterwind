@@ -1,0 +1,1 @@
+window.ASTERWIND_BRIDGE={"schemaVersion": 1, "transition": {"kind": "still", "src": "assets/studio-opening.webp", "mime": "image/webp"}, "fallback": {"kind": "still", "src": "assets/studio-opening.webp", "mime": "image/webp"}};

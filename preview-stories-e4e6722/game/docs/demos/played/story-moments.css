@@ -1,0 +1,24 @@
+/* Brief context before the single Start action; an untimed reflection after the consequence. */
+#story-brief{position:absolute;z-index:3;top:19%;left:50%;transform:translateX(-50%);width:min(680px,83%);padding:18px 24px;color:#f3e7cf;text-align:left;background:#10141bea;box-shadow:0 9px 45px #0006;pointer-events:none}
+#story-brief h1{font:clamp(18px,2.1vw,26px)/1.2 Georgia,serif;margin:0 0 10px;color:#f4d699}
+#story-brief p{font:clamp(16px,1.7vw,21px)/1.45 Georgia,serif;margin:0}
+#story-brief small,#story-reflection small{display:block;font:12px/1.4 system-ui,sans-serif;color:#d2c9bc;margin-top:12px}
+#screen[data-story-moment=briefing] #start{align-content:end;align-items:end;padding-bottom:8%}
+#screen[data-story-moment=briefing] #start span{font-size:clamp(16px,2vw,24px)}
+#story-reflection{position:absolute;z-index:3;left:50%;top:12%;transform:translateX(-50%);width:min(750px,85%);max-height:70%;padding:20px 26px;overflow:auto;overscroll-behavior:contain;background:#131820f5;border-top:1px solid #e9c27a99;box-shadow:0 12px 60px #0008;color:#f3e7cf;font:clamp(15px,1.45vw,19px)/1.45 Georgia,serif}
+#story-reflection h2{font:clamp(18px,1.9vw,24px)/1.25 Georgia,serif;margin:0 0 12px;color:#f4d699}
+#story-reflection p{margin:0 0 10px}#story-reflection p:last-of-type{margin-bottom:0}
+#story-reflection .story-question{font-style:italic;color:#ffe5b0;margin-top:15px}
+#story-reflection:focus-visible{outline:2px solid #e9c27a;outline-offset:3px}
+#screen[data-story-moment=reflection] #end{bottom:3%;margin:0;z-index:4}
+#screen[data-story-moment=reflection] #cap{visibility:hidden!important}
+@media(max-aspect-ratio:1/1){
+ #story-brief,#story-reflection{position:relative;inset:auto;transform:none;width:calc(100% - 32px);max-width:680px;max-height:none;margin:0 auto 18px;padding:18px;box-shadow:none}
+ #story-brief{order:0;pointer-events:auto}#story-brief h1,#story-reflection h2{font-size:21px}#story-brief p,#story-reflection{font-size:17px}
+ #story-reflection{order:2;margin:18px auto 0}#screen[data-story-moment=reflection] #end{position:relative;inset:auto;order:4;margin:18px auto 0;transform:none}
+ #screen[data-story-moment=briefing] #start{align-content:center;align-items:center;padding:0}
+}
+@media(min-aspect-ratio:1/1) and (max-height:500px){
+ #story-brief{top:12%;padding:12px 18px;width:min(700px,85%)}#story-brief h1{font-size:18px;margin-bottom:6px}#story-brief p{font-size:15px;line-height:1.35}#story-brief small{font-size:11px;margin-top:8px}
+ #screen[data-story-moment=briefing] #start{padding-bottom:4%}#story-reflection{top:16%;max-height:66%;padding:14px 18px;font-size:15px}
+}

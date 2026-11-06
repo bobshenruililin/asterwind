@@ -1,0 +1,197 @@
+{
+  "id": "standup",
+  "title": "The Quiet Minute",
+  "origin": "Original fiction, thematically linked to workbook Q8, not a verbatim adaptation.",
+  "setup": [
+    {
+      "stage": "open",
+      "shot": "wide",
+      "speaker": "",
+      "line": "Tomorrow, new students will follow the route this team agrees tonight.",
+      "duration": 4500
+    },
+    {
+      "stage": "theo",
+      "shot": "theo",
+      "speaker": "Theo",
+      "line": "I’ve walked it twice. We finish by the harbour, just as the lights come on.",
+      "duration": 6500
+    },
+    {
+      "stage": "nia",
+      "shot": "nia",
+      "speaker": "Nia",
+      "line": "Theo, the courtyard gate closes before we’ll get there.",
+      "duration": 4500
+    },
+    {
+      "stage": "interrupt",
+      "shot": "theo",
+      "speaker": "Theo",
+      "line": "We’ll keep people moving. I don’t want to lose the best part.",
+      "duration": 5000
+    },
+    {
+      "stage": "evidence",
+      "shot": "nia",
+      "speaker": "Nia",
+      "line": "I checked today. We’ll be outside a locked gate.",
+      "duration": 4500
+    },
+    {
+      "stage": "ellis",
+      "shot": "ellis",
+      "speaker": "Ellis",
+      "line": "I drew another route. It’s only a rough one...",
+      "duration": 4500
+    },
+    {
+      "stage": "hesitation",
+      "shot": "ellis",
+      "speaker": "",
+      "line": "Theo keeps his hand on the model. Ellis folds the drawing again.",
+      "duration": 5000
+    },
+    {
+      "stage": "choice",
+      "shot": "lead",
+      "speaker": "You",
+      "line": "We need a route that works. I haven’t heard everyone yet.",
+      "duration": 5000
+    }
+  ],
+  "choice": {
+    "prompt": "How will you make room for the concerns you have not heard?",
+    "actions": [
+      {
+        "id": "round",
+        "label": "Turn the table",
+        "description": "Turn the model toward the group. Hear one concern from each person before anyone replies.",
+        "hint": "One voice at a time"
+      },
+      {
+        "id": "slips",
+        "label": "Pass the slips",
+        "description": "Pass blank slips around the table. Let everyone write a concern before discussing them together.",
+        "hint": "Write first, then discuss"
+      }
+    ]
+  },
+  "branches": {
+    "round": [
+      {
+        "stage": "round",
+        "shot": "wide",
+        "speaker": "You",
+        "line": "One concern each, without interruptions. Nia, finish what you were saying.",
+        "duration": 5500
+      },
+      {
+        "stage": "listen",
+        "shot": "nia",
+        "speaker": "Nia",
+        "line": "Thank you. If we start at the courtyard, the gate will still be open.",
+        "duration": 6000
+      },
+      {
+        "stage": "wait",
+        "shot": "theo",
+        "speaker": "",
+        "line": "Theo starts to answer, then stops. He leaves the speaking token with Nia.",
+        "duration": 5500
+      },
+      {
+        "stage": "alternative",
+        "shot": "ellis",
+        "speaker": "Ellis",
+        "line": "That’s where mine starts. We’d lose the harbour, though. I know you wanted that, Theo.",
+        "duration": 7000
+      },
+      {
+        "stage": "response",
+        "shot": "theo",
+        "speaker": "Theo",
+        "line": "I did. Show me your first stop.",
+        "duration": 4000
+      },
+      {
+        "stage": "ending-round",
+        "shot": "wide",
+        "speaker": "",
+        "line": "The next group knocks. Everyone has spoken, but the route is not agreed. The harbour pieces stay on the table.",
+        "duration": 8000
+      }
+    ],
+    "slips": [
+      {
+        "stage": "slips",
+        "shot": "wide",
+        "speaker": "You",
+        "line": "Write the concern you haven’t said. We’ll read them together before we change anything.",
+        "duration": 6500
+      },
+      {
+        "stage": "collect",
+        "shot": "hands",
+        "speaker": "",
+        "line": "Gate closure. Crowding. A different start. Ellis unfolds a sketch. Theo adds a slip too.",
+        "duration": 6500
+      },
+      {
+        "stage": "misread",
+        "shot": "lead",
+        "speaker": "You",
+        "line": "The courtyard is the problem. So we leave it out?",
+        "duration": 4500
+      },
+      {
+        "stage": "correct",
+        "shot": "nia",
+        "speaker": "Nia",
+        "line": "No. It matters to me. It’s where I met my first friend here. We can go there first.",
+        "duration": 7500
+      },
+      {
+        "stage": "acknowledge",
+        "shot": "lead",
+        "speaker": "You",
+        "line": "I’m glad you said that. I read your note too quickly.",
+        "duration": 5000
+      },
+      {
+        "stage": "ending-slips",
+        "shot": "wide",
+        "speaker": "",
+        "line": "The route almost fits. One slip still says ‘too crowded’. You have not yet checked what its writer needs.",
+        "duration": 8000
+      }
+    ]
+  },
+  "revision": "leadership-clarity-2026-11-06",
+  "briefing": {
+    "heading": "Before you sit down",
+    "text": "You’re leading a student committee planning tomorrow’s welcome walk. Theo has worked hard on the route. Nia has spotted a problem, and Ellis has another idea. Your room booking is nearly over. You need a workable plan, and you need the team to help shape it.",
+    "audioNote": "Revised script: captions and room sound. New dialogue recordings are still to come."
+  },
+  "audio": {
+    "status": "awaiting-recording",
+    "reason": "The old qm-* scratch recordings belong to the previous script. Do not play them over revised lines.",
+    "requiredCaptions": true
+  },
+  "reflections": {
+    "round": {
+      "title": "You heard each person in turn.",
+      "happened": "Nia finished her warning. Ellis offered the route, and Theo asked to see it. The room booking ended before the team agreed a plan.",
+      "tradeoff": "Protected speaking turns make it easier to question and clarify an idea. Speaking on the spot can still feel exposing, and a round takes time.",
+      "alternative": "Written slips would give people a moment to think without competing for the floor. Their meaning would still need checking with the people who wrote them.",
+      "question": "What would you do next to turn being heard into a plan the team can carry out?"
+    },
+    "slips": {
+      "title": "You let the concerns arrive on paper.",
+      "happened": "More concerns reached the table, including Theo’s. Nia corrected your reading of her note. One concern about crowding remains unclear.",
+      "tradeoff": "Writing first can reduce the pressure to jump into a conversation. It also puts power in the reader’s hands: a short note is not the whole meaning.",
+      "alternative": "Speaking in turn could let people explain and correct one another immediately. Some may need more time to prepare, and the round would use the time left.",
+      "question": "How would you check the last note without assuming its writer wants to speak in front of everyone?"
+    }
+  }
+}

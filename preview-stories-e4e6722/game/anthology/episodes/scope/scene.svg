@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice" role="img" aria-labelledby="title desc">
+<title id="title">The student repair café, moments before closing</title><desc id="desc">A rain-dark window, warm lamps and a long workbench. Inez works on a lamp, Bo holds an umbrella, and Sam stands beside a torn bag. A spare chair and an appointment box sit within Ren's reach.</desc>
+<defs>
+ <filter id="grain"><feTurbulence type="fractalNoise" baseFrequency=".65" numOctaves="3" seed="8" result="noise"/><feComposite in="noise" in2="SourceGraphic" operator="in" result="texture"/><feBlend in="SourceGraphic" in2="texture" mode="soft-light"/></filter>
+ <filter id="shadow"><feDropShadow dx="5" dy="9" stdDeviation="3" flood-color="#211b2a" flood-opacity=".3"/></filter>
+ <radialGradient id="light"><stop stop-color="#ffdd9b"/><stop offset="1" stop-color="#bd9c7e"/></radialGradient>
+ <pattern id="rain" width="34" height="80" patternUnits="userSpaceOnUse"><path d="M20 0 6 40M32 52 24 76" stroke="#a9c3cc" stroke-width="2" opacity=".45"/></pattern>
+</defs>
+<path fill="#393b4b" d="M0 0h1600v1000H0z"/>
+<g filter="url(#grain)">
+<path fill="url(#light)" d="m0 0 1600 0-30 760-1570 30z"/>
+<path fill="#766d70" d="m0 758 1570-5 30 247H0z"/><path d="m0 860 1600-14M220 1000 460 754M920 1000 850 754M1490 1000 1250 754" stroke="#a99788" stroke-width="5"/>
+<path fill="#526b7d" stroke="#f0d4b3" stroke-width="22" d="M60 90h370v470H60z"/><path fill="url(#rain)" d="M70 100h350v450H70z"/>
+<path d="M245 90v470M60 310h370" stroke="#e5c8aa" stroke-width="13"/>
+<path fill="#344651" d="m75 520 90-112 52 24 49-100 54 22 95-115v301z"/>
+<path fill="#786e6a" d="M1180 130h300v640h-300z"/><path fill="#475965" d="M1210 150h240v600h-240z"/><path fill="#bfc8c2" d="M1220 165h220v390h-220z" opacity=".3"/><path fill="#ead8ae" d="m1399 457 22-2v45l-22 4z"/>
+<path d="M1050 0v165" stroke="#444049" stroke-width="10"/><path fill="#5d685c" d="m960 208 36-61h108l40 61z"/><path fill="#ffe1a4" d="M969 208h167l-38 12h-88z"/>
+<g transform="translate(743 112) rotate(-3)"><path fill="#f2debc" d="M-64-67 69-61 65 67-65 62z"/><circle r="46" fill="#efe7d5" stroke="#62666a" stroke-width="5"/><path d="M0-33v33l-28 14" fill="none" stroke="#4a4e58" stroke-width="5"/><circle r="5" fill="#a25f50"/></g>
+<path fill="#a7ae92" d="m495 233 147-14 12 163-151 10z"/><path fill="#eddfc3" d="m511 252 111-4 7 115-108 9z"/><path d="m529 272 73-3m-70 24 70-3m-67 24 50-3" stroke="#848879" stroke-width="5"/>
+<!-- Inez, at the lamp -->
+<g filter="url(#shadow)"><path fill="#64807b" d="m477 470 76-24 78 19 41 217-216 7z"/><path fill="#b78367" d="m504 374 66-9 34 47-19 53-65-7-24-44z"/><path fill="#343e40" d="m491 406 7-51 65-20 47 31-5 35-31-20-49 5-5 33z"/><path d="M539 411h10m30-5h9" stroke="#343a3c" stroke-width="6"/><path d="m545 437 22 2" stroke="#865643" stroke-width="4"/><path fill="#64807b" d="m479 500-35 117 106 28 13-26-69-32 35-76z"/><path fill="#b78367" d="m548 616 43 1 15 18-50 10z"/></g>
+<!-- Bo, working with folded umbrella -->
+<g filter="url(#shadow)"><path fill="#a56354" d="m827 459 89-3 72 53 4 166-211 3z"/><path fill="#d1a07d" d="m844 364 72 5 20 68-43 35-53-24-13-41z"/><path fill="#463c43" d="m832 406-12-28 29-37 66 6 30 41-13 32-19-32-59-11-8 39z"/><path d="m854 413 10 2m32-1 10 1" stroke="#3e3c42" stroke-width="5"/><path d="m870 443 21-3" stroke="#8a5d4f" stroke-width="4"/><path fill="#a56354" d="m839 495-62 96 97 52 16-26-61-42 47-60z"/><path fill="#d1a07d" d="m873 614 46-4 10 20-40 15z"/></g>
+<!-- Sam, arrival at the doorway -->
+<g id="sam" filter="url(#shadow)"><path fill="#d0b573" d="m1263 454 74-5 47 185-151 5z"/><path fill="#b58a73" d="m1270 369 61-4 21 52-31 43-49-19-15-35z"/><path fill="#383840" d="m1259 400-5-37 32-26 46 18 21 27-10 19-21-21-41 4z"/><path d="m1276 405 9 2m30-4 9 2" stroke="#363943" stroke-width="5"/><path d="m1291 433 20-2" stroke="#845c52" stroke-width="4"/><path fill="#48515e" d="m1246 625 52 5 4 161-42 1zm65 4 48-3 24 159-44 7z"/><path fill="#d0b573" d="m1258 473-33 130-49 51 20 20 68-57 27-107z"/><path fill="#b58a73" d="m1179 646-20 25 16 16 28-17z"/><path fill="#8e9495" d="m1113 667 89-12 26 117-105 11z"/><path d="m1135 668 2-37 34-3 17 32m-64 69 26-14 13 17 24-20 16 16" stroke="#e4d4b6" stroke-width="6" fill="none"/></g>
+<path id="mended" d="m1124 729 26-14 13 17 24-20 16 16" stroke="#ecd2a8" stroke-width="10" fill="none"/>
+<!-- shared workbench -->
+<path fill="#705344" d="m340 700 772-18 75 39-880 19z"/><path fill="#a77b57" d="m307 740 880-19-9 58-864 13z"/><path fill="#5c504a" d="m344 789 48-1-16 211h-47zm748-10 46-2 25 223h-49z"/>
+<path fill="#d7c5a5" d="m393 674 310 6-8 34-321 7z"/><path fill="#718677" d="m526 653 50-80 48 1 35 79z"/><path d="M593 653v31m-34 0h68" stroke="#4a5350" stroke-width="9"/>
+<path fill="#405d6a" d="m789 652 189-19-32 50-158 12z"/><path d="m808 655 20 32m26-37 20 34m25-38 18 33" stroke="#a3b8b6" stroke-width="3"/>
+<path fill="#aa7059" d="m1052 655 70-4 4 38-77 6z"/><path fill="#eee1c5" d="m1061 647 50-7 5 25-51 7z"/>
+<!-- spare chair at left, a real action target -->
+<g id="chair" filter="url(#shadow)"><path fill="#697e7c" d="m110 636 148-8 7 124-145 9z"/><path fill="#a2b2a1" d="m119 646 130-7 4 48-128 8zm7 57 127-7 4 46-130 7z"/><path fill="#c2ac84" d="m109 764 161-10 27 38-181 12z"/><path fill="#5e6c69" d="m121 804 18-1 4 158-18 1zm146-12 20-2 24 157-20 4z"/></g>
+<!-- return-slot box, foreground -->
+<g id="box" filter="url(#shadow)"><path fill="#ba8b65" d="m998 804 184-16 41 58-210 20z"/><path fill="#d3aa78" d="m1013 866 210-20-3 90-207 19z"/><path fill="#e7d8b5" d="m1048 813 106-9 23 31-114 11z"/><path d="m1075 821 69-6m-65 14 48-4" stroke="#84785d" stroke-width="4"/></g>
+<!-- Ren's presence, foreground shoulder -->
+<path fill="#46526b" d="m455 1000 38-136 71-48 108-11 92 56 41 139z"/><path fill="#c7997a" d="m550 738 72-17 51 40-9 72-64 28-53-47z"/><path fill="#3a3940" d="m541 788-7-65 45-39 64 7 43 53-18 40-31-41-60 6-12 53z"/>
+</g>
+</svg>

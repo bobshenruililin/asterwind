@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<title>The Quiet Minute, in pixels</title>
+<!-- Style audition C: the same beat, camera, people, lines and gestures as index.html, authored as a 320×180
+     pixel scene (no filtered paintings). The model's buildings are real objects that orbit when you turn the platter. -->
+<style>
+*{box-sizing:border-box}[hidden]{display:none!important}
+html,body{margin:0;height:100%;background:#07070a;color:#f3e7cf;font-family:Georgia,serif;overflow:hidden}
+button{font:inherit;color:inherit;cursor:pointer}
+#frame{position:fixed;inset:0;margin:auto;width:min(100vw,177.78vh);height:min(100vh,56.25vw);background:#000;touch-action:none}
+canvas{position:absolute;inset:0;width:100%;height:100%;image-rendering:pixelated;image-rendering:crisp-edges}
+.obj{position:absolute;border:0;background:none;padding:0;border-radius:50%;outline:none}.obj.rect{border-radius:4px}
+.obj:focus-visible{box-shadow:0 0 0 2px #ffd27acc}
+#word{position:absolute;pointer-events:none;font:700 clamp(12px,1.5vw,20px) ui-monospace,Menlo,monospace;letter-spacing:.12em;text-transform:uppercase;color:#ffd27a;text-shadow:2px 2px 0 #1a1018;opacity:0;transform:translate(-50%,-50%)}
+#cap{position:absolute;left:50%;bottom:4%;transform:translateX(-50%);width:min(860px,86%);margin:0;text-align:center;font:clamp(14px,1.8vw,24px)/1.35 ui-monospace,Menlo,monospace;text-shadow:2px 2px 0 #000;pointer-events:none}
+#cap .who{display:block;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#ffd27a;margin-bottom:4px}#cap.narr{color:#d8cbb4}
+#thought{position:absolute;right:5%;top:8%;width:32%;margin:0;font:clamp(13px,1.6vw,20px)/1.4 ui-monospace,Menlo,monospace;color:#fff1d6;text-shadow:2px 2px 0 #000;opacity:0;pointer-events:none}
+#start{position:absolute;inset:0;display:grid;place-items:center;background:#0008;border:0;width:100%;z-index:3}
+#start span{font:clamp(16px,2vw,24px) ui-monospace,Menlo,monospace;letter-spacing:.1em;padding:.6em 1.4em;border:2px solid #ffd27a;background:#140f1a}
+#chrome{position:absolute;right:1.2%;top:1.6%;display:flex;gap:6px;z-index:4;opacity:.5}#chrome:hover,#chrome:focus-within{opacity:1}
+#chrome button{background:#140f1acc;border:2px solid #ffffff22;height:30px;padding:0 10px;font:12px ui-monospace,monospace}
+#end{position:absolute;left:50%;bottom:16%;transform:translateX(-50%);display:flex;gap:10px;z-index:3}
+#end button{background:#140f1a;border:2px solid #ffd27a;padding:.4em 1em;font:14px ui-monospace,monospace}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+</style>
+<link rel="stylesheet" href="responsive.css">
+</head>
+<body>
+<div id="screen">
+<div id="frame" aria-label="The Quiet Minute, in pixels. A committee table at night: Theo, Nia and Ellis plan a night walk around a paper model of the campus.">
+ <canvas id="cv" width="320" height="180" aria-hidden="true"></canvas>
+ <button class="obj" id="platter" hidden aria-label="Turn the table: one concern each, before replies."></button>
+ <button class="obj rect" id="tray" hidden aria-label="Pass the slips: collect each concern, then discuss."></button>
+ <button class="obj rect" id="route" hidden aria-label="Look at Ellis's folded route (optional)."></button>
+ <div id="word" aria-hidden="true"></div>
+ <button id="start" disabled><span>Loading scene…</span></button>
+</div>
+ <p id="thought" hidden aria-hidden="true"></p>
+ <p id="cap" aria-hidden="true"><span class="who"></span><span class="line"></span></p>
+ <div id="end" hidden><button id="again">Again</button><button id="other">The other way</button></div>
+ <div id="chrome"><button id="snd" aria-pressed="true" aria-label="Sound">♪</button><button id="pause" aria-pressed="false">Pause</button></div>
+</div>
+<p class="sr" id="live" aria-live="polite"></p>
+<script src="support.js"></script>
+<script src="pixel.js"></script>
+</body>
+</html>

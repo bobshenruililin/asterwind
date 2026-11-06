@@ -1,0 +1,177 @@
+{
+  "id": "pixel",
+  "title": "The Empty Square",
+  "origin": "Original fictional inclusive-design story; Q8-inspired structural inclusion, not a direct adaptation. Lived-experience accessibility review still required.",
+  "setup": [
+    {
+      "stage": "open",
+      "shot": "wide",
+      "duration": 8500,
+      "speaker": "",
+      "line": "At the student exhibition, Jo, a visiting designer, stops at the paper railway. Its controls are too high for her to reach comfortably."
+    },
+    {
+      "stage": "jo",
+      "shot": "jo",
+      "duration": 5000,
+      "speaker": "Jo",
+      "line": "Can I send the train the other way? I want to try the switches myself."
+    },
+    {
+      "stage": "options",
+      "shot": "hands",
+      "duration": 5500,
+      "speaker": "Remy",
+      "line": "Yes. We can lower this console, or plug in the portable panel here beside you."
+    },
+    {
+      "stage": "cost",
+      "shot": "remy",
+      "duration": 7500,
+      "speaker": "Remy",
+      "line": "We’d pause the display to lower and balance the console. The panel works straight away, but its switches are smaller."
+    },
+    {
+      "stage": "agency",
+      "shot": "jo",
+      "duration": 6500,
+      "speaker": "Jo",
+      "line": "Either is fine to try. Just leave the sequence to me. I want to see what happens when I change it."
+    },
+    {
+      "stage": "difference",
+      "shot": "hands",
+      "duration": 7500,
+      "speaker": "",
+      "line": "The console’s large switches travel a long way under a finger. The portable panel has smaller switches with a short movement."
+    },
+    {
+      "stage": "choice",
+      "shot": "wide",
+      "duration": 5500,
+      "speaker": "Jo",
+      "line": "Go ahead with either setup. Let me try it, and I’ll tell you if I need something changed."
+    }
+  ],
+  "choice": {
+    "prompt": "Which controls will you put within reach?",
+    "actions": [
+      {
+        "id": "lower",
+        "label": "Lower the console",
+        "description": "Pause and lower the adjustable console so Jo can use its large controls.",
+        "hint": "Adjust the large controls"
+      },
+      {
+        "id": "connect",
+        "label": "Connect the panel",
+        "description": "Connect the smaller duplicate panel so Jo can operate the same display now.",
+        "hint": "Use the smaller controls"
+      }
+    ]
+  },
+  "branches": {
+    "lower": [
+      {
+        "stage": "pause",
+        "shot": "hands",
+        "duration": 7500,
+        "speaker": "",
+        "line": "You and Remy support the console and release its catches. The paper train stops while you lower the controls on their rails."
+      },
+      {
+        "stage": "height",
+        "shot": "jo",
+        "duration": 6500,
+        "speaker": "",
+        "line": "Jo indicates the height she wants. Remy checks that the catches are secure before restarting the display."
+      },
+      {
+        "stage": "works",
+        "shot": "jo",
+        "duration": 6000,
+        "speaker": "Jo",
+        "line": "There, that’s comfortable. I can feel the switch click. Let’s send it back through the tunnel."
+      },
+      {
+        "stage": "operate",
+        "shot": "hands",
+        "duration": 6500,
+        "speaker": "",
+        "line": "Jo changes the sequence. The train follows her choice. The large switches keep their long, firm movement."
+      },
+      {
+        "stage": "ending-lower",
+        "shot": "wide",
+        "duration": 7500,
+        "speaker": "",
+        "line": "The train runs again at the height Jo chose. Some visitors moved on during the pause; others stay to watch her sequence."
+      }
+    ],
+    "connect": [
+      {
+        "stage": "plug",
+        "shot": "hands",
+        "duration": 6500,
+        "speaker": "",
+        "line": "You connect the portable panel within Jo’s reach. She changes the sequence, and the paper train responds."
+      },
+      {
+        "stage": "feedback",
+        "shot": "jo",
+        "duration": 6500,
+        "speaker": "Jo",
+        "line": "Yes, it’s doing what I asked. I’d like a clearer click, though. It’s hard to feel when these little switches have changed."
+      },
+      {
+        "stage": "request",
+        "shot": "lead",
+        "duration": 6000,
+        "speaker": "You",
+        "line": "We can look for switches with clearer feedback. Would you be interested in trying a new panel with us another day?"
+      },
+      {
+        "stage": "boundary",
+        "shot": "jo",
+        "duration": 6500,
+        "speaker": "Jo",
+        "line": "You can ask me another day. I came to see the exhibition today. Please don’t put me down as a tester."
+      },
+      {
+        "stage": "ending-connect",
+        "shot": "wide",
+        "duration": 8500,
+        "speaker": "",
+        "line": "Jo keeps choosing her sequence. The train responds, but she still wants a clearer click from the switches. No testing visit is agreed."
+      }
+    ]
+  },
+  "briefing": {
+    "heading": "At the exhibition controls",
+    "text": "You help run a student exhibition with Remy. Jo, a visiting designer, wants to control its paper railway herself, but the console is too high for her to reach comfortably. You can pause and lower the large controls or connect a smaller portable panel. Jo is willing to try either setup and say what works for her.",
+    "note": "Draft: this story still needs lived-experience accessibility review.",
+    "audioNote": "Revised script: captions and room sound. New dialogue recordings are still to come."
+  },
+  "reflections": {
+    "lower": {
+      "title": "You adjusted the main console.",
+      "happened": "Jo chose a comfortable height and operated the large controls. Some visitors left while the display was paused for the adjustment.",
+      "tradeoff": "Changing the shared setup preserved the feel of the original controls. It needed a pause and careful adjustment. Jo’s feedback tells you what works for Jo, not for every visitor.",
+      "alternative": "The second panel could allow immediate use without stopping the display. Its smaller switches would offer a different experience that still needs checking.",
+      "question": "How would you make future access part of the exhibition’s setup rather than a fix a visitor has to request?"
+    },
+    "connect": {
+      "title": "You connected another way to operate it.",
+      "happened": "Jo controlled the display immediately and asked for a clearer click from the switches. She did not agree to become the team’s tester.",
+      "tradeoff": "The panel provided control without stopping the exhibition, but Jo still wanted clearer feedback. That is her stated preference, not proof that smaller switches are worse for everyone. Asking did not create an obligation to help.",
+      "alternative": "Adjusting the main console could preserve its large controls at Jo’s chosen height. That would require stopping and securing the console first.",
+      "question": "How would you follow up on the feedback Jo actually gave without treating it as a commitment to test for you?"
+    }
+  },
+  "revision": "leadership-dialogue-2026-11-06",
+  "audio": {
+    "status": "awaiting-recording",
+    "requiredCaptions": true,
+    "reason": "The previous scratch recordings belong to an earlier script. Revised captions remain on until matching recordings are reviewed."
+  }
+}

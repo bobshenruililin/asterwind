@@ -1,0 +1,211 @@
+{
+  "id": "slides",
+  "title": "The Missing Name",
+  "origin": "Original fiction about attribution and agency. Not a Q5 adaptation and not an allegation about real teammates.",
+  "setup": [
+    {
+      "stage": "open",
+      "shot": "wide",
+      "duration": 6500,
+      "speaker": "",
+      "line": "At the research showcase, your team’s opening slide fills the screen: a map, with no name beneath it."
+    },
+    {
+      "stage": "source",
+      "shot": "hands",
+      "duration": 5500,
+      "speaker": "",
+      "line": "The route matches Asha’s field notebook, down to the turn she crossed out and drew again."
+    },
+    {
+      "stage": "kit",
+      "shot": "kit",
+      "duration": 4500,
+      "speaker": "Kit",
+      "line": "We finally got the model to open cleanly. I can’t wait to show them."
+    },
+    {
+      "stage": "asha",
+      "shot": "asha",
+      "duration": 6000,
+      "speaker": "Asha",
+      "line": "That’s my map. It looks like we just made it up in the studio. I spent weeks walking that route."
+    },
+    {
+      "stage": "repair",
+      "shot": "lead",
+      "duration": 5000,
+      "speaker": "You",
+      "line": "I left your name out of the opening. I’m sorry. Let’s fix it before we start."
+    },
+    {
+      "stage": "limit",
+      "shot": "asha",
+      "duration": 5500,
+      "speaker": "Asha",
+      "line": "I can talk about the walks. I know those. Please don’t hand me the whole pitch, though."
+    },
+    {
+      "stage": "tradeoff",
+      "shot": "kit",
+      "duration": 7000,
+      "speaker": "Kit",
+      "line": "We can open with the walks, or keep the model reveal and leave questions to the end. There won’t be long for both."
+    },
+    {
+      "stage": "choice",
+      "shot": "wide",
+      "duration": 9000,
+      "speaker": "Asha",
+      "line": "You can show my notebook and introduce the work, or I can open with the map. I’m comfortable with either."
+    }
+  ],
+  "choice": {
+    "prompt": "How will you open with Asha’s work?",
+    "actions": [
+      {
+        "id": "microphone",
+        "label": "Move the microphone",
+        "description": "Asha opens with her fieldwork, as she has offered.",
+        "hint": "Asha gives the opening"
+      },
+      {
+        "id": "notebook",
+        "label": "Show the notebook",
+        "description": "Credit Asha’s work briefly, then keep the planned model reveal. Fieldwork questions use the time left.",
+        "hint": "Introduce Asha’s fieldwork"
+      }
+    ]
+  },
+  "branches": {
+    "microphone": [
+      {
+        "stage": "microphone-action",
+        "shot": "hands",
+        "duration": 1500,
+        "speaker": "",
+        "line": ""
+      },
+      {
+        "stage": "introduce",
+        "shot": "wide",
+        "duration": 6500,
+        "speaker": "You",
+        "line": "Before we show you the model, Asha will tell you how she made this map. Her fieldwork changed our route."
+      },
+      {
+        "stage": "offer",
+        "shot": "hands",
+        "duration": 5500,
+        "speaker": "",
+        "line": "You offer the microphone. Asha takes it and opens her notebook at the crossed-out turn."
+      },
+      {
+        "stage": "authorship",
+        "shot": "asha",
+        "duration": 7000,
+        "speaker": "Asha",
+        "line": "I thought this was a shortcut, until I walked it with someone who used it. The gate was locked. We had to turn back."
+      },
+      {
+        "stage": "context",
+        "shot": "hands",
+        "duration": 7500,
+        "speaker": "Asha",
+        "line": "On the third walk, a resident’s trolley got stuck at this corner. We widened the turn together. It changed the whole model."
+      },
+      {
+        "stage": "follow",
+        "shot": "kit",
+        "duration": 5000,
+        "speaker": "Kit",
+        "line": "That’s the turn we rebuilt. Let me show you what it changed in the model."
+      },
+      {
+        "stage": "ending-microphone",
+        "shot": "wide",
+        "duration": 7000,
+        "speaker": "",
+        "line": "Time is called before Kit can open the box. The audience has heard Asha’s reasoning. The model stays inside."
+      }
+    ],
+    "notebook": [
+      {
+        "stage": "notebook-action",
+        "shot": "hands",
+        "duration": 1500,
+        "speaker": "",
+        "line": ""
+      },
+      {
+        "stage": "credit",
+        "shot": "hands",
+        "duration": 10500,
+        "speaker": "You",
+        "line": "This is Asha’s notebook. She walked these routes and checked them with the people using them. Our model starts with her work."
+      },
+      {
+        "stage": "reveal",
+        "shot": "wide",
+        "duration": 5500,
+        "speaker": "",
+        "line": "Kit continues the planned pitch and opens the model. Asha’s notebook stays beside it."
+      },
+      {
+        "stage": "question",
+        "shot": "kit",
+        "duration": 4000,
+        "speaker": "Visitor",
+        "line": "That route’s been crossed out. What was wrong with it?"
+      },
+      {
+        "stage": "invite",
+        "shot": "kit",
+        "duration": 4500,
+        "speaker": "Kit",
+        "line": "We have a moment left. Asha, would you like to answer?"
+      },
+      {
+        "stage": "accept",
+        "shot": "asha",
+        "duration": 6000,
+        "speaker": "Asha",
+        "line": "Yes. The gate was locked. On the third walk, though, we learned something that changed the model..."
+      },
+      {
+        "stage": "ending-notebook",
+        "shot": "wide",
+        "duration": 7500,
+        "speaker": "",
+        "line": "Time is called as Asha turns to the third walk. The model is open, but the audience has not heard why its corner was widened."
+      }
+    ]
+  },
+  "briefing": {
+    "heading": "Before the showcase",
+    "text": "You lead a student team at a research showcase. Asha’s walks and interviews shaped your route map, but your opening slide leaves her work uncredited. Kit has prepared a pitch ending in a model reveal. You have one short slot. Asha is willing to explain her fieldwork herself or have you introduce it.",
+    "audioNote": "Revised script: captions and room sound. New dialogue recordings are still to come."
+  },
+  "reflections": {
+    "microphone": {
+      "title": "You gave Asha the opening.",
+      "happened": "Asha explained how a resident’s trolley changed the map and the model’s corner. Kit connected her account to the model, but the slot ended before it could be revealed.",
+      "tradeoff": "Authorship became visible in Asha’s own voice, with her agreement. Changing the running order cost the team a part of the presentation it had prepared.",
+      "alternative": "Introducing her work yourself could keep the planned model reveal. Asha would still be credited, but in this story the time left for questions would not reach the fieldwork behind the wider corner.",
+      "question": "Before a future showcase, how could the team agree credit and speaking roles without leaving this repair until the opening?"
+    },
+    "notebook": {
+      "title": "You credited the work in the planned opening.",
+      "happened": "You credited Asha’s fieldwork and the model was revealed. Asha agreed to a final question, but time was called before she could explain what the third walk changed.",
+      "tradeoff": "The model was seen and credit was explicit. The audience still missed the fieldwork decision behind its wider corner; naming the source did not convey that reasoning.",
+      "alternative": "Letting Asha open would let her explain that design decision in her own words. In this story, it would leave the model unseen when the slot ended.",
+      "question": "What would you ask Asha and Kit to change about the next presentation’s running order?"
+    }
+  },
+  "revision": "leadership-dialogue-2026-11-06",
+  "audio": {
+    "status": "awaiting-recording",
+    "requiredCaptions": true,
+    "reason": "The previous scratch recordings belong to an earlier script. Revised captions remain on until matching recordings are reviewed."
+  }
+}

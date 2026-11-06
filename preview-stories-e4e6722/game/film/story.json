@@ -1,0 +1,895 @@
+{
+  "cover": "performanceStable",
+  "setup": [
+    {
+      "asset": "performanceBuckle",
+      "ms": 4500,
+      "camera": [
+        1,
+        50,
+        50,
+        1,
+        50,
+        50
+      ],
+      "lines": [
+        {
+          "at": 1200,
+          "until": 3600,
+          "who": "Julian",
+          "text": "Wait. One more try.",
+          "id": "setup-00-00"
+        }
+      ],
+      "alt": "Julian loses his grip and the canopy buckles.",
+      "frames": [
+        {
+          "at": 0,
+          "asset": "performanceStable",
+          "alt": "Julian steadies the small paper canopy."
+        },
+        {
+          "at": 600,
+          "asset": "performanceSlip",
+          "alt": "Julian’s fingers slip away from the rib."
+        },
+        {
+          "at": 1000,
+          "asset": "performanceBuckle",
+          "alt": "The unsupported paper canopy buckles; Julian reaches for it."
+        }
+      ]
+    },
+    {
+      "asset": "performanceBuckle",
+      "ms": 5800,
+      "camera": [
+        1,
+        50,
+        50,
+        1,
+        50,
+        50
+      ],
+      "lines": [
+        {
+          "at": 500,
+          "until": 5400,
+          "who": "Mara",
+          "text": "The roof slats catch every time this support bends. That’s why it jams.",
+          "id": "setup-01-00"
+        }
+      ],
+      "alt": "Mara and Julian face the fragile pavilion.",
+      "slate": "03:14 · ARCHITECTURE STUDIO"
+    },
+    {
+      "asset": "performanceOffer",
+      "ms": 6200,
+      "camera": [
+        1,
+        50,
+        50,
+        1,
+        50,
+        50
+      ],
+      "lines": [
+        {
+          "at": 500,
+          "until": 5800,
+          "who": "Mara",
+          "text": "Ren, you’re leading this. I need a decision before we spend the whole night trying again.",
+          "id": "setup-02-00"
+        }
+      ],
+      "alt": "Mara looks directly toward Ren with the spare rib.",
+      "portrait": [
+        38,
+        50
+      ]
+    },
+    {
+      "asset": "offer",
+      "ms": 5800,
+      "camera": [
+        1.24,
+        48,
+        76,
+        1.24,
+        48,
+        76
+      ],
+      "lines": [
+        {
+          "at": 500,
+          "until": 5400,
+          "who": "Mara",
+          "text": "I cut this spare at midnight. Forty minutes to fit it, if we start now.",
+          "id": "setup-03-00"
+        }
+      ],
+      "alt": "Mara’s hands hold the clean replacement rib.",
+      "portrait": [
+        38,
+        50
+      ]
+    },
+    {
+      "asset": "offer",
+      "ms": 7000,
+      "camera": [
+        1.23,
+        42,
+        28,
+        1.23,
+        42,
+        28
+      ],
+      "lines": [
+        {
+          "at": 500,
+          "until": 6600,
+          "who": "Mara",
+          "text": "My fellowship application closes at noon. This test is the film I’m sending. I can’t move the deadline.",
+          "id": "setup-04-00"
+        }
+      ],
+      "alt": "Mara explains what the test means for her.",
+      "portrait": [
+        38,
+        50
+      ]
+    },
+    {
+      "asset": "julian",
+      "ms": 7000,
+      "camera": [
+        1,
+        50,
+        50,
+        1.025,
+        50,
+        50
+      ],
+      "lines": [
+        {
+          "at": 500,
+          "until": 5600,
+          "who": "Julian",
+          "text": "I know. I’ve drawn this thing for weeks. I wanted to see my own rib make it move.",
+          "id": "setup-05-00"
+        }
+      ],
+      "alt": "Julian hesitates over the damaged seam.",
+      "portrait": [
+        66,
+        50
+      ]
+    },
+    {
+      "asset": "fatigue",
+      "ms": 1800,
+      "camera": [
+        1,
+        50,
+        50,
+        1,
+        50,
+        50
+      ],
+      "lines": [],
+      "alt": "Julian rubs his eyes but keeps his pencil poised; Ren notices his fatigue."
+    },
+    {
+      "asset": "left",
+      "ms": 7000,
+      "camera": [
+        1,
+        50,
+        50,
+        1,
+        50,
+        50
+      ],
+      "lines": [
+        {
+          "at": 500,
+          "until": 6600,
+          "who": "Ren",
+          "text": "At four-thirty we have to leave it alone. The glue needs the rest of the night to set.",
+          "id": "setup-06-00"
+        }
+      ],
+      "alt": "Ren weighs the two alternatives at the shared table."
+    },
+    {
+      "asset": "brush",
+      "ms": 6700,
+      "camera": [
+        1.1,
+        25,
+        48,
+        1.1,
+        25,
+        48
+      ],
+      "lines": [
+        {
+          "at": 500,
+          "until": 6300,
+          "who": "Ren",
+          "text": "We can fit Mara’s spare, or brace Julian’s original together. Either way, we stop at four-thirty.",
+          "id": "setup-07-00"
+        }
+      ],
+      "alt": "The cracked seam requires more work before it can set."
+    },
+    {
+      "asset": "performanceOffer",
+      "ms": 1800,
+      "camera": [
+        1,
+        50,
+        50,
+        1,
+        50,
+        50
+      ],
+      "lines": [],
+      "alt": "The spare and the original wait on opposite sides of the table."
+    }
+  ],
+  "backup": [
+    {
+      "asset": "performanceGraspSpare",
+      "ms": 1100,
+      "frames": [
+        {
+          "at": 0,
+          "asset": "performanceReachSpare",
+          "alt": "Ren reaches for and takes the clean spare on Mara’s side of the table."
+        },
+        {
+          "at": 450,
+          "asset": "performanceGraspSpare",
+          "alt": "Ren reaches for and takes the clean spare on Mara’s side of the table."
+        }
+      ],
+      "camera": [
+        1,
+        50,
+        50,
+        1,
+        50,
+        50
+      ],
+      "lines": [],
+      "alt": "Ren reaches for and takes the clean spare on Mara’s side of the table."
+    },
+    {
+      "asset": "restOffer",
+      "ms": 6100,
+      "camera": [
+        1,
+        50,
+        50,
+        1,
+        50,
+        50
+      ],
+      "lines": [
+        {
+          "at": 500,
+          "until": 5700,
+          "who": "Ren",
+          "text": "Let’s fit Mara’s spare. Julian, do you want a break, or would you rather stay with us?",
+          "id": "backup-00-00"
+        }
+      ],
+      "alt": "Ren offers a break rather than ordering Julian away.",
+      "portrait": [
+        66,
+        50
+      ]
+    },
+    {
+      "asset": "restOffer",
+      "ms": 5800,
+      "camera": [
+        1.04,
+        65,
+        35,
+        1.04,
+        65,
+        35
+      ],
+      "lines": [
+        {
+          "at": 800,
+          "until": 5400,
+          "who": "Julian",
+          "text": "A minute. I can barely hold the pencil. Leave my drawing where I can see it.",
+          "id": "backup-01-00"
+        }
+      ],
+      "alt": "Julian chooses a short rest and asks the others to keep his drawing.",
+      "portrait": [
+        66,
+        50
+      ]
+    },
+    {
+      "asset": "workA",
+      "ms": 3200,
+      "camera": [
+        1.2,
+        74,
+        74,
+        1.2,
+        74,
+        74
+      ],
+      "lines": [],
+      "alt": "Ren holds the one installed clean rib steady."
+    },
+    {
+      "asset": "workA",
+      "ms": 3200,
+      "camera": [
+        1.2,
+        45,
+        30,
+        1.2,
+        45,
+        30
+      ],
+      "lines": [],
+      "alt": "Mara attaches the louvres to the replacement."
+    },
+    {
+      "asset": "workA",
+      "ms": 4600,
+      "camera": [
+        1,
+        50,
+        50,
+        1,
+        50,
+        50
+      ],
+      "lines": [
+        {
+          "at": 500,
+          "until": 4200,
+          "who": "Ren",
+          "text": "Keep the original beside his drawing. We’ll come back to it.",
+          "id": "backup-04-00"
+        }
+      ],
+      "alt": "The patched original rests aside; Julian sleeps behind the work."
+    },
+    {
+      "asset": "black",
+      "ms": 900,
+      "camera": [
+        1,
+        50,
+        50,
+        1,
+        50,
+        50
+      ],
+      "lines": [],
+      "alt": ""
+    },
+    {
+      "asset": "morningA",
+      "ms": 4700,
+      "camera": [
+        1,
+        50,
+        50,
+        1,
+        50,
+        50
+      ],
+      "lines": [
+        {
+          "at": 1900,
+          "until": 4300,
+          "who": "Mara",
+          "text": "It’s opening. Look, all the way.",
+          "id": "backup-06-00"
+        }
+      ],
+      "alt": "The canopy opens on the clean replacement rib.",
+      "slate": "08:00 · WIND TEST"
+    },
+    {
+      "asset": "morningA",
+      "ms": 3500,
+      "camera": [
+        1.16,
+        83,
+        30,
+        1.16,
+        83,
+        30
+      ],
+      "lines": [
+        {
+          "at": 500,
+          "until": 3100,
+          "who": "Julian",
+          "text": "It really moved.",
+          "id": "backup-moved-00"
+        }
+      ],
+      "alt": "Julian looks at the finished model."
+    },
+    {
+      "asset": "morningA",
+      "ms": 4400,
+      "camera": [
+        1.12,
+        35,
+        27,
+        1.12,
+        35,
+        27
+      ],
+      "lines": [
+        {
+          "at": 500,
+          "until": 4000,
+          "who": "Ren",
+          "text": "With Mara’s spare in it. Your original is still here.",
+          "id": "backup-spare-00"
+        }
+      ],
+      "alt": "Ren turns toward Julian and the rib on the table."
+    },
+    {
+      "asset": "morningA",
+      "ms": 4400,
+      "camera": [
+        1.18,
+        83,
+        30,
+        1.18,
+        83,
+        30
+      ],
+      "lines": [
+        {
+          "at": 500,
+          "until": 4000,
+          "who": "Julian",
+          "text": "I’m glad it works. I still wish we’d seen mine do that.",
+          "id": "backup-mine-00"
+        }
+      ],
+      "alt": "Julian says what he wanted."
+    },
+    {
+      "asset": "morningA",
+      "ms": 5000,
+      "camera": [
+        1.12,
+        35,
+        27,
+        1.12,
+        35,
+        27
+      ],
+      "lines": [
+        {
+          "id": "backup-next-00",
+          "at": 500,
+          "until": 4600,
+          "who": "Ren",
+          "text": "Then that’s the next test. Let’s agree when before we all go home."
+        }
+      ],
+      "alt": "Ren names the next test: Julian's own rib."
+    },
+    {
+      "asset": "payoffA",
+      "ms": 6200,
+      "camera": [
+        1,
+        50,
+        50,
+        1,
+        50,
+        50
+      ],
+      "lines": [
+        {
+          "at": 500,
+          "until": 5800,
+          "who": "Ren",
+          "text": "Before we film, show us where the spare changes your drawing.",
+          "id": "backup-10-00"
+        }
+      ],
+      "alt": "Julian places his original marked drawing on the table as Ren and Mara attend."
+    },
+    {
+      "asset": "payoffA",
+      "ms": 4700,
+      "camera": [
+        1.12,
+        83,
+        35,
+        1.12,
+        83,
+        35
+      ],
+      "lines": [
+        {
+          "at": 500,
+          "until": 4300,
+          "who": "Julian",
+          "text": "Will you stay for that? I don’t want to work it out on my own.",
+          "id": "backup-11-00"
+        }
+      ],
+      "alt": "Julian places his original marked drawing on the table as Ren and Mara attend."
+    },
+    {
+      "asset": "payoffA",
+      "ms": 4900,
+      "camera": [
+        1.05,
+        53,
+        76,
+        1.05,
+        53,
+        76
+      ],
+      "lines": [
+        {
+          "at": 500,
+          "until": 4500,
+          "who": "Mara",
+          "text": "I’m here. Start with the rib, then we record what actually moved.",
+          "id": "backup-12-00"
+        }
+      ],
+      "alt": "Julian places his original marked drawing on the table as Ren and Mara attend."
+    },
+    {
+      "asset": "payoffA",
+      "ms": 3000,
+      "camera": [
+        1.18,
+        54,
+        85,
+        1.18,
+        54,
+        85
+      ],
+      "lines": [],
+      "alt": "The original drawing remains visible between the three students; no caption covers it."
+    }
+  ],
+  "repair": [
+    {
+      "asset": "performanceBraceOriginal",
+      "ms": 1100,
+      "frames": [
+        {
+          "at": 0,
+          "asset": "performanceReachOriginal",
+          "alt": "Ren reaches toward Julian’s original and braces its damaged rib."
+        },
+        {
+          "at": 450,
+          "asset": "performanceBraceOriginal",
+          "alt": "Ren reaches toward Julian’s original and braces its damaged rib."
+        }
+      ],
+      "camera": [
+        1,
+        50,
+        50,
+        1,
+        50,
+        50
+      ],
+      "lines": [],
+      "alt": "Ren reaches toward Julian’s original and braces its damaged rib."
+    },
+    {
+      "asset": "offer",
+      "ms": 5100,
+      "camera": [
+        1,
+        50,
+        50,
+        1,
+        50,
+        50
+      ],
+      "lines": [
+        {
+          "at": 500,
+          "until": 4700,
+          "who": "Ren",
+          "text": "Let’s brace the original together. Julian, show us where to hold it.",
+          "id": "repair-00-00"
+        }
+      ],
+      "alt": "Mara hears Ren choose the shared repair.",
+      "portrait": [
+        38,
+        50
+      ]
+    },
+    {
+      "asset": "offer",
+      "ms": 6000,
+      "camera": [
+        1.15,
+        40,
+        30,
+        1.15,
+        40,
+        30
+      ],
+      "lines": [
+        {
+          "at": 500,
+          "until": 5600,
+          "who": "Mara",
+          "text": "Then stay on the canopy with me, Ren. I can’t hold it steady and help with the joint.",
+          "id": "repair-01-00"
+        }
+      ],
+      "alt": "Mara states the support she needs.",
+      "portrait": [
+        38,
+        50
+      ]
+    },
+    {
+      "asset": "workB",
+      "ms": 4600,
+      "camera": [
+        1.18,
+        60,
+        60,
+        1.18,
+        60,
+        60
+      ],
+      "lines": [
+        {
+          "at": 500,
+          "until": 4200,
+          "who": "Julian",
+          "text": "There. Hold it exactly there while I put the splint across.",
+          "id": "repair-02-00"
+        }
+      ],
+      "alt": "Julian places the splint while Ren braces the rib."
+    },
+    {
+      "asset": "workB",
+      "ms": 3800,
+      "camera": [
+        1.2,
+        16,
+        32,
+        1.2,
+        16,
+        32
+      ],
+      "lines": [
+        {
+          "at": 700,
+          "until": 3400,
+          "who": "Mara",
+          "text": "I’ve got it. Tell me if it moves.",
+          "id": "repair-03-00"
+        }
+      ],
+      "alt": "Mara keeps the fragile canopy steady."
+    },
+    {
+      "asset": "workB",
+      "ms": 3000,
+      "camera": [
+        1,
+        50,
+        50,
+        1,
+        50,
+        50
+      ],
+      "lines": [],
+      "alt": "Three sleeves reveal the different parts of the burden."
+    },
+    {
+      "asset": "black",
+      "ms": 900,
+      "camera": [
+        1,
+        50,
+        50,
+        1,
+        50,
+        50
+      ],
+      "lines": [],
+      "alt": ""
+    },
+    {
+      "asset": "morningB",
+      "ms": 5500,
+      "camera": [
+        1,
+        50,
+        50,
+        1,
+        50,
+        50
+      ],
+      "lines": [
+        {
+          "at": 2300,
+          "until": 5100,
+          "who": "Julian",
+          "text": "The rib held. It’s still my shape.",
+          "id": "repair-06-00"
+        }
+      ],
+      "alt": "The repaired rib holds but some louvres catch against it.",
+      "slate": "08:00 · WIND TEST"
+    },
+    {
+      "asset": "morningB",
+      "ms": 4500,
+      "camera": [
+        1.17,
+        10,
+        35,
+        1.17,
+        10,
+        35
+      ],
+      "lines": [
+        {
+          "at": 700,
+          "until": 4100,
+          "who": "Mara",
+          "text": "Only half is moving. The other slats are still caught.",
+          "id": "repair-07-00"
+        }
+      ],
+      "alt": "Mara faces the compromised demonstration."
+    },
+    {
+      "asset": "payoffB",
+      "ms": 5600,
+      "camera": [
+        1,
+        50,
+        50,
+        1,
+        50,
+        50
+      ],
+      "lines": [
+        {
+          "at": 500,
+          "until": 5200,
+          "who": "Ren",
+          "text": "I chose this. We’ll show the jam as well. Mara, I’ll explain it with you.",
+          "id": "repair-08-00"
+        }
+      ],
+      "alt": "Ren accepts responsibility for the choice."
+    },
+    {
+      "asset": "payoffB",
+      "ms": 4400,
+      "camera": [
+        1.12,
+        22,
+        30,
+        1.12,
+        22,
+        30
+      ],
+      "lines": [
+        {
+          "at": 500,
+          "until": 4000,
+          "who": "Mara",
+          "text": "Show the part that worked, too. We did make that happen.",
+          "id": "repair-09-00"
+        }
+      ],
+      "alt": "Mara insists the account include the surviving work too."
+    },
+    {
+      "asset": "morningB",
+      "ms": 4500,
+      "camera": [
+        1.2,
+        53,
+        65,
+        1.2,
+        53,
+        65
+      ],
+      "lines": [
+        {
+          "at": 500,
+          "until": 3500,
+          "who": "Julian",
+          "text": "I’ll show the seam. And where it still catches.",
+          "id": "repair-10-00"
+        }
+      ],
+      "alt": "The final image remains on the splinted rib and incomplete canopy."
+    }
+  ],
+  "decision": {
+    "asset": "performanceOffer",
+    "alt": "Clean backup on the left, original pavilion on the right.",
+    "prompt": "Which support will you work on before the glue must set?",
+    "backup": {
+      "label": "Fit the backup",
+      "detail": "Fit Mara’s spare support. The canopy can be tested with a replacement rib.",
+      "asset": "performanceOffer",
+      "hint": "Use the replacement support"
+    },
+    "repair": {
+      "label": "Repair together",
+      "detail": "Brace Julian’s original support together. Keep working on the design already in the canopy.",
+      "asset": "performanceOffer",
+      "hint": "Keep the original support"
+    }
+  },
+  "endings": {
+    "backup": {
+      "line": "The Seam",
+      "reflection": "The canopy opened in the morning with the replacement rib. Julian chose to rest, but his original still needed repair and another test. Before filming, the team agreed to compare the result with his drawing. What would you agree with Mara and Julian now about the film’s credit, its explanation and the next test?"
+    },
+    "repair": {
+      "line": "The Seam",
+      "reflection": "The team braced and repaired it together. The rib held, but only half the canopy moved. You agreed to help Mara explain the jam as well as the part that worked. What does Mara need before noon, and how would you make sure Julian’s next repair is a shared commitment rather than another night alone?"
+    }
+  },
+  "briefing": {
+    "heading": "At the worktable, after three",
+    "text": "You’re Ren, leading an architecture team. Your moving canopy jams when Julian’s curved support, the rib, bends. Mara made a spare that takes forty minutes to fit. She needs test footage for a fellowship application due at noon. At 4:30, work must stop so the glue can set. Which design will you spend the remaining time on?",
+    "audioNote": "Revised script: captions and room sound. New dialogue recordings are still to come."
+  },
+  "reflections": {
+    "backup": {
+      "title": "You fitted Mara’s spare.",
+      "happened": "The canopy opened in the morning with the replacement rib. Julian chose to rest, but his original still needed repair and another test. Before filming, the team agreed to compare the result with his drawing.",
+      "tradeoff": "Mara has working movement for her application film. Julian can be glad it works and still feel the loss of the test he wanted. Keeping his drawing is a beginning; the promised next test needs time and people.",
+      "alternative": "Repairing the original together could keep the test tied to Julian’s design. In this story, it would leave Mara with a partly jammed canopy to explain before her deadline.",
+      "question": "What would you agree with Mara and Julian now about the film’s credit, its explanation and the next test?"
+    },
+    "repair": {
+      "title": "You stayed with the original rib.",
+      "happened": "The team braced and repaired it together. The rib held, but only half the canopy moved. You agreed to help Mara explain the jam as well as the part that worked.",
+      "tradeoff": "The result gives Julian evidence about his design and makes the difficult work shared. It leaves Mara, whose application is due at noon, with an incomplete demonstration. Owning the decision includes helping with that consequence.",
+      "alternative": "Fitting the spare could produce a complete movement for the film. Julian’s original would still need repair and another test, and credit would need to distinguish the two supports.",
+      "question": "What does Mara need before noon, and how would you make sure Julian’s next repair is a shared commitment rather than another night alone?"
+    }
+  },
+  "revision": "leadership-dialogue-2026-11-06",
+  "audio": {
+    "status": "awaiting-recording",
+    "requiredCaptions": true,
+    "reason": "The previous scratch recordings belong to an earlier script. Revised captions remain on until matching recordings are reviewed."
+  }
+}

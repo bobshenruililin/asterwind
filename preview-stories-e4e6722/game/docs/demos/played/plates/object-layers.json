@@ -1,0 +1,270 @@
+{
+  "version": 1,
+  "sets": {
+    "standup": {
+      "plate": "decision",
+      "clean": "qm-layers/clean.webp",
+      "objects": [
+        {
+          "id": "platter",
+          "src": "qm-layers/platter.webp",
+          "pivot": [
+            0.401,
+            0.528
+          ],
+          "radii": [
+            0.232,
+            0.283
+          ],
+          "maxTranslation": [
+            0,
+            0
+          ],
+          "maxRotation": 0.5,
+          "replaces": "disc"
+        },
+        {
+          "id": "tray",
+          "src": "qm-layers/tray.webp",
+          "pivot": [
+            0.817,
+            0.611
+          ],
+          "radii": [
+            0.114,
+            0.133
+          ],
+          "maxTranslation": [
+            0.05,
+            0.025
+          ],
+          "maxRotation": 0,
+          "replaces": "slide"
+        },
+        {
+          "id": "hands",
+          "src": "qm-layers/occluder.webp",
+          "pivot": [
+            0.5,
+            0.5
+          ],
+          "radii": [
+            1,
+            1
+          ],
+          "maxTranslation": [
+            0,
+            0
+          ],
+          "maxRotation": 0
+        }
+      ]
+    },
+    "slides": {
+      "plate": "decision",
+      "clean": "slides/layers/clean.webp",
+      "objects": [
+        {
+          "id": "microphone",
+          "src": "slides/layers/microphone.webp",
+          "pivot": [
+            0.5,
+            0.5
+          ],
+          "radii": [
+            1,
+            1
+          ],
+          "maxTranslation": [
+            0.07,
+            0.07
+          ],
+          "maxRotation": 0,
+          "replaces": "slide"
+        },
+        {
+          "id": "notebook",
+          "src": "slides/layers/notebook.webp",
+          "pivot": [
+            0.5,
+            0.5
+          ],
+          "radii": [
+            1,
+            1
+          ],
+          "maxTranslation": [
+            0.07,
+            0.07
+          ],
+          "maxRotation": 0,
+          "replaces": "slide"
+        },
+        {
+          "id": "hands",
+          "src": "slides/layers/over.webp",
+          "pivot": [
+            0.5,
+            0.5
+          ],
+          "radii": [
+            1,
+            1
+          ],
+          "maxTranslation": [
+            0,
+            0
+          ],
+          "maxRotation": 0
+        }
+      ]
+    },
+    "scope": {
+      "plate": "decision",
+      "clean": "scope/layers/clean.webp",
+      "objects": [
+        {
+          "id": "extend",
+          "src": "scope/layers/extend.webp",
+          "pivot": [
+            0.5,
+            0.5
+          ],
+          "radii": [
+            1,
+            1
+          ],
+          "maxTranslation": [
+            0.07,
+            0.07
+          ],
+          "maxRotation": 0,
+          "replaces": "slide"
+        },
+        {
+          "id": "return",
+          "src": "scope/layers/return.webp",
+          "pivot": [
+            0.5,
+            0.5
+          ],
+          "radii": [
+            1,
+            1
+          ],
+          "maxTranslation": [
+            0.07,
+            0.07
+          ],
+          "maxRotation": 0,
+          "replaces": "slide"
+        },
+        {
+          "id": "hands",
+          "src": "scope/layers/over.webp",
+          "pivot": [
+            0.5,
+            0.5
+          ],
+          "radii": [
+            1,
+            1
+          ],
+          "maxTranslation": [
+            0,
+            0
+          ],
+          "maxRotation": 0
+        }
+      ],
+      "reviewOnly": true,
+      "reviewReason": "The source clean plate retains pale chair fragments exposed by translation."
+    },
+    "pixel": {
+      "plate": "decision",
+      "clean": "pixel/layers/clean.webp",
+      "objects": [
+        {
+          "id": "lower",
+          "src": "pixel/layers/lower.webp",
+          "pivot": [
+            0.5,
+            0.5
+          ],
+          "radii": [
+            1,
+            1
+          ],
+          "maxTranslation": [
+            0.07,
+            0.07
+          ],
+          "maxRotation": 0,
+          "replaces": "slide"
+        },
+        {
+          "id": "connect",
+          "src": "pixel/layers/connect.webp",
+          "pivot": [
+            0.5,
+            0.5
+          ],
+          "radii": [
+            1,
+            1
+          ],
+          "maxTranslation": [
+            0.07,
+            0.07
+          ],
+          "maxRotation": 0,
+          "replaces": "slide"
+        }
+      ],
+      "reviewOnly": true,
+      "reviewReason": "The secondary-panel alpha has holes through the panel face."
+    },
+    "ship": {
+      "plate": "decision",
+      "clean": "ship/layers/clean.webp",
+      "objects": [
+        {
+          "id": "live",
+          "src": "ship/layers/live.webp",
+          "pivot": [
+            0.5,
+            0.5
+          ],
+          "radii": [
+            1,
+            1
+          ],
+          "maxTranslation": [
+            0.07,
+            0.07
+          ],
+          "maxRotation": 0,
+          "replaces": "slide"
+        },
+        {
+          "id": "rehearsal",
+          "src": "ship/layers/rehearsal.webp",
+          "pivot": [
+            0.5,
+            0.5
+          ],
+          "radii": [
+            1,
+            1
+          ],
+          "maxTranslation": [
+            0,
+            0
+          ],
+          "maxRotation": 0,
+          "replaces": "slide"
+        }
+      ]
+    }
+  }
+}
