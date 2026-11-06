@@ -1,0 +1,28 @@
+{
+ "note": "STAND-INS rendered from the code-cut room and tinted, to test the loader. Not art; never adopt.",
+ "rooms": {
+  "heard": {
+   "plate": {
+    "night": "plate-night.webp"
+   },
+   "figures": {
+    "ellis": {
+     "brace": "ellis-brace.webp",
+     "close": "ellis-close.webp",
+     "fold": "ellis-fold.webp",
+     "lift": "ellis-lift.webp",
+     "low": "ellis-low.webp",
+     "open": "ellis-open.webp",
+     "settle": "ellis-settle.webp",
+     "talk": "ellis-talk.webp"
+    },
+    "you": {
+     "hold": "you-hold.webp",
+     "setdown": "you-setdown.webp",
+     "sit": "you-sit.webp",
+     "speak": "you-speak.webp"
+    }
+   }
+  }
+ }
+}

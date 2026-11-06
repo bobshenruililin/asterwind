@@ -55,9 +55,9 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--gold);outline-o
 /* Mirror */
 #mirror{background:radial-gradient(120% 90% at 30% 20%,#191a24,#07070b 60%)}
 #mirror .sheen{position:absolute;inset:0;background:linear-gradient(115deg,transparent 30%,#ffffff0c 45%,transparent 60%)}
-#mirror .q{position:absolute;left:12%;right:12%;top:40%;transform:translateY(-50%);text-align:center;font-size:clamp(18px,2.8vw,40px);line-height:1.35;color:#e8dcc4}
-#mirror .trace{position:absolute;inset:auto;left:50%;top:14%;width:12%;height:auto;aspect-ratio:1;transform:translateX(-50%);opacity:.38}
-#mirror button,#end button{position:absolute;left:50%;bottom:12%;transform:translateX(-50%);background:none;border:1px solid #e9c27a88;border-radius:2px;padding:.6em 1.4em;font:clamp(13px,1.5vw,18px) system-ui;color:var(--ink)}
+#mirror .q{position:absolute;left:12%;right:12%;top:50%;transform:translateY(-50%);text-align:center;font-size:clamp(18px,2.8vw,40px);line-height:1.35;color:#e8dcc4}
+#mirror .trace{position:absolute;inset:auto;left:50%;top:9%;width:9%;height:auto;aspect-ratio:1;transform:translateX(-50%);opacity:.38}
+#mirror .mbtns button,#end button{position:absolute;left:50%;bottom:12%;transform:translateX(-50%);background:none;border:1px solid #e9c27a88;border-radius:2px;padding:.6em 1.4em;font:clamp(13px,1.5vw,18px) system-ui;color:var(--ink)}
 /* Ending */
 #mine{position:absolute;background:transparent;border:0;border-bottom:1px solid #4a465266;font:clamp(16px,2.4vw,34px) var(--hand);color:#2b2731;text-align:center}
 #mine::placeholder{color:#8b8494}
@@ -70,6 +70,44 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--gold);outline-o
 #chrome:hover,#chrome:focus-within{opacity:1}
 #chrome button{background:#0b0b12aa;border:1px solid #ffffff22;border-radius:16px;min-width:40px;height:34px;padding:0 10px;font:12px system-ui}
 #chrome button[aria-pressed=true]{color:var(--gold);border-color:#e9c27a88}
+/* Corridor and dispenser */
+#corridor{background:#0d0e1a}
+#corridor .slot{position:absolute;border:0;background:none;padding:0;border-radius:6px}
+#corridor .slot:hover,#corridor .slot:focus-visible{background:#ffe2a01a}
+.cbtn{position:absolute;background:#0b0b12cc;border:1px solid #e9c27a88;border-radius:2px;padding:.55em 1.2em;font:clamp(13px,1.5vw,18px) system-ui;color:var(--ink)}
+#nb-open{left:3%;bottom:5%}#morning{right:3%;bottom:5%}
+#c-cap{position:absolute;left:50%;bottom:4.2%;transform:translateX(-50%);width:min(620px,52%);margin:0;text-align:center;font:clamp(14px,1.8vw,24px)/1.35 Georgia,serif;text-shadow:0 2px 8px #000;pointer-events:none}
+/* A bottle in the hand */
+#held{background:radial-gradient(70% 90% at 50% 40%,#2a2238,#0a0a12 70%)}
+#held .lift{transition:transform .7s steps(6)}#held.up .lift{transform:translateY(-7%) scale(1.04)}
+#held .hbtns{position:absolute;left:0;right:0;bottom:4%;display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
+#held .hbtns button{background:#0b0b12cc;border:1px solid #ffffff33;border-radius:2px;padding:.55em 1.1em;font:clamp(13px,1.5vw,18px) system-ui;color:var(--ink);min-height:40px}
+#held .hbtns #hold-up{border-color:#e9c27a;color:#ffe2a0}
+#frame.portrait #held .hbtns{bottom:2%}
+#frame.portrait #c-cap{bottom:11%;width:88%}#frame.portrait .cbtn{bottom:3%}
+/* The crossing and the film */
+.crossing{z-index:5}
+#filmscr{background:#050507;z-index:4}#filmscr.crossing{background:none}
+#filmscr iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:#050507}
+#slate{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#efe3c8 url('../../../hub/art/textures/paper-grain.webp');background-size:512px;color:#2b2731;text-align:center;z-index:2;padding:0 10%}
+#slate b{font:400 clamp(22px,3.4vw,48px) Georgia,serif}#slate span{font:clamp(15px,2vw,26px)/1.4 var(--hand);color:#5b5566;margin-top:.8em}
+#film-leave{position:absolute;left:1.2%;top:1.6%;z-index:3;background:#0b0b12aa;border:1px solid #ffffff22;border-radius:16px;height:34px;padding:0 12px;font:12px system-ui;color:var(--ink);opacity:.6}
+#film-leave:hover,#film-leave:focus-visible{opacity:1}
+#film-back{position:absolute;right:2.5%;bottom:4%;z-index:3;background:#0b0b12dd;border:1px solid #e9c27a;border-radius:2px;padding:.6em 1.4em;font:clamp(13px,1.5vw,18px) system-ui;color:#ffe2a0}
+/* Optional looks: a thought, an object, and the way you didn't take */
+.peek{position:absolute;border:0;background:none;padding:0;transform:translate(-50%,-50%);width:6%;aspect-ratio:1;border-radius:50%}
+.peek::before{content:'';position:absolute;inset:30%;border:1.5px dashed #efe3c8aa;border-radius:50%}
+.peek:hover::before,.peek:focus-visible::before{border-style:solid;background:#efe3c822}
+.peek span{position:absolute;left:50%;bottom:86%;transform:translateX(-50%);white-space:nowrap;font:clamp(12px,1.5vw,19px) var(--hand);color:#efe3c8cc;text-shadow:0 2px 6px #000}
+#frame.portrait #thought{top:auto;bottom:104%;left:50%;width:92%}
+#thought{position:absolute;left:19%;top:22%;transform:translateX(-50%);width:30%;margin:0;text-align:center;font:clamp(15px,2vw,27px)/1.35 var(--hand);color:#f3e7cc;text-shadow:0 2px 8px #000;pointer-events:none}
+#story.ghost .box{filter:grayscale(1) sepia(.25) contrast(.85) brightness(1.15)}
+#story.ghost #caption{font-style:italic;color:#d9cfbd}
+#ghost-slate{position:absolute;left:50%;top:3%;transform:translateX(-50%);margin:0;font:12px system-ui;letter-spacing:.2em;text-transform:uppercase;color:#d9cfbd;white-space:nowrap}
+#mirror .mem{position:absolute;left:14%;right:14%;top:31%;text-align:center;font:clamp(14px,1.8vw,24px)/1.4 var(--hand);color:#b9ad98}
+#mirror .mbtns{position:absolute;left:0;right:0;bottom:12%;display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+#mirror .mbtns button{position:static;transform:none}
+#mirror .mbtns #mirror-other{border-color:#ffffff33;color:#b7ab98}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 @media (max-aspect-ratio:1/1){#frame{width:100vw}#caption{font-size:15px;bottom:3%}}
 </style>
@@ -86,16 +124,32 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--gold);outline-o
   <input id="mine" hidden maxlength="24" aria-label="Leadership is… (optional; stays on this screen only)" placeholder="your word">
   <button id="closebook" hidden>Done</button>
  </section>
+ <section class="screen" id="corridor" hidden aria-label="A corridor at night. A drinks dispenser glows in the corner.">
+  <svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false" id="co-svg"></svg>
+  <div id="slots" role="group" aria-label="Bottles in the dispenser"></div>
+  <p id="c-cap" aria-live="polite"></p>
+  <button class="cbtn" id="nb-open">Open the notebook</button><button class="cbtn" id="morning" hidden>Wait for morning</button>
+ </section>
+ <section class="screen" id="held" hidden aria-label="A bottle in your hand">
+  <svg viewBox="0 0 1600 900" aria-hidden="true" focusable="false" id="hb-svg"></svg>
+  <p class="sr" id="label-text" aria-live="polite"></p>
+  <div class="hbtns"><button id="turn-l" aria-label="Turn the bottle left">‹ Turn</button><button id="hold-up">Hold it up to the light</button><button id="turn-r" aria-label="Turn the bottle right">Turn ›</button><button id="put-back">Put it back</button></div>
+ </section>
+ <section class="screen" id="filmscr" hidden aria-label="">
+  <div id="slate" hidden><b></b><span></span></div>
+  <button id="film-leave">Back into the night</button><button id="film-back" hidden>Back into the night</button>
+ </section>
  <section class="screen" id="story" hidden aria-label="">
+  <p id="ghost-slate" hidden>Another way · it doesn’t change what you did</p>
   <div class="box"><svg viewBox="0 0 1600 900" aria-hidden="true" focusable="false" id="st-svg"></svg>
   <svg id="reveal" viewBox="0 0 1600 900" aria-hidden="true" focusable="false"><defs><radialGradient id="rv" r=".5"><stop offset="0" stop-color="#000"/><stop offset=".55" stop-color="#000" stop-opacity=".9"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient><mask id="rvm" maskUnits="userSpaceOnUse"><rect width="1600" height="900" fill="#fff"/><circle id="rvc" cx="800" cy="450" r="260" fill="url(#rv)"/></mask></defs><rect id="rvr" width="1600" height="900" fill="#05050a" mask="url(#rvm)" opacity="0"/></svg>
-  <div id="choices"></div></div>
+  <div id="choices"></div><p id="thought" aria-hidden="true"></p></div>
   <p id="caption" aria-hidden="true"><span id="who"></span><span id="line"></span></p>
   <p class="sr" id="desc"></p>
  </section>
- <section class="screen" id="mirror" hidden aria-live="polite"><div class="sheen"></div><svg class="trace" viewBox="0 0 200 200" aria-hidden="true" focusable="false"></svg><p class="q"></p><button id="mirror-go">Continue</button></section>
+ <section class="screen" id="mirror" hidden aria-live="polite"><div class="sheen"></div><svg class="trace" viewBox="0 0 200 200" aria-hidden="true" focusable="false"></svg><p class="mem"></p><p class="q"></p><div class="mbtns"><button id="mirror-go">Continue</button><button id="mirror-other" hidden>See the other way</button></div></section>
  <section class="screen" id="end" hidden><p class="q">You are in this one too.<span class="small">Every room asked the same question a different way. Nothing was scored, and nothing you wrote was kept.</span></p><button id="again">Begin again</button></section>
- <div id="chrome"><button id="snd" aria-pressed="false" aria-label="Sound">♪</button><button id="pause" aria-pressed="false">Pause</button></div>
+ <div id="chrome"><button id="snd" aria-pressed="false" aria-label="Sound">♪</button><button id="voice" hidden aria-label="Voices">Voices: off</button><button id="pause" aria-pressed="false" hidden>Pause</button></div>
 </div></div>
 <p class="sr" id="live" aria-live="polite"></p>
 <script>
@@ -127,13 +181,15 @@ function person(id,o){const s=o.s||1,f=o.flip?-1:1,c=o.coat,c2=o.coat2||c,sk=o.s
   short:P([[-28,-202],[-24,-236],[-4,-252],[22,-250],[38,-236],[36,-220],[20,-228],[2,-224],[-8,-206],[-14,-188],[-28,-190]],h,e),
   long:P([[-30,-200],[-24,-238],[-2,-252],[24,-248],[38,-232],[34,-220],[18,-228],[0,-222],[-8,-196],[-6,-150],[-34,-146],[-36,-176]],h,e),
   grey:P([[-28,-206],[-22,-238],[4,-250],[30,-240],[34,-222],[16,-228],[0,-224],[-6,-200],[-16,-180],[-30,-186]],'#c9c3bd',e)+P(ell(-28,-232,15,14,14),'#c9c3bd',e),
-  wild:P([[-30,-196],[-36,-228],[-20,-240],[-14,-258],[2,-248],[12,-262],[22,-246],[40,-248],[36,-226],[24,-228],[6,-222],[-6,-200],[-16,-182],[-30,-184]],h,e)}[o.hairStyle||'short'];
+  wild:P([[-30,-196],[-36,-228],[-20,-240],[-14,-258],[2,-248],[12,-262],[22,-246],[40,-248],[36,-226],[24,-228],[6,-222],[-6,-200],[-16,-182],[-30,-184]],h,e),
+  wavy:P([[-30,-198],[-32,-226],[-22,-244],[-6,-256],[8,-250],[20,-258],[34,-248],[42,-234],[36,-224],[26,-230],[14,-224],[2,-228],[-6,-212],[-10,-196],[-18,-182],[-30,-186]],h,e)}[o.hairStyle||'short'];
+ const specs=o.glasses?'<circle cx="31" cy="-212" r="8.5" fill="#efe3c8" fill-opacity=".12" stroke="#1d1a22" stroke-width="2.6"/><path d="M22.5 -213 L-8 -210" stroke="#1d1a22" stroke-width="2.2"/>':'';
  const legs=o.standing?P([[-30,-2],[24,-2],[28,150],[10,150],[0,44],[-10,150],[-30,150]],c2,e)+P([[-34,146],[-6,146],[-4,158],[-38,158]],'#1d1a22')+P([[6,146],[34,146],[36,158],[4,158]],'#1d1a22'):P([[-34,-6],[98,-12],[102,14],[94,96],[74,96],[72,18],[-34,20]],c2,e);
  return `<g id="${id}" transform="translate(${o.x} ${o.y}) scale(${f*s} ${s})"><g class="pp" data-part="body" data-pivot="0 0">${legs}
   ${P([[-46,-150],[24,-160],[50,-72],[44,0],[-50,2]],c,e)}${P([[-44,-150],[-6,-156],[-14,-60],[-48,-40]],c2,'opacity=".55"')}
   <g class="pp" data-part="head" data-pivot="6 -176">${P([[-4,-180],[14,-180],[16,-150],[-6,-150]],sk)}
    ${P([[-24,-212],[-16,-236],[8,-244],[30,-234],[36,-214],[46,-202],[36,-196],[38,-188],[32,-184],[30,-172],[12,-164],[-8,-168],[-22,-184]],sk,e)}
-   <path d="M24 -214 q5 -2 8 1" stroke="#2a2230" stroke-width="2.6" fill="none" stroke-linecap="round"/>${hair}</g>
+   <path d="M24 -214 q5 -2 8 1" stroke="#2a2230" stroke-width="2.6" fill="none" stroke-linecap="round"/>${hair}${specs}</g>
   <g class="pp" data-part="arm" data-pivot="16 -140">${P([[2,-150],[30,-146],[50,-84],[26,-74]],c,e)}
    <g class="pp" data-part="fore" data-pivot="38 -80">${P([[24,-90],[48,-82],[104,-72],[100,-54],[28,-62]],c,e)}
     <g class="pp" data-part="hand" data-pivot="100 -62">${P([[96,-76],[124,-74],[134,-62],[126,-50],[98,-52]],sk,e)}<g class="held">${o.held||''}</g></g></g></g>
@@ -149,47 +205,69 @@ function pose(rootId,p,frame){const root=$(rootId);if(!root)return;for(const g o
 const lerp=(a,b,u)=>a+(b-a)*u,mix=(A,B,u)=>{const o={};for(const k of new Set([...Object.keys(A),...Object.keys(B)]))o[k]=lerp(A[k]||0,B[k]||0,u);return o};
 const at=(el,attrs)=>{if(typeof el==='string')el=$(el);if(!el)return;for(const [k,v] of Object.entries(attrs))el.setAttribute(k,v)};
 // ---------- the five rooms ----------
-const PEOPLE={you:{coat:'#4d4466',coat2:'#3b3452',hair:'#3a2a24',hairStyle:'short',skin:'#d8a47c'}};
+// "You" is one person all night: Ren, indigo coat, short dark hair (the lead the films already cast).
+const PEOPLE={you:{coat:'#3f4775',coat2:'#2f355a',hair:'#231d22',hairStyle:'short',skin:'#d8a47c'}};
 const ST={};
-// HEARD: listening that does not have to calm the sea
-ST.heard={word:'HEARD',title:'The Listening Tide',desc:'Night at a harbour wall. Wen sits facing you; paper waves rise around her as she talks. You hold a lantern.',
+// HEARD: the night before The Quiet Minute. Ellis sits at the harbour, where tomorrow's route ends and Ellis's own would never reach.
+const POSES={heard:{
+ ellis:{talk:{head:-4,arm:-20,fore:-30},low:{head:14,arm:-14,fore:-24},brace:{head:10,body:4,arm:-6,fore:-10},lift:{head:-8,arm:-22,fore:-30},close:{head:2,arm:-4,fore:-2,hand:10},open:{head:14,arm:-34,fore:-44},fold:{head:20,arm:-10,fore:-6},settle:{head:4,arm:-16,fore:-22}},
+ you:{hold:{arm:-12,fore:-26},speak:{head:-4,arm:-40,fore:-20},setdown:{arm:28,fore:20,head:12},sit:{arm:16,fore:8,head:8}}}};
+ST.heard={word:'HEARD',title:'The Listening Tide',desc:'Night at the harbour wall, where tomorrow’s route ends. Ellis sits holding a folded paper. You sit across, holding a lantern. Paper waves rise as Ellis talks.',
  trace:'<path d="M20 140 q40 -60 80 0 t80 0" stroke="#e8dcc4" stroke-width="5" fill="none"/><circle cx="100" cy="120" r="16" fill="#e9c27a"/>',
- build(){return `<rect width="1600" height="900" fill="url(#nightsky)"/>${P(ell(300,170,44,44),'#efe6c8',EDGE)}
+ build(){const A=k=>artFig('heard',k),plate=artPlate('heard','night');
+  const fig=(who,o)=>A(who)?`<image id="h-${who}-art" href="${A(who)[o.pose]||Object.values(A(who))[0]}" width="1600" height="900" preserveAspectRatio="none"/>`:`<g filter="url(#lift)">${person('h-'+who,o)}</g>`;
+  return `${plate?`<image href="${plate}" width="1600" height="900" preserveAspectRatio="none"/>`:`<rect width="1600" height="900" fill="url(#nightsky)"/>${P(ell(300,170,44,44),'#efe6c8',EDGE)}
   ${P([[-20,480],[300,440],[620,470],[980,430],[1300,462],[1620,436],[1620,560],[-20,560]],'#232847')}
-  <g id="h-back"></g>${P([[380,592],[1220,588],[1226,640],[374,646]],'#7d7769',EDGE)}${P([[374,640],[1226,636],[1230,700],[370,706]],'#5f5a52')}
-  <g filter="url(#lift)">${person('h-wen',{x:610,y:596,s:1.75,coat:'#2f6470',coat2:'#244f5a',hair:'#231d28',hairStyle:'long',held:`<g id="h-note" transform="translate(116 -64)">${P([[-10,-8],[10,-8],[10,8],[-10,8]],'#f3e7cc',EDGE)}</g>`})}</g>
-  <g filter="url(#lift)">${person('h-you',{x:990,y:596,s:1.75,flip:1,...PEOPLE.you,held:''})}</g>
+  <g id="h-back"></g>${P([[380,592],[1220,588],[1226,640],[374,646]],'#7d7769',EDGE)}${P([[374,640],[1226,636],[1230,700],[370,706]],'#5f5a52')}`}
+  ${fig('ellis',{pose:'talk',x:610,y:596,s:1.75,coat:'#6a4a68',coat2:'#523a52',hair:'#1c1a22',hairStyle:'wavy',glasses:1,skin:'#c99772',held:'<g id="h-note" transform="translate(116 -64)"></g>'})}
+  ${fig('you',{pose:'hold',x:990,y:596,s:1.75,flip:1,...PEOPLE.you,held:''})}
   <g id="h-lantern">${lantern('h-lamp',0,0,1.25)}</g>
   <path id="h-bridge" d="" fill="#f3e7cc" opacity=".95" stroke="#fff6e4" stroke-opacity=".3"/>
-  <g id="h-front"></g><g id="h-boat" filter="url(#lift)">${boatShape()}</g><g id="h-herboat" opacity="0" filter="url(#lift)">${boatShape('#cfe0e6')}</g>
-  <circle id="h-pocket" r="150" fill="url(#warm)" opacity="0"/>${GRAINRECT(.45)}`},
- state:{amp:10,calm:0,lamp:[920,474],pocket:0,bridge:0,note:0,boat:[700,780],herboat:0,wen:{},you:{arm:-12,fore:-26}},
+  <g id="h-front"></g><g id="h-herboat" opacity="0" filter="url(#lift)">${boatShape('#efe3c8')}<path d="M-20 8 q10 -6 18 0 t18 -2" stroke="#6b6474" stroke-width="1.6" fill="none" stroke-dasharray="3 2"/></g>
+  <circle id="h-pocket" r="150" fill="url(#warm)" opacity="0"/>
+  <g id="h-peek" opacity="0" filter="url(#lift)"><g transform="translate(-480 236) scale(.92)">${P([[590,104],[1010,98],[1016,326],[586,332]],'#efe3c8',EDGE)}<path d="M800 100 V330 M590 216 H1012" stroke="#cdbb98" stroke-width="1.4" opacity=".7"/>
+   <g stroke="#4a4652" stroke-width="3" fill="none" stroke-linecap="round"><path d="M632 292 v-38 a14 14 0 0 1 28 0 v38"/><path d="M646 250 c40 -40 90 -10 120 -40 s70 -40 110 -10 s40 30 60 10" stroke-dasharray="9 7"/></g>
+   <path d="M968 286 q12 -10 24 0 t24 0" stroke="#5a7a96" stroke-width="3" fill="none"/><circle cx="946" cy="210" r="5" fill="#4a4652"/></g></g>
+  ${GRAINRECT(.45)}`},
+ state:{amp:10,calm:0,lamp:[920,474],pocket:0,bridge:0,note:0,herboat:0,peek:0,ellis:POSES.heard.ellis.talk,you:POSES.heard.you.hold,ellisPose:'talk',youPose:'hold'},
  render(S,f,t){const ph=Math.floor(t*6)/6*1.4;
   const back=['#1f3550','#24405e'],front=['#2c4f6c','#336083','#3b7090','#4a809c'];
-  $('h-back').innerHTML=back.map((c,i)=>P(wave(520+i*26,(18+S.amp*.6)*(1-S.calm*.7),ph+i,c,40+i),c)).join('');
-  $('h-front').innerHTML=front.map((c,i)=>{const pts=wave(690+i*48,(14+S.amp*(1.2-i*.18))*(1-S.calm*.75),ph*1.2+i*1.7,c,90+i);return `<path d="${cutd(pts,1.2)}" fill="${c}" ${EDGE}/>`}).join('');
+  if($('h-back'))$('h-back').innerHTML=back.map((c,i)=>P(wave(520+i*26,(18+S.amp*.6)*(1-S.calm*.7),ph+i,c,40+i),c)).join('');
+  // The lantern's shelter: inside its light the water lies flat while the rest of the sea keeps moving.
+  $('h-front').innerHTML=front.map((c,i)=>{const pts=wave(690+i*48,(14+S.amp*(1.2-i*.18))*(1-S.calm*.75),ph*1.2+i*1.7,c,90+i).map(([x,y])=>{const d=Math.abs(x-S.lamp[0]);const k=S.pocket*Math.max(0,1-d/260);return[x,lerp(y,690+i*48,k*.9)]});return `<path d="${cutd(pts,1.2)}" fill="${c}" ${EDGE}/>`}).join('');
   at('h-lantern',{transform:`translate(${S.lamp[0]} ${S.lamp[1]})`});at('h-pocket',{cx:S.lamp[0],cy:S.lamp[1]+30,opacity:S.pocket});
-  const [bx,by]=S.boat,bob=Math.sin(t*2)*4*(1-S.calm);at('h-boat',{transform:`translate(${bx} ${by+bob}) rotate(${(Math.sin(t*1.7)*6*(1-S.calm)).toFixed(1)})`});
-  at('h-herboat',{opacity:S.herboat>0?1:0,transform:`translate(${lerp(700,860,S.herboat)} ${lerp(560,760,S.herboat)+bob}) scale(.8)`});
+  const bob=Math.sin(t*2)*4*(1-S.calm);
+  at('h-herboat',{opacity:S.herboat>0?1:0,transform:`translate(${lerp(700,768,S.herboat)} ${lerp(560,722,S.herboat)+bob*(1-S.pocket)}) scale(.9)`});
   at('h-bridge',{d:S.bridge>0?cutd([[1080,470],[1080-430*S.bridge,470-30*S.bridge],[1080-430*S.bridge,494-30*S.bridge],[1080,496]],1):''});
-  const n=$('h-note');n.innerHTML=S.note>=1?P([[-22,-14],[22,-14],[22,14],[-22,14]],'#f3e7cc',EDGE)+'<path d="M-14 -4 h28 M-14 4 h20" stroke="#6b6474" stroke-width="2"/>':S.note>0?P([[-16,-10],[16,-10],[12,10],[-12,10]],'#f3e7cc',EDGE):P([[-10,-8],[10,-8],[10,8],[-10,8]],'#f3e7cc',EDGE);n.style.display=S.herboat>0?'none':'';
-  pose('h-wen',S.wen,f);pose('h-you',S.you,f)},
+  at('h-peek',{opacity:S.peek.toFixed(2)});
+  const n=$('h-note');if(n){n.innerHTML=S.note>=1?P([[-22,-14],[22,-14],[22,14],[-22,14]],'#f3e7cc',EDGE)+'<path d="M-14 6 v-6 a4 4 0 0 1 8 0 v6 M-6 0 q8 -8 14 -2 t10 -4" stroke="#6b6474" stroke-width="1.6" fill="none"/>':S.note<0?P([[-6,-5],[6,-5],[6,5],[-6,5]],'#f3e7cc',EDGE):P([[-10,-8],[10,-8],[10,8],[-10,8]],'#f3e7cc',EDGE);n.style.display=S.herboat>0?'none':''}
+  for(const who of ['ellis','you']){const img=$('h-'+who+'-art');if(img){const set=artFig('heard',who);img.setAttribute('href',set[S[who+'Pose']]||Object.values(set)[0])}else pose('h-'+who,S[who],f)}},
+ poses:POSES.heard,
  intro:[
-  {dur:5.5,reveal:1,lines:[[1,'Wen','I keep telling everyone it’s fine.']],to:{amp:14}},
-  {dur:5.5,lines:[[.3,'Wen','I’ve got the plan, the slides, the team. Everyone thinks I have it handled.']],to:{amp:26,wen:{head:-4,arm:-20,fore:-30}}},
-  {dur:5,lines:[[.3,'Wen','And then it’s two in the morning and I’m—']],sfx:[[1.4,'wave']],to:{amp:46,wen:{head:10,body:4,arm:-6,fore:-10}}},
-  {gate:1,choices:[{id:'offer',label:'Offer what worked for you',at:[1110,430]},{id:'listen',label:'Set the lantern down and listen',at:[930,560]}]}],
+  {dur:5.5,reveal:1,lines:[[1,'Ellis','Theo’s route ends here. At the harbour.','heard-01']],to:{amp:14},pose:{ellis:'talk'}},
+  {dur:5,lines:[[.3,'Ellis','Everyone will love it. I love it.','heard-02']],to:{amp:22},pose:{ellis:'low'}},
+  {dur:5.5,lines:[[.3,'Ellis','Mine starts somewhere else. Every time I open it, someone’s already—','heard-03']],sfx:[[2.6,'wave']],to:{amp:46},pose:{ellis:'brace'}},
+  {gate:1,peek:{target:'h-note',at:[800,490],label:'the folded route',sr:'Look closer at Ellis’s folded route (optional)',
+    show:{peek:1},thought:'It’s better. I think it’s better. It just doesn’t end anywhere this beautiful.',
+    say:'Imagined open, Ellis’s route starts at a courtyard gate and never reaches the sea. Ellis thinks: It’s better. I think it’s better. It just doesn’t end anywhere this beautiful.'},
+   choices:[{id:'offer',label:'Offer to make sure it’s heard',at:[1250,400]},{id:'listen',label:'Set the lantern down and listen',at:[930,610]}]}],
  offer:[
-  {dur:5,lines:[[.3,'You','When it happened to me, I wrote one list. Just the next three things. Want me to show you?']],sfx:[[.6,'paper']],to:{bridge:1,you:{arm:-40,fore:-20},amp:30}},
-  {dur:5,lines:[[.8,'Wen','…Yes. That could actually work.']],to:{calm:.85,amp:20,wen:{head:-2,arm:-28,fore:-36}}},
-  {dur:4.5,lines:[[.6,'Wen','Thank you.']],to:{calm:.9},note:'Her folded note stays folded in her hand.'}],
+  {dur:5.5,lines:[[.3,'You','Bring it tomorrow. I’ll make sure Theo hears it first.','heard-o1']],sfx:[[.6,'paper']],to:{bridge:1,amp:32},pose:{you:'speak'}},
+  {dur:4,lines:[[.8,'Ellis','…You’d say it?','heard-o2']],to:{amp:26},pose:{ellis:'lift'}},
+  {dur:5,lines:[[.3,'Ellis','Yes. You say it. They listen to you.','heard-o3']],to:{calm:.85,amp:18,note:-1},pose:{ellis:'close',you:'hold'}},
+  {dur:5,to:{calm:.9},pose:{ellis:'settle'},note:'The sea settles around your words. Ellis’s route stays folded, closed in one hand.'}],
  listen:[
-  {dur:4.5,sfx:[[.4,'paper']],to:{lamp:[860,700],pocket:.9,you:{arm:28,fore:20,head:12},amp:40}},
-  {dur:6,lines:[[1.5,'Wen','…It isn’t really the deadline.']],to:{amp:38,wen:{head:6}}},
-  {dur:6,lines:[[.4,'Wen','It’s that I don’t know if I’m any good at this.']],sfx:[[2.6,'fold']],to:{note:1,wen:{arm:-34,fore:-44,head:14}}},
-  {dur:5.5,sfx:[[.6,'fold']],to:{herboat:1,wen:{arm:-10,fore:-6,head:20}},note:'She folds her note into a boat and sets it in the lantern’s shelter. The sea is not calm.'}],
- notes:{offer:'gave her a plan',listen:'she made her own boat'},
- question:'What did she need from you: an answer, or somewhere to set it down?'};
+  {dur:4.5,sfx:[[.4,'paper']],to:{lamp:[860,700],pocket:.9,amp:40},pose:{you:'setdown'}},
+  {dur:5,lines:[[1.8,'Ellis','It’s not Theo.','heard-l1']],to:{amp:38},pose:{ellis:'talk',you:'sit'}},
+  {dur:6,lines:[[.4,'Ellis','I only show things when they’re finished. And it’s never finished.','heard-l2']],to:{amp:42},pose:{ellis:'low'}},
+  {dur:5.5,lines:[[1.2,'Ellis','It doesn’t even reach the sea.','heard-l3']],sfx:[[.3,'unfold']],to:{note:1},pose:{ellis:'open'}},
+  {dur:6,lines:[[2.8,'Ellis','I’ll bring it. Myself.','heard-l4']],sfx:[[.6,'fold']],to:{herboat:1},pose:{ellis:'fold'},note:'Ellis folds the route into a boat and sets it in the lantern’s shelter. The sea is not calm. Nothing promises tomorrow will go well.'}],
+ exit:{offer:'Carry your promise into the morning',listen:'Follow the boat into the morning'},
+ slate:{offer:'You said you’d say it.',listen:'Ellis said, “I’ll bring it. Myself.”'},
+ memory:{offer:{none:'Ellis’s route is still folded. You said you’d say it.',round:'You said you’d say it for Ellis. Then you turned the table, and Ellis said it.',slips:'You said you’d say it for Ellis. In the morning it arrived on a slip, in Ellis’s hand: a different start.'},
+  listen:{none:'The boat is still in the lantern’s shelter. The sea hasn’t calmed.',round:'Ellis said, “I’ll bring it. Myself.” You turned the table, and there was a turn to bring it to.',slips:'Ellis said, “I’ll bring it. Myself.” In the morning it arrived on a slip: a different start.'}},
+ notes:{offer:'said I’d say it',listen:'Ellis will bring it'},
+ question:'What did Ellis need: your voice, or room for theirs?'};
 // SHARED: a roof everyone stands under
 ST.shared={word:'SHARED',title:'The Shared Roof',desc:'Rain at night. Under a vast paper roof, Arun and you stand on a beam beneath a tear. He holds out the clamp.',
  trace:'<path d="M20 120 Q100 30 180 120" stroke="#e8dcc4" stroke-width="5" fill="none"/><path d="M80 80 l10 10 l10 -10 l10 10 l10 -10" stroke="#e9c27a" stroke-width="4" fill="none"/>',
@@ -206,13 +284,13 @@ ST.shared={word:'SHARED',title:'The Shared Roof',desc:'Rain at night. Under a va
   <g filter="url(#lift)">${person('s-arun',{x:716,y:412,s:.72,standing:1,coat:'#a2574a',coat2:'#6d3a33',hair:'#1f1a1e',hairStyle:'wild',held:'<g id="s-clamp" transform="translate(110 -70)"><path d="M-10 -14 h20 v6 h-14 v16 h14 v6 h-20z" fill="#c9a24a" stroke="#6b5420" stroke-width="2"/></g>'})}</g>
   <g filter="url(#lift)" id="s-youg">${person('s-you',{x:900,y:412,s:.72,standing:1,flip:1,...PEOPLE.you,held:'<g id="s-clamp2" opacity="0" transform="translate(110 -70)"><path d="M-10 -14 h20 v6 h-14 v16 h14 v6 h-20z" fill="#c9a24a" stroke="#6b5420" stroke-width="2"/></g>'})}</g>
   <text id="s-slate" x="80" y="80" font-family="system-ui" font-size="18" letter-spacing="5" fill="#e8dcc4" opacity="0">THE NEXT NIGHT</text>${GRAINRECT(.42)}`},
- state:{tear:1,tear2:0,seam:0,seam2:0,crooked:0,crooked2:0,clampYou:0,youThere:1,slate:0,arun:{arm:-40,fore:-30},you:{arm:-10,fore:-20}},
+ state:{tear:1,tear2:0,seam:0,seam2:0,crooked:0,crooked2:0,clampYou:0,youThere:1,slate:0,wet:0,arun:{arm:-40,fore:-30},you:{arm:-10,fore:-20}},
  render(S,f,t){const T=(cx,cy,w)=>cutd([[cx-w,cy-6],[cx-w*.4,cy-14],[cx,cy-4],[cx+w*.5,cy-16],[cx+w,cy-2],[cx+w*.4,cy+14],[cx-w*.2,cy+6],[cx-w*.6,cy+16]],3,10);
   at('s-tear',{d:S.tear>0?T(800,240,46*S.tear):''});at('s-tear2',{d:S.tear2>0?T(1230,330,40*S.tear2):''});
   const seam=(cx,cy,u,crook)=>{let d='';const n=Math.round(8*u);for(let i=0;i<n;i++){const x=cx-44+i*12,j=crook?((i%3)-1)*6:0;d+=`M${x} ${cy-10+j} l8 ${20+j*.4} `}return d};
   at('s-seam',{d:seam(800,240,S.seam,S.crooked)});at('s-seam2',{d:seam(1230,330,S.seam2,S.crooked2)});
   const fr=Math.floor(t*FPS),r=rng(fr%24+7);let rain='';for(let i=0;i<70;i++){const x=r()*1600,y=(r()*900+fr*37)%900;if(y>200&&y<900)continue;rain+=`<path d="M${x.toFixed(0)} ${y.toFixed(0)} l-4 18" stroke="#8fa0c8" stroke-width="2" opacity=".5"/>`}$('s-rain').innerHTML=rain;
-  let drip='';const leak=(cx,cy,a)=>{for(let i=0;i<6;i++){const y=(cy+20+((fr*31+i*97)%460));if(a>0&&y<760)drip+=`<path d="M${cx-30+i*12} ${y} l-3 16" stroke="#9fb0d8" stroke-width="2.4" opacity="${(.7*a).toFixed(2)}"/>`}};leak(800,250,S.tear*(1-S.seam*.85));leak(1230,340,S.tear2*(1-S.seam2*.85));$('s-drip').innerHTML=drip;
+  let drip='';const leak=(cx,cy,a)=>{for(let i=0;i<6;i++){const y=(cy+20+((fr*31+i*97)%460));if(a>0&&y<760)drip+=`<path d="M${cx-30+i*12} ${y} l-3 16" stroke="#9fb0d8" stroke-width="2.4" opacity="${(.7*a).toFixed(2)}"/>`}};leak(800,250,S.tear*(1-S.seam*.85));leak(1230,340,S.tear2*(1-S.seam2*.85));$('s-drip').innerHTML=drip+(S.wet>0?`<ellipse cx="800" cy="776" rx="${(70*S.wet).toFixed(0)}" ry="${(7*S.wet).toFixed(1)}" fill="#2a2236" opacity=".75"/>`:'');
   at('s-clamp',{opacity:1-S.clampYou});at('s-clamp2',{opacity:S.clampYou});at('s-youg',{opacity:S.youThere});at('s-slate',{opacity:S.slate});
   pose('s-arun',S.arun,f);pose('s-you',S.you,f);for(let i=0;i<4;i++)pose('s-p'+i,{head:Math.sin(t*.7+i)*4},f)},
  intro:[
@@ -221,14 +299,15 @@ ST.shared={word:'SHARED',title:'The Shared Roof',desc:'Rain at night. Under a va
   {gate:1,choices:[{id:'take',label:'Take the clamp',at:[840,360]},{id:'hold',label:'Hold the other side',at:[1000,250]}]}],
  take:[
   {dur:4.5,sfx:[[.4,'clamp'],[1.6,'stitch'],[2.6,'stitch']],to:{clampYou:1,seam:1,you:{arm:-110,fore:-30,head:-14},arun:{arm:-10,fore:-14}}},
-  {dur:3.5,lines:[[.4,'Arun','Neat.']],to:{you:{arm:-10,fore:-20}}},
+  {dur:3.5,lines:[[.4,'Arun','Neat. Not a drop on the tables.']],to:{you:{arm:-10,fore:-20}},note:'Quick and neat. The rain never reaches the tables.'},
   {dur:1.2,to:{slate:1}},
-  {dur:6,sfx:[[.3,'rain']],lines:[[2,'Arun','I’ll wait for you.']],to:{tear2:1,slate:0,youThere:0,arun:{arm:-20,fore:-10,head:-16}},note:'A new tear the next night. He knows you will do it well.'}],
+  {dur:4.5,sfx:[[.3,'rain']],lines:[[1.6,'Arun','I watched you do it. Stay while I try?']],to:{tear2:1,slate:0,clampYou:0,arun:{arm:-100,fore:-40,head:-14},you:{head:-10}}},
+  {dur:5,sfx:[[.6,'stitch'],[1.8,'stitch']],to:{seam2:1},note:'A new tear the next night. Arun takes the clamp himself, and asks you to stay while he tries.'}],
  hold:[
-  {dur:5,sfx:[[.8,'clamp'],[2,'stitch'],[3.4,'stitch']],lines:[[3.4,'Arun','Like that?']],to:{seam:1,crooked:1,you:{arm:-120,fore:-16,head:-18},arun:{arm:-100,fore:-36,head:-14}}},
+  {dur:6,slow:1,sfx:[[.8,'clamp'],[2,'stitch'],[3.4,'stitch']],lines:[[4.2,'Arun','Like that?']],to:{seam:1,crooked:1,wet:1,you:{arm:-120,fore:-16,head:-18},arun:{arm:-100,fore:-36,head:-14}}},
   {dur:3,lines:[[.3,'You','Like that.']],to:{you:{arm:-10,fore:-20},arun:{arm:-30,fore:-20}}},
   {dur:1.2,to:{slate:1}},
-  {dur:6.5,sfx:[[1.4,'stitch'],[2.6,'stitch']],to:{tear2:1,slate:0,youThere:0,seam2:1,crooked2:1,arun:{arm:-100,fore:-40,head:-14}},note:'A new tear the next night. He mends it on his own; the seam is crooked and it holds.'}],
+  {dur:6.5,sfx:[[1.4,'stitch'],[2.6,'stitch']],to:{tear2:1,slate:0,youThere:0,seam2:1,crooked2:1,arun:{arm:-100,fore:-40,head:-14}},note:'It took longer, and the rain reached the tables before the seam closed. The next night he mends a new tear on his own: crooked, and it holds.'}],
  notes:{take:'mended it myself',hold:'held the other side'},
  question:'What did you carry, and what did you leave room for him to learn?'};
 // SHIELD: the armour is his to open
@@ -241,7 +320,7 @@ ST.shield={word:'SHIELD',title:'What the Armour Keeps',desc:'A quiet workshop at
   <g id="k-garden"><circle cx="650" cy="430" r="180" fill="url(#green)" id="k-gglow" opacity=".25"/>${P([[592,380],[712,370],[724,500],[600,512]],'#1c2a1e')}${P([[636,470],[672,470],[668,500],[640,500]],'#a0603e',EDGE)}${P([[652,470],[648,420],[656,420],[658,470]],'#5f8a4a')}${P([[652,432],[620,410],[632,402],[658,426]],'#8dbb6a',EDGE)}${P([[656,428],[690,404],[696,414],[660,436]],'#9bc27a',EDGE)}${P(ell(612,488,10,6),'#cfe3a0')}${P(ell(700,486,8,5),'#cfe3a0')}</g>
   <g id="k-armour" filter="url(#lift)">${plates.map((p,i)=>`<g class="plate" data-i="${i}">${P(p,['#4b5468','#555f75','#434b5e','#5a6479','#4f586c','#596378'][i],EDGE)}</g>`).join('')}</g>
   <path id="k-seam" d="M640 430 L700 470" stroke="#d9eaa0" stroke-width="5" opacity=".8"/>
-  <g filter="url(#lift)">${person('k-you',{x:1080,y:660,s:1.9,flip:1,coat:'#7a4f46',coat2:'#5e3b35',hair:'#3a2a24',hairStyle:'bun',skin:'#d8a47c'})}</g>
+  <g filter="url(#lift)">${person('k-you',{x:1080,y:660,s:1.9,flip:1,...PEOPLE.you})}</g>
   ${lantern('k-lamp',880,672,.8)}<g id="k-leaf" opacity="0">${P([[0,0],[30,-14],[44,0],[30,14]],'#9bc27a',EDGE)}</g>${GRAINRECT(.42)}`},
  state:{open:0,rattle:0,leaf:0,moon:0,glow:.25,leo:{head:16,arm:30,fore:40},you:{}},
  render(S,f,t){const plates=[...document.querySelectorAll('#k-armour .plate')];
@@ -273,12 +352,12 @@ ST.help={word:'HELP',title:'The Hand That Opens',desc:'Morning on a hilltop. Ivy
   <g id="w-ribbons"></g><g id="w-birds"></g>
   <g id="w-wing" filter="url(#lift)">${[0,1,2,3,4,5].map(i=>`<path d="${cutd([[0,10],[300-i*10,-200+i*52],[360-i*14,-170+i*52],[40,40]],1.6)}" fill="#f6eed9" fill-opacity="${(.82+i*.02).toFixed(2)}" ${EDGE}/>`).join('')}<path d="M0 10 L60 30" stroke="#8a6a4a" stroke-width="6" stroke-linecap="round"/></g>
   <g filter="url(#lift)">${person('w-ivy',{x:960,y:600,s:1.05,standing:1,coat:'#c78f4a',coat2:'#8a5c2c',hair:'#2a1f1a',hairStyle:'wild'})}</g>
-  <g filter="url(#lift)">${person('w-you',{x:560,y:640,s:1.15,standing:1,...PEOPLE.you,hairStyle:'grey',hair:'#c9c3bd'})}</g>${GRAINRECT(.38)}`},
- state:{lift:0,wobble:0,kept:3,birds:0,ivy:{arm:-120,fore:-10},you:{arm:-60,fore:-20,hand:0}},
+  <g filter="url(#lift)">${person('w-you',{x:560,y:640,s:1.15,standing:1,...PEOPLE.you})}</g>${GRAINRECT(.38)}`},
+ state:{lift:0,wobble:0,kept:3,birds:0,taut:0,feather:0,ivy:{arm:-120,fore:-10},you:{arm:-60,fore:-20,hand:0}},
  render(S,f,t){const sway=Math.sin(t*1.3)*6+(S.wobble?Math.sin(t*4.1)*S.wobble*14:0),wx=980+S.lift*40,wy=380-S.lift*230+sway;
   at('w-wing',{transform:`translate(${wx} ${wy}) rotate(${(-6+sway*.6).toFixed(1)})`});
-  const hx=560+124*1.15*.9,hy=640-170;let rib='';for(let i=0;i<3;i++){if(i>=S.kept)continue;const ex=wx+40+i*14,ey=wy+50+i*4;rib+=`<path d="M${hx} ${hy+i*6} Q${(hx+ex)/2} ${Math.max(hy,ey)+60} ${ex} ${ey}" stroke="${['#c9584a','#e0a14a','#5a8aa8'][i]}" stroke-width="4" fill="none"/>`}$('w-ribbons').innerHTML=rib;
-  let b='';for(let i=0;i<S.birds;i++){const u=Math.min(1,(t-(S.birdT||0))*.25+i*.1),x=hx+60+i*90+u*300,y=hy-120-u*260-i*30,wf=(Math.floor(t*6)+i)%2;b+=`<path d="M${x} ${y} l18 ${wf?-12:6} l18 ${wf?12:-6}" stroke="${['#c9584a','#e0a14a','#5a8aa8'][i%3]}" stroke-width="4" fill="none"/>`}$('w-birds').innerHTML=b;
+  const hx=560+124*1.15*.9,hy=640-170;let rib='';for(let i=0;i<3;i++){if(i>=S.kept)continue;const ex=wx+40+i*14,ey=wy+50+i*4;rib+=`<path d="M${hx} ${hy+i*6} Q${(hx+ex)/2} ${Math.max(hy,ey)+60*(1-S.taut)} ${ex} ${ey}" stroke="${['#c9584a','#e0a14a','#5a8aa8'][i]}" stroke-width="4" fill="none"/>`}$('w-ribbons').innerHTML=rib;
+  let b='';for(let i=0;i<S.birds;i++){const u=Math.min(1,(t-(S.birdT||0))*.25+i*.1),x=hx+60+i*90+u*300,y=hy-120-u*260-i*30,wf=(Math.floor(t*6)+i)%2;b+=`<path d="M${x} ${y} l18 ${wf?-12:6} l18 ${wf?12:-6}" stroke="${['#c9584a','#e0a14a','#5a8aa8'][i%3]}" stroke-width="4" fill="none"/>`}if(S.feather>0){const u=S.feather,fx=lerp(wx+80,700,u)+Math.sin(t*3)*20*u,fy=lerp(wy+20,770,u);b+=`<path d="${cutd([[fx-26,fy],[fx,fy-8],[fx+26,fy],[fx,fy+6]],1)}" fill="#f6eed9" transform="rotate(${(Math.sin(t*2)*30).toFixed(0)} ${fx.toFixed(0)} ${fy.toFixed(0)})"/>`}$('w-birds').innerHTML=b;
   pose('w-ivy',S.ivy,f);pose('w-you',S.you,f)},
  intro:[
   {dur:5,reveal:1,lines:[[1,'Ivy','The wind’s right. I think I can take it up.']]},
@@ -286,12 +365,13 @@ ST.help={word:'HELP',title:'The Hand That Opens',desc:'Morning on a hilltop. Ivy
   {gate:1,choices:[{id:'keep',label:'Keep one ribbon',at:[700,430]},{id:'free',label:'Let every ribbon go',at:[420,420]}]}],
  keep:[
   {dur:4.5,sfx:[[.3,'flutter']],to:{kept:1,birds:2,lift:.45,you:{arm:-80,fore:-10}},mark:'birdT'},
-  {dur:5,lines:[[.8,'Ivy','It’s holding. Don’t let go of that one.']],to:{lift:.5,ivy:{head:14}}},
-  {dur:4.5,lines:[[.5,'Ivy','Thanks for staying on the line.']],to:{lift:.35},note:'It flies, a little lower, and she keeps looking back at you.'}],
+  {dur:4,sfx:[[.2,'wind']],lines:[[.6,'Ivy','Gust—!']],to:{lift:.16,wobble:1.4,taut:1,you:{arm:-96,fore:-4}}},
+  {dur:5,lines:[[.8,'Ivy','It’s holding. Don’t let go of that one.']],to:{lift:.45,wobble:.2,taut:0,ivy:{head:14},you:{arm:-80,fore:-10}}},
+  {dur:4.5,lines:[[.5,'Ivy','Thanks for staying on the line.']],to:{lift:.35},note:'A gust drops it hard, and your ribbon catches it. It flies lower after that, and she keeps looking back at you.'}],
  free:[
   {dur:4,sfx:[[.3,'flutter'],[.8,'flutter']],to:{kept:0,birds:3,lift:.7,wobble:1,you:{arm:-20,fore:-10,hand:-30}},mark:'birdT'},
   {dur:4.5,lines:[[.6,'Ivy','It’s pulling. It’s—']],sfx:[[.2,'wind']],to:{lift:.55,wobble:1.6,ivy:{arm:-150,head:-14}}},
-  {dur:5,lines:[[.8,'Ivy','I’ve got it. I’ve got it!']],to:{lift:1,wobble:.3,ivy:{arm:-120,head:-4}},note:'It dips once and she brings it back herself. You are still there, hands open.'}],
+  {dur:5,lines:[[.8,'Ivy','I’ve got it. I’ve got it!']],to:{lift:1,wobble:.3,feather:1,ivy:{arm:-120,head:-4}},note:'It dips hard and she brings it back herself. A feather tears loose and drifts down past you. You are still there, hands open.'}],
  notes:{keep:'kept one ribbon',free:'let go, and stayed'},
  question:'What did you keep hold of? Was it for her, or for you?'};
 // SHIP: the light that stays when you are not there
@@ -302,13 +382,13 @@ ST.ship={word:'SHIP',title:'The Lantern and the Horizon',desc:'Night. On the gal
   ${P([[-20,540],[1620,532],[1620,900],[-20,900]],'#1a2140')}<g id="p-sea"></g><path id="p-beam" fill="#ffe2a0" opacity="0"/>
   ${huts}<g id="p-help"></g><g id="p-boat" opacity="0" filter="url(#lift)">${boatShape()}</g><g id="p-carry"></g>
   <g filter="url(#lift)">${P([[250,900],[280,330],[440,330],[470,900]],'#e9dcc0',EDGE)}${[0,1,2].map(i=>P([[262-i*4,470+i*150],[458+i*4,470+i*150],[460+i*4,520+i*150],[260-i*4,520+i*150]],'#b85a4a')).join('')}${P([[220,312],[500,312],[504,332],[216,336]],'#5a4632',EDGE)}${P([[300,240],[420,240],[440,312],[280,312]],'#2a2f4a',EDGE)}</g>
-  <g filter="url(#lift)">${person('p-you',{x:330,y:312,s:.62,standing:1,...PEOPLE.you,hairStyle:'grey',hair:'#c9c3bd'})}</g>
+  <g filter="url(#lift)">${person('p-you',{x:330,y:312,s:.62,standing:1,...PEOPLE.you})}</g>
   <g filter="url(#lift)">${person('p-sana',{x:446,y:312,s:.55,standing:1,flip:1,coat:'#3f6a7a',coat2:'#2c4c58',hair:'#1f1a1e',hairStyle:'bun'})}</g>
   <g id="p-flame">${lantern('p-big',360,256,1.1)}</g><g id="p-small">${lantern('p-sl',420,262,.55,false)}</g>${GRAINRECT(.42)}`},
- state:{beam:0,beamA:0,boat:0,shared:0,lit:0,mine:1,flicker:0,help:0,sana:{},you:{arm:-70,fore:-30},sanaHere:1,dark:0},
+ state:{beam:0,beamA:0,boat:0,wait:0,shared:0,lit:0,mine:1,flicker:0,help:0,sana:{},you:{arm:-70,fore:-30},sanaHere:1,dark:0},
  render(S,f,t){const ph=Math.floor(t*6)/6;$('p-sea').innerHTML=['#1f2a4c','#243258'].map((c,i)=>P(wave(600+i*90,10,ph*1.1+i,c,300+i),c)).join('');
   const a=S.beamA+Math.sin(t*.6)*.25;at('p-beam',{opacity:S.beam*.4,d:S.beam>0?`M360 256 L${360+1400*Math.cos(a-.06)} ${256+1400*Math.sin(a-.06)} L${360+1400*Math.cos(a+.06)} ${256+1400*Math.sin(a+.06)} Z`:''});
-  at('p-boat',{opacity:S.boat>0?1:0,transform:`translate(${lerp(1300,560,S.boat)} ${lerp(600,700,S.boat)}) scale(.9)`});
+  at('p-boat',{opacity:S.boat>0||S.wait>0?1:0,transform:S.boat>0?`translate(${lerp(1300,560,S.boat)} ${lerp(600,700,S.boat)}) scale(.9)`:`translate(1400 ${(608+Math.sin(t*1.6)*5).toFixed(1)}) rotate(${(Math.sin(t*1.3)*7).toFixed(1)}) scale(.55)`});
   $('p-flame').querySelector('.lglow').setAttribute('opacity',(S.mine*(1-S.dark)).toFixed(2));$('p-flame').querySelector('.lflame').setAttribute('opacity',(S.mine>.2?1:.3)*(1-S.dark));
   const sl=$('p-small');sl.querySelector('.lglow').setAttribute('opacity',S.shared?.9:0);sl.querySelector('.lflame').setAttribute('opacity',S.shared?1:0);sl.setAttribute('opacity',S.sanaHere);
   document.querySelectorAll('#st-svg .hut').forEach((h,i)=>{let on=i<S.lit?1:0;if(i===3&&S.flicker)on=(Math.floor(t*5)%3===0)?.3:1;h.querySelector('.hg').setAttribute('opacity',on*.9);h.querySelector('.win').setAttribute('fill',on?'#ffd88c':'#141629')});
@@ -324,23 +404,52 @@ ST.ship={word:'SHIP',title:'The Lantern and the Horizon',desc:'Night. On the gal
   {dur:5,sfx:[[.3,'beam']],lines:[[1.5,'You','Stay with me. I’ll light the way for them.']],to:{beam:1,beamA:.15}},
   {dur:6,to:{boat:1,beamA:.22},note:'A boat finds the harbour by your beam. The shelters stay dark.'},
   {dur:5.5,lines:[[1.6,'Sana','It holds as long as you do.']],to:{beam:.2,mine:.35,you:{arm:-20,fore:-10,head:12}}},
-  {dur:3,to:{dark:.8,beam:0},note:'Near dawn you lower the lantern, and the whole sea goes dark.'}],
+  {dur:3,to:{dark:.8,beam:0},note:'Near dawn you lower the lantern. The boat is home. The shelters never lit, and the whole sea goes dark.'}],
  share:[
   {dur:4,sfx:[[.6,'flame']],to:{shared:1,you:{arm:-40,fore:-50},sana:{arm:-50,fore:-20}}},
   {dur:4,to:{sanaHere:0,carry:.999,mine:.7}},
-  {dur:7,sfx:[[.3,'flame'],[1.5,'flame'],[2.7,'flame'],[3.9,'flame']],to:{lit:7},note:'One shelter lights the next. Your own flame is smaller now.'},
+  {dur:7,sfx:[[.3,'flame'],[1.5,'flame'],[2.7,'flame'],[3.9,'flame']],to:{lit:7,wait:1},note:'One shelter lights the next. Your own flame is smaller now. Far out, a boat has no light to steer by.'},
   {dur:5,to:{flicker:1},lines:[[1.2,'Sana','(far off) Three is flickering!']]},
-  {dur:5,to:{help:1,flicker:0},note:'Its keeper raises a lantern twice, and the neighbour walks over. Someone answers.'}],
+  {dur:5,to:{help:1,flicker:0},note:'Its keeper raises a lantern twice, and the neighbour walks over. Someone answers. The boat out at sea waits for daylight: the small lights don’t reach that far.'}],
  notes:{keep:'kept the flame',share:'shared the flame'},
  question:'Who holds a light because of you? And who will they call when it flickers?'};
-// ---------- the notebook and the word find ----------
-const WORD='LEADERSHIP',TARGETS=['HEARD','SHARED','SHIELD','HELP','SHIP'];
-const PLACE={HEARD:[905,330],SHARED:[1170,270],SHIELD:[930,560],HELP:[1190,520],SHIP:[1065,710]};
-const KEY={HEARD:'heard',SHARED:'shared',SHIELD:'shield',HELP:'help',SHIP:'ship'};
-const HINT={HEARD:'what listening leaves behind: H _ _ _ _',SHARED:'a load that isn’t only yours: S _ _ _ _ _',SHIELD:'what we hold up when we’re afraid: S _ _ _ _ _',HELP:'the hardest thing to ask for: H _ _ _',SHIP:'what carries everyone: S _ _ _'};
-const BONUS={LEAD:'lead. The obvious one. Keep looking.',LEADER:'leader. A noun. We’re after verbs.',READ:'read. As in the room.',DEAL:'deal. Sometimes.',PRIDE:'pride. Careful with that one.',PERIL:'peril. Not yet.',PLEAD:'plead. Ask instead.',SPIRAL:'spiral. Breathe.',DESPAIR:'despair. Not today.',DEALERSHIP:'dealership. Wrong kind of shop.',SHED:'shed. Let it go.',HIRED:'hired. A start.',HEAL:'heal. Slowly.',HELD:'held. Hold that thought.',SPARE:'spare. A minute?',HEADS:'heads up.',ASPIRE:'aspire. Good.',PRAISED:'praised. Say it out loud.',SHAPED:'shaped. By other people.',PERISH:'perish. Dramatic.',HIRE:'hire.',RELISHED:'relished. Ha.',PEARL:'pearl.',SPIED:'spied. Notice, don’t spy.'};
-const G={found:[],done:{},picked:[],lastFind:0,screen:'notebook',hintLevel:0,mine:''};
-function pencilMap(){const sk={HEARD:'<path d="M-60 10 q20 -30 40 0 t40 0 t40 0" />',SHARED:'<path d="M-60 10 Q0 -50 60 10" /><path d="M-40 10 v24 M40 10 v24"/>',SHIELD:'<path d="M-30 -30 h60 l10 40 l-40 34 l-40 -34 z"/>',HELP:'<path d="M-60 30 Q0 -10 60 30"/><path d="M0 0 l50 -40 l10 18 z"/>',SHIP:'<path d="M-10 30 l4 -60 h12 l4 60 z"/><path d="M10 -24 l60 -10 M10 -20 l60 10"/>'};
+// ---------- painted layers: used where they exist, code-cut everywhere else (see art/README.md) ----------
+const ARTDIR=(Q.get('art')||'art').replace(/[^a-z0-9-]/gi,'');let ARTIDX={};
+const artReady=fetch(ARTDIR+'/index.json').then(r=>r.ok?r.json():{}).then(j=>{ARTIDX=j.rooms||{}}).catch(()=>{});
+const artUrl=(room,f)=>f?ARTDIR+'/'+room+'/'+f:null;
+const artPlate=(room,light)=>artUrl(room,ARTIDX[room]?.plate?.[light]);
+function artFig(room,who){const set=ARTIDX[room]?.figures?.[who];if(!set)return null;const o={};for(const [k,v] of Object.entries(set))o[k]=artUrl(room,v);return o}
+// ---------- the six words, their bottles and their films (the pairing is a proposal: Bob decides) ----------
+const WORD='LEADERSHIP',TARGETS=['HEARD','LEAD','SHARED','SHIELD','HELP','SHIP'];
+const PLACE={HEARD:[950,300],LEAD:[1220,300],SHARED:[950,480],SHIELD:[1220,480],HELP:[950,660],SHIP:[1220,660]};
+const KEY={HEARD:'heard',LEAD:null,SHARED:'shared',SHIELD:'shield',HELP:'help',SHIP:'ship'};
+const ROOT='../../../';
+const FILMS={standup:{title:'The Quiet Minute',src:'anthology/episodes/standup/index.html',arrival:'The room has agreed. Not everyone has spoken.'},
+ slides:{title:'The Missing Name',src:'anthology/episodes/slides/index.html',arrival:'A beautiful opening is missing its author.'},
+ seam:{title:'The 3:00 AM Seam',src:'film/index.html',arrival:'The studio is still awake.'},
+ ship:{title:'Before the Doors Open',src:'anthology/episodes/ship/index.html',arrival:'The doors are about to open.'},
+ pixel:{title:'The Empty Square',src:'anthology/episodes/pixel/index.html',arrival:'The next sequence should be Jo’s to choose.'},
+ scope:{title:'One More Chair',src:'anthology/episodes/scope/index.html',arrival:'One more student waits at the door.'}};
+// Manufactured, a little uncanny: real-looking wrappers whose small print knows too much. Never names an outcome.
+const BOTTLES={
+ HEARD:{film:'standup',brand:['STANDUP','SELTZER'],tint:'#9cae98',glass:'#5f7a6c',cap:'ring',tag:'For loud rooms.',
+  when:['you’ve said it in','your head three times.'],ingr:['Carbonated water','Lightly carbonated agreement','One confident route','The end of someone else’s sentence','A pause (2%)','Courage (trace)'],small:['Best served without interrupting.','Contains one folded alternative.','Room booked until the next group.']},
+ LEAD:{film:'slides',brand:['SLIDE DECK','BITTERS'],tint:'#c58f7f',glass:'#7a4a40',cap:'wax',tag:'A few drops transform any opening.',
+  when:['everyone’s looking','at you to start.'],ingr:['Bitter orange','One beautiful route diagram','One pencilled field notebook','Nerve','Made by: ______________'],small:['Not the only word in the bottle.','Credits may settle at the bottom.','Shake before presenting.']},
+ SHARED:{film:'seam',brand:['3:00 AM','COLD BREW'],tint:'#e2b25c',glass:'#4a3220',cap:'crown',tag:'Steeped since midnight.',
+  when:['two good things want','the same hour.'],ingr:['Cold-brewed coffee','A spare rib, cut clean','The original, still cracked','Someone else’s deadline','A pinch of courage'],small:['Hands off at 4:30.','Store away from direct light.','Best shared before it sets.']},
+ SHIELD:{film:'ship',brand:['SHIP-IT','GINGER ALE'],tint:'#c1ac79',glass:'#6a5a30',cap:'cork',tag:'Brewed to open on time.',
+  when:['you’d rather it','looked perfect.'],ingr:['Ginger','Sugar','One paper city','A sensor that sometimes counts twice','One honest sentence'],small:['Live product may vary.','Seal may show signs of tampering.','That’s the point.']},
+ HELP:{film:'pixel',brand:['DEAD PIXEL','TONIC'],tint:'#b1a4bc',glass:'#5a4e6a',cap:'crown',tag:'Clear, with a bitter edge.',
+  when:['you’re about to','do it for them.'],ingr:['Tonic water','One paper world','Large controls, mounted high','An open hand','Patience (to taste)'],small:['Shake gently.','Let them open it.','The next sequence: yet to be chosen.']},
+ SHIP:{film:'scope',brand:['SCOPE CREEP','FIZZ'],tint:'#9da6c2',glass:'#4a5678',cap:'swing',tag:'Contents under pressure.',
+  when:['it’s almost closing and','someone’s at the door.'],ingr:['Rainwater','Three booked repairs','One torn bag, one spare chair','Room'],small:['Hall clear by six.','Pressure rises with each addition.','Ask about tomorrow’s batch.']}};
+const LEADQ={question:'Whose map was it? And who said so out loud?',trace:'<path d="M40 150 q30 -90 60 -40 t60 -60" stroke="#e8dcc4" stroke-width="5" fill="none" stroke-dasharray="10 8"/><circle cx="160" cy="50" r="12" fill="#e9c27a"/>'};
+const NIGHT=['03:14','03:41','04:08','04:36','05:03','05:31','06:02'];
+const HINT={HEARD:'what listening leaves behind: H _ _ _ _',LEAD:'the obvious one: L _ _ _',SHARED:'a load that isn’t only yours: S _ _ _ _ _',SHIELD:'what we hold up when we’re afraid: S _ _ _ _ _',HELP:'the hardest thing to ask for: H _ _ _',SHIP:'what carries everyone: S _ _ _'};
+const BONUS={LEADER:'leader. A noun. We’re after what it asks of you.',READ:'read. As in the room.',DEAL:'deal. Sometimes.',PRIDE:'pride. Careful with that one.',PERIL:'peril. Not yet.',PLEAD:'plead. Ask instead.',SPIRAL:'spiral. Breathe.',DESPAIR:'despair. Not today.',DEALERSHIP:'dealership. Wrong kind of shop.',SHED:'shed. Let it go.',HIRED:'hired. A start.',HEAL:'heal. Slowly.',HELD:'held. Hold that thought.',SPARE:'spare. A minute?',HEADS:'heads up.',ASPIRE:'aspire. Good.',PRAISED:'praised. Say it out loud.',SHAPED:'shaped. By other people.',PERISH:'perish. Dramatic.',HIRE:'hire.',RELISHED:'relished. Ha.',PEARL:'pearl.',SPIED:'spied. Notice, don’t spy.'};
+const G={found:[],done:{},film:{},walked:[],frames:{},peeked:{},picked:[],lastFind:0,screen:'notebook',hintLevel:0,mine:''};
+function pencilMap(){const sk={HEARD:'<path d="M-60 10 q20 -30 40 0 t40 0 t40 0" />',LEAD:'<path d="M-50 20 q20 -40 40 -10 t40 -30" stroke-dasharray="8 6"/><circle cx="34" cy="-22" r="6"/>',SHARED:'<path d="M-60 10 Q0 -50 60 10" /><path d="M-40 10 v24 M40 10 v24"/>',SHIELD:'<path d="M-30 -30 h60 l10 40 l-40 34 l-40 -34 z"/>',HELP:'<path d="M-60 30 Q0 -10 60 30"/><path d="M0 0 l50 -40 l10 18 z"/>',SHIP:'<path d="M-40 6 h80 l-14 18 h-52 z"/><path d="M-2 6 v-40 l26 34"/>'};
  return Object.entries(PLACE).map(([w,[x,y]])=>`<g class="place" id="pl-${w}" transform="translate(${x} ${y})" stroke="#4a4652" stroke-width="2.4" fill="none" stroke-linecap="round" opacity=".14">${sk[w]}</g>`).join('')}
 // Where the two pages sit: identity on a wide screen; stacked and enlarged on a tall one.
 let PORTRAIT=false;const VB=()=>PORTRAIT?[900,1950]:[1600,900],K=1.35;
@@ -357,7 +466,7 @@ function buildNotebook(){const lines=(x0,x1)=>[...Array(17)].map((_,i)=>`<path d
   <g id="nb-around" font-family="Kalam,cursive" font-size="30" fill="#4a4652"></g></g>
   <g transform="${RT()}"><g filter="url(#lift)">${P([[808,116],[1364,108],[1368,806],[804,812]],'#f1e6cd')}</g>${lines(834,1336)}
   <text x="1086" y="176" text-anchor="middle" font-family="Kalam,cursive" font-size="26" fill="#6b6474" id="nb-maptitle" opacity="0">where the words go</text>
-  ${pencilMap()}<g id="nb-notes" font-family="Kalam,cursive" font-size="22" fill="#4a4652"></g></g>
+  ${pencilMap()}<g id="nb-notes" font-family="Kalam,cursive" font-size="21" fill="#4a4652"></g></g>
   ${PORTRAIT?'':'<rect x="790" y="114" width="20" height="700" fill="#0005"/><path d="M1380 160 l26 560 l-12 6 l-28 -560 z" fill="#d6a43a"/><path d="M1394 726 l-12 6 l8 26 z" fill="#3a2a20"/>'}
   <rect width="${W}" height="${H}" fill="url(#grain)" opacity=".25"/>`;layoutOverlays()}
 // The HTML controls follow the pages (positions in landscape page coordinates, mapped for the current layout).
@@ -365,101 +474,243 @@ function place(el,[x,y],w){const [px,py]=pct([x,y]);el.style.left=px+'%';el.styl
 function layoutOverlays(){const k=PORTRAIT?K:1;
  const t=LP(262,276);place($('tiles'),t,506*k);
  const sp=LP(262,408);place($('spell'),sp,506*k);$('spell').style.textAlign='center';const nt=LP(262,478);place($('note'),nt,506*k);
- place($('go'),RP(1240,760));place($('mine'),LP(320,622),380*k);place($('closebook'),LP(510,742));
+ place($('go'),LP(510,764));place($('mine'),LP(320,622),380*k);place($('closebook'),LP(510,742));
  for(const w of G.found){const b=$('boat-'+w);if(b){const [x,y]=PLACE[w];place(b,RP(x,y-40))}}
  document.querySelectorAll('.boat').forEach(b=>b.style.width=(PORTRAIT?11:6.4)+'%')}
-function setLayout(){const p=innerWidth<innerHeight&&innerWidth<900;if(p===PORTRAIT&&$('nb-svg').innerHTML)return;PORTRAIT=p;$('frame').classList.toggle('portrait',p);
- const done=G.found.slice();buildNotebook();for(const w of done)at('pl-'+w,{opacity:.85});if(done.length)$('nb-maptitle').setAttribute('opacity',1);if(G.ended)endWords();else if(Object.keys(G.done).length)backToNotebook(true)}
+function setLayout(){const p=innerWidth<innerHeight&&innerWidth<900;if(p!==PORTRAIT||!$('nb-svg').innerHTML){PORTRAIT=p;$('frame').classList.toggle('portrait',p);
+ const done=G.found.slice();buildNotebook();for(const w of done)at('pl-'+w,{opacity:.85});if(done.length)$('nb-maptitle').setAttribute('opacity',1);writeNotes();if(G.ended)endWords()}
+ if(!$('held').hidden)drawBottle();if(!$('corridor').hidden)placeSlots()}
 addEventListener('resize',()=>setLayout());
 function buildTiles(){const box=$('tiles');box.innerHTML='';[...WORD].forEach((ch,i)=>{const b=document.createElement('button');b.className='tile';b.textContent=ch;b.dataset.i=i;b.setAttribute('aria-pressed','false');b.setAttribute('aria-label','Letter '+ch);b.style.setProperty('--r',((i%3)-1)*3+'deg');b.onclick=()=>pick(i);box.appendChild(b)})}
 function formed(){return G.picked.map(i=>WORD[i]).join('')}
 function renderTiles(){document.querySelectorAll('.tile').forEach(b=>b.setAttribute('aria-pressed',String(G.picked.includes(+b.dataset.i))));$('spell').textContent=formed().split('').join(' ')}
-function pick(i){if(G.screen!=='notebook'||G.lock)return;if(G.picked.includes(i))return;G.picked.push(i);Snd.play('tap');renderTiles();check()}
+function pick(i){if(G.screen!=='notebook'||G.lock||G.ending)return;if(G.picked.includes(i))return;G.picked.push(i);Snd.play('tap');renderTiles();check()}
 function unpick(){G.picked.pop();renderTiles()}
 function clear(){G.picked=[];renderTiles()}
 function check(){const w=formed();
  if(TARGETS.includes(w)&&!G.found.includes(w)){found(w);return}
- if(BONUS[w]&&!(TARGETS.includes(w))){$('note').textContent=BONUS[w];Snd.play('pencil');if(!TARGETS.some(t=>t.startsWith(w)&&t!==w&&!G.found.includes(t)))setTimeout(()=>{if(formed()===w)clear()},1400);return}
+ if(BONUS[w]){$('note').textContent=BONUS[w];Snd.play('pencil');if(!TARGETS.some(t=>t.startsWith(w)&&t!==w&&!G.found.includes(t)))setTimeout(()=>{if(formed()===w)clear()},1400);return}
  const live=[...TARGETS.filter(t=>!G.found.includes(t)),...Object.keys(BONUS)].some(t=>t.startsWith(w));
  if(!live){G.lock=1;$('spell').classList.add('wrong');setTimeout(()=>{$('spell').classList.remove('wrong');G.lock=0;clear()},500)}}
-function found(w){G.found.push(w);G.lastFind=now();G.hintLevel=0;G.lock=1;Snd.play('fold');$('note').textContent='';announce(`You found ${w.toLowerCase()}. It folds into a boat.`);
+function found(w){G.found.push(w);G.lastFind=now();G.hintLevel=0;G.lock=1;Snd.play('fold');$('note').textContent='';announce(`You found ${w.toLowerCase()}. It folds into a boat, and somewhere a bottle lights.`);
  // The letters fold into a boat that sails to its place on the map.
  const tiles=[...document.querySelectorAll('.tile')].filter(b=>G.picked.includes(+b.dataset.i)),fr=$('frame').getBoundingClientRect();
  let cx=0,cy=0;tiles.forEach(b=>{const r=b.getBoundingClientRect();cx+=r.left+r.width/2-fr.left;cy+=r.top+r.height/2-fr.top});cx/=tiles.length;cy/=tiles.length;
  const boat=makeBoat(w);boat.style.left=cx/fr.width*100+'%';boat.style.top=cy/fr.height*100+'%';$('boats').appendChild(boat);
  const [px,py]=PLACE[w];boat.style.width=(PORTRAIT?11:6.4)+'%';setTimeout(()=>{boat.style.transition=reduced?'none':'left 1.4s steps(9),top 1.4s steps(9)';place(boat,RP(px,py-40))},300);
- setTimeout(()=>{at('pl-'+w,{opacity:.85});$('nb-maptitle').setAttribute('opacity',1);clear();G.lock=0;updateGo();if(!G.seenTip&&G.found.length===1){G.seenTip=1;$('note').textContent='Tap the boat to go there. Or keep looking: there are more.'}},reduced?50:1800)}
-function makeBoat(w){const b=document.createElement('button');b.className='boat';b.id='boat-'+w;b.setAttribute('aria-label',`${w.toLowerCase()}: enter ${ST[KEY[w]].title}`);
- b.innerHTML=`<svg viewBox="-50 -50 100 100" aria-hidden="true"><g filter="url(#nb-lift)">${boatShape()}</g></svg><span>${w.toLowerCase()}</span>`;b.onclick=()=>enter(KEY[w]);return b}
-function updateGo(){const visited=Object.keys(G.done).length,go=$('go');
- go.hidden=!(visited>=1&&G.found.every(w=>G.done[KEY[w]]));go.textContent='Turn the page';
-}
+ setTimeout(()=>{at('pl-'+w,{opacity:.85});$('nb-maptitle').setAttribute('opacity',1);clear();G.lock=0;updateGo();if(!G.seenTip&&G.found.length===1){G.seenTip=1;$('note').textContent='Close the notebook when you’re ready. Or keep looking: there are more.'}},reduced?50:1800)}
+function makeBoat(w){const b=document.createElement('button');b.className='boat';b.id='boat-'+w;b.setAttribute('aria-label',`${w.toLowerCase()}: go to its bottle`);
+ b.innerHTML=`<svg viewBox="-50 -50 100 100" aria-hidden="true"><g filter="url(#nb-lift)">${boatShape()}</g></svg><span>${w.toLowerCase()}</span>`;b.onclick=()=>{if(!G.walked.includes(w))showCorridor(w)};return b}
+function updateGo(){const go=$('go');go.hidden=!(G.found.length>=1)||!!G.ending;go.textContent='Close the notebook'}
 function hints(){if(G.screen!=='notebook'||G.ending)return;const left=TARGETS.filter(t=>!G.found.includes(t));if(!left.length)return;const idle=now()-G.lastFind;
  const w=left[0];document.querySelectorAll('.tile').forEach(b=>b.classList.toggle('glow',idle>22&&b.textContent===w[0]&&!G.picked.length));
  if(idle>40&&G.hintLevel<1){G.hintLevel=1;$('note').textContent=HINT[w]}}
 // Typing: any letter picks the next free tile with that letter.
-addEventListener('keydown',e=>{if(G.screen!=='notebook'||G.ending||e.target.tagName==='INPUT')return;const k=e.key.toUpperCase();
+addEventListener('keydown',e=>{if(e.target.tagName==='INPUT')return;
+ if(G.screen==='held'){if(e.key==='ArrowLeft'){e.preventDefault();turn(-1)}else if(e.key==='ArrowRight'){e.preventDefault();turn(1)}else if(e.key==='Escape')putBack();return}
+ if(G.screen!=='notebook'||G.ending)return;const k=e.key.toUpperCase();
  if(/^[A-Z]$/.test(k)){const i=[...WORD].findIndex((c,j)=>c===k&&!G.picked.includes(j));if(i>=0){e.preventDefault();pick(i)}}
  else if(e.key==='Backspace'){e.preventDefault();unpick()}else if(e.key==='Escape')clear()});
-// ---------- a room: reveal by lantern, the choice, the consequence, the mirror ----------
+const SCREENS=['notebook','corridor','held','filmscr','story','mirror','end'];
+function only(...ids){for(const s of SCREENS)$(s).hidden=!ids.includes(s);$('pause').hidden=!ids.includes('story')}
+// ---------- the corridor: the dispenser, lit by the words you found ----------
+const SLOT=TARGETS.map((w,i)=>[720+(i%3)*80,i<3?390:590]),BH=150,BW=58;
+function bottleOutline(cx,base,h,w){return[[cx-w/2,base],[cx+w/2,base],[cx+w/2,base-h*.58],[cx+w*.2,base-h*.76],[cx+w*.15,base-h],[cx-w*.15,base-h],[cx-w*.2,base-h*.76],[cx-w/2,base-h*.58]]}
+function buildCorridor(){$('co-svg').innerHTML=`<rect width="1600" height="900" fill="#191b30"/>
+ ${[...Array(9)].map((_,i)=>`<path d="M${i*200-40} 0 V800" stroke="#0f1122" stroke-width="3" opacity=".6"/>`).join('')}
+ ${P([[1180,120],[1420,116],[1424,384],[1176,388]],'#4a3d36',EDGE)}${P([[1196,136],[1404,134],[1406,368],[1194,370]],'#10132a')}<g id="co-win"></g>${P(ell(1330,210,22,22),'#d8d2bc')}
+ ${P([[0,800],[1600,792],[1600,900],[0,900]],'#0f101e')}${P([[0,792],[1600,786],[1600,800],[0,806]],'#2a2c44')}
+ ${P([[90,150],[250,146],[254,800],[86,804]],'#14162a',EDGE)}${P([[104,166],[236,164],[238,792],[102,794]],'#0d0f1f')}
+ <ellipse cx="800" cy="836" rx="330" ry="44" fill="url(#warm)" opacity=".42" id="co-pool"/>
+ <g filter="url(#lift)">${P([[628,150],[972,146],[978,806],[622,810]],'#3a2a30',EDGE)}${P([[614,140],[986,136],[990,154],[610,158]],'#5a4248',EDGE)}
+ ${P([[652,192],[948,190],[950,618],[650,620]],'#e8d9b8',EDGE)}${P([[662,200],[938,198],[940,608],[660,610]],'#14101c')}</g>
+ <rect id="co-glow" x="662" y="200" width="278" height="410" fill="url(#warm)" opacity=".5"/>
+ ${P([[664,392],[938,390],[938,402],[664,404]],'#6b4a32',EDGE)}${P([[664,592],[938,590],[938,602],[664,604]],'#6b4a32',EDGE)}
+ <g id="co-bottles"></g>
+ <path d="M690 200 L760 200 L680 610 L662 610 L662 330 Z" fill="#fff" opacity=".06"/>
+ ${P([[700,632],[900,630],[902,676],[698,678]],'#0b1510',EDGE)}<text id="co-clock" x="800" y="664" text-anchor="middle" font-family="ui-monospace,Menlo,monospace" font-size="30" letter-spacing="4" fill="#9fe0b0" opacity=".85"></text>
+ ${P([[918,640],[938,640],[938,676],[918,676]],'#1a1218')}${P([[700,704],[900,702],[904,764],[696,766]],'#0c0a10',EDGE)}
+ <g id="co-roof"></g><g id="co-dawn" opacity="0"><rect width="1600" height="900" fill="url(#dawnsky)" opacity=".42" style="mix-blend-mode:soft-light"/>${P([[1196,136],[1404,134],[1406,368],[1194,370]],'#f1d6b3')}<path d="M1196 370 L1406 368 L1300 900 L760 900 Z" fill="#ffe9c0" opacity=".16"/></g>${GRAINRECT(.42)}`}
+function miniFrame(w,x,y,wd){const f=G.frames[w]||`<rect width="1600" height="900" fill="#efe3c8"/><g transform="translate(500 30) scale(4.2)">${LEADQ.trace.replace(/#e8dcc4/g,'#4a4652')}</g>`;
+ return `<svg x="${x}" y="${y}" width="${wd}" height="${wd*9/16}" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">${f}</svg>`}
+function renderCorridor(){let b='';TARGETS.forEach((w,i)=>{const [cx,base]=SLOT[i],bt=BOTTLES[w];if(G.walked.includes(w))return;
+  if(G.found.includes(w)){b+=`<circle cx="${cx}" cy="${base-70}" r="60" fill="url(#warm)" opacity=".55"/>${P(bottleOutline(cx,base,BH,BW),bt.glass,EDGE)}${P([[cx-BW/2+2,base-BH*.5],[cx+BW/2-2,base-BH*.5],[cx+BW/2-2,base-BH*.2],[cx-BW/2+2,base-BH*.2]],'#efe3c8')}<rect x="${cx-BW/2+2}" y="${base-BH*.5}" width="${BW-4}" height="9" fill="${bt.tint}"/><path d="M${cx-BW*.3} ${base-BH*.56} V${base-8}" stroke="#fff" stroke-opacity=".25" stroke-width="5"/>`}
+  else b+=P(bottleOutline(cx,base,BH,BW),'#0b0910','stroke="#3a3342" stroke-width="1.5"')});
+ $('co-bottles').innerHTML=b;at('co-glow',{opacity:G.found.some(w=>!G.walked.includes(w))?.55:.18});
+ // The empties: each carries a frame of how it ended for you.
+ $('co-roof').innerHTML=G.walked.map((w,i)=>{const cx=652+i*59,base=140,h=128,wd=54;return `${P(bottleOutline(cx,base,h,wd),'#cfe0e6','fill-opacity=".16" stroke="#efe3c8" stroke-opacity=".55" stroke-width="2"')}${miniFrame(w,cx-24,base-h*.52,48)}<path d="M${cx-wd*.28} ${base-h*.55} V${base-8}" stroke="#fff" stroke-opacity=".3" stroke-width="3"/>`}).join('');
+ $('co-clock').textContent=NIGHT[Math.min(G.walked.length,6)]}
+function placeSlots(){const svg=$('co-svg'),m=svg.getScreenCTM(),fr=$('frame').getBoundingClientRect();if(!m)return;const pt=svg.createSVGPoint();
+ const scr=(x,y)=>{pt.x=x;pt.y=y;const p=pt.matrixTransform(m);return[p.x-fr.left,p.y-fr.top]};
+ for(const b of $('slots').children){const i=+b.dataset.i,[cx,base]=SLOT[i],[x0,y0]=scr(cx-BW/2-8,base-BH-6),[x1,y1]=scr(cx+BW/2+8,base);Object.assign(b.style,{left:x0+'px',top:y0+'px',width:(x1-x0)+'px',height:(y1-y0)+'px'})}}
+function showCorridor(focusWord){G.screen='corridor';only('corridor');if(!$('co-svg').innerHTML)buildCorridor();renderCorridor();Snd.music('night');
+ const box=$('slots');box.innerHTML='';TARGETS.forEach((w,i)=>{if(!G.found.includes(w)||G.walked.includes(w))return;const bt=BOTTLES[w],b=document.createElement('button');b.className='slot';b.dataset.i=i;b.id='slot-'+w;
+  b.setAttribute('aria-label',`${bt.brand.join(' ').toLowerCase()}. On the label: ${w.toLowerCase()}.`);b.onclick=()=>showBottle(w);box.appendChild(b)});
+ requestAnimationFrame(placeSlots);
+ const left=G.found.filter(w=>!G.walked.includes(w)),dark=TARGETS.length-G.found.length;
+ $('morning').hidden=!G.walked.length;
+ $('c-cap').textContent=!G.walked.length?`${NIGHT[0]}. The words you found are lit.`:left.length?`${NIGHT[Math.min(G.walked.length,6)]}. An empty on the roof.`:dark?`${NIGHT[Math.min(G.walked.length,6)]}. ${dark===1?'One slot is':dark+' slots are'} still dark. The notebook is still open.`:'Every bottle is on the roof.';
+ announce('The corridor. '+$('c-cap').textContent);
+ setTimeout(()=>{const t=focusWord&&$('slot-'+focusWord)||box.querySelector('button')||$('morning').hidden&&$('nb-open')||$('morning');t?.focus({preventScroll:true})},120);
+ if(G.walked.length===TARGETS.length&&!G.dawn)setTimeout(dawn,1800)}
+$('nb-open').onclick=()=>{if(G.dawn===2){beginEnding();return}backToNotebook()};
+$('morning').onclick=()=>dawn();
+function dawn(){if(G.dawn)return;G.dawn=1;$('morning').hidden=true;$('slots').innerHTML='';Snd.music('dawn');$('c-cap').textContent='Morning comes up the corridor. The empties catch it first.';announce($('c-cap').textContent);
+ const d=$('co-dawn');if(reduced)at(d,{opacity:1});else{let k=0;const id=setInterval(()=>{k++;at(d,{opacity:(k/8).toFixed(2)});if(k>=8)clearInterval(id)},380)}
+ $('co-roof').querySelectorAll('path[stroke-opacity=".55"]').forEach(p=>p.setAttribute('stroke','#ffe2a0'));
+ setTimeout(()=>{zoomRoof();G.dawn=2;$('nb-open').textContent='Open the notebook';setTimeout(()=>$('nb-open').focus({preventScroll:true}),reduced?0:2400)},reduced?300:3400)}
+function zoomRoof(){const n=G.walked.length,x0=652-40,x1=652+(n-1)*59+40,r=$('frame').getBoundingClientRect(),A=r.width/r.height,nw=x1-x0+60,nh=200;let W,H;if(nw/nh>A){W=nw;H=W/A}else{H=nh;W=H*A}const to=[(x0+x1)/2-W/2,80-H/2,W,H],svg=$('co-svg');$('c-cap').textContent=n===1?'One empty on the roof.':`${n} empties on the roof. Each one holds how it ended.`;
+ if(reduced){svg.setAttribute('viewBox',to.join(' '));return}let k=0;const id=setInterval(()=>{k++;const u=qe(k/12,12),v=[0,0,1600,900].map((a,i)=>lerp(a,to[i],u));svg.setAttribute('viewBox',v.map(x=>x.toFixed(1)).join(' '));if(k>=12)clearInterval(id)},170)}
+// ---------- a bottle in your hand: turn it, read it, hold it up to the light ----------
+let HB={w:null,turn:0};
+function panel(k,b,w,x0){const cx=x0+240,T=(y,s,size,font='Georgia,serif',extra='')=>`<text x="${cx}" y="${y}" text-anchor="middle" font-family="${font}" font-size="${size}" fill="#2b2731" ${extra}>${s}</text>`;
+ const face=((k%4)+4)%4;let o=`<rect x="${x0}" y="360" width="480" height="400" fill="#efe3c8"/><rect x="${x0}" y="360" width="480" height="30" fill="${b.tint}"/><rect x="${x0}" y="730" width="480" height="30" fill="${b.tint}"/><path d="M${x0} 360 V760" stroke="#cdbb98" stroke-width="2"/>`;
+ if(face===0)o+=T(474,b.brand[0],b.brand[0].length>8?50:64,'Georgia,serif','letter-spacing="5"')+T(536,b.brand[1],40,'Georgia,serif','letter-spacing="7"')+`<rect x="${cx-110}" y="568" width="220" height="74" fill="none" stroke="#2b2731" stroke-width="2"/>`+T(622,w.toLowerCase(),46,'Kalam,cursive','fill-opacity=".9"')+T(696,b.tag,24,'Georgia,serif','font-style="italic"');
+ if(face===1)o+=T(452,'DRINK WHEN',17,'system-ui','letter-spacing="6"')+b.when.map((l,i)=>T(530+i*56,l,38,'Kalam,cursive')).join('')+`<path d="M${cx-60} 680 h120" stroke="#2b2731" stroke-width="1.5"/>`;
+ if(face===2)o+=T(428,'INGREDIENTS',17,'system-ui','letter-spacing="6"')+b.ingr.map((l,i)=>T(474+i*40,l,21)).join('');
+ if(face===3)o+=b.small.map((l,i)=>T(462+i*36,l,20,'Georgia,serif','font-style="italic"')).join('')+T(640,'Hold up to the light.',32,'Kalam,cursive')+`<g transform="translate(${cx-50} 668)" stroke="#2b2731" stroke-width="1.4">${[...Array(14)].map((_,i)=>`<path d="M${i*7} 0 v${i%3?24:34}"/>`).join('')}</g>`;
+ return o}
+function labelText(w,k){const b=BOTTLES[w],f=((k%4)+4)%4;return['Front: '+b.brand.join(' ')+'. In a stamped window: '+w.toLowerCase()+'. '+b.tag,'Drink when '+b.when.join(' '),'Ingredients: '+b.ingr.join(', ')+'.',b.small.join(' ')+' Hold up to the light.'][f]}
+function capShape(b){const c=b.cap;if(c==='cork')return P([[772,6],[828,6],[832,70],[768,70]],'#b08a5a',EDGE);if(c==='wax')return P([[762,30],[838,30],[846,96],[820,84],[800,110],[778,86],[754,96]],b.tint,EDGE);if(c==='swing')return P([[766,40],[834,40],[834,72],[766,72]],'#d9d2c4',EDGE)+'<path d="M770 70 q-40 40 -6 90 M830 70 q40 40 6 90" stroke="#9a948a" stroke-width="5" fill="none"/>';if(c==='ring')return P([[762,40],[838,40],[842,78],[758,78]],'#b9b4aa',EDGE)+'<circle cx="800" cy="30" r="16" fill="none" stroke="#b9b4aa" stroke-width="6"/>';return P([[758,44],[842,44],[848,80],[752,80]],b.tint,EDGE)+P([[752,80],[848,80],[844,88],[756,88]],'#6b5420')}
+function drawBottle(){const w=HB.w,b=BOTTLES[w],svg=$('hb-svg');svg.setAttribute('viewBox',PORTRAIT?'500 0 600 1300':'0 0 1600 900');
+ const body=[[560,1420],[1040,1420],[1040,318],[1030,282],[1004,252],[960,226],[900,206],[862,190],[848,166],[846,70],[754,70],[752,166],[738,190],[700,206],[640,226],[596,252],[570,282],[560,318]];
+ let strip='';for(let k=-8;k<=12;k++)strip+=panel(k,b,w,560+k*480);
+ svg.innerHTML=`<defs><clipPath id="lbl"><rect x="560" y="360" width="480" height="400"/></clipPath><linearGradient id="curve" x1="0" x2="1"><stop offset="0" stop-color="#000" stop-opacity=".62"/><stop offset=".2" stop-color="#000" stop-opacity=".08"/><stop offset=".33" stop-color="#fff" stop-opacity=".16"/><stop offset=".42" stop-color="#000" stop-opacity="0"/><stop offset=".82" stop-color="#000" stop-opacity=".12"/><stop offset="1" stop-color="#000" stop-opacity=".6"/></linearGradient></defs>
+  <g class="lift"><circle cx="800" cy="300" r="520" fill="url(#warm)" opacity=".22"/>
+  <g filter="url(#lift)">${P(body,b.glass,EDGE+' fill-opacity=".94"')}</g>${P([[566,520],[1034,520],[1034,1420],[566,1420]],'#1a1218','opacity=".35"')}
+  <g clip-path="url(#lbl)"><g id="lbl-strip" style="transform:translateX(${-HB.turn*480}px);transition:transform ${reduced?0:.5}s steps(6)">${strip}</g></g>
+  <rect x="560" y="360" width="480" height="400" fill="url(#curve)"/><path d="M612 230 L612 1400" stroke="#fff" stroke-opacity=".22" stroke-width="16"/><path d="M640 300 L640 1400" stroke="#fff" stroke-opacity=".1" stroke-width="5"/>
+  ${capShape(b)}<rect width="1600" height="1400" fill="url(#grain)" opacity=".3"/></g>`;
+ $('label-text').textContent=labelText(w,HB.turn)}
+function showBottle(w){HB={w,turn:0};G.screen='held';only('held');$('held').classList.remove('up');Snd.play('clink');drawBottle();
+ $('held').setAttribute('aria-label',`${BOTTLES[w].brand.join(' ').toLowerCase()}, in your hand`);setTimeout(()=>$('hold-up').focus({preventScroll:true}),80)}
+function turn(d){if(G.screen!=='held')return;HB.turn=Math.max(-8,Math.min(8,HB.turn+d));const s=$('lbl-strip');if(s)s.style.transform=`translateX(${-HB.turn*480}px)`;$('label-text').textContent=labelText(HB.w,HB.turn);Snd.play('paper')}
+function putBack(){if(G.screen!=='held')return;showCorridor(HB.w)}
+$('turn-l').onclick=()=>turn(-1);$('turn-r').onclick=()=>turn(1);$('put-back').onclick=putBack;
+$('hold-up').onclick=()=>holdUp();
+{let x0=null;$('hb-svg').addEventListener('pointerdown',e=>{x0=e.clientX});$('hb-svg').addEventListener('pointerup',e=>{if(x0!=null&&Math.abs(e.clientX-x0)>30)turn(e.clientX<x0?1:-1);x0=null})}
+// Held up to the light, the bottle becomes a camera obscura: the room inside appears upside down, rights itself, and opens out.
+function holdUp(){if(G.screen!=='held')return;const w=HB.w,key=KEY[w];G.screen='crossing';$('held').classList.add('up');Snd.play('unfold');announce('You hold it up to the light. Something inside turns the right way up.');
+ setTimeout(()=>{if(key)enterRoom(key,{cross:true});else startFilm(w,{cross:true})},reduced?0:650)}
+function crossInto(el,box,done){if(reduced||!box.animate){$('held').hidden=true;el.hidden=false;done();return}
+ el.hidden=false;el.classList.add('crossing');
+ const a=box.animate([{transform:'rotate(180deg) scale(.3)',clipPath:'circle(30% at 50% 50%)',offset:0},{transform:'rotate(180deg) scale(.3)',clipPath:'circle(30% at 50% 50%)',offset:.28},{transform:'rotate(0deg) scale(.34)',clipPath:'circle(30% at 50% 50%)',offset:.62},{transform:'none',clipPath:'circle(75% at 50% 50%)',offset:1}],{duration:2600,easing:'steps(18)'});
+ a.onfinish=()=>{el.classList.remove('crossing');$('held').hidden=true;$('held').classList.remove('up');done()}}
+// ---------- a room: the choice, the consequence, the threshold into its film ----------
 let R=null;
-function enter(key){const st=ST[key];G.screen='story';$('note').textContent='';Snd.play('page');Snd.music(key==='help'?'dawn':'night');
- $('notebook').hidden=true;$('story').hidden=false;$('st-svg').innerHTML=st.build();$('desc').textContent=st.title+'. '+st.desc;$('story').setAttribute('aria-label',st.title);announce(st.title+'. '+st.desc);
- R={key,st,seq:st.intro.slice(),i:0,t:0,T:0,S:JSON.parse(JSON.stringify(st.state)),from:null,to:null,fired:new Set(),cap:null,choice:null,paused:false};startBeat();}
-function startBeat(){const b=R.seq[R.i];if(!b){toMirror();return}R.t=0;R.from=JSON.parse(JSON.stringify(R.S));R.to=b.to||{};if(b.mark)R.S[b.mark]=R.T;
+function enterRoom(key,o={}){const st=ST[key];G.screen='story';$('note').textContent='';Snd.play('page');Snd.music(key==='help'?'dawn':'night');
+ const story=$('story');story.classList.toggle('ghost',!!o.ghost);$('ghost-slate').hidden=!o.ghost;$('thought').textContent='';
+ $('st-svg').innerHTML=st.build();$('desc').textContent=st.title+'. '+st.desc;story.setAttribute('aria-label',st.title);
+ R={key,word:st.word,st,seq:st.intro.slice(),i:0,t:0,T:0,S:JSON.parse(JSON.stringify(st.state)),from:null,to:null,fired:new Set(),cap:null,choice:null,paused:false,hold:!!o.cross,noReveal:!!(o.cross||o.ghost),ghost:o.ghost};
+ if(o.ghost){// Replay the setup silently, then play the way you didn't take.
+  for(const b of st.intro){if(b.gate)break;R.S=blend(R.S,beatTo(st,b),1)}R.choice=o.ghost;R.seq=st[o.ghost].slice();announce('Another way. It doesn’t change what you did. '+st.title)}
+ else announce(st.title+'. '+st.desc);
+ if(o.cross){$('pause').hidden=true;$('story').hidden=false;R.st.render(R.S,0,0);crossInto($('story'),$('story').querySelector('.box'),()=>{only('story');R.hold=false;startBeat()})}
+ else{only('story');startBeat()}}
+function beatTo(st,b){const to=JSON.parse(JSON.stringify(b.to||{}));for(const [who,name] of Object.entries(b.pose||{})){to[who]=st.poses[who][name];to[who+'Pose']=name}return to}
+function startBeat(){const b=R.seq[R.i];if(!b){if(R.ghost){const w=R.word;R=null;$('story').classList.remove('ghost');toMirror(w,true)}else finishRoom('stay');return}
+ R.t=0;R.from=JSON.parse(JSON.stringify(R.S));R.to=beatTo(R.st,b);if(b.mark)R.S[b.mark]=R.T;
  if(b.note)announce(b.note);
- const ch=$('choices');ch.innerHTML='';if(b.gate){for(const c of b.choices){const btn=document.createElement('button');btn.className='choice';btn.innerHTML=`<span>${c.label}</span>`;btn.setAttribute('aria-label',c.label);btn.style.left=c.at[0]/16+'%';btn.style.top=c.at[1]/9+'%';btn.onclick=()=>choose(c.id);ch.appendChild(btn)}setTimeout(()=>ch.querySelector('button')?.focus({preventScroll:true}),50);announce('Your choice: '+b.choices.map(c=>c.label).join(', or '))}}
-function choose(id){if(!R||R.choice)return;R.choice=id;$('choices').innerHTML='';Snd.play('pick');R.seq.push(...R.st[id]);R.i++;startBeat()}
+ if(b.exit)G.frames[R.word]=snap();
+ const ch=$('choices');ch.innerHTML='';$('thought').textContent='';
+ if(b.gate){for(const c of b.choices){const btn=document.createElement('button');btn.className='choice';btn.innerHTML=`<span>${c.label}</span>`;btn.setAttribute('aria-label',c.label);btn.style.left=c.at[0]/16+'%';btn.style.top=c.at[1]/9+'%';btn.onclick=()=>b.exit?chooseExit(c.id):choose(c.id);ch.appendChild(btn)}
+  if(b.peek&&!R.ghost)requestAnimationFrame(()=>addPeek(b.peek));
+  setTimeout(()=>ch.querySelector('button')?.focus({preventScroll:true}),50);announce((b.exit?'Where next: ':'Your choice: ')+b.choices.map(c=>c.label).join(', or ')+(b.peek?'. Or look closer first.':''))}}
+function addPeek(pk){const t=$(pk.target),box=$('story').querySelector('.box').getBoundingClientRect();if(!R)return;const r=t?t.getBoundingClientRect():{left:box.left+pk.at[0]/1600*box.width,top:box.top+pk.at[1]/900*box.height,width:0,height:0};
+ const btn=document.createElement('button');btn.className='peek';btn.innerHTML=`<span>${pk.label}</span>`;btn.setAttribute('aria-label',pk.sr);
+ btn.style.left=((r.left+r.width/2-box.left)/box.width*100)+'%';btn.style.top=((r.top+r.height/2-box.top)/box.height*100)+'%';
+ btn.onclick=()=>{if(!R)return;G.peeked[R.key]=1;Object.assign(R.S,pk.show);R.force=1;$('thought').textContent=pk.thought;announce(pk.say);Snd.play('pencil');btn.remove();
+  setTimeout(()=>{if(R&&!R.choice){for(const k of Object.keys(pk.show))R.S[k]=0;R.force=1;$('thought').textContent=''}},reduced?9000:7500)};
+ $('choices').appendChild(btn)}
+function choose(id){if(!R||R.choice)return;R.choice=id;$('choices').innerHTML='';$('thought').textContent='';for(const k of ['peek'])if(k in R.S)R.S[k]=0;Snd.play('pick');
+ R.seq.push(...R.st[id]);const f=BOTTLES[R.word]?.film;
+ if(f)R.seq.push({gate:1,exit:1,choices:[{id:'film',label:(R.st.exit&&R.st.exit[id])||`Go deeper: ${FILMS[f].title}`,at:[1210,690]},{id:'stay',label:'Stay with the night',at:[400,690]}]});
+ R.i++;startBeat()}
+function chooseExit(id){if(!R)return;$('choices').innerHTML='';Snd.play('pick');finishRoom(id)}
+function finishRoom(id){const w=R.word;G.done[R.key]=R.choice;if(!G.frames[w])G.frames[w]=snap();R=null;if(id==='film')startFilm(w,{fromRoom:true});else toMirror(w)}
+function snap(){return $('st-svg').innerHTML.replace(/\sid="[^"]*"/g,'').replace(/\sfilter="[^"]*"/g,'').replace(/\sclass="[^"]*"/g,'')}
 function blend(from,to,u){const o=Array.isArray(from)?[]:{};for(const k of Object.keys({...from,...to})){const a=from?.[k],b=to?.[k];if(b===undefined)o[k]=a;else if(typeof b==='number'&&typeof (a??0)==='number')o[k]=lerp(a??0,b,u);else if(Array.isArray(b))o[k]=b.map((v,i)=>lerp((a||b)[i],v,u));else if(typeof b==='object')o[k]=blend(a||{},b,u);else o[k]=b}return o}
-function stepStory(dt){if(!R||R.paused)return;const b=R.seq[R.i];if(!b)return;R.T+=dt;
+function stepStory(dt){if(!R||R.paused||R.hold)return;const b=R.seq[R.i];if(!b)return;R.T+=dt;
  if(b.gate){R.st.render(R.S,Math.floor(R.T*FPS),R.T);return}
- R.t+=dt;const u=qe(R.t/Math.min(b.dur,2.4),10);R.S=blend(R.from,R.to,u);
- for(const [t,who,text] of b.lines||[]){const k=R.i+':'+t;if(R.t>=t&&!R.fired.has(k)){R.fired.add(k);R.cap={who,text,until:R.T+Math.max(2.2,text.length*.06+1.2)};announce(who+': '+text);Snd.voice(R.key,who,text)}}
+ R.t+=dt;const u=b.slow?qe(R.t/(b.dur*.85),16):qe(R.t/Math.min(b.dur,2.4),10);R.S=blend(R.from,R.to,u);
+ for(const [t,who,text,id] of b.lines||[]){const k=R.i+':'+t;if(R.t>=t&&!R.fired.has(k)){R.fired.add(k);R.cap={who,text,until:R.T+Math.max(2.2,text.length*.06+1.2)};announce(who+': '+text);if(!R.ghost)Snd.voice(id)}}
  for(const [t,s] of b.sfx||[]){const k=R.i+':s'+t+s;if(R.t>=t&&!R.fired.has(k)){R.fired.add(k);Snd.play(s)}}
  if(R.cap&&R.T>R.cap.until)R.cap=null;
- // The room opens dark: your lantern finds it, then the light comes up.
- const rv=$('rvr');if(b.reveal&&!reduced){const k=R.t<3.2?1:Math.max(0,1-(R.t-3.2)/1.2);rv.setAttribute('opacity',(Math.round(k*6)/6).toFixed(2))}else rv.setAttribute('opacity',0);
+ // The room opens dark: your lantern finds it, then the light comes up. (Not after a crossing: the bottle already did that.)
+ const rv=$('rvr');if(b.reveal&&!reduced&&!R.noReveal){const k=R.t<3.2?1:Math.max(0,1-(R.t-3.2)/1.2);rv.setAttribute('opacity',(Math.round(k*6)/6).toFixed(2))}else rv.setAttribute('opacity',0);
  if(R.t>=b.dur){R.i++;startBeat()}}
 function renderStory(){if(!R)return;const f=Math.floor(R.T*FPS);if(f===R.lastF&&!R.force)return;R.lastF=f;R.force=0;R.st.render(R.S,f,R.T);
  const c=$('caption');c.style.visibility=R.cap?'visible':'hidden';if(R.cap){$('who').textContent=R.cap.who;$('line').textContent=R.cap.text}
  const [x,y]=boil('frame',f);$('st-svg').style.transform=`translate(${(x*.5).toFixed(2)}px,${(y*.5).toFixed(2)}px)`}
 $('story').addEventListener('pointermove',e=>{const r=$('st-svg').getBoundingClientRect();at('rvc',{cx:(e.clientX-r.left)/r.width*1600,cy:(e.clientY-r.top)/r.height*900})});
-function toMirror(){const key=R.key;G.done[key]=R.choice;$('story').hidden=true;G.screen='mirror';const m=$('mirror');m.hidden=false;m.querySelector('.q').textContent=R.st.question;m.querySelector('.trace').innerHTML=R.st.trace;Snd.music(null);Snd.play('hush');
- setTimeout(()=>$('mirror-go').focus({preventScroll:true}),400);R=null}
-$('mirror-go').onclick=()=>{$('mirror').hidden=true;backToNotebook()};
-function backToNotebook(quiet){G.screen='notebook';$('notebook').hidden=false;
- // What you did, in pencil by its place: memory, not a score.
- let n='';for(const [k,c] of Object.entries(G.done)){const w=ST[k].word,[x,y]=PLACE[w];n+=`<text x="${x}" y="${y+92}" text-anchor="middle" font-size="20">${ST[k].notes[c]}</text>`;$('boat-'+w)?.classList.add('done')}$('nb-notes').innerHTML=n;
- updateGo();if(!quiet)setTimeout(()=>($('boat-'+TARGETS.find(t=>!G.done[KEY[t]]&&G.found.includes(t))))?.focus({preventScroll:true}),100)}
+// ---------- the film: the label's other side, played whole and unchanged ----------
+let FILM=null;
+function startFilm(w,o={}){const id=BOTTLES[w].film,f=FILMS[id],key=KEY[w],c=key&&G.done[key];G.screen='film';Snd.music(null);
+ const scr=$('filmscr');scr.setAttribute('aria-label',f.title);
+ const slate=$('slate');slate.hidden=false;slate.querySelector('b').textContent=key==='heard'&&o.fromRoom?'The next morning.':f.title;
+ slate.querySelector('span').textContent=(key&&ST[key].slate&&c&&ST[key].slate[c])||f.arrival;
+ $('film-back').hidden=true;scr.querySelector('iframe')?.remove();
+ const fr=document.createElement('iframe');fr.title=f.title;fr.hidden=true;const session='unfolded-'+Date.now().toString(36);fr.src=ROOT+f.src+'?session='+session;scr.appendChild(fr);
+ FILM={w,id,frame:fr,session,ready:false,slateDone:false};announce(slate.textContent);
+ const afterSlate=()=>setTimeout(()=>{if(!FILM||FILM.frame!==fr)return;FILM.slateDone=true;slate.hidden=true;fr.hidden=false;tryStart()},reduced?1800:3200);
+ if(o.cross){crossInto(scr,slate,()=>{only('filmscr');afterSlate()})}
+ else{only('filmscr');if(!reduced&&slate.animate)slate.animate([{transform:'translateX(100%)'},{transform:'none'}],{duration:900,easing:'steps(8)'});Snd.play('page');afterSlate()}
+ fr.addEventListener('load',()=>{if(FILM?.frame===fr&&fr.contentWindow?.__asterwindEpisode?.assetsReady){FILM.ready=true;tryStart()}})}
+function tryStart(){if(!FILM||!FILM.ready||!FILM.slateDone||FILM.started)return;FILM.started=true;const win=FILM.frame.contentWindow;
+ try{win.__asterwindEpisode?.start();setTimeout(()=>{try{(win.document.getElementById('pause')||FILM.frame).focus()}catch{FILM.frame.focus()}},120)}catch{FILM.frame.focus()}}
+addEventListener('message',e=>{const d=e.data;if(!FILM||e.source!==FILM.frame.contentWindow||!d||d.channel!=='asterwind.episode.v1'||d.session!==FILM.session)return;
+ if(d.type==='ready'){FILM.ready=true;tryStart()}
+ if(d.type==='completed'){if(!G.film[FILM.w])G.film[FILM.w]=d.outcome;const b=$('film-back');b.hidden=false;setTimeout(()=>b.focus({preventScroll:true}),900);announce('The film has ended. Back into the night when you’re ready.')}});
+function leaveFilm(){if(!FILM)return;const w=FILM.w,fr=FILM.frame;FILM=null;try{fr.src='about:blank'}catch{}fr.remove();if(!G.frames[w])G.frames[w]=null;toMirror(w)}
+$('film-leave').onclick=leaveFilm;$('film-back').onclick=leaveFilm;
+// ---------- the mirror: one question, what happened remembered, the other way open to look at ----------
+function toMirror(w,afterGhost){const key=KEY[w],st=key?ST[key]:null;G.screen='mirror';only('mirror');const m=$('mirror');m.dataset.word=w;
+ const c=key&&G.done[key];m.querySelector('.mem').textContent=(st&&st.memory&&c&&st.memory[c][G.film[w]||'none'])||'';
+ m.querySelector('.q').textContent=st?st.question:LEADQ.question;m.querySelector('.trace').innerHTML=st?st.trace:LEADQ.trace;
+ $('mirror-other').hidden=!(st&&c);$('mirror-other').textContent=afterGhost?'See it again':'See the other way';Snd.music(null);Snd.play('hush');
+ setTimeout(()=>$(afterGhost?'mirror-go':'mirror-go').focus({preventScroll:true}),400)}
+$('mirror-go').onclick=()=>{const w=$('mirror').dataset.word;if(!G.walked.includes(w))G.walked.push(w);Snd.play('clink');showCorridor()};
+$('mirror-other').onclick=()=>{const w=$('mirror').dataset.word,key=KEY[w],st=ST[key];const other=Object.keys(st.notes).find(c=>c!==G.done[key]);enterRoom(key,{ghost:other})};
+function writeNotes(){let n='';for(const w of TARGETS){const key=KEY[w],[x,y]=PLACE[w];let t='';if(key&&G.done[key])t=ST[key].notes[G.done[key]];else if(!key&&G.walked.includes(w))t={microphone:'moved the microphone',notebook:'showed the notebook'}[G.film[w]]||'heard whose map it was';if(t)n+=`<text x="${x}" y="${y+86}" text-anchor="middle">${t}</text>`;if(G.walked.includes(w))$('boat-'+w)?.classList.add('done')}const g=$('nb-notes');if(g)g.innerHTML=n}
+function backToNotebook(){G.screen='notebook';only('notebook');writeNotes();updateGo();Snd.music(null);setTimeout(()=>($('tiles').querySelector('button'))?.focus({preventScroll:true}),100)}
 // ---------- the ending: the word, rewritten by what you did ----------
-function endWords(){const ws=TARGETS.filter(t=>G.found.includes(t)).map(t=>t.toLowerCase());const pos=[[300,380],[640,380],[300,460],[640,460],[470,520]];
+function endWords(){const ws=TARGETS.filter(t=>G.found.includes(t)).map(t=>t.toLowerCase());const pos=[[300,370],[650,370],[300,440],[650,440],[300,510],[650,510]];
  $('nb-around').innerHTML=ws.map((w,i)=>`<text x="${pos[i][0]}" y="${pos[i][1]}" text-anchor="${i%2?'end':'start'}">${w}</text>`).join('')+'<text x="320" y="600" font-size="30">Leadership is…</text>'+(G.mine?`<text x="470" y="700" text-anchor="middle" font-size="40" fill="#26232e">${G.mine}</text>`:'');at('nb-q',{opacity:0})}
-$('go').onclick=()=>{G.ending=1;Snd.play('page');$('tiles').hidden=true;$('spell').hidden=true;$('note').textContent='';$('go').hidden=true;$('boats').hidden=true;
- G.ended=1;endWords();const mine=$('mine');mine.hidden=false;$('closebook').hidden=false;mine.focus({preventScroll:true});announce('Leadership is… Write your own word if you like. It stays on this screen only.')};
+function beginEnding(){G.ending=1;G.screen='notebook';only('notebook');writeNotes();Snd.play('page');$('tiles').hidden=true;$('spell').hidden=true;$('note').textContent='';$('go').hidden=true;$('boats').hidden=true;
+ G.ended=1;endWords();const mine=$('mine');mine.hidden=false;$('closebook').hidden=false;mine.focus({preventScroll:true});announce('Morning. Leadership is… Write your own word if you like. It stays on this screen only.')}
+$('go').onclick=()=>showCorridor();
 $('closebook').onclick=()=>{const v=$('mine').value.trim();if(v){G.mine=v.replace(/[<>&"]/g,'');endWords();Snd.play('pencil')}
- $('mine').hidden=true;$('closebook').hidden=true;setTimeout(()=>{$('notebook').hidden=true;$('end').hidden=false;G.screen='end';Snd.music(null);setTimeout(()=>$('again').focus({preventScroll:true}),300)},v?2200:600)};
+ $('mine').hidden=true;$('closebook').hidden=true;setTimeout(()=>{only('end');G.screen='end';Snd.music(null);setTimeout(()=>$('again').focus({preventScroll:true}),300)},v?2200:600)};
 $('again').onclick=()=>location.reload();
-// ---------- sound: recorded paper when present (sound/manifest.json), music if switched on ----------
-const Snd=(()=>{let c=null,on=false,buf={},mus=null,musBuf={},voiceOn=Q.has('voices');
+// ---------- sound: recorded paper when present (sound/manifest.json), music if switched on, voices by cue id ----------
+const Snd=(()=>{let c=null,on=false,buf={},mus=null,musBuf={},vIdx=null,vSet=Q.get('voices')||null,vSrc=null;
  async function load(u){try{return await c.decodeAudioData(await(await fetch(u)).arrayBuffer())}catch{return null}}
- return{async enable(v){on=v;if(on&&!c){c=new AudioContext();try{const m=await(await fetch('sound/manifest.json')).json();for(const [k,f] of Object.entries(m.cues))load('sound/'+f.file).then(b=>b&&(buf[k]={b,g:f.gain??1}));for(const [k,f] of Object.entries(m.music||{}))load('sound/'+f).then(b=>b&&(musBuf[k]=b))}catch{}}if(!on)this.music(null)},
+ return{async enable(v){on=v;if(on&&!c){c=new AudioContext();try{const m=await(await fetch('sound/manifest.json')).json();for(const [k,f] of Object.entries(m.cues))load('sound/'+f.file).then(b=>b&&(buf[k]={b,g:f.gain??1}));for(const [k,f] of Object.entries(m.music||{}))load('sound/'+f).then(b=>b&&(musBuf[k]=b))}catch{}
+   try{vIdx=await(await fetch('voices/index.json')).json()}catch{vIdx=null}this.voiceUI()}if(!on)this.music(null);$('voice').hidden=!on||!vIdx},
   play(k){if(!on||!c||!buf[k])return;const s=c.createBufferSource(),g=c.createGain();s.buffer=buf[k].b;g.gain.value=buf[k].g;s.connect(g);g.connect(c.destination);s.start()},
-  music(k){if(mus){const m=mus;m.g.gain.setTargetAtTime(0,c.currentTime,.6);setTimeout(()=>m.s.stop(),2500);mus=null}if(!on||!c||!k||!musBuf[k])return;const s=c.createBufferSource(),g=c.createGain();s.buffer=musBuf[k];s.loop=true;g.gain.value=0;g.gain.setTargetAtTime(.32,c.currentTime,1);s.connect(g);g.connect(c.destination);s.start();mus={s,g}},
-  voice(){} }})();
-$('snd').onclick=()=>{const v=$('snd').getAttribute('aria-pressed')!=='true';$('snd').setAttribute('aria-pressed',String(v));Snd.enable(v);if(v&&G.screen==='story')setTimeout(()=>Snd.music(R?.key==='help'?'dawn':'night'),400)};
+  music(k){if(mus){const m=mus;m.g.gain.setTargetAtTime(0,c.currentTime,.6);setTimeout(()=>m.s.stop(),2500);mus=null}if(!on||!c||!k||!musBuf[k])return;const s=c.createBufferSource(),g=c.createGain();s.buffer=musBuf[k];s.loop=true;g.gain.value=0;g.gain.setTargetAtTime(vSet?.16:.32,c.currentTime,1);s.connect(g);g.connect(c.destination);s.start();mus={s,g}},
+  sets(){return vIdx?Object.keys(vIdx.sets).filter(k=>Object.keys(vIdx.sets[k].cues||{}).length):[]},
+  cycle(){const s=this.sets(),i=s.indexOf(vSet);vSet=i+1<s.length?s[i+1]:null;this.voiceUI()},
+  voiceUI(){const b=$('voice');b.textContent='Voices: '+(vSet&&vIdx?.sets[vSet]?vIdx.sets[vSet].label:'off');b.setAttribute('aria-pressed',String(!!vSet))},
+  async voice(id){if(!on||!c||!vSet||!id||!vIdx?.sets[vSet])return;const set=vIdx.sets[vSet],f=set.cues[id];if(!f)return;const b=await load('voices/'+set.dir+'/'+f);if(!b)return;try{vSrc?.stop()}catch{}const s=c.createBufferSource(),g=c.createGain();s.buffer=b;g.gain.value=set.gain??1;s.connect(g);g.connect(c.destination);s.start();vSrc=s}}})();
+$('snd').onclick=()=>{const v=$('snd').getAttribute('aria-pressed')!=='true';$('snd').setAttribute('aria-pressed',String(v));Snd.enable(v);if(v&&(G.screen==='story'||G.screen==='corridor'))setTimeout(()=>Snd.music(R?.key==='help'?'dawn':'night'),400)};
+$('voice').onclick=()=>Snd.cycle();
 $('pause').onclick=()=>{if(!R)return;R.paused=!R.paused;$('pause').setAttribute('aria-pressed',String(R.paused));$('pause').textContent=R.paused?'Resume':'Pause'};
 // ---------- loop ----------
 const now=()=>performance.now()/1000;let last=0;
 function loop(ts){const dt=Math.min(.05,(ts-(last||ts))/1000);last=ts;if(!EXPORT){stepStory(dt);renderStory();hints()}requestAnimationFrame(loop)}
 function announce(t){$('live').textContent=t}
-buildTiles();setLayout();setTimeout(()=>at('nb-word',{opacity:.16}),reduced?0:600);G.lastFind=now();
-// A first word, shown: the obvious one, then the page lets you look for the rest.
-if(!reduced&&!EXPORT){[0,1,2,3].forEach((i,k)=>setTimeout(()=>{G.picked.push(i);renderTiles()},900+k*260));setTimeout(()=>{$('note').textContent=BONUS.LEAD;setTimeout(()=>{clear();$('note').textContent='There are other words inside this one.'},2200)},2100)}
+buildTiles();setLayout();setTimeout(()=>at('nb-word',{opacity:.16}),reduced?0:600);G.lastFind=now();updateGo();
+// A first word, shown: the obvious one. Then the page lets you look for the rest.
+const DEMO='lead. The obvious one. It’s in there too, but keep looking.';
+if(!reduced&&!EXPORT){[0,1,2,3].forEach((i,k)=>setTimeout(()=>{if(!G.found.length){G.picked.push(i);renderTiles()}},900+k*260));setTimeout(()=>{if(G.found.length)return;$('note').textContent=DEMO;setTimeout(()=>{if(G.found.length)return;clear();$('note').textContent='There are other words inside this one.'},2400)},2100)}
 else $('note').textContent='There are other words inside this one.';
 requestAnimationFrame(loop);
 // ---------- review hooks ----------
-window.Game={find:w=>{G.picked=[...w].map(ch=>[...WORD].findIndex((c,j)=>c===ch&&!G.picked.includes(j)));check()},enter,choose,state:()=>({screen:G.screen,found:G.found,done:G.done,beat:R?.i,choice:R?.choice}),
- step(dt){stepStory(dt);if(R)R.force=1;renderStory()},seek(t){while(R&&R.T<t&&R.seq[R.i]&&!R.seq[R.i].gate)this.step(1/24)}};
+window.Game={find:w=>{G.picked=[...w].map(ch=>[...WORD].findIndex((c,j)=>c===ch&&!G.picked.includes(j)));check()},enter:k=>enterRoom(k),corridor:showCorridor,bottle:showBottle,turn,holdUp,choose,exit:chooseExit,
+ state:()=>({screen:G.screen,found:G.found,done:G.done,film:G.film,walked:G.walked,beat:R?.i,choice:R?.choice,ghost:R?.ghost,gate:!!(R&&R.seq[R.i]?.gate),exitGate:!!(R&&R.seq[R.i]?.exit),filmReady:FILM?.ready,filmStarted:FILM?.started}),
+ step(dt){stepStory(dt);if(R)R.force=1;renderStory()},seek(t){while(R&&R.T<t&&R.seq[R.i]&&!R.seq[R.i].gate)this.step(1/24)},toGate(){while(R&&R.seq[R.i]&&!R.seq[R.i].gate&&!R.hold)this.step(1/12)},leaveFilm,dawn,art:()=>ARTIDX,room:()=>R,poses:()=>POSES};
+
 </script>
 </body>
 </html>
