@@ -7,7 +7,7 @@ Host the folder on any static host (GitHub Pages, Netlify, a USB stick served by
 The root index.html opens the journey. Paths inside keep the repository layout, so nothing is rewritten.
 Run python3 film/build.py, anthology/build-all.py and hub/build.py first if their sources changed."""
 from pathlib import Path
-import shutil, zipfile, json, hashlib
+import shutil, zipfile, json, hashlib, subprocess
 from play_assets import verify_play
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -24,6 +24,18 @@ def tree(src, dst, extra_skip=()):
             continue
         q = dst / rel; q.parent.mkdir(parents=True, exist_ok=True); shutil.copy2(p, q)
 
+BUILT_FROM = ['docs/demos/unfolded', 'docs/demos/played', 'docs/demos/sound-board/music', 'hub', 'anthology', 'film', 'app/assets/fonts', 'scripts']
+
+def source_commit(root):
+    """The commit this build comes from, and whether any included path differs from it (None outside a checkout)."""
+    git = lambda *a: subprocess.run(['git', '-C', str(root), *a], capture_output=True, text=True, check=True).stdout.strip()
+    try:
+        if Path(git('rev-parse', '--show-toplevel')).resolve() != Path(root).resolve():
+            return None, None
+        return git('rev-parse', 'HEAD'), not git('status', '--porcelain', '--', *BUILT_FROM)
+    except (OSError, subprocess.CalledProcessError):
+        return None, None
+
 def build(root=ROOT):
     root = Path(root).resolve()
     OUT = root / 'dist' / 'play'
@@ -31,6 +43,7 @@ def build(root=ROOT):
     def one(rel):
         q = OUT / rel; q.parent.mkdir(parents=True, exist_ok=True); shutil.copy2(root / rel, q)
 
+    sha, clean = source_commit(root)
     if OUT.exists():
         shutil.rmtree(OUT)
     OUT.mkdir(parents=True)
@@ -46,17 +59,18 @@ def build(root=ROOT):
         one(f'app/assets/fonts/{f}')
     (OUT / 'index.html').write_text('''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Asterwind · After Hours (draft)</title><meta http-equiv="refresh" content="0; url=docs/demos/unfolded/?v=2"><style>body{background:#08080d;color:#e9c27a;font:16px Georgia,serif;display:grid;place-items:center;height:100vh;margin:0}a{color:inherit}</style></head>
-    <body><p><a href="docs/demos/unfolded/?v=2">Asterwind · After Hours (draft playtest)</a></p></body></html>\n''')
+    <body><p><a href="docs/demos/unfolded/?v=2">Asterwind · After Hours (draft playtest)</a></p></body></html>\n'''.replace('</head>', f'<meta name="asterwind-build" content="{(sha or "unknown")[:12]}{"-modified" if clean is False else ""}"></head>'))
     (OUT / '.nojekyll').write_text('')
     verify_play(OUT)  # Fail before packaging if a declared runtime asset did not survive export.
     files = sorted(p for p in OUT.rglob('*') if p.is_file())
     manifest = {p.relative_to(OUT).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest()[:16] for p in files}
-    (OUT / 'build-manifest.json').write_text(json.dumps({'files': len(files), 'bytes': sum(p.stat().st_size for p in files), 'sha256_16': manifest}, indent=1))
+    (OUT / 'build-manifest.json').write_text(json.dumps({'source_commit': sha, 'source_clean': clean, 'files': len(files), 'bytes': sum(p.stat().st_size for p in files), 'sha256_16': manifest}, indent=1))
     z = root / 'dist' / 'asterwind-play.zip'
     with zipfile.ZipFile(z, 'w', zipfile.ZIP_DEFLATED) as zf:
         for p in sorted(OUT.rglob('*')):
             if p.is_file():
                 zf.write(p, Path('asterwind-play') / p.relative_to(OUT))
+    print(f'built from {sha[:12] if sha else "an unversioned tree"}' + ('' if clean or sha is None else ' WITH UNCOMMITTED CHANGES (not a publishable build)'))
     print(f'{len(files)} files, {sum(p.stat().st_size for p in files)/1e6:.1f} MB in {OUT.relative_to(root)}; zip {z.stat().st_size/1e6:.1f} MB')
     return OUT, z
 

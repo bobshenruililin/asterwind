@@ -13,6 +13,8 @@ const REG={slides:{microphone:{x:.08,y:.53,w:.27,h:.30},notebook:{x:.60,y:.36,w:
 const ENTER={slides:'Take your seat',scope:'Come in',pixel:'Step up',ship:'Walk in'}[EP];
 const [story,art]=await Promise.all([fetch(BASE+'story.json').then(r=>r.json()),fetch(BASE+'art-manifest.json').then(r=>r.json())]);
 document.title=story.title+', played';$('frame').setAttribute('aria-label',story.title+', played.');$('start').querySelector('span').textContent=ENTER;
+// Shared with the playtest: say plainly that this story is still waiting for its lived-experience review.
+if(EP==='pixel'){const n=document.createElement('small');n.textContent='A draft: this story hasn’t yet had a lived-experience accessibility review.';$('start').appendChild(n)}
 const stage=Stage($('cv')),S=stage.S,stem=s=>s.split('/').pop().replace(/\.\w+$/,'');
 await Promise.all(Object.entries(art.plates).map(([k,p])=>stage.add(k,BASE+p.src,'plates/'+EP+'/'+stem(p.src)+'-depth.webp')));
 const notify=(type,outcome)=>{if(EMBED)parent.postMessage({channel:'asterwind.episode.v1',episodeId:EP,session:SESSION,type,...(outcome?{outcome}:{})},'*')};
