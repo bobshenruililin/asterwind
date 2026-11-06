@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1672" height="941" viewBox="0 0 1672 941">
+<rect width="1672" height="941" fill="black"/>
+<!-- Narrow support around the original contact shadow, not a new RGB shadow. -->
+<path fill="#8c8c8c" d="M 286,466 C 279,508 279,555 290,592 C 307,656 355,716 447,747 C 535,776 657,787 758,770 C 859,749 949,706 1007,635 C 1044,592 1062,526 1054,458 L 1048,460 L 989,604 L 849,705 L 644,746 L 438,701 L 328,581 Z"/>
+</svg>
