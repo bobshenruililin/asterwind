@@ -1,0 +1,68 @@
+{
+  "source": "anthology/episodes/standup/assets/reference-v1/02-turn-or-pass-decision.webp",
+  "source_sha256": "30749b7e877c461d5407f9537ecb26a2af2b9c097354fc8dd3d89acf123794f9",
+  "canvas": [
+    1672,
+    941
+  ],
+  "layers": {
+    "platter": {
+      "registered_file": "platter-registered.png",
+      "crop_file": "platter-crop.png",
+      "registration_offset_px": [
+        0,
+        0
+      ],
+      "crop_origin_px": [
+        274,
+        224
+      ],
+      "crop_size_px": [
+        790,
+        562
+      ],
+      "nonzero_alpha_bbox_xyxy": [
+        274,
+        224,
+        1064,
+        786
+      ],
+      "visible_pixel_count": 350475,
+      "opaque_pixel_count": 339123,
+      "partial_alpha_pixel_count": 11352,
+      "source_rgb_max_abs_error": 0,
+      "source_rgb_mean_abs_error": 0.0,
+      "registered_sha256": "d7e77137f6ea13d575113931c9a3d37e6001b58a0020e43f19eb07fabc2d35ef",
+      "crop_sha256": "1656fcd8134c73cd7cb88774ca00186c29431be9d92e48b9bf19bda625885c27"
+    },
+    "tray": {
+      "registered_file": "tray-registered.png",
+      "crop_file": "tray-crop.png",
+      "registration_offset_px": [
+        0,
+        0
+      ],
+      "crop_origin_px": [
+        1165,
+        447
+      ],
+      "crop_size_px": [
+        408,
+        274
+      ],
+      "nonzero_alpha_bbox_xyxy": [
+        1165,
+        447,
+        1573,
+        721
+      ],
+      "visible_pixel_count": 98249,
+      "opaque_pixel_count": 84065,
+      "partial_alpha_pixel_count": 14184,
+      "source_rgb_max_abs_error": 0,
+      "source_rgb_mean_abs_error": 0.0,
+      "registered_sha256": "4cc55c2a0721f2344662e8c888d2052d060f2543aa4e07245dec371fd7f325ef",
+      "crop_sha256": "e49328a290f99ebcbc0b333bb45518aa1da91aadf9f0df24d88e00d58042ea7d"
+    }
+  }
+}
