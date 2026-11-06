@@ -53,6 +53,42 @@ class PlayBuildTests(unittest.TestCase):
             self.assertEqual(bundle.read('asterwind-play/' + self.art + 'heard/ellis-brace.png'), original.read_bytes())
         self.assertGreater(verify_play(out), 0)
 
+    def test_object_layers_and_split_wall_survive_folder_and_zip(self):
+        self.put(self.art + 'index.json', {'rooms': {'heard': {
+            'plate': {'night': {'src': 'sky.png'}},
+            'scenery': {'wall': {'src': 'wall.png'}},
+            'figures': {'ellis': {'brace': {'src': 'poses/brace.png', 'owns': ['route']}}}}}})
+        for filename in ('sky.png', 'wall.png', 'poses/brace.png'):
+            self.put(self.art + 'heard/' + filename, 'synthetic ' + filename)
+        out, archive = build.build(self.root)
+        with zipfile.ZipFile(archive) as bundle:
+            for filename in ('sky.png', 'wall.png', 'poses/brace.png'):
+                relative = self.art + 'heard/' + filename
+                self.assertEqual((out / relative).read_bytes(), (self.root / relative).read_bytes())
+                self.assertEqual(bundle.read('asterwind-play/' + relative), (self.root / relative).read_bytes())
+
+    def test_missing_wall_and_object_pose_fail_before_zip(self):
+        for layers in ({'scenery': {'wall': 'missing.png'}},
+                       {'figures': {'ellis': {'brace': {'src': 'missing.png', 'owns': ['route']}}}}):
+            self.put(self.art + 'index.json', {'rooms': {'heard': layers}})
+            with self.assertRaisesRegex(ValueError, 'missing.png'):
+                build.build(self.root)
+
+    def test_candidate_art_is_preserved_and_checked(self):
+        candidate = 'docs/demos/unfolded/art-candidate-b/'
+        self.put(candidate + 'index.json', {'rooms': {'heard': {'scenery': {'wall': 'wall.png'}}}})
+        self.put(candidate + 'heard/wall.png', 'candidate fixture')
+        out, _ = build.build(self.root)
+        self.assertTrue((out / candidate / 'heard/wall.png').is_file())
+        (self.root / candidate / 'heard/wall.png').unlink()
+        with self.assertRaisesRegex(ValueError, 'wall.png'):
+            build.build(self.root)
+
+    def test_art_object_cannot_bypass_local_path_validation(self):
+        self.heard({'src': 'https://example.com/remote.png', 'owns': ['route']})
+        with self.assertRaisesRegex(ValueError, 'invalid local art path'):
+            build.build(self.root)
+
     def test_source_review_and_standin_assets_stay_excluded(self):
         for folder in ('art-brief', 'art-standin', 'review', 'qa', 'source', 'incoming'):
             self.put('docs/demos/unfolded/' + folder + '/private.png', 'not runtime')
