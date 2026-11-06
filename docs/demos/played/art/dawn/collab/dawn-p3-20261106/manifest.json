@@ -1,0 +1,74 @@
+{
+  "version": 1,
+  "ticket": "P3",
+  "date": "2026-11-06",
+  "recommended": "ccgl-dawn-notebook-b-aligned.webp",
+  "status": "candidate-only; no runtime changes",
+  "remote_base": "fa102f9a1fb3a342da43e51c2d723b5224fd67c1",
+  "generation": "built-in image_gen; A generated from text after visual reference inspection; B image-reference edit of A",
+  "conversion": "WebP quality 94 method 6; native dimensions; no geometric or colour edits",
+  "files": [
+    {
+      "path": "PROVENANCE.md",
+      "bytes": 3032,
+      "sha256": "63aaa5ead1058520111479a828cec6fcaaedddc06471930d069ebcde4b96cad6"
+    },
+    {
+      "path": "QA.md",
+      "bytes": 2086,
+      "sha256": "2394e661ece020f2c3dd3beeaa6d3c601928bf9de110eb4978a8a8b4957d4a68"
+    },
+    {
+      "path": "README.md",
+      "bytes": 4150,
+      "sha256": "2e94700fc0b50f1dbdaad5f0a6f959e659d60c92e8eea0fd5d3cb0adea175d1b"
+    },
+    {
+      "path": "ccgl-dawn-notebook-a-close.webp",
+      "bytes": 250712,
+      "sha256": "4ed8c58e1e5c923df712d359178c2f2cfc77b80f246f59a4fc472431bcb7af60",
+      "width": 1672,
+      "height": 941,
+      "mode": "RGB"
+    },
+    {
+      "path": "ccgl-dawn-notebook-b-aligned.webp",
+      "bytes": 363478,
+      "sha256": "18613d27899217c706d1e0ba1db8d5d5fe609964a996abed1c0bb70e05032c5a",
+      "width": 1671,
+      "height": 941,
+      "mode": "RGB"
+    },
+    {
+      "path": "prompts.json",
+      "bytes": 4489,
+      "sha256": "ca1f1c869bfd4202137669ce538c874c882bffe2b1163595b35b60c37223c3bc"
+    },
+    {
+      "path": "qa-review.cjs",
+      "bytes": 2420,
+      "sha256": "a6605ebff48ca67742f87aeb5d700b7fdda4b6665475b474bbb64fa8a17d3cd5"
+    },
+    {
+      "path": "review.html",
+      "bytes": 3617,
+      "sha256": "04994c76a11983884957f35476c29d046f2926f11615f903a2118e3029fd305a"
+    },
+    {
+      "path": "source/ccgl-dawn-notebook-a-close.png",
+      "bytes": 2189798,
+      "sha256": "0b87c62d2a64556522b8d487b4586e6fb507bf33dabb8df651f8a94a898034eb",
+      "width": 1672,
+      "height": 941,
+      "mode": "RGB"
+    },
+    {
+      "path": "source/ccgl-dawn-notebook-b-aligned.png",
+      "bytes": 2574601,
+      "sha256": "6c0e85ef34e4126ce14a80a12a7d583246300627cf6ae898cc00fbb5d92cd546",
+      "width": 1671,
+      "height": 941,
+      "mode": "RGB"
+    }
+  ]
+}

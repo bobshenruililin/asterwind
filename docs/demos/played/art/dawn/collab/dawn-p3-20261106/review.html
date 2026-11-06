@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Asterwind: dawn notebook candidates</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#171a1e;color:#efe9dc;font:16px/1.5 system-ui,sans-serif}main{max-width:1500px;margin:auto;padding:20px}header{display:flex;gap:16px;align-items:center;flex-wrap:wrap;margin-bottom:14px}h1{font:500 24px Georgia,serif;margin:0 auto 0 0}button{font:inherit;color:inherit;background:#2b3038;border:1px solid #77838e;border-radius:4px;padding:8px 14px;cursor:pointer}button[aria-pressed=true]{background:#efe4cc;color:#26232e}button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid #8ecff0;outline-offset:4px}label{display:flex;align-items:center;gap:7px}svg{display:block;width:100%;height:auto;background:#262320}p{color:#c7c9cc;margin:.65em 0}a{color:#add6ec}.note{font-size:14px}#layout[hidden]{display:none}
+</style>
+<main>
+<header><h1>The dawn notebook</h1><button id="b" type="button" aria-pressed="true">B · aligned spread</button><button id="a" type="button" aria-pressed="false">A · close alternate</button><label><input id="overlay" type="checkbox" checked>Show separate text proof</label></header>
+<svg viewBox="0 0 1600 900" role="img" aria-labelledby="title desc"><title id="title">Blank field notebook in morning light</title><desc id="desc">Photographed-paper notebook on a textured paper desk. The optional proof places the existing heading coordinates over the blank pages. All text remains separate from the image.</desc>
+<image id="plate" href="ccgl-dawn-notebook-b-aligned.webp" width="1600" height="900" preserveAspectRatio="xMidYMid meet"/>
+<g id="layout" fill="#26232e">
+<text x="300" y="176" font-family="system-ui,sans-serif" font-size="15" letter-spacing="4" fill="#7a7380">CCGL · FIELD NOTES</text>
+<text x="510" y="250" text-anchor="middle" font-family="Georgia,serif" font-size="78">Leadership</text>
+<g font-family="Georgia,serif" font-style="italic" font-size="30" fill="#4a4652"><text x="300" y="370">heard</text><text x="650" y="370" text-anchor="end">lead</text><text x="300" y="440">repair</text><text x="650" y="440" text-anchor="end">ship</text><text x="300" y="510">help</text><text x="650" y="510" text-anchor="end">share</text><text x="320" y="600">Leadership is…</text></g>
+<text x="1086" y="176" text-anchor="middle" font-family="Georgia,serif" font-style="italic" font-size="26" fill="#6b6474">where the words go</text>
+</g></svg>
+<p id="status" role="status">B recommended: 1671 × 941 native. Clear heading zone, central gutter, quiet margins.</p>
+<p class="note">Asset-only proof. SVG text uses existing landscape anchors; Georgia stands in for the ending's Kalam font. No text is in the pixels. Portrait page stacking and the live ending are not implemented here. <a href="README.md">Integration notes</a></p>
+</main>
+<script>
+const $=id=>document.getElementById(id);for(const key of ['a','b'])$(key).addEventListener('click',()=>{const aligned=key==='b';$('plate').setAttribute('href',aligned?'ccgl-dawn-notebook-b-aligned.webp':'ccgl-dawn-notebook-a-close.webp');$('a').setAttribute('aria-pressed',String(!aligned));$('b').setAttribute('aria-pressed',String(aligned));$('status').textContent=aligned?'B recommended: 1671 × 941 native. Clear heading zone, central gutter, quiet margins.':'A alternate: 1672 × 941 native. Closer cinematic perspective; not an exact layout registration.'});$('overlay').addEventListener('change',()=>{$('layout').toggleAttribute('hidden',!$('overlay').checked)});
+</script>
+</html>
