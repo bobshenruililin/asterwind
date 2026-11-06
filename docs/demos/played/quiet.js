@@ -8,6 +8,9 @@ const PL='../../../anthology/episodes/standup/assets/reference-v1/';
 const stage=Stage($('cv')),S=stage.S;
 const PLATES={master:'01-quiet-minute-master',decision:'02-turn-or-pass-decision',round:'03-turn-shared-unfinished',slips:'04-slips-nuance-unresolved'};
 await Promise.all(Object.entries(PLATES).map(([k,f])=>stage.add(k,PL+f+'.webp','plates/'+f+'-depth.webp')));
+// Ellis's route close-ups (Robert's P2a/P2b) are review candidates until Bob approves them: ?p2=1 turns them on.
+const P2=new URLSearchParams(location.search).get('p2')==='1';let P2ready=false;
+if(P2)Promise.all([stage.add('routeClosed','plates/qm-route-closed.webp','plates/qm-route-closed-depth.webp'),stage.add('routeOpen','plates/qm-route-open.webp','plates/qm-route-open-depth.webp')]).then(()=>{P2ready=true}).catch(()=>{});
 
 /* ---- clock, tweens, cues: everything pauses together ---- */
 let T=0,paused=false,last=performance.now();const tweens=[],cues=[];
@@ -48,9 +51,9 @@ const OBJ={platter:{x:.401,y:.528,rx:.232,ry:.283},tray:{x0:.703,y0:.478,x1:.931
 function placeEl(el,x0,y0,x1,y1){Object.assign(el.style,{left:x0*100+'%',top:y0*100+'%',width:(x1-x0)*100+'%',height:(y1-y0)*100+'%'})}
 function showWord(text,x,y){const w=$('word');w.textContent=text;w.style.left=x*100+'%';w.style.top=y*100+'%';w.style.opacity=text?1:0}
 
-let phase='start',choice=null,hoverTarget=null,peeked=false;
+let phase='start',choice=null,hoverTarget=null,peeked=false,looking=false;
 const pointer={x:.5,y:.5};
-function hover(which){if(which&&!(phase==='decision'||(which==='route'&&phase==='master')))which=null;hoverTarget=which;const p=OBJ.platter,t=OBJ.tray;
+function hover(which){if(looking||(which&&!(phase==='decision'||(which==='route'&&phase==='master'))))which=null;hoverTarget=which;const p=OBJ.platter,t=OBJ.tray;
  if(which==='platter'){S.hov=[p.x,p.y,p.rx*1.02,p.ry*1.02,0];tw(S,'hovA',1,.25);showWord('turn',.27,.9)}
  else if(which==='tray'){S.hov=[(t.x0+t.x1)/2,(t.y0+t.y1)/2,(t.x1-t.x0)/2+.01,(t.y1-t.y0)/2+.01,1];tw(S,'hovA',1,.25);showWord('pass',.68,.9)}
  else if(which==='route'){const r=phase==='master'?OBJ.routeMaster:OBJ.routeDecision;S.hov=[r.x,r.y,r.rx,r.ry,0];tw(S,'hovA',.8,.25);showWord('look',r.x-.02,r.y-r.ry-.05)}
@@ -104,12 +107,32 @@ $('route').addEventListener('click',()=>look());$('route').addEventListener('key
 
 /* ---- the optional look: the folded route, and what Ellis thinks of it ---- */
 function look(){if(peeked||!(phase==='master'||phase==='decision'))return;peeked=true;$('route').hidden=true;hover(null);
+ if(P2ready&&!reduced)return lookClose();
  const r=phase==='master'?OBJ.routeMaster:OBJ.routeDecision,pc=S.cam.slice(),pf=S.focus,pd=S.dof;
  tw(S,'cam',[(r.x-.5)*1.4,(r.y-.5)*1.4],1.2);tw(S,'focus',.66,1);tw(S,'dof',.014,1);move('ellisPaper',0,-.004,.8);play('fold',.6);
  const th=$('thought');th.textContent='It’s better. I think it’s better. It just doesn’t end anywhere this beautiful.';th.style.opacity=1;
  live('Ellis’s folded route goes another way: it starts at the courtyard gate and never reaches the harbour. Ellis thinks: It’s better. I think it’s better. It just doesn’t end anywhere this beautiful.');
  const hold=phase==='master'?3.2:6;if(phase==='master'){cues.forEach(c=>c.t+=3.4)}
  at(hold,()=>{th.style.opacity=0;tw(S,'cam',pc,1.2);tw(S,'focus',pf,1);tw(S,'dof',pd,1);move('ellisPaper',0,0,.8)})}
+
+/* The close look: cut in to Ellis's hands on the folded packet; it opens (a generated clip if one is approved, else
+   an authored lift and dissolve); the thought; then back to the table exactly as it was. The timeline waits. */
+function lookClose(){looking=true;const from=stage.current,inMaster=phase==='master',keep={cam:S.cam.slice(),focus:S.focus,dof:S.dof,zoom:S.zoom,cen:S.cen.slice(),warps:S.warps,dim:S.dim,rain:S.rain,lamp:S.lamp,disc:S.disc,slide:S.slide};
+ const objs=['platter','tray'].filter(id=>!$(id).hidden);objs.forEach(id=>$(id).hidden=true);const th=$('thought');th.classList.add('close');
+ let open=false;const OPENED=2.4,HOLD=5.2,TOTAL=1+OPENED+HOLD+1.1;if(inMaster)cues.forEach(c=>c.t+=TOTAL);
+ live('You look closer. Ellis’s hands rest on a folded sheet.');
+ stage.toward('routeClosed');S.zoomB=1;S.cenB=[.5,.5];tw(S,'mix',1,.9);tw(S,'dof',0,.6);tw(S,'rain',0,.6);play('fold',.35);
+ at(1,()=>{stage.settle();Object.assign(S,{zoom:1,cen:[.5,.5],cam:[0,0],focus:.5,dim:0,lamp:[.22,.08,.5,.35],disc:null,slide:null});S.warps=[];
+  const opened=()=>{if(open)return;open=true;th.textContent='It’s better. I think it’s better. It just doesn’t end anywhere this beautiful.';th.style.opacity=1;
+   live('Ellis opens it. This route starts at the courtyard gate and never reaches the harbour. Ellis thinks: It’s better. I think it’s better. It just doesn’t end anywhere this beautiful.')};
+  window.Clips&&Clips.play('standup/K1',{frame:$('frame'),onEnd:()=>{stage.show('routeOpen');opened()},fallback:()=>{
+   // Authored fallback: the top leaf lifts on its hinge, then the open still dissolves in under it.
+   const leaf={x:.36,y:.6,r:.2,dx:0,dy:0};S.warps=[leaf];tw(leaf,'dy',-.012,.5);tw(leaf,'dx',.006,.5);play('fold',.6);
+   at(.45,()=>{stage.toward('routeOpen');S.zoomB=1;S.cenB=[.5,.5];tw(S,'mix',1,1.1);tw(leaf,'dy',0,.9);tw(leaf,'dx',0,.9)});
+   at(1.6,()=>{stage.settle();S.warps=[];opened()})}})||null;
+  at(OPENED+HOLD,()=>{th.style.opacity=0;stage.toward(from);S.zoomB=keep.zoom;S.cenB=keep.cen;tw(S,'mix',1,1);
+   at(1.05,()=>{stage.settle();window.Clips&&Clips.stop();Object.assign(S,{zoom:keep.zoom,cen:keep.cen,cam:keep.cam,focus:keep.focus,dof:keep.dof,dim:keep.dim,rain:keep.rain,lamp:keep.lamp,disc:keep.disc,slide:keep.slide});S.warps=keep.warps;
+    looking=false;th.classList.remove('close');objs.forEach(id=>{if(phase==='decision')$(id).hidden=false});live(phase==='decision'?'Back at the table. The model is within reach, and so is the tray of blank slips.':'Back at the table.')})})})}
 
 /* ---- the choice, then the film's consequence ---- */
 function commit(id){if(phase!=='decision')return;phase='consequence';choice=id;drag=null;hover(null);$('platter').hidden=$('tray').hidden=$('route').hidden=true;
@@ -163,7 +186,7 @@ notify('ready');
 $('start').focus();
 $('snd').onclick=()=>{soundOn=!soundOn;$('snd').setAttribute('aria-pressed',String(soundOn));if(master)master.gain.value=soundOn?1:0};
 $('cc').onclick=()=>{const on=$('cc').getAttribute('aria-pressed')!=='true';$('cc').setAttribute('aria-pressed',String(on));$('cap').style.visibility=on?'visible':'hidden'};
-$('pause').onclick=()=>{paused=!paused;$('pause').setAttribute('aria-pressed',String(paused));$('pause').textContent=paused?'Resume':'Pause';if(ac)paused?ac.suspend():ac.resume()};
+$('pause').onclick=()=>{paused=!paused;window.Clips&&Clips.pause(paused);$('pause').setAttribute('aria-pressed',String(paused));$('pause').textContent=paused?'Resume':'Pause';if(ac)paused?ac.suspend():ac.resume()};
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&!paused)$('pause').click()});
 addEventListener('keydown',e=>{if(e.key==='Escape'&&phase==='decision')hover(null)});
 window.QM={get state(){return{phase,choice,T,peeked,ang:S.ang,so:S.so.slice()}},commit,look,skip(to){while(T<to&&phase!=='decision'&&phase!=='end')step(1/30)},step};

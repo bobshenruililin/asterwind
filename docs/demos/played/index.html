@@ -23,6 +23,7 @@ canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
 #cap{position:absolute;left:50%;bottom:5%;transform:translateX(-50%);width:min(860px,84%);margin:0;text-align:center;font-size:clamp(16px,2.1vw,28px);line-height:1.35;text-shadow:0 2px 8px #000,0 0 3px #000;pointer-events:none;min-height:1.4em}
 #cap .who{display:block;font:11px system-ui;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);margin-bottom:5px}
 #cap.narr{font-style:italic;color:#e6dccb}
+#thought.close{left:27%;right:auto;top:3.5%;width:46%;text-align:center}
 #thought{position:absolute;right:6%;top:9%;width:30%;margin:0;font:clamp(15px,1.9vw,25px)/1.35 Kalam,cursive;color:#fff1d6;text-shadow:0 2px 10px #000;opacity:0;transition:opacity .6s;pointer-events:none}
 #start{position:absolute;inset:0;display:grid;place-items:center;background:radial-gradient(60% 60% at 50% 50%,#0000,#000c);border:0;width:100%;z-index:3}
 #start span{font:clamp(18px,2.4vw,30px) Georgia,serif;letter-spacing:.06em;padding:.6em 1.4em;border:1px solid #e9c27a99;background:#0b0b10aa}
@@ -51,6 +52,7 @@ canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
 </div>
 <p class="sr" id="live" aria-live="polite"></p>
 <script src="stage.js"></script>
+<script src="clips.js"></script>
 <script src="quiet.js"></script>
 </body>
 </html>
