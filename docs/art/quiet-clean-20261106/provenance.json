@@ -1,0 +1,67 @@
+{
+  "title": "The Quiet Minute clean-plate candidates",
+  "created_utc_date": "2026-11-06",
+  "status": "isolated review candidates; not production approved",
+  "generation_provider": "OpenAI built-in image generation/editing tool",
+  "specific_model_identifier": "not exposed by tool",
+  "source": {
+    "repository": "bobshenruililin/asterwind",
+    "base_commit": "d2037277a63cc56325dbed264d7b0c73635a2111",
+    "path": "anthology/episodes/standup/assets/reference-v1/02-turn-or-pass-decision.webp",
+    "git_blob_sha": "9f89f2c6a277eeb99b8a52218862fd1fc4d64f06",
+    "sha256": "30749b7e877c461d5407f9537ecb26a2af2b9c097354fc8dd3d89acf123794f9",
+    "dimensions": [
+      1672,
+      941
+    ]
+  },
+  "requested_change": "Remove the entire round model platter and its contents, and the rectangular paper-slips tray and its contents. Reconstruct the tabletop. Preserve camera, characters, hands, two maps, pencil, foreground wooden token, background, light and style.",
+  "processing": "Raw generated PNG outputs copied byte-for-byte. No crop, resize, resample, compositing, color correction or retouching.",
+  "candidates": [
+    {
+      "file": "quiet-clean-take-01.png",
+      "sha256": "a15e960fe17384840514cfc550aff0ca6fc6a79eed3fe3a46ff4fd23a4b90f4b",
+      "dimensions": [
+        1672,
+        941
+      ]
+    },
+    {
+      "file": "quiet-clean-take-02.png",
+      "sha256": "913d6b70177b7b3b9c491c9b5dd7f8f498314eb18a283a97d811536b9245a755",
+      "dimensions": [
+        1672,
+        941
+      ]
+    },
+    {
+      "file": "quiet-clean-take-03.png",
+      "sha256": "698477e62542cb20ad2ec28cc9f9c9e80e698a85700366815223297f2d1f52d9",
+      "dimensions": [
+        1672,
+        941
+      ]
+    }
+  ],
+  "rejected_intermediates": [
+    {
+      "dimensions": [
+        1671,
+        941
+      ],
+      "reason": "wrong native width; excluded"
+    },
+    {
+      "dimensions": [
+        1602,
+        981
+      ],
+      "reason": "wrong dimensions and visible framing drift; excluded"
+    }
+  ],
+  "generation_count": 5,
+  "candidate_count": 3,
+  "production_adoption": false,
+  "runtime_changes": false,
+  "full_generation_prompt": "Not included in this public repository."
+}

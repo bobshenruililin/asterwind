@@ -1,0 +1,5 @@
+// Browser-rendered, proportional asset QA. Does not modify image files.
+const {chromium}=require('playwright');
+const path=require('node:path');
+const {pathToFileURL}=require('node:url');
+(async()=>{const browser=await chromium.launch({executablePath:'/usr/bin/chromium',headless:true,args:['--no-sandbox']});for(const width of [1280,390]){const page=await browser.newPage({viewport:{width,height:1000},deviceScaleFactor:1});for(const take of ['01','02','03']){await page.goto(pathToFileURL(path.join(__dirname,'../index.html')).href+'?take='+take);await page.locator('#candidate').evaluate(img=>img.decode());const dimension=await page.locator('#candidate').evaluate(img=>({naturalWidth:img.naturalWidth,naturalHeight:img.naturalHeight,displayWidth:img.getBoundingClientRect().width,displayHeight:img.getBoundingClientRect().height}));console.log(JSON.stringify({take,viewportWidth:width,...dimension}));await page.locator('#stage').screenshot({path:path.join(__dirname,`take-${take}-${width}px.png`)});}await page.close();}await browser.close();})();
