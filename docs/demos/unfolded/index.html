@@ -596,7 +596,7 @@ addEventListener('message',e=>{if(!HUB.frame||e.source!==HUB.frame.contentWindow
   if(KEY[w])enterRoom(KEY[w],{cross:m.reveal||{}});else startFilm(w,{cross:m.reveal||{}})}
  if(m.type==='unlit'){$('c-cap').textContent=m.walked?'Its empty is already on the roof.':'That bottle is still dark. Its word is in the notebook.';announce($('c-cap').textContent)}
  if(m.type==='held'){$('corridor').classList.toggle('holding',!!m.on);if(m.on)$('c-cap').textContent=''}});
-function showCorridor(focusWord){G.screen='corridor';mountHub();only('corridor');if(!HUB.woke){HUB.woke=1;hub({type:'wake'})}Snd.music(G.dawn?'dawn':null);
+function showCorridor(focusWord){Snd.stopScene();G.screen='corridor';mountHub();only('corridor');if(!HUB.woke){HUB.woke=1;hub({type:'wake'})}Snd.music(G.dawn?'dawn':null);
  hubState();setTimeout(()=>{HUB.frame?.focus();hub({type:'focus',id:focusWord?DRINK[focusWord]:null})},60);
  const left=G.found.filter(w=>!G.walked.includes(w)),dark=TARGETS.length-G.found.length;
  $('morning').hidden=!G.walked.length||!!G.dawn;$('nb-open').textContent=G.dawn===2?'Open the notebook':'Back to the notebook';
@@ -624,7 +624,7 @@ function crossInto(el,box,done,from){const pAR=box.querySelector('svg')?.getAttr
  a.onfinish=()=>{if(svg){if(pAR)svg.setAttribute('preserveAspectRatio',pAR);else svg.removeAttribute('preserveAspectRatio')}el.classList.remove('crossing');done()}}
 // ---------- a room: the choice, the consequence, the threshold into its film ----------
 let R=null;
-function enterRoom(key,o={}){const st=ST[key];G.screen='story';$('note').textContent='';Snd.play('page');Snd.music(key==='help'?'dawn':'night');
+function enterRoom(key,o={}){Snd.stopScene();$('pause').setAttribute('aria-pressed','false');$('pause').textContent='Pause';const st=ST[key];G.screen='story';$('note').textContent='';Snd.play('page');Snd.music(key==='help'?'dawn':'night');
  const story=$('story');story.classList.toggle('ghost',!!o.ghost);$('ghost-slate').hidden=!o.ghost;$('thought').textContent='';
  $('st-svg').innerHTML=st.build();$('desc').textContent=st.title+'. '+st.desc;story.setAttribute('aria-label',st.title);
  R={key,word:st.word,st,seq:st.intro.slice(),i:0,t:0,T:0,S:JSON.parse(JSON.stringify(st.state)),from:null,to:null,fired:new Set(),cap:null,choice:null,paused:false,hold:!!o.cross,noReveal:!!(o.cross||o.ghost),ghost:o.ghost};
@@ -671,7 +671,7 @@ function renderStory(){if(!R)return;const f=Math.floor(R.T*FPS);if(f===R.lastF&&
 $('story').addEventListener('pointermove',e=>{const r=$('st-svg').getBoundingClientRect();at('rvc',{cx:(e.clientX-r.left)/r.width*1600,cy:(e.clientY-r.top)/r.height*900})});
 // ---------- the film: the label's other side, played whole and unchanged ----------
 let FILM=null;
-function startFilm(w,o={}){const id=BOTTLES[w].film,f=FILMS[id],key=KEY[w],c=key&&G.done[key];G.screen='film';Snd.music(null);
+function startFilm(w,o={}){Snd.stopScene();const id=BOTTLES[w].film,f=FILMS[id],key=KEY[w],c=key&&G.done[key];G.screen='film';Snd.music(null);
  const scr=$('filmscr');scr.setAttribute('aria-label',f.title);
  const slate=$('slate');slate.hidden=false;slate.querySelector('b').textContent=(o.fromRoom&&key&&ST[key].slateTitle)||f.title;
  slate.querySelector('span').textContent=(key&&ST[key].slate&&c&&ST[key].slate[c])||f.arrival;
@@ -694,7 +694,7 @@ addEventListener('message',e=>{const d=e.data;if(!FILM||e.source!==FILM.frame.co
 function leaveFilm(){if(!FILM)return;const w=FILM.w,fr=FILM.frame,pic=G.film[w]?lastFilmFrame(fr):null;if(pic)G.memento[w]=pic;FILM=null;try{fr.src='about:blank'}catch{}fr.remove();toMirror(w)}
 $('film-leave').onclick=leaveFilm;$('film-back').onclick=leaveFilm;
 // ---------- the mirror: one question, what happened remembered, the other way open to look at ----------
-function toMirror(w,afterGhost){const key=KEY[w],st=key?ST[key]:null;G.screen='mirror';only('mirror');const m=$('mirror');m.dataset.word=w;
+function toMirror(w,afterGhost){Snd.stopScene();const key=KEY[w],st=key?ST[key]:null;G.screen='mirror';only('mirror');const m=$('mirror');m.dataset.word=w;
  const c=key&&G.done[key];m.querySelector('.mem').textContent=(st&&st.memory&&c&&st.memory[c][G.film[w]||'none'])||'';
  m.querySelector('.q').textContent=st?st.question:LEADQ.question;m.querySelector('.trace').innerHTML=st?st.trace:LEADQ.trace;
  $('mirror-other').hidden=!(st&&c);$('mirror-other').textContent=afterGhost?'See it again':'See the other way';Snd.music(null);Snd.play('hush');
@@ -706,26 +706,42 @@ function backToNotebook(){G.screen='notebook';only('notebook');writeNotes();upda
 // ---------- the ending: the word, rewritten by what you did ----------
 function endWords(){const ws=TARGETS.filter(t=>G.found.includes(t)).map(t=>t.toLowerCase());const pos=[[300,370],[650,370],[300,440],[650,440],[300,510],[650,510]];
  $('nb-around').innerHTML=ws.map((w,i)=>`<text x="${pos[i][0]}" y="${pos[i][1]}" text-anchor="${i%2?'end':'start'}">${w}</text>`).join('')+'<text x="320" y="600" font-size="30">Leadership is…</text>'+(G.mine?`<text x="470" y="700" text-anchor="middle" font-size="40" fill="#26232e">${G.mine}</text>`:'');at('nb-q',{opacity:0})}
-function beginEnding(){G.ending=1;G.screen='notebook';only('notebook');writeNotes();Snd.play('page');$('tiles').hidden=true;$('spell').hidden=true;$('note').textContent='';$('go').hidden=true;$('boats').hidden=true;
+function beginEnding(){Snd.stopScene();G.ending=1;G.screen='notebook';only('notebook');writeNotes();Snd.play('page');$('tiles').hidden=true;$('spell').hidden=true;$('note').textContent='';$('go').hidden=true;$('boats').hidden=true;
  G.ended=1;endWords();const mine=$('mine');mine.hidden=false;$('closebook').hidden=false;mine.focus({preventScroll:true});announce('Morning. Leadership is… Write your own word if you like. It stays on this screen only.')}
 $('go').onclick=()=>showCorridor();
 $('closebook').onclick=()=>{const v=$('mine').value.trim();if(v){G.mine=v.replace(/[<>&"]/g,'');endWords();Snd.play('pencil')}
  $('mine').hidden=true;$('closebook').hidden=true;setTimeout(()=>{only('end');G.screen='end';Snd.music(null);setTimeout(()=>$('again').focus({preventScroll:true}),300)},v?2200:600)};
 $('again').onclick=()=>location.reload();
 // ---------- sound: recorded paper when present (sound/manifest.json), music if switched on, voices by cue id ----------
-const Snd=(()=>{let c=null,on=false,buf={},mus=null,musBuf={},vIdx=null,vSet=Q.has('voices')?(Q.get('voices')==='off'?null:Q.get('voices')):'scratch',vSrc=null;
+const Snd=(()=>{let c=null,on=false,paused=false,buf={},mus=null,musBuf={},vIdx=null,vSet=Q.has('voices')?(Q.get('voices')==='off'?null:Q.get('voices')):'scratch',vSrc=null,voiceEpoch=0,musicEpoch=0,transport=Promise.resolve();
+ const sources=new Set();
  async function load(u){try{return await c.decodeAudioData(await(await fetch(u)).arrayBuffer())}catch{return null}}
- return{get on(){return on},async enable(v){on=v;hub({type:'sound',on:v});if(on&&!c){c=new AudioContext();try{const m=await(await fetch('sound/manifest.json')).json();for(const [k,f] of Object.entries(m.cues))load('sound/'+f.file).then(b=>b&&(buf[k]={b,g:f.gain??1}));for(const [k,f] of Object.entries(m.music||{}))load('sound/'+f).then(b=>b&&(musBuf[k]=b))}catch{}
-   try{vIdx=await(await fetch('voices/index.json')).json()}catch{vIdx=null}this.voiceUI()}if(!on)this.music(null);$('voice').hidden=!on||!vIdx},
-  play(k){if(!on||!c||!buf[k])return;if(c.state==='suspended')c.resume();const s=c.createBufferSource(),g=c.createGain();s.buffer=buf[k].b;g.gain.value=buf[k].g;s.connect(g);g.connect(c.destination);s.start()},
-  music(k){if(mus){const m=mus;m.g.gain.setTargetAtTime(0,c.currentTime,.6);setTimeout(()=>m.s.stop(),2500);mus=null}if(!on||!c||!k||!musBuf[k])return;const s=c.createBufferSource(),g=c.createGain();s.buffer=musBuf[k];s.loop=true;g.gain.value=0;g.gain.setTargetAtTime(vSet?.16:.32,c.currentTime,1);s.connect(g);g.connect(c.destination);s.start();mus={s,g}},
+ function stop(s){if(!s||!sources.has(s))return;sources.delete(s);try{s.stop()}catch{}if(vSrc===s)vSrc=null}
+ function start(s){sources.add(s);s.onended=()=>{sources.delete(s);if(vSrc===s)vSrc=null};s.start()}
+ function stopVoice(){voiceEpoch++;stop(vSrc);vSrc=null}
+ // Serialize context changes and read the latest intent when each operation runs.
+ // A decoded cue may be queued on a suspended context, but must not escape mute or a scene change.
+ function syncTransport(){transport=transport.catch(()=>{}).then(()=>{if(c)return paused||!on?c.suspend():c.resume()}).catch(()=>{});return transport}
+ return{get on(){return on},async enable(v){on=v;if(!on){musicEpoch++;stopVoice();for(const s of [...sources])stop(s);mus=null}hub({type:'sound',on:v});
+   if(on&&!c){c=new AudioContext();syncTransport();try{const m=await(await fetch('sound/manifest.json')).json();for(const [k,f] of Object.entries(m.cues))load('sound/'+f.file).then(b=>b&&(buf[k]={b,g:f.gain??1}));for(const [k,f] of Object.entries(m.music||{}))load('sound/'+f).then(b=>b&&(musBuf[k]=b))}catch{}
+    try{vIdx=await(await fetch('voices/index.json')).json()}catch{vIdx=null}this.voiceUI()}
+   await syncTransport();$('voice').hidden=!on||!vIdx},
+  pause(v){paused=!!v;return syncTransport()},
+  stopScene(){musicEpoch++;stopVoice();for(const s of [...sources])stop(s);mus=null;paused=false;syncTransport()},
+  play(k){if(!on||paused||!c||!buf[k])return;syncTransport();const s=c.createBufferSource(),g=c.createGain();s.buffer=buf[k].b;g.gain.value=buf[k].g;s.connect(g);g.connect(c.destination);start(s)},
+  musicAfter(k,delay=400){const ticket=++musicEpoch;setTimeout(()=>{if(on&&ticket===musicEpoch)this.music(k)},delay)},
+  music(k){musicEpoch++;if(mus){const m=mus;mus=null;m.g.gain.setTargetAtTime(0,c.currentTime,.6);setTimeout(()=>stop(m.s),2500)}if(!on||!c||!k||!musBuf[k])return;const s=c.createBufferSource(),g=c.createGain();s.buffer=musBuf[k];s.loop=true;g.gain.value=0;g.gain.setTargetAtTime(vSet?.16:.32,c.currentTime,1);s.connect(g);g.connect(c.destination);start(s);mus={s,g}},
   sets(){return vIdx?Object.keys(vIdx.sets).filter(k=>Object.keys(vIdx.sets[k].cues||{}).length):[]},
-  cycle(){const s=this.sets(),i=s.indexOf(vSet);vSet=i+1<s.length?s[i+1]:null;this.voiceUI()},
+  cycle(){stopVoice();const s=this.sets(),i=s.indexOf(vSet);vSet=i+1<s.length?s[i+1]:null;this.voiceUI()},
   voiceUI(){const b=$('voice');b.textContent='Voices: '+(vSet&&vIdx?.sets[vSet]?vIdx.sets[vSet].label:'off');b.setAttribute('aria-pressed',String(!!vSet))},
-  async voice(id){if(!on||!c||!vSet||!id||!vIdx?.sets[vSet])return;const set=vIdx.sets[vSet],f=set.cues[id];if(!f)return;const b=await load('voices/'+set.dir+'/'+f);if(!b)return;try{vSrc?.stop()}catch{}const s=c.createBufferSource(),g=c.createGain();s.buffer=b;g.gain.value=set.gain??1;s.connect(g);g.connect(c.destination);s.start();vSrc=s}}})();
-$('snd').onclick=()=>{const v=$('snd').getAttribute('aria-pressed')!=='true';$('snd').setAttribute('aria-pressed',String(v));Snd.enable(v);if(v&&(G.screen==='story'||G.screen==='corridor'))setTimeout(()=>Snd.music(R?.key==='help'?'dawn':'night'),400)};
+  async voice(id){if(!on||!c||!vSet||!id||!vIdx?.sets[vSet])return;const set=vIdx.sets[vSet],f=set.cues[id];if(!f)return;const ticket=++voiceEpoch,voiceSet=vSet;
+   const b=await load('voices/'+set.dir+'/'+f);if(!b||!on||ticket!==voiceEpoch||vSet!==voiceSet)return;
+   stop(vSrc);const s=c.createBufferSource(),g=c.createGain();s.buffer=b;g.gain.value=set.gain??1;s.connect(g);g.connect(c.destination);vSrc=s;start(s)}}})();
+$('snd').onclick=()=>{const v=$('snd').getAttribute('aria-pressed')!=='true';$('snd').setAttribute('aria-pressed',String(v));Snd.enable(v);if(v&&(G.screen==='story'||G.screen==='corridor'))Snd.musicAfter(R?.key==='help'?'dawn':'night')};
 $('voice').onclick=()=>Snd.cycle();
-$('pause').onclick=()=>{if(!R)return;R.paused=!R.paused;$('pause').setAttribute('aria-pressed',String(R.paused));$('pause').textContent=R.paused?'Resume':'Pause'};
+function pauseRoom(value){if(!R)return;R.paused=!!value;$('pause').setAttribute('aria-pressed',String(R.paused));$('pause').textContent=R.paused?'Resume':'Pause';Snd.pause(R.paused)}
+$('pause').onclick=()=>{if(R)pauseRoom(!R.paused)};
+document.addEventListener('visibilitychange',()=>{if(document.hidden&&G.screen==='story'&&R)pauseRoom(true)});
 // ---------- loop ----------
 const now=()=>performance.now()/1000;let last=0;
 function loop(ts){const dt=Math.min(.05,(ts-(last||ts))/1000);last=ts;if(!EXPORT){stepStory(dt);renderStory();hints()}requestAnimationFrame(loop)}
