@@ -1,0 +1,147 @@
+{
+  "id": "pixel",
+  "title": "The Empty Square",
+  "origin": "Original fictional inclusive-design story; Q8-inspired structural inclusion, not a direct adaptation. Lived-experience accessibility review still required.",
+  "setup": [
+    {
+      "stage": "open",
+      "shot": "wide",
+      "duration": 7500,
+      "speaker": "",
+      "line": "Jo, a visiting student designer, finds an exhibition’s controls mounted high. The paper world waits for its next sequence."
+    },
+    {
+      "stage": "jo",
+      "shot": "jo",
+      "duration": 5000,
+      "speaker": "Jo",
+      "line": "I want to choose the sequence myself."
+    },
+    {
+      "stage": "options",
+      "shot": "hands",
+      "duration": 5500,
+      "speaker": "Remy",
+      "line": "We can bring the controls down. Or connect this second panel."
+    },
+    {
+      "stage": "cost",
+      "shot": "remy",
+      "duration": 7500,
+      "speaker": "Remy",
+      "line": "Lowering the adjustable console means stopping and rebalancing it. This panel connects now, but its switches are smaller."
+    },
+    {
+      "stage": "agency",
+      "shot": "jo",
+      "duration": 6500,
+      "speaker": "Jo",
+      "line": "Either lets me operate it. I’d rather not have someone choose the sequence for me."
+    },
+    {
+      "stage": "difference",
+      "shot": "hands",
+      "duration": 5500,
+      "speaker": "",
+      "line": "The large controls have a long, tactile travel. The portable panel has shorter, smaller switches."
+    },
+    {
+      "stage": "choice",
+      "shot": "wide",
+      "duration": 5500,
+      "speaker": "Jo",
+      "line": "Let’s try either. I’ll tell you what works for me."
+    }
+  ],
+  "choice": {
+    "prompt": "Which controls will you put within reach?",
+    "actions": [
+      {
+        "id": "lower",
+        "label": "Lower the console",
+        "description": "Pause and lower the adjustable console so Jo can use its large controls."
+      },
+      {
+        "id": "connect",
+        "label": "Connect the panel",
+        "description": "Connect the smaller duplicate panel so Jo can operate the same display now."
+      }
+    ]
+  },
+  "branches": {
+    "lower": [
+      {
+        "stage": "pause",
+        "shot": "hands",
+        "duration": 6000,
+        "speaker": "",
+        "line": "You release the catches with Remy. The display pauses while the supported console is adjusted on its rails."
+      },
+      {
+        "stage": "height",
+        "shot": "jo",
+        "duration": 5000,
+        "speaker": "",
+        "line": "Jo indicates a comfortable height. Remy secures the catches before the display restarts."
+      },
+      {
+        "stage": "works",
+        "shot": "jo",
+        "duration": 5000,
+        "speaker": "Jo",
+        "line": "There. That works for me."
+      },
+      {
+        "stage": "operate",
+        "shot": "hands",
+        "duration": 6000,
+        "speaker": "",
+        "line": "Jo chooses the sequence herself. The paper train advances. The large controls have the same long travel."
+      },
+      {
+        "stage": "ending-lower",
+        "shot": "wide",
+        "duration": 7500,
+        "speaker": "",
+        "line": "Some visitors left during the pause. The controls are now shared at the height Jo chose."
+      }
+    ],
+    "connect": [
+      {
+        "stage": "plug",
+        "shot": "hands",
+        "duration": 5500,
+        "speaker": "",
+        "line": "You connect the duplicate panel. Jo chooses a sequence herself. The same paper world responds."
+      },
+      {
+        "stage": "feedback",
+        "shot": "jo",
+        "duration": 6500,
+        "speaker": "Jo",
+        "line": "It works. These switches don’t feel like the big ones."
+      },
+      {
+        "stage": "request",
+        "shot": "lead",
+        "duration": 6000,
+        "speaker": "You",
+        "line": "Would you help us test a better version after this?"
+      },
+      {
+        "stage": "boundary",
+        "shot": "jo",
+        "duration": 6500,
+        "speaker": "Jo",
+        "line": "You can ask. Don’t put me down as your tester yet."
+      },
+      {
+        "stage": "ending-connect",
+        "shot": "wide",
+        "duration": 6500,
+        "speaker": "",
+        "line": "Two panels control the same world. Jo keeps choosing her sequence. The difference in feel is still there."
+      }
+    ]
+  }
+}

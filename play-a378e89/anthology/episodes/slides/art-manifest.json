@@ -1,0 +1,215 @@
+{
+  "schemaVersion": 1,
+  "plates": {
+    "master": {
+      "src": "assets/master.webp",
+      "alt": "Asha, wearing teal, shows her field notebook. Kit in rust and the lead in indigo stand beside the matching projected map. A closed model box sits between them.",
+      "width": 1672,
+      "height": 941
+    },
+    "decision": {
+      "src": "assets/decision.webp",
+      "alt": "A microphone rests left; Asha’s open notebook stands right. She gestures willingly toward the two ways to introduce her work.",
+      "width": 1672,
+      "height": 941
+    },
+    "microphone": {
+      "src": "assets/microphone.webp",
+      "alt": "Asha holds the microphone and explains her field map. Kit and the lead listen; the model they built remains in its closed box.",
+      "width": 1671,
+      "height": 941
+    },
+    "notebook": {
+      "src": "assets/notebook.webp",
+      "alt": "The full neighbourhood model is revealed. Kit invites Asha to answer an audience question; she speaks beside her visible original notebook.",
+      "width": 1672,
+      "height": 941
+    },
+    "microphone-action": {
+      "src": "assets/performance-microphone-action.webp",
+      "alt": "The lead lifts the microphone from its block. Asha waits beside her open notebook.",
+      "width": 1672,
+      "height": 941
+    },
+    "microphone-offer": {
+      "src": "assets/performance-microphone-offer.webp",
+      "alt": "The lead offers the microphone; Asha willingly reaches toward it, not yet speaking. The model box remains closed.",
+      "width": 1671,
+      "height": 941
+    },
+    "notebook-action": {
+      "src": "assets/performance-notebook-action.webp",
+      "alt": "The lead turns the notebook easel toward the audience. The microphone stays on its block.",
+      "width": 1672,
+      "height": 941
+    },
+    "source-credit": {
+      "src": "assets/performance-source-credit.webp",
+      "alt": "The lead credits Asha while presenting her notebook. Asha listens; Kit stands behind the still-closed model box.",
+      "width": 1670,
+      "height": 941
+    },
+    "invite": {
+      "src": "assets/performance-invite.webp",
+      "alt": "The full model is revealed. Kit invites a response; Asha listens with her mouth closed and hand resting near her waist, not yet answering.",
+      "width": 1672,
+      "height": 941
+    }
+  },
+  "beats": {
+    "open": {
+      "plate": "master",
+      "zoom": 1,
+      "x": 50,
+      "y": 50,
+      "focus": 50
+    },
+    "source": {
+      "plate": "master",
+      "zoom": 1.35,
+      "x": 82,
+      "y": 60,
+      "focus": 80
+    },
+    "kit": {
+      "plate": "master",
+      "zoom": 1.3,
+      "x": 39,
+      "y": 34,
+      "focus": 40
+    },
+    "asha": {
+      "plate": "master",
+      "zoom": 1.3,
+      "x": 81,
+      "y": 35,
+      "focus": 80
+    },
+    "repair": {
+      "plate": "master",
+      "zoom": 1.2,
+      "x": 24,
+      "y": 40,
+      "focus": 25
+    },
+    "limit": {
+      "plate": "master",
+      "zoom": 1.3,
+      "x": 81,
+      "y": 35,
+      "focus": 80
+    },
+    "tradeoff": {
+      "plate": "master",
+      "zoom": 1.25,
+      "x": 40,
+      "y": 40,
+      "focus": 40
+    },
+    "choice": {
+      "plate": "decision",
+      "zoom": 1,
+      "x": 50,
+      "y": 50,
+      "focus": 50
+    },
+    "introduce": {
+      "plate": "microphone-offer",
+      "zoom": 1.08,
+      "x": 55,
+      "y": 40,
+      "focus": 50
+    },
+    "offer": {
+      "plate": "microphone-offer",
+      "zoom": 1.12,
+      "x": 75,
+      "y": 48,
+      "focus": 75
+    },
+    "authorship": {
+      "plate": "microphone",
+      "zoom": 1.25,
+      "x": 78,
+      "y": 37,
+      "focus": 78
+    },
+    "context": {
+      "plate": "microphone",
+      "zoom": 1.2,
+      "x": 90,
+      "y": 66,
+      "focus": 85
+    },
+    "follow": {
+      "plate": "microphone",
+      "zoom": 1.2,
+      "x": 39,
+      "y": 38,
+      "focus": 40
+    },
+    "ending-microphone": {
+      "plate": "microphone",
+      "zoom": 1,
+      "x": 50,
+      "y": 50,
+      "focus": 50
+    },
+    "credit": {
+      "plate": "source-credit",
+      "zoom": 1,
+      "x": 50,
+      "y": 50,
+      "focus": 60
+    },
+    "reveal": {
+      "plate": "invite",
+      "zoom": 1,
+      "x": 50,
+      "y": 50,
+      "focus": 50
+    },
+    "question": {
+      "plate": "invite",
+      "zoom": 1.15,
+      "x": 60,
+      "y": 75,
+      "focus": 55
+    },
+    "invite": {
+      "plate": "invite",
+      "zoom": 1.2,
+      "x": 44,
+      "y": 37,
+      "focus": 45
+    },
+    "accept": {
+      "plate": "notebook",
+      "zoom": 1.25,
+      "x": 80,
+      "y": 35,
+      "focus": 80
+    },
+    "ending-notebook": {
+      "plate": "notebook",
+      "zoom": 1,
+      "x": 50,
+      "y": 50,
+      "focus": 50
+    },
+    "microphone-action": {
+      "plate": "microphone-action",
+      "zoom": 1,
+      "x": 50,
+      "y": 50,
+      "focus": 25
+    },
+    "notebook-action": {
+      "plate": "notebook-action",
+      "zoom": 1,
+      "x": 50,
+      "y": 50,
+      "focus": 78
+    }
+  }
+}

@@ -529,8 +529,12 @@ const FILMS={standup:{title:'The Quiet Minute',src:'anthology/episodes/standup/i
  scope:{title:'One More Chair',src:'anthology/episodes/scope/index.html',arrival:'One more student waits at the door.'}};
 const OUTCOMES={standup:['round','slips'],slides:['microphone','notebook'],seam:['backup','repair'],ship:['live','rehearsal'],pixel:['lower','connect'],scope:['extend','return']};
 const OUTNOTE={round:'turned the table',slips:'passed the slips',microphone:'moved the microphone',notebook:'showed the notebook',backup:'fitted the spare',repair:'mended it together',live:'ran it live',rehearsal:'played the rehearsal',lower:'lowered the console',connect:'connected the panel',extend:'pulled in a chair',return:'offered tomorrow'};
+// At dawn (?v=2) the notebook says what each choice kept and what it cost: from the interaction audit, never a grade.
+const KEPT={round:['every voice, in turn','the harbour waited'],slips:['the quiet concerns','one slip misread'],microphone:['Asha’s own words','the model stayed boxed'],notebook:['the pitch, Asha’s ease','credit in your voice'],
+ backup:['the noon deadline','Julian’s rib, unused'],repair:['Julian’s own design','half a canopy'],live:['hands-on, for real','the fault, in public'],rehearsal:['a clean first show','no one could try it'],
+ lower:['the same controls','a pause; some left'],connect:['the display running','a different feel'],extend:['Sam, for tomorrow','the umbrella’s seam'],return:['the promises made','Sam’s bag, still torn']};
 // Draft mode (?v=2): The Quiet Minute is played at the table rather than watched (docs/demos/played).
-if(V2){FILMS.standup.src='docs/demos/played/index.html';for(const e of ['slides','scope','pixel','ship'])FILMS[e].src='docs/demos/played/scene.html?ep='+e}
+if(V2){FILMS.standup.src='docs/demos/played/index.html';for(const e of ['slides','scope','pixel','ship','seam'])FILMS[e].src='docs/demos/played/scene.html?ep='+e}
 // Each word's bottle opens one film. The wrapper copy lives with the drinks (hub/drinks.js, JOURNEY).
 const BOTTLES={HEARD:{film:'standup'},LEAD:{film:'slides'},SHARED:{film:'seam'},SHIELD:{film:'ship'},HELP:{film:'pixel'},SHIP:{film:'scope'}};
 const LEADQ={question:'Whose map was it? And who said so out loud?',trace:'<path d="M40 150 q30 -90 60 -40 t60 -60" stroke="#e8dcc4" stroke-width="5" fill="none" stroke-dasharray="10 8"/><circle cx="160" cy="50" r="12" fill="#e9c27a"/>'};
@@ -711,7 +715,8 @@ function lastFilmFrame(fr){try{const doc=fr.contentDocument;const cv=doc.getElem
 addEventListener('message',e=>{const d=e.data;if(!FILM||e.source!==FILM.frame.contentWindow||!d||d.channel!=='asterwind.episode.v1'||d.session!==FILM.session||(d.episodeId&&d.episodeId!==FILM.id))return;
  if(d.type==='ready'){FILM.ready=true;tryStart()}
  if(d.type==='completed')filmEnded(d.outcome)});
-function leaveFilm(){if(!FILM)return;const w=FILM.w,fr=FILM.frame,pic=G.film[w]?lastFilmFrame(fr):null;if(pic)G.memento[w]=pic;FILM=null;try{fr.src='about:blank'}catch{}fr.remove();V2?walkHome(w):toMirror(w)}
+function completedFilm(w){return !!OUTCOMES[DRINK[w]]?.includes(G.film[w])}
+function leaveFilm(){if(!FILM)return;const w=FILM.w,fr=FILM.frame,pic=completedFilm(w)?lastFilmFrame(fr):null;if(pic)G.memento[w]=pic;FILM=null;try{fr.src='about:blank'}catch{}fr.remove();V2?walkHome(w):toMirror(w)}
 $('film-leave').onclick=leaveFilm;$('film-back').onclick=leaveFilm;
 // ---------- the mirror: one question, what happened remembered, the other way open to look at ----------
 function toMirror(w,afterGhost){Snd.stopScene();const key=KEY[w],st=key?ST[key]:null;G.screen='mirror';only('mirror');const m=$('mirror');m.dataset.word=w;
@@ -720,14 +725,14 @@ function toMirror(w,afterGhost){Snd.stopScene();const key=KEY[w],st=key?ST[key]:
  $('mirror-other').hidden=!(st&&c);$('mirror-other').textContent=afterGhost?'See it again':'See the other way';Snd.music(null);Snd.play('hush');
  setTimeout(()=>$(afterGhost?'mirror-go':'mirror-go').focus({preventScroll:true}),400)}
 // Back into the night: the picture folds into the label and the empty finds the roof.
-function walkHome(w){if(!G.walked.includes(w))G.walked.push(w);if(V2&&G.found.length<TARGETS.length)G.found=TARGETS.slice();save();showCorridor();hub({type:'return',id:DRINK[w],walked:true,memento:G.memento[w]||null});if(G.walked.length===TARGETS.length&&!G.dawn)setTimeout(()=>dawn(true),reduced?600:4200)}
+function walkHome(w){if(V2&&!completedFilm(w)){showCorridor(w);hub({type:'return',id:DRINK[w],walked:false});return}if(!G.walked.includes(w))G.walked.push(w);if(V2&&G.found.length<TARGETS.length)G.found=TARGETS.slice();save();showCorridor();hub({type:'return',id:DRINK[w],walked:true,memento:G.memento[w]||null});if(G.walked.length===TARGETS.length&&!G.dawn)setTimeout(()=>dawn(true),reduced?600:4200)}
 $('mirror-go').onclick=()=>walkHome($('mirror').dataset.word);
 $('mirror-other').onclick=()=>{const w=$('mirror').dataset.word,key=KEY[w],st=ST[key];const other=Object.keys(st.notes).find(c=>c!==G.done[key]);enterRoom(key,{ghost:other})};
-function writeNotes(){let n='';for(const w of TARGETS){const key=KEY[w],[x,y]=PLACE[w];let t='';if(V2){if(G.walked.includes(w))t=OUTNOTE[G.film[w]]||'walked';at('pl-'+w,{opacity:G.walked.includes(w)?.85:.14})}else if(key&&G.done[key])t=ST[key].notes[G.done[key]];if(t)n+=`<text x="${x}" y="${y+86}" text-anchor="middle">${t}</text>`;if(G.walked.includes(w))$('boat-'+w)?.classList.add('done')}const g=$('nb-notes');if(g)g.innerHTML=n}
+function writeNotes(){let n='';for(const w of TARGETS){const key=KEY[w],[x,y]=PLACE[w];let t='';if(V2){const k=G.walked.includes(w)&&KEPT[G.film[w]];if(k){n+=`<text x="${x}" y="${y+80}" text-anchor="middle" font-size="19">kept: ${k[0]}</text><text x="${x}" y="${y+106}" text-anchor="middle" font-size="17" fill="#7a7480">cost: ${k[1]}</text>`}else if(G.walked.includes(w))t='walked';at('pl-'+w,{opacity:G.walked.includes(w)?.85:.14})}else if(key&&G.done[key])t=ST[key].notes[G.done[key]];if(t)n+=`<text x="${x}" y="${y+86}" text-anchor="middle">${t}</text>`;if(G.walked.includes(w))$('boat-'+w)?.classList.add('done')}const g=$('nb-notes');if(g)g.innerHTML=n}
 function backToNotebook(){G.screen='notebook';only('notebook');writeNotes();updateGo();Snd.music(null);setTimeout(()=>($('tiles').querySelector('button'))?.focus({preventScroll:true}),100)}
 // ---------- the ending: the word, rewritten by what you did ----------
 function endWords(){const ws=(V2?TARGETS.filter(t=>G.walked.includes(t)):TARGETS.filter(t=>G.found.includes(t))).map(t=>t.toLowerCase());const pos=[[300,370],[650,370],[300,440],[650,440],[300,510],[650,510]];
- $('nb-around').innerHTML=ws.map((w,i)=>`<text x="${pos[i][0]}" y="${pos[i][1]}" text-anchor="${i%2?'end':'start'}">${w}</text>`).join('')+'<text x="320" y="600" font-size="30">Leadership is…</text>'+(G.mine?`<text x="470" y="700" text-anchor="middle" font-size="40" fill="#26232e">${G.mine}</text>`:'');at('nb-q',{opacity:0})}
+ $('nb-around').innerHTML=ws.map((w,i)=>`<text x="${pos[i][0]}" y="${pos[i][1]}" text-anchor="${i%2?'end':'start'}">${w}</text>`).join('')+(V2&&ws.length?'<text x="300" y="548" font-size="22" fill="#5d5866">Each time, you chose what to keep.</text>':'')+'<text x="320" y="600" font-size="30">Leadership is…</text>'+(G.mine?`<text x="470" y="700" text-anchor="middle" font-size="40" fill="#26232e">${G.mine}</text>`:'');at('nb-q',{opacity:0})}
 function beginEnding(){Snd.stopScene();G.ending=1;G.screen='notebook';only('notebook');writeNotes();Snd.play('page');$('tiles').hidden=true;$('spell').hidden=true;$('note').textContent='';$('go').hidden=true;$('boats').hidden=true;
  G.ended=1;endWords();const mine=$('mine');mine.hidden=false;$('closebook').hidden=false;mine.focus({preventScroll:true});announce('Morning. Leadership is… Write your own word if you like. It stays on this screen only.')}
 $('go').onclick=()=>showCorridor();
@@ -778,10 +783,9 @@ function wipe(){try{localStorage.removeItem(SAVE)}catch{}}
 // ---------- the title: the word in cream, then the same word in ink on the page ----------
 buildTiles();setLayout();updateGo();only('title');G.screen='title';
 const saved=V2?null:loadSave();
-if(V2){$('title').hidden=true;const d=loadSave();G.found=d?.found?.filter(w=>TARGETS.includes(w))||['HEARD'];if(!G.found.length)G.found=['HEARD'];G.walked=(Array.isArray(d?.walked)?d.walked:[]).filter(w=>G.found.includes(w));G.film={};
- // Keep only outcomes the word's own film allows; anything else in a stale or corrupt save is dropped.
- if(d?.film&&typeof d.film==='object')for(const[w,o]of Object.entries(d.film))if(BOTTLES[w]&&OUTCOMES[BOTTLES[w].film]?.includes(o))G.film[w]=o;
- $('voice').hidden=true;$('nb-open').hidden=true;showCorridor('HEARD');if(d?.dawn){G.dawn=2;hub({type:'morning'});$('nb-open').hidden=false;$('nb-open').textContent='Open the notebook'}}if(saved){$('resume').hidden=false;$('restart').hidden=false;$('begin').hidden=true}
+function restoreNight(d){G.film={};for(const w of TARGETS){const outcome=d?.film?.[w];if(OUTCOMES[DRINK[w]]?.includes(outcome))G.film[w]=outcome}G.walked=TARGETS.filter(w=>Array.isArray(d?.walked)&&d.walked.includes(w)&&completedFilm(w));G.found=G.walked.length?TARGETS.slice():['HEARD'];G.dawn=d?.dawn&&G.walked.length?2:0}
+if(V2){$('title').hidden=true;const d=loadSave();restoreNight(d);
+ $('voice').hidden=true;$('nb-open').hidden=true;showCorridor('HEARD');if(G.dawn===2){hub({type:'morning'});$('nb-open').hidden=false;$('nb-open').textContent='Open the notebook'}}if(saved){$('resume').hidden=false;$('restart').hidden=false;$('begin').hidden=true}
 if(!V2)setTimeout(()=>(saved?$('resume'):$('begin')).focus({preventScroll:true}),60);
 function demo(){// A first word, shown: the obvious one. Then the page lets you look for the rest.
  const DEMO='lead. The obvious one. It’s in there too, but keep looking.';
