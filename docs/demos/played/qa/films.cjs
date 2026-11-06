@@ -1,9 +1,9 @@
-// Every film played through scene.js: setup over living plates, the decision (hover on each object), a commit
+// Every film played through scene.js (the four anthology films and The Seam): setup over living plates, the decision (hover on each object), a commit
 // (first action by drag, second by Enter), and the ending. Fails on page errors or failed requests.
 // Usage: serve the repo root, then  node qa/films.cjs <base-url> <outdir> [fast]
 const {chromium}=require('playwright');const BASE=process.argv[2]||'http://127.0.0.1:8731/';const O=(process.argv[3]||'.')+'/';const FAST=!!process.argv[4];const w=ms=>new Promise(r=>setTimeout(r,ms));
 (async()=>{const b=await chromium.launch();const fails=[];
- for(const [i,ep] of ['slides','scope','pixel','ship'].entries()){const p=await b.newPage({viewport:{width:1280,height:720}});const errs=[],bad=[];
+ for(const [i,ep] of (process.env.EPS||'slides,scope,pixel,ship,seam').split(',').entries()){const p=await b.newPage({viewport:{width:1280,height:720}});const errs=[],bad=[];
   p.on('pageerror',e=>errs.push(e.message));p.on('console',m=>{if(m.type()==='error')errs.push(m.text())});p.on('response',r=>{if(r.status()>=400)bad.push(r.status()+' '+r.url())});
   await p.goto(BASE+'docs/demos/played/scene.html?ep='+ep);await w(1500);await p.click('#start');await w(2500);await p.screenshot({path:O+ep+'-1-setup.png'});
   if(FAST)await p.evaluate(()=>{for(let n=0;n<4000&&FILMPLAY.state.phase!=='decision';n++)FILMPLAY.step(1/15)});
@@ -15,4 +15,4 @@ const {chromium}=require('playwright');const BASE=process.argv[2]||'http://127.0
   if(FAST)await p.evaluate(()=>{for(let n=0;n<4000&&FILMPLAY.state.phase!=='end';n++)FILMPLAY.step(1/15)});
   await p.waitForFunction(()=>FILMPLAY.state.phase==='end',null,{timeout:180000});await w(500);await p.screenshot({path:O+ep+'-5-end.png'});
   const st=await p.evaluate(()=>FILMPLAY.state);console.log(ep,JSON.stringify(st),'errors',errs.length?errs:'none','bad',bad.length?bad:'none');if(errs.length||bad.length)fails.push(ep);await p.close()}
- await b.close();if(fails.length){console.log('FAILED',fails);process.exit(1)}console.log('all four films played')})();
+ await b.close();if(fails.length){console.log('FAILED',fails);process.exit(1)}console.log('all films played')})();

@@ -533,8 +533,8 @@ const OUTNOTE={round:'turned the table',slips:'passed the slips',microphone:'mov
 const KEPT={round:['every voice, in turn','the harbour waited'],slips:['the quiet concerns','one slip misread'],microphone:['Asha’s own words','the model stayed boxed'],notebook:['the pitch, Asha’s ease','credit in your voice'],
  backup:['the noon deadline','Julian’s rib, unused'],repair:['Julian’s own design','half a canopy'],live:['hands-on, for real','the fault, in public'],rehearsal:['a clean first show','no one could try it'],
  lower:['the same controls','a pause; some left'],connect:['the display running','a different feel'],extend:['Sam, for tomorrow','the umbrella’s seam'],return:['the promises made','Sam’s bag, still torn']};
-// Draft mode (?v=2): The Quiet Minute is played at the table rather than watched (docs/demos/played).
-if(V2){FILMS.standup.src='docs/demos/played/index.html';for(const e of ['slides','scope','pixel','ship'])FILMS[e].src='docs/demos/played/scene.html?ep='+e}
+// Draft mode (?v=2): all six stories are played at their decision rather than watched (docs/demos/played).
+if(V2){FILMS.standup.src='docs/demos/played/index.html';for(const e of ['slides','scope','pixel','ship','seam'])FILMS[e].src='docs/demos/played/scene.html?ep='+e}
 // Each word's bottle opens one film. The wrapper copy lives with the drinks (hub/drinks.js, JOURNEY).
 const BOTTLES={HEARD:{film:'standup'},LEAD:{film:'slides'},SHARED:{film:'seam'},SHIELD:{film:'ship'},HELP:{film:'pixel'},SHIP:{film:'scope'}};
 const LEADQ={question:'Whose map was it? And who said so out loud?',trace:'<path d="M40 150 q30 -90 60 -40 t60 -60" stroke="#e8dcc4" stroke-width="5" fill="none" stroke-dasharray="10 8"/><circle cx="160" cy="50" r="12" fill="#e9c27a"/>'};

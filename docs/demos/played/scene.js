@@ -1,22 +1,32 @@
 /* A film, played: any anthology episode's own story.json and art-manifest.json, staged on the living Stage.
    Setup beats play over depth-parallax plates with the film's camera; at the decision the two objects in the
    picture are within reach (drag or tap them, or Tab + Enter); the chosen branch is the film's own.
-   ?ep=slides|scope|pixel|ship. Lines, choices and outcomes are read from the episode, unchanged. */
+   ?ep=slides|scope|pixel|ship, or ?ep=seam for The 3:00 AM Seam (its older film/story.json: beats with pose frames, camera
+   pushes and timed lines, adapted here). Lines, choices and outcomes are read from the episode, unchanged. */
 (async function(){
 'use strict';
 const $=id=>document.getElementById(id),reduced=matchMedia('(prefers-reduced-motion: reduce)').matches,Q=new URLSearchParams(location.search);
-const EP=Q.get('ep'),OK=['slides','scope','pixel','ship'];if(!OK.includes(EP)){document.body.textContent='Unknown film.';return}
-const BASE='../../../anthology/episodes/'+EP+'/',SESSION=Q.get('session')||'standalone',EMBED=parent!==window;
+const EP=Q.get('ep'),OK=['slides','scope','pixel','ship','seam'],SEAM=EP==='seam';if(!OK.includes(EP)){document.body.textContent='Unknown film.';return}
+const BASE=SEAM?'../../../film/':'../../../anthology/episodes/'+EP+'/',SESSION=Q.get('session')||'standalone',EMBED=parent!==window;
 // Hotspot regions on each decision plate, from the episode's own layout.js (fractions of the plate).
 const REG={slides:{microphone:{x:.08,y:.53,w:.27,h:.30},notebook:{x:.60,y:.36,w:.35,h:.40}},scope:{extend:{x:.055,y:.15,w:.37,h:.68},return:{x:.68,y:.30,w:.28,h:.40}},
- pixel:{lower:{x:.06,y:.31,w:.12,h:.42},connect:{x:.71,y:.69,w:.28,h:.23}},ship:{live:{x:.02,y:.45,w:.32,h:.43},rehearsal:{x:.71,y:.28,w:.27,h:.60}}}[EP];
+ pixel:{lower:{x:.06,y:.31,w:.12,h:.42},connect:{x:.71,y:.69,w:.28,h:.23}},ship:{live:{x:.02,y:.45,w:.32,h:.43},rehearsal:{x:.71,y:.28,w:.27,h:.60}},
+ seam:{backup:{x:.11,y:.71,w:.3,h:.2},repair:{x:.68,y:.46,w:.3,h:.34}}}[EP];  // seam: Mara's clean spare (left), Julian's cracked original (right)
 // Where each object goes when you choose it (plate UV): the microphone towards Asha, the chair pulled in, the catches down.
 const MOVE={microphone:[.045,-.03],notebook:[-.02,.035],extend:[.07,.05],return:[-.02,-.04],lower:[0,.05],connect:[-.03,-.04],live:[.012,-.012],rehearsal:[0,0]};
 // Lio's hand rests on the projector, so it doesn't slide: playing the rehearsal lights its lens instead.
 const GLOW={rehearsal:[.79,.66,.10,.9]};
 const NONE='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR4nGNgYGBgAAAABQABpfZFQAAAAABJRU5ErkJggg==';
-const ENTER={slides:'Take your seat',scope:'Come in',pixel:'Step up',ship:'Walk in'}[EP];
-const [story,art]=await Promise.all([PlayedSupport.json(BASE+'story.json'),PlayedSupport.json(BASE+'art-manifest.json')]);
+const ENTER={slides:'Take your seat',scope:'Come in',pixel:'Step up',ship:'Walk in',seam:'Pull up a stool'}[EP];
+// The Seam's film keeps its own format: each beat has a plate, a camera push, pose frames and lines at given times.
+function fromFilm(f){const plates={},beats={};const add=a=>{plates[a]={src:'assets/'+a+'.webp'}};
+ const conv=(list,part)=>list.map((b,i)=>{if(b.asset==='black')return{black:true,duration:b.ms,lines:[],frames:[]};// a held dark pause
+  const key=part+'-'+i,c=b.camera||[1,50,50,1,50,50];add(b.asset);(b.frames||[]).forEach(fr=>add(fr.asset));
+  beats[key]={plate:(b.frames&&b.frames[0]&&b.frames[0].at===0)?b.frames[0].asset:b.asset,zoom:c[0],x:c[1],y:c[2]};
+  return{stage:key,duration:b.ms,lines:b.lines||[],frames:(b.frames||[]).filter(fr=>fr.at>0),cam1:[c[3],c[4],c[5]]}});
+ const d=f.decision;add(d.asset);const setup=conv(f.setup,'setup');beats.choice={plate:d.asset};beats.open=beats['setup-0'];
+ return[{title:'The 3:00 AM Seam',setup,choice:{prompt:d.prompt,actions:['backup','repair'].map(id=>({id,label:d[id].label,description:d[id].detail}))},branches:{backup:conv(f.backup,'backup'),repair:conv(f.repair,'repair')}},{plates,beats}]}
+const [story,art]=SEAM?fromFilm(await PlayedSupport.json(BASE+'story.json')):await Promise.all([PlayedSupport.json(BASE+'story.json'),PlayedSupport.json(BASE+'art-manifest.json')]);
 document.title=story.title+', played';$('frame').setAttribute('aria-label',story.title+', played.');$('start').querySelector('span').textContent=ENTER;
 // Shared with the playtest: say plainly that this story is still waiting for its lived-experience review.
 if(EP==='pixel'){const n=document.createElement('small');n.textContent='A draft: this story hasn’t yet had a lived-experience accessibility review.';$('start').appendChild(n)}
@@ -25,7 +35,7 @@ await Promise.all(Object.entries(art.plates).map(([k,p])=>stage.add(k,BASE+p.src
 // The real objects (P0): a clean plate and each object as its own layer, so what you move leaves the room behind it.
 // If they fail to load, the decision falls back to sliding an image region.
 const ACTS=story.choice.actions.map(a=>a.id),LY='plates/'+EP+'/layers/';let layered=false;
-stage.layer((art.beats.choice||{}).plate||'decision',{clean:LY+'clean.webp',disc:LY+ACTS[0]+'.webp',slide:LY+ACTS[1]+'.webp',over:LY+'over.webp'}).then(()=>{layered=true}).catch(()=>{});
+if(!SEAM)stage.layer((art.beats.choice||{}).plate||'decision',{clean:LY+'clean.webp',disc:LY+ACTS[0]+'.webp',slide:LY+ACTS[1]+'.webp',over:LY+'over.webp'}).then(()=>{layered=true}).catch(()=>{});
 const offKey=id=>layered&&ACTS.indexOf(id)===0?'so0':'so';
 const notify=(type,outcome)=>{if(EMBED)parent.postMessage({channel:'asterwind.episode.v1',episodeId:EP,session:SESSION,type,...(outcome?{outcome}:{})},'*')};
 
@@ -43,6 +53,7 @@ function play(k,g=1){if(!ac||!soundOn||!buf[k])return;const s=ac.createBufferSou
 function room(){const b=ac.createBuffer(1,ac.sampleRate*4,ac.sampleRate),d=b.getChannelData(0);let l=0;for(let i=0;i<d.length;i++){const w=Math.random()*2-1;l=(l+.02*w)/1.02;d[i]=l*3}const s=ac.createBufferSource();s.buffer=b;s.loop=true;const f=ac.createBiquadFilter();f.type='lowpass';f.frequency.value=220;const g=ac.createGain();g.gain.value=.14;s.connect(f);f.connect(g);g.connect(master);s.start()}
 const cueId=(part,i)=>EP+'-'+part+'-'+i;
 async function sound(){ac=new (window.AudioContext||window.webkitAudioContext)();master=ac.createGain();master.gain.value=soundOn?1:0;master.connect(ac.destination);if(paused)ac.suspend().catch(()=>{});room();
+ if(SEAM){const ls=[...story.setup,...Object.values(story.branches).flat()].flatMap(b=>b.lines||[]);await Promise.all(ls.map(async l=>{buf[l.id]=await lb(BASE+'audio/'+l.id+'.mp3')}))}
  const ids=[];story.setup.forEach((b,i)=>b.speaker&&ids.push(cueId('setup',i)));for(const [k,v] of Object.entries(story.branches))v.forEach((b,i)=>b.speaker&&ids.push(cueId(k,i)));
  await Promise.all([...ids.map(async v=>{buf[v]=await lb('voices/'+v+'.mp3')}),...[['tap','tap.mp3'],['fold','fold.mp3'],['paper','rustle.mp3']].map(async([k,f])=>{buf[k]=await lb('../unfolded/sound/'+f)})])}
 
@@ -56,7 +67,16 @@ function camFor(stageName){const b=art.beats[stageName]||art.beats.open||{};retu
 function shot(stageName,dur){const c=camFor(stageName),z=reduced?1:Math.min(1.35,c.zoom);
  if(stage.current!==c.plate){stage.toward(c.plate);S.zoomB=z;S.cenB=c.cen;tw(S,'mix',1,reduced?.2:1.1);at(reduced?.25:1.15,()=>{stage.settle();S.zoom=S.zoomB;S.cen=S.cenB.slice()})}
  else{tw(S,'zoom',z,Math.min(2.2,dur*.7));tw(S,'cen',c.cen,Math.min(2.2,dur*.7))}}
-function playBeats(list,part,then){let t=0;list.forEach((b,i)=>{const d=Math.max(b.duration/1000,(b.speaker&&buf[cueId(part,i)]?buf[cueId(part,i)].duration+1.2:0));
+// The Seam's own beats: a plate (or a quick stop-motion run of pose frames), a slow camera push, lines at their times.
+function pose(a){if(stage.current===a)return;stage.toward(a);S.zoomB=S.zoom;S.cenB=S.cen.slice();S.mix=0;tw(S,'mix',1,reduced?.05:.16);at(reduced?.06:.18,()=>stage.settle())}
+function filmBeat(b,d){const c=camFor(b.stage),z=reduced?1:Math.min(1.35,c.zoom),fast=b.frames.length?.22:1.1;
+ if(stage.current!==c.plate){stage.toward(c.plate);S.zoomB=z;S.cenB=c.cen;S.mix=0;tw(S,'mix',1,reduced?.2:fast);at((reduced?.2:fast)+.05,()=>{stage.settle();S.zoom=S.zoomB;S.cen=S.cenB.slice()})}
+ else{tw(S,'zoom',z,.8);tw(S,'cen',c.cen,.8)}
+ if(b.cam1&&!reduced&&(b.cam1[0]!==c.zoom||b.cam1[1]/100!==c.cen[0]||b.cam1[2]/100!==c.cen[1]))at(fast+.1,()=>{tw(S,'zoom',Math.min(1.35,b.cam1[0]),Math.max(.6,d-fast-.1));tw(S,'cen',[b.cam1[1]/100,b.cam1[2]/100],Math.max(.6,d-fast-.1))});
+ b.frames.forEach(fr=>at(fr.at/1000,()=>pose(fr.asset)));b.lines.forEach(l=>at(l.at/1000,()=>say(l.who,l.text,l.id)))}
+function playBeats(list,part,then){let t=0;list.forEach((b,i)=>{
+ if(b.black){const d=b.duration/1000;at(t,()=>{tw(S,'dim',.95,Math.min(.3,d/3));at(Math.max(.1,d-.3),()=>tw(S,'dim',0,.5))});t+=d;return}
+ if(b.lines){const end=b.lines.reduce((m,l)=>Math.max(m,l.at/1000+(buf[l.id]?buf[l.id].duration+.7:(l.until-l.at)/1000)),0),d=Math.max(b.duration/1000,end);at(t,()=>filmBeat(b,d));t+=d;return}const d=Math.max(b.duration/1000,(b.speaker&&buf[cueId(part,i)]?buf[cueId(part,i)].duration+1.2:0));
  at(t,()=>{shot(b.stage,d);if(b.line)say(b.speaker,b.line,b.speaker?cueId(part,i):null);if(/action/.test(b.stage))play('tap',.6)});t+=d});at(t,then)}
 
 /* ---- the decision: the two objects are within reach ---- */
@@ -100,4 +120,4 @@ $('cc').onclick=()=>{const on=$('cc').getAttribute('aria-pressed')!=='true';$('c
 $('pause').onclick=()=>{paused=!paused;$('pause').setAttribute('aria-pressed',String(paused));$('pause').textContent=paused?'Resume':'Pause';if(ac)paused?ac.suspend():ac.resume()};
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&!paused)$('pause').click()});
 window.FILMPLAY={get state(){return{phase,choice,T,ep:EP,layered}},commit,step};
-})().catch(error=>PlayedSupport.fail(error,'../../../anthology/episodes/'+(['slides','scope','pixel','ship'].includes(new URLSearchParams(location.search).get('ep'))?new URLSearchParams(location.search).get('ep'):'scope')+'/index.html'));
+})().catch(error=>PlayedSupport.fail(error,'../../../anthology/episodes/'+(['slides','scope','pixel','ship'].includes(new URLSearchParams(location.search).get('ep'))?new URLSearchParams(location.search).get('ep'):'scope')+'/index.html').replace(/anthology\/episodes\/scope\/index\.html$/,new URLSearchParams(location.search).get('ep')==='seam'?'film/index.html':'anthology/episodes/scope/index.html'));
