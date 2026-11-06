@@ -1,0 +1,58 @@
+{
+  "status": "visual-direction-auditions-not-adopted",
+  "created": "2026-11-06",
+  "generator": "built-in image generation",
+  "model_identifier": "not exposed by the tool",
+  "source_repository": "bobshenruililin/asterwind",
+  "publication_base_commit": "0f281e2ea3e7f5debc195b86aedfc5c9348de792",
+  "reference_checkout_commit": "833b5f19a5a5b5737d153d14fd2e4a46a262ba9b",
+  "canonical_sources": [
+    "docs/demos/unfolded/CAST.md",
+    "anthology/episodes/standup/story.json",
+    "anthology/episodes/standup/assets/reference-v1/README.md"
+  ],
+  "image_references": [
+    {
+      "path": "anthology/episodes/standup/assets/reference-v1/01-quiet-minute-master.webp",
+      "role": "primary camera, staging and cast target"
+    },
+    {
+      "path": "anthology/episodes/standup/assets/reference-v1/02-turn-or-pass-decision.webp",
+      "role": "supporting choice-object geometry reference"
+    }
+  ],
+  "files": [
+    {
+      "path": "01-quiet-minute-painterly.png",
+      "width": 1672,
+      "height": 941,
+      "mode": "RGB",
+      "bytes": 2885043,
+      "sha256": "530c525116ccb600972bb6f612f4ec7624a8741d8f7b1d1fd52f1641cf88ce32"
+    },
+    {
+      "path": "02-quiet-minute-sculpted-miniature.png",
+      "width": 1672,
+      "height": 941,
+      "mode": "RGB",
+      "bytes": 2936589,
+      "sha256": "8584d8130b674c08234be50a78526afb93cbd71856592b2192df759fd59a71e5"
+    }
+  ],
+  "validated": [
+    "visually inspected generated pixels",
+    "confirmed PNG dimensions and RGB colour mode",
+    "confirmed file hashes"
+  ],
+  "not_validated": [
+    "temporal consistency",
+    "repeatable character identity across generated shots",
+    "animation",
+    "lip sync",
+    "runtime hitboxes",
+    "phone crop",
+    "reduced-motion rendering"
+  ],
+  "runtime_changed": false,
+  "external_paid_generation_started": false
+}
