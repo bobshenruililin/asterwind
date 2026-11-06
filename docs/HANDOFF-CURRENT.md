@@ -36,6 +36,8 @@ Serve the repository root with `python3 -m http.server 8000`, then open one of t
 - `docs/KLING-PLAN-2026-11-06.md`: one limited experiment, nothing spent.
 - `docs/RELEASE-POLISH-REVIEW-2026-11-06.md` (Astra): its fixes are landed and browser-verified.
 
+- `docs/VOICE-AUDITION-2026-11-06.md`: current voice-model research, rights/pricing checks, and a bounded HEARD audition against the team's recordings. Research only; no new audio or paid integration.
+
 ## Next, in order
 
 1. Robert's P0 layers for The Quiet Minute, then give the stage real object layers (replacing region slides).
