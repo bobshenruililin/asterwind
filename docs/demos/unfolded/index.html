@@ -530,7 +530,7 @@ const FILMS={standup:{title:'The Quiet Minute',src:'anthology/episodes/standup/i
 const OUTCOMES={standup:['round','slips'],slides:['microphone','notebook'],seam:['backup','repair'],ship:['live','rehearsal'],pixel:['lower','connect'],scope:['extend','return']};
 const OUTNOTE={round:'turned the table',slips:'passed the slips',microphone:'moved the microphone',notebook:'showed the notebook',backup:'fitted the spare',repair:'mended it together',live:'ran it live',rehearsal:'played the rehearsal',lower:'lowered the console',connect:'connected the panel',extend:'pulled in a chair',return:'offered tomorrow'};
 // Draft mode (?v=2): The Quiet Minute is played at the table rather than watched (docs/demos/played).
-if(V2)FILMS.standup.src='docs/demos/played/index.html';
+if(V2){FILMS.standup.src='docs/demos/played/index.html';for(const e of ['slides','scope','pixel','ship'])FILMS[e].src='docs/demos/played/scene.html?ep='+e}
 // Each word's bottle opens one film. The wrapper copy lives with the drinks (hub/drinks.js, JOURNEY).
 const BOTTLES={HEARD:{film:'standup'},LEAD:{film:'slides'},SHARED:{film:'seam'},SHIELD:{film:'ship'},HELP:{film:'pixel'},SHIP:{film:'scope'}};
 const LEADQ={question:'Whose map was it? And who said so out loud?',trace:'<path d="M40 150 q30 -90 60 -40 t60 -60" stroke="#e8dcc4" stroke-width="5" fill="none" stroke-dasharray="10 8"/><circle cx="160" cy="50" r="12" fill="#e9c27a"/>'};
@@ -694,7 +694,7 @@ function startFilm(w,o={}){Snd.stopScene();const id=BOTTLES[w].film,f=FILMS[id],
  const slate=$('slate');slate.hidden=false;slate.querySelector('b').textContent=o.direct?'':(o.fromRoom&&key&&ST[key].slateTitle)||f.title;
  slate.querySelector('span').textContent=o.direct?'':(key&&ST[key].slate&&c&&ST[key].slate[c])||f.arrival;slate.style.background=o.direct&&o.cross?.src?'#000 url("'+o.cross.src.replace(/"/g,'%22')+'") center/cover':'';
  $('film-back').hidden=true;scr.querySelector('iframe')?.remove();
- const fr=document.createElement('iframe');fr.title=f.title;fr.hidden=true;const session='unfolded-'+Date.now().toString(36);fr.src=ROOT+f.src+'?session='+session;scr.appendChild(fr);
+ const fr=document.createElement('iframe');fr.title=f.title;fr.hidden=true;const session='unfolded-'+Date.now().toString(36);fr.src=ROOT+f.src+(f.src.includes('?')?'&':'?')+'session='+session;scr.appendChild(fr);
  FILM={w,id,frame:fr,session,ready:false,slateDone:false,direct:!!o.direct};announce(o.direct?f.title:slate.textContent);
  const afterSlate=()=>{setTimeout(()=>{if(!FILM||FILM.frame!==fr)return;FILM.slateDone=true;tryStart()},o.direct?(reduced?200:500):(reduced?1800:3200));
   // Watchdog: a film that never says it is ready is shown anyway, with the way back always available.

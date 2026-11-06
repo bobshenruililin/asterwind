@@ -11,7 +11,7 @@ const VS=`attribute vec2 p;varying vec2 v;void main(){v=vec2(p.x*.5+.5,.5-p.y*.5
 const FS=`precision highp float;varying vec2 v;
 uniform sampler2D tA,dA,tB,dB;uniform float uMix,uTime,uAsp,uStr,uFocus,uDof,uGrain,uVig,uRain,uWarm;
 uniform vec2 uCam;uniform vec4 uW[8];uniform vec2 uWo[8];uniform vec4 uDisc;uniform float uAng;uniform vec4 uSlide;uniform vec2 uSo;
-uniform vec4 uLamp;uniform vec4 uHov;uniform float uHovA;uniform float uHovRect;uniform float uDim;
+uniform vec4 uLamp;uniform vec4 uHov;uniform float uHovA;uniform float uHovRect;uniform float uDim;uniform float uZoom;uniform vec2 uCen;uniform float uZoomB;uniform vec2 uCenB;
 float h(vec2 q){return fract(sin(dot(q,vec2(12.9898,78.233)))*43758.5453);}
 vec2 warp(vec2 uv){
  for(int i=0;i<8;i++){vec4 w=uW[i];if(w.z<=0.)continue;vec2 d=(uv-w.xy);d.x*=uAsp;float k=1.-smoothstep(0.,w.z,length(d));uv-=uWo[i]*k*k*(3.-2.*k);}
@@ -31,12 +31,12 @@ vec3 look(sampler2D t,sampler2D dm,vec2 uv){
  if(uLamp.z>0.){vec2 q=(u-uLamp.xy);q.x*=uAsp;float L=exp(-dot(q,q)/(uLamp.z*uLamp.z))*uLamp.w;c*=1.+L*vec3(.55,.36,.12)*(.6+.6*d);}
  return c;}
 void main(){
- vec2 uv=warp(v);vec3 c=look(tA,dA,uv);
- if(uMix>0.){vec2 uvb=v;vec3 cb=look(tB,dB,uvb);float db=texture2D(dB,uvb).r;
+ vec2 pv=uCen+(v-.5)/uZoom;vec2 uv=warp(pv);vec3 c=look(tA,dA,uv);
+ if(uMix>0.){vec2 uvb=uCenB+(v-.5)/uZoomB;vec3 cb=look(tB,dB,uvb);float db=texture2D(dB,uvb).r;
   // depth-aware dissolve: near things arrive first, like paper pieces being set down
   float m=smoothstep(0.,1.,clamp(uMix*1.6-(1.-db)*.6,0.,1.));c=mix(c,cb,m);}
  // what the hand is near: a warm lift and a thin rim of light around the object
- if(uHovA>0.){vec2 q=(v-uHov.xy)/uHov.zw;float r=uHovRect>0.?max(abs(q.x),abs(q.y)):length(q);
+ if(uHovA>0.){vec2 q=(pv-uHov.xy)/uHov.zw;float r=uHovRect>0.?max(abs(q.x),abs(q.y)):length(q);
   float inside=1.-smoothstep(.96,1.,r);float rim=smoothstep(.86,.97,r)*(1.-smoothstep(.97,1.07,r));c=c*(1.+.12*inside*uHovA)+vec3(1.,.82,.5)*rim*.55*uHovA;}
  c*=1.-uDim;
  c=mix(c,c*vec3(1.05,.98,.9),uWarm);
@@ -50,17 +50,17 @@ function Stage(canvas){
  const pr=gl.createProgram();gl.attachShader(pr,sh(gl.VERTEX_SHADER,VS));gl.attachShader(pr,sh(gl.FRAGMENT_SHADER,FS));gl.linkProgram(pr);gl.useProgram(pr);
  const b=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,b);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
  const loc=gl.getAttribLocation(pr,'p');gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
- const U={};for(const n of ['tA','dA','tB','dB','uMix','uTime','uAsp','uStr','uFocus','uDof','uGrain','uVig','uRain','uWarm','uCam','uW','uWo','uDisc','uAng','uSlide','uSo','uLamp','uHov','uHovA','uHovRect','uDim'])U[n]=gl.getUniformLocation(pr,n);
+ const U={};for(const n of ['tA','dA','tB','dB','uMix','uTime','uAsp','uStr','uFocus','uDof','uGrain','uVig','uRain','uWarm','uCam','uW','uWo','uDisc','uAng','uSlide','uSo','uLamp','uHov','uHovA','uHovRect','uDim','uZoom','uCen','uZoomB','uCenB'])U[n]=gl.getUniformLocation(pr,n);
  const tex=img=>{const t=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,t);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,img);
   for(const [k,v] of [[gl.TEXTURE_MIN_FILTER,gl.LINEAR],[gl.TEXTURE_MAG_FILTER,gl.LINEAR],[gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE],[gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE]])gl.texParameteri(gl.TEXTURE_2D,k,v);return t};
  const plates={};let A=null,B=null;
- const S={mix:0,time:0,str:.018,focus:.55,dof:0,grain:.035,vig:.55,rain:0,warm:0,cam:[0,0],warps:[],disc:null,ang:0,slide:null,so:[0,0],lamp:null,hov:null,hovA:0,dim:0};
+ const S={zoom:1,cen:[.5,.5],zoomB:1,cenB:[.5,.5],mix:0,time:0,str:.018,focus:.55,dof:0,grain:.035,vig:.55,rain:0,warm:0,cam:[0,0],warps:[],disc:null,ang:0,slide:null,so:[0,0],lamp:null,hov:null,hovA:0,dim:0};
  function size(){const r=canvas.getBoundingClientRect(),k=Math.min(2,devicePixelRatio||1),w=Math.max(2,Math.round(r.width*k)),h=Math.max(2,Math.round(r.height*k));if(canvas.width!==w||canvas.height!==h){canvas.width=w;canvas.height=h}gl.viewport(0,0,w,h)}
  function bind(unit,t){gl.activeTexture(gl.TEXTURE0+unit);gl.bindTexture(gl.TEXTURE_2D,t)}
  function draw(){if(!A)return;size();
   bind(0,A.t);bind(1,A.d);bind(2,(B||A).t);bind(3,(B||A).d);gl.uniform1i(U.tA,0);gl.uniform1i(U.dA,1);gl.uniform1i(U.tB,2);gl.uniform1i(U.dB,3);
   gl.uniform1f(U.uMix,B?S.mix:0);gl.uniform1f(U.uTime,S.time);gl.uniform1f(U.uAsp,canvas.width/canvas.height);gl.uniform1f(U.uStr,S.str);gl.uniform1f(U.uFocus,S.focus);gl.uniform1f(U.uDof,S.dof);
-  gl.uniform1f(U.uGrain,S.grain);gl.uniform1f(U.uVig,S.vig);gl.uniform1f(U.uRain,S.rain);gl.uniform1f(U.uWarm,S.warm);gl.uniform2fv(U.uCam,S.cam);gl.uniform1f(U.uDim,S.dim);
+  gl.uniform1f(U.uGrain,S.grain);gl.uniform1f(U.uVig,S.vig);gl.uniform1f(U.uRain,S.rain);gl.uniform1f(U.uWarm,S.warm);gl.uniform2fv(U.uCam,S.cam);gl.uniform1f(U.uDim,S.dim);const cl=(z,c)=>{const h=.5/z;return[Math.max(h,Math.min(1-h,c[0])),Math.max(h,Math.min(1-h,c[1]))]};gl.uniform1f(U.uZoom,Math.max(1,S.zoom));gl.uniform2fv(U.uCen,cl(Math.max(1,S.zoom),S.cen));gl.uniform1f(U.uZoomB,Math.max(1,S.zoomB));gl.uniform2fv(U.uCenB,cl(Math.max(1,S.zoomB),S.cenB));
   const w=new Float32Array(32),o=new Float32Array(16);S.warps.slice(0,8).forEach((h,i)=>{w.set([h.x,h.y,h.r,0],i*4);o.set([h.dx||0,h.dy||0],i*2)});gl.uniform4fv(U.uW,w);gl.uniform2fv(U.uWo,o);
   gl.uniform4fv(U.uDisc,S.disc||[0,0,0,0]);gl.uniform1f(U.uAng,S.ang);gl.uniform4fv(U.uSlide,S.slide||[0,0,0,0]);gl.uniform2fv(U.uSo,S.so);
   gl.uniform4fv(U.uLamp,S.lamp||[0,0,0,0]);gl.uniform4fv(U.uHov,S.hov?S.hov.slice(0,4):[0,0,1,1]);gl.uniform1f(U.uHovRect,S.hov&&S.hov[4]?1:0);gl.uniform1f(U.uHovA,S.hov?S.hovA:0);
