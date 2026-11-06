@@ -264,14 +264,61 @@ ST.heard={word:'HEARD',title:'The Listening Tide',desc:'Night at the harbour wal
   {dur:6,lines:[[.4,'Ellis','I only show things when they’re finished. And it’s never finished.','heard-l2']],to:{amp:42},pose:{ellis:'low'}},
   {dur:5.5,lines:[[1.2,'Ellis','It doesn’t even reach the sea.','heard-l3']],sfx:[[.3,'unfold']],to:{note:1},pose:{ellis:'open'}},
   {dur:6,lines:[[2.8,'Ellis','I’ll bring it. Myself.','heard-l4']],sfx:[[.6,'fold']],to:{herboat:1},pose:{ellis:'fold'},note:'Ellis folds the route into a boat and sets it in the lantern’s shelter. The sea is not calm. Nothing promises tomorrow will go well.'}],
- exit:{offer:'Carry your promise into the morning',listen:'Follow the boat into the morning'},
+ exit:{offer:'Carry your promise into the morning',listen:'Follow the boat into the morning'},slateTitle:'The next morning.',
  slate:{offer:'You said you’d say it.',listen:'Ellis said, “I’ll bring it. Myself.”'},
  memory:{offer:{none:'Ellis’s route is still folded. You said you’d say it.',round:'You said you’d say it for Ellis. Then you turned the table, and Ellis said it.',slips:'You said you’d say it for Ellis. In the morning it arrived on a slip, in Ellis’s hand: a different start.'},
   listen:{none:'The boat is still in the lantern’s shelter. The sea hasn’t calmed.',round:'Ellis said, “I’ll bring it. Myself.” You turned the table, and there was a turn to bring it to.',slips:'Ellis said, “I’ll bring it. Myself.” In the morning it arrived on a slip: a different start.'}},
  notes:{offer:'said I’d say it',listen:'Ellis will bring it'},
  question:'What did Ellis need: your voice, or room for theirs?'};
-// SHARED: a roof everyone stands under
-ST.shared={word:'SHARED',exitAt:[[1260,110],[340,110]],title:'The Shared Roof',desc:'Rain at night. Under a vast paper roof, Arun and you stand on a beam beneath a tear. He holds out the clamp.',
+// LEAD: the night before The Missing Name. Kit's clean map hangs over Asha's pencilled one.
+ST.lead={word:'LEAD',title:'The Map Turns Around',exitAt:[[1260,470],[1250,640]],desc:'Night in the empty showcase hall. A tall paper screen carries Kit’s clean route map. Asha sits at the stage edge with her field notebook. You hold a lamp.',
+ trace:'<path d="M40 150 C70 120 70 90 100 90 C130 90 110 60 140 50 C160 40 170 30 180 20" stroke="#e8dcc4" stroke-width="5" fill="none" stroke-dasharray="10 8"/><circle cx="100" cy="100" r="12" fill="#e9c27a"/>',
+ build(){const route='M600 560 C640 520 650 470 700 450 C740 430 720 380 760 370 C800 360 822 402 800 432 C778 462 820 474 850 440 C900 390 880 300 930 262 C962 236 982 206 1000 180';
+  return `<rect width="1600" height="900" fill="#141730"/>${P([[0,0],[190,0],[160,900],[0,900]],'#2a1f33',EDGE)}${P([[1410,0],[1600,0],[1600,900],[1440,900]],'#2a1f33',EDGE)}
+  ${P([[0,700],[1600,694],[1600,900],[0,900]],'#3a2c26',EDGE)}${P([[0,690],[1600,684],[1600,708],[0,714]],'#5a4434')}
+  ${P([[630,620],[644,620],[636,700],[622,700]],'#2a2420')}${P([[956,620],[970,620],[978,700],[964,700]],'#2a2420')}
+  <circle id="l-glow" cx="800" cy="380" r="430" fill="url(#warm)" opacity="0"/>
+  <g filter="url(#lift)">${P([[560,116],[1040,112],[1044,624],[556,628]],'#e9dfc8','fill-opacity=".92" '+EDGE)}</g>
+  <g id="l-route" opacity=".06" fill="none" stroke="#4a4652" stroke-linecap="round"><path d="${route}" stroke-width="5" stroke-dasharray="11 8"/>${[[778,404],[796,420],[812,398],[790,388]].map(([x,y])=>`<rect x="${x}" y="${y}" width="12" height="12" stroke-width="2.5"/>`).join('')}</g>
+  <g id="l-kit" stroke="#2c3550" stroke-width="7" fill="#efe6d0" stroke-linecap="round"><path d="M640 540 L800 250 L960 540 Z" fill="none"/><path d="M960 540 L1012 540" fill="none"/>${[[640,540],[800,250],[960,540],[1012,540]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="20"/>`).join('')}</g>
+  <path id="l-ink" d="M600 560 C700 480 760 420 820 380 C900 320 950 240 1000 180" pathLength="1" stroke="#1d2340" stroke-width="8" fill="none" stroke-linecap="round" stroke-dasharray="1 1" stroke-dashoffset="1"/>
+  <g filter="url(#lift)">${person('l-asha',{x:430,y:700,s:1.3,coat:'#3f6b66',coat2:'#2f514d',hair:'#141218',hairStyle:'short',skin:'#d0a07a',held:'<g id="l-book" transform="translate(116 -64)">'+P([[-24,-15],[24,-15],[24,15],[-24,15]],'#efe3c8',EDGE)+'<path d="M0 -15 V15" stroke="#b9a98a" stroke-width="2"/></g>'})}</g>
+  <g id="l-youg" filter="url(#lift)">${person('l-you',{x:1190,y:770,s:1.02,standing:1,flip:1,...PEOPLE.you})}</g>
+  <g id="l-lamp">${lantern('l-lantern',0,0,1)}</g>
+  <g id="l-peek" opacity="0" filter="url(#lift)">${P([[96,96],[500,90],[506,330],[92,336]],'#efe3c8',EDGE)}<path d="M300 92 V334" stroke="#cdbb98" stroke-width="2"/>
+   <path d="M120 300 C150 270 150 240 180 230 C210 220 196 190 222 184 C246 178 258 204 244 222 C230 240 256 246 274 226 C300 196 290 150 320 130 C340 116 352 104 366 96" fill="none" stroke="#4a4652" stroke-width="3" stroke-dasharray="7 6" transform="translate(40 4)"/>
+   ${[...Array(41)].map((_,i)=>`<path d="M${330+(i%8)*20} ${150+Math.floor(i/8)*30} v12" stroke="#4a4652" stroke-width="2"/>`).join('')}</g>
+  ${GRAINRECT(.42)}`},
+ state:{glow:0,ink:0,behind:0,peek:0,lamp:[1250,610],asha:{head:-12,arm:-30,fore:-40},you:{arm:-40,fore:-10}},
+ render(S,f,t){at('l-glow',{opacity:(S.glow*.95).toFixed(2)});at('l-route',{opacity:(.06+S.glow*.9).toFixed(2)});at('l-kit',{opacity:(1-S.glow*.35).toFixed(2)});
+  at('l-ink',{'stroke-dashoffset':(1-S.ink).toFixed(3)});at('l-peek',{opacity:S.peek});at('l-youg',{opacity:(1-S.behind).toFixed(2)});
+  at('l-lamp',{transform:`translate(${S.lamp[0]} ${S.lamp[1]})`,opacity:(1-S.behind).toFixed(2)});
+  pose('l-asha',S.asha,f);pose('l-you',S.you,f)},
+ intro:[
+  {dur:5.5,reveal:1,lines:[[1,'Asha','Kit redrew it. It’s so much cleaner than mine.','lead-01']],to:{asha:{head:-16,arm:-30,fore:-40}}},
+  {dur:5.5,lines:[[.3,'Asha','Mine went the long way round. That’s where the people were.','lead-02']],to:{asha:{head:10,arm:-14,fore:-30}}},
+  {dur:5.5,lines:[[.3,'Asha','Tomorrow they’ll see his lines. Mine are underneath, somewhere.','lead-03']],to:{asha:{head:-6,arm:-24,fore:-36}}},
+  {gate:1,peek:{target:'l-book',at:[560,620],label:'her notebook',sr:'Look closer at Asha’s field notebook (optional)',show:{peek:1},thoughtAt:[78,16],
+    thought:'Forty-one people walked it with me. Their names aren’t on it anywhere.',
+    say:'Asha’s notebook: a pencilled route that goes the long way round a market, and forty-one small marks beside it, one for each person who walked it. Asha thinks: Forty-one people walked it with me. Their names aren’t on it anywhere.'},
+   choices:[{id:'ink',label:'Ink her route onto the map',at:[800,690]},{id:'light',label:'Hold the light behind it',at:[1200,400]}]}],
+ ink:[
+  {dur:5.5,slow:1,sfx:[[.4,'pencil'],[2.4,'pencil']],lines:[[3.6,'You','There. Now it’s on the map.','lead-i1']],to:{ink:1,you:{arm:-100,fore:-30,head:-10}}},
+  {dur:4.5,lines:[[.8,'Asha','That’s… nearly it.','lead-i2']],to:{asha:{head:-18,arm:-30,fore:-36},you:{arm:-40,fore:-10}}},
+  {dur:6,lines:[[.4,'Asha','It went round the market, not through. It’s fine.','lead-i3']],to:{asha:{head:6,arm:-14,fore:-24}},note:'Her route is on the map now, in your ink. It’s a little smoother than the one she walked.'}],
+ light:[
+  {dur:4.5,sfx:[[.4,'paper']],to:{behind:1,lamp:[800,380]}},
+  {dur:5,sfx:[[.3,'unfold']],to:{glow:1}},
+  {dur:6,lines:[[.6,'Asha','There it is. Round the market. That’s where the people were.','lead-l1']],to:{asha:{head:-20,arm:-34,fore:-44}}},
+  {dur:5.5,lines:[[1.2,'Asha','It only shows from behind.','lead-l2']],to:{asha:{head:-10}},note:'Her line is there exactly as she walked it, for as long as someone holds the light. Tomorrow, someone will have to.'}],
+ exit:{ink:'Take the inked map into the morning',light:'Carry the lamp into the morning'},
+ slateTitle:'The next morning. The showcase.',slate:{ink:'Her route is on the map, in your ink.',light:'Someone has to hold the light.'},
+ memory:{ink:{none:'Her route is on the map in your ink, a little smoother than she walked it.',microphone:'You inked her route so it would show. In the morning, Asha traced it with her own finger.',notebook:'You inked her route so it would show. In the morning you said whose it was, and her notebook lay open beside the model.'},
+  light:{none:'The lamp is still behind the map. Her route only shows from there.',microphone:'You held the light behind her route. In the morning, Asha held the microphone.',notebook:'You held the light behind her route. In the morning you held it again: “These are her observations.”'}},
+ notes:{ink:'inked her route',light:'held the light behind it'},
+ question:'When you make someone’s work visible, whose hand is it in?'};
+// SHARED: a roof everyone stands under (Julian, from The 3:00 AM Seam)
+ST.shared={word:'SHARED',exitAt:[[1260,110],[340,110]],title:'The Shared Roof',desc:'Rain at night. Under a vast paper roof, Julian and you stand on a beam beneath a tear along his own seam. He holds out the clamp.',
  trace:'<path d="M20 120 Q100 30 180 120" stroke="#e8dcc4" stroke-width="5" fill="none"/><path d="M80 80 l10 10 l10 -10 l10 10 l10 -10" stroke="#e9c27a" stroke-width="4" fill="none"/>',
  build(){const ribs=[...Array(15)].map((_,i)=>{const x=-40+i*120;return `<path d="M${x} ${470-Math.sin(Math.max(0,Math.min(1,(x+20)/1640))*3.14)*250} L800 170" stroke="#b89f78" stroke-width="2.4" opacity=".45"/>`}).join('');
   return `<rect width="1600" height="900" fill="url(#nightsky)"/><g id="s-rain"></g>
@@ -280,139 +327,174 @@ ST.shared={word:'SHARED',exitAt:[[1260,110],[340,110]],title:'The Shared Roof',d
   <path id="s-tear" fill="#0f1124"/><path id="s-tear2" fill="#0f1124"/><path id="s-seam" fill="none" stroke="#8a5f38" stroke-width="5" stroke-linecap="round"/><path id="s-seam2" fill="none" stroke="#8a5f38" stroke-width="5" stroke-linecap="round"/>
   <g id="s-drip"></g>
   ${P([[0,700],[1600,692],[1600,900],[0,900]],'#2a2540')}${P([[360,770],[1240,766],[1244,786],[356,790]],'#6b4a32',EDGE)}
-  ${[[460,'#6d5a7a'],[600,'#4f6b6a'],[1000,'#7a5a4f'],[1140,'#5a6a86']].map(([x,c],i)=>`<g filter="url(#lift)">${person('s-p'+i,{x,y:770,s:.5,coat:c,hairStyle:['bun','short','grey','long'][i],flip:i>1?1:0})}</g>`).join('')}
+  ${[[460,'#6d5a7a'],[600,'#4f6b6a'],[1000,'#7a5a4f'],[1140,'#5a6a86']].map(([x,c],i)=>`<g filter="url(#lift)">${person('s-p'+i,{x,y:770,s:.5,coat:c,hairStyle:['bun','short','wavy','long'][i],flip:i>1?1:0})}</g>`).join('')}
   ${lantern('s-l1',560,722,.6)}${lantern('s-l2',1060,722,.6)}
   ${P([[560,562],[1060,558],[1062,576],[558,580]],'#8a6a4a',EDGE)}${P([[600,576],[614,576],[630,900],[616,900]],'#6f5438')}${P([[1010,576],[1024,576],[1010,900],[996,900]],'#6f5438')}
-  <g filter="url(#lift)">${person('s-arun',{x:716,y:412,s:.72,standing:1,coat:'#a2574a',coat2:'#6d3a33',hair:'#1f1a1e',hairStyle:'wild',held:'<g id="s-clamp" transform="translate(110 -70)"><path d="M-10 -14 h20 v6 h-14 v16 h14 v6 h-20z" fill="#c9a24a" stroke="#6b5420" stroke-width="2"/></g>'})}</g>
+  <g filter="url(#lift)">${person('s-arun',{x:716,y:412,s:.72,standing:1,coat:'#b8a68c',coat2:'#8f7f66',hair:'#5a3e2c',hairStyle:'wild',skin:'#e0b48e',held:'<g id="s-clamp" transform="translate(110 -70)"><path d="M-10 -14 h20 v6 h-14 v16 h14 v6 h-20z" fill="#c9a24a" stroke="#6b5420" stroke-width="2"/></g>'})}</g>
   <g filter="url(#lift)" id="s-youg">${person('s-you',{x:900,y:412,s:.72,standing:1,flip:1,...PEOPLE.you,held:'<g id="s-clamp2" opacity="0" transform="translate(110 -70)"><path d="M-10 -14 h20 v6 h-14 v16 h14 v6 h-20z" fill="#c9a24a" stroke="#6b5420" stroke-width="2"/></g>'})}</g>
+  <g id="s-peek" opacity="0" filter="url(#lift)">${P([[96,40],[500,34],[504,232],[92,238]],'#efe3c8',EDGE)}<path d="M130 200 C200 90 330 70 470 120" stroke="#4a4652" stroke-width="3" fill="none"/>${[0,1,2,3,4,5,6].map(i=>`<path d="M${170+i*42} ${170-Math.sin(i/6*3.1)*70} v24" stroke="#4a4652" stroke-width="2"/>`).join('')}<path d="M300 92 l14 14 M314 92 l-14 14" stroke="#b85a4a" stroke-width="3"/></g>
   <text id="s-slate" x="80" y="80" font-family="system-ui" font-size="18" letter-spacing="5" fill="#e8dcc4" opacity="0">THE NEXT NIGHT</text>${GRAINRECT(.42)}`},
- state:{tear:1,tear2:0,seam:0,seam2:0,crooked:0,crooked2:0,clampYou:0,youThere:1,slate:0,wet:0,arun:{arm:-40,fore:-30},you:{arm:-10,fore:-20}},
+ state:{tear:1,tear2:0,seam:0,seam2:0,crooked:0,crooked2:0,clampYou:0,youThere:1,slate:0,wet:0,peek:0,arun:{arm:-40,fore:-30},you:{arm:-10,fore:-20}},
  render(S,f,t){const T=(cx,cy,w)=>cutd([[cx-w,cy-6],[cx-w*.4,cy-14],[cx,cy-4],[cx+w*.5,cy-16],[cx+w,cy-2],[cx+w*.4,cy+14],[cx-w*.2,cy+6],[cx-w*.6,cy+16]],3,10);
   at('s-tear',{d:S.tear>0?T(800,240,46*S.tear):''});at('s-tear2',{d:S.tear2>0?T(1230,330,40*S.tear2):''});
   const seam=(cx,cy,u,crook)=>{let d='';const n=Math.round(8*u);for(let i=0;i<n;i++){const x=cx-44+i*12,j=crook?((i%3)-1)*6:0;d+=`M${x} ${cy-10+j} l8 ${20+j*.4} `}return d};
   at('s-seam',{d:seam(800,240,S.seam,S.crooked)});at('s-seam2',{d:seam(1230,330,S.seam2,S.crooked2)});
   const fr=Math.floor(t*FPS),r=rng(fr%24+7);let rain='';for(let i=0;i<70;i++){const x=r()*1600,y=(r()*900+fr*37)%900;if(y>200&&y<900)continue;rain+=`<path d="M${x.toFixed(0)} ${y.toFixed(0)} l-4 18" stroke="#8fa0c8" stroke-width="2" opacity=".5"/>`}$('s-rain').innerHTML=rain;
   let drip='';const leak=(cx,cy,a)=>{for(let i=0;i<6;i++){const y=(cy+20+((fr*31+i*97)%460));if(a>0&&y<760)drip+=`<path d="M${cx-30+i*12} ${y} l-3 16" stroke="#9fb0d8" stroke-width="2.4" opacity="${(.7*a).toFixed(2)}"/>`}};leak(800,250,S.tear*(1-S.seam*.85));leak(1230,340,S.tear2*(1-S.seam2*.85));$('s-drip').innerHTML=drip+(S.wet>0?`<ellipse cx="800" cy="776" rx="${(70*S.wet).toFixed(0)}" ry="${(7*S.wet).toFixed(1)}" fill="#2a2236" opacity=".75"/>`:'');
-  at('s-clamp',{opacity:1-S.clampYou});at('s-clamp2',{opacity:S.clampYou});at('s-youg',{opacity:S.youThere});at('s-slate',{opacity:S.slate});
+  // Julian is thirty hours awake: the hand holding the clamp will not stay still.
+  const shake=S.clampYou<.5&&!reduced?Math.sin(t*23)*1.6:0;
+  at('s-clamp',{opacity:1-S.clampYou,transform:`translate(${(110+shake).toFixed(1)} -70)`});at('s-clamp2',{opacity:S.clampYou});at('s-youg',{opacity:S.youThere});at('s-slate',{opacity:S.slate});at('s-peek',{opacity:S.peek});
   pose('s-arun',S.arun,f);pose('s-you',S.you,f);for(let i=0;i<4;i++)pose('s-p'+i,{head:Math.sin(t*.7+i)*4},f)},
  intro:[
-  {dur:5,reveal:1,lines:[[1,'Arun','It’s right over the tables.']],sfx:[[.5,'rain']],to:{arun:{arm:-50,fore:-40,head:-12}}},
-  {dur:5,lines:[[.4,'Arun','Here. You’re faster with the clamp.']],to:{arun:{arm:-70,fore:-10,head:4}}},
-  {gate:1,choices:[{id:'take',label:'Take the clamp',at:[840,360]},{id:'hold',label:'Hold the other side',at:[1000,250]}]}],
+  {dur:5,reveal:1,lines:[[1,'Julian','It tore along my seam. The one I drew.','shared-01']],sfx:[[.5,'rain']],to:{arun:{arm:-50,fore:-40,head:-12}}},
+  {dur:5,lines:[[.4,'Julian','Here. You’re faster with the clamp.','shared-02']],to:{arun:{arm:-70,fore:-10,head:4}}},
+  {gate:1,peek:{target:'s-clamp',at:[800,300],label:'his hand',sr:'Look closer at Julian’s hand on the clamp (optional)',show:{peek:1},thoughtAt:[72,13],
+    thought:'I wanted to be here when it moved. I can barely hold the clamp.',
+    say:'Julian’s hand is shaking on the clamp. Folded in his pocket is his own drawing of this seam. Julian thinks: I wanted to be here when it moved. I can barely hold the clamp.'},
+   choices:[{id:'take',label:'Take the clamp',at:[840,360]},{id:'hold',label:'Hold the other side',at:[1000,250]}]}],
  take:[
   {dur:4.5,sfx:[[.4,'clamp'],[1.6,'stitch'],[2.6,'stitch']],to:{clampYou:1,seam:1,you:{arm:-110,fore:-30,head:-14},arun:{arm:-10,fore:-14}}},
-  {dur:3.5,lines:[[.4,'Arun','Neat. Not a drop on the tables.']],to:{you:{arm:-10,fore:-20}},note:'Quick and neat. The rain never reaches the tables.'},
+  {dur:3.5,lines:[[.4,'Julian','Neat. Not a drop on the tables.','shared-t1']],to:{you:{arm:-10,fore:-20}},note:'Quick and neat. The rain never reaches the tables.'},
   {dur:1.2,to:{slate:1}},
-  {dur:4.5,sfx:[[.3,'rain']],lines:[[1.6,'Arun','I watched you do it. Stay while I try?']],to:{tear2:1,slate:0,clampYou:0,arun:{arm:-100,fore:-40,head:-14},you:{head:-10}}},
-  {dur:5,sfx:[[.6,'stitch'],[1.8,'stitch']],to:{seam2:1},note:'A new tear the next night. Arun takes the clamp himself, and asks you to stay while he tries.'}],
+  {dur:4.5,sfx:[[.3,'rain']],lines:[[1.6,'Julian','I watched you do it. Stay while I try?','shared-t2']],to:{tear2:1,slate:0,clampYou:0,arun:{arm:-100,fore:-40,head:-14},you:{head:-10}}},
+  {dur:5,sfx:[[.6,'stitch'],[1.8,'stitch']],to:{seam2:1},note:'A new tear the next night. Julian takes the clamp himself, and asks you to stay while he tries.'}],
  hold:[
-  {dur:6,slow:1,sfx:[[.8,'clamp'],[2,'stitch'],[3.4,'stitch']],lines:[[4.2,'Arun','Like that?']],to:{seam:1,crooked:1,wet:1,you:{arm:-120,fore:-16,head:-18},arun:{arm:-100,fore:-36,head:-14}}},
-  {dur:3,lines:[[.3,'You','Like that.']],to:{you:{arm:-10,fore:-20},arun:{arm:-30,fore:-20}}},
+  {dur:6,slow:1,sfx:[[.8,'clamp'],[2,'stitch'],[3.4,'stitch']],lines:[[4.2,'Julian','Like that?','shared-h1']],to:{seam:1,crooked:1,wet:1,you:{arm:-120,fore:-16,head:-18},arun:{arm:-100,fore:-36,head:-14}}},
+  {dur:3,lines:[[.3,'You','Like that.','shared-h2']],to:{you:{arm:-10,fore:-20},arun:{arm:-30,fore:-20}}},
   {dur:1.2,to:{slate:1}},
   {dur:6.5,sfx:[[1.4,'stitch'],[2.6,'stitch']],to:{tear2:1,slate:0,youThere:0,seam2:1,crooked2:1,arun:{arm:-100,fore:-40,head:-14}},note:'It took longer, and the rain reached the tables before the seam closed. The next night he mends a new tear on his own: crooked, and it holds.'}],
- notes:{take:'mended it myself',hold:'held the other side'},
+ exit:{take:'Through the studio door: the test',hold:'Through the studio door: the test'},
+ slateTitle:'Behind the studio door. 3:00 AM.',slate:{take:'You took the clamp. The tables stayed dry.',hold:'You held the other side. The seam is crooked, and it holds.'},
+ memory:{take:{none:'The tables stayed dry. The next night he asked you to stay while he tried.',backup:'You took the clamp so the tables stayed dry. In the studio you chose Mara’s spare too, and Julian’s own rib waited on the table.',repair:'You took the clamp on the roof. In the studio you put Julian’s own rib back together, with him, and half of it held.'},
+  hold:{none:'The seam is crooked, and it holds. The tables got wet.',backup:'You held the other side while he mended it. In the studio the spare moved instead, and he said he wanted to see his own move.',repair:'You held the other side on the roof, and again in the studio. Half of it held.'}},
+ notes:{take:'took the clamp',hold:'held the other side'},
  question:'What did you carry, and what did you leave room for him to learn?'};
-// SHIELD: the armour is his to open
-ST.shield={word:'SHIELD',title:'What the Armour Keeps',desc:'A quiet workshop at night. Leo sits wrapped in folded paper armour; a little green light shows through one seam. You sit across from him.',
- trace:'<path d="M60 40 L140 40 L160 120 L100 170 L40 120 Z" stroke="#e8dcc4" stroke-width="5" fill="none"/><circle cx="100" cy="105" r="16" fill="#9bc27a"/>',
+// SHIELD: the armour is his to open (Dev, from Before the Doors Open)
+ST.shield={word:'SHIELD',title:'What the Armour Keeps',desc:'A quiet workshop at night. Dev sits wrapped in folded paper armour; a little warm light shows through one seam. You sit across from him.',
+ trace:'<path d="M60 40 L140 40 L160 120 L100 170 L40 120 Z" stroke="#e8dcc4" stroke-width="5" fill="none"/><rect x="88" y="92" width="24" height="24" fill="#e9c27a"/>',
  build(){const plates=[[[520,420],[640,360],[700,470],[580,520]],[[600,330],[700,300],[730,400],[640,430]],[[480,520],[600,500],[640,640],[500,660]],[[600,500],[720,470],[760,620],[640,650]],[[690,380],[780,420],[770,560],[700,520]],[[560,280],[660,250],[690,330],[590,360]]];
+  const city=(dx,dy,k,blinkId)=>`<g transform="translate(${dx} ${dy}) scale(${k})">${P([[0,0],[22,0],[22,-74],[0,-74]],'#efe3c8',EDGE)}${P([[30,0],[58,0],[58,-102],[44,-118],[30,-102]],'#e6d6b4',EDGE)}${P([[66,0],[96,0],[96,-44],[81,-62],[66,-44]],'#efe3c8',EDGE)}${[[5,-60],[5,-36],[36,-86],[36,-60],[72,-34]].map(([x,y],i)=>`<rect ${i===2&&blinkId?`id="${blinkId}"`:''} x="${x}" y="${y}" width="11" height="11" fill="#ffd890"/>`).join('')}</g>`;
   return `<rect width="1600" height="900" fill="#1c1f37"/>${P([[1180,150],[1420,146],[1424,396],[1176,400]],'#5a4632',EDGE)}${P([[1196,166],[1404,164],[1406,380],[1194,382]],'#131630')}${P(ell(1330,240,26,26),'#efe6c8')}
   ${P([[0,690],[1600,682],[1600,900],[0,900]],'#15172c')}${P([[440,640],[800,636],[804,660],[436,664]],'#6b4a32',EDGE)}
-  <g filter="url(#lift)">${person('k-leo',{x:600,y:640,s:1.9,coat:'#3d4458',coat2:'#2e3446',hair:'#26201c',hairStyle:'short'})}</g>
-  <g id="k-garden"><circle cx="650" cy="430" r="180" fill="url(#green)" id="k-gglow" opacity=".25"/>${P([[592,380],[712,370],[724,500],[600,512]],'#1c2a1e')}${P([[636,470],[672,470],[668,500],[640,500]],'#a0603e',EDGE)}${P([[652,470],[648,420],[656,420],[658,470]],'#5f8a4a')}${P([[652,432],[620,410],[632,402],[658,426]],'#8dbb6a',EDGE)}${P([[656,428],[690,404],[696,414],[660,436]],'#9bc27a',EDGE)}${P(ell(612,488,10,6),'#cfe3a0')}${P(ell(700,486,8,5),'#cfe3a0')}</g>
+  <g filter="url(#lift)">${person('k-leo',{x:600,y:640,s:1.9,coat:'#5e6b45',coat2:'#4a5536',hair:'#1c1a1e',hairStyle:'wavy'})}</g>
+  <g id="k-garden"><circle cx="650" cy="430" r="180" fill="url(#warm)" id="k-gglow" opacity=".2"/>${P([[592,380],[712,370],[724,500],[600,512]],'#22202c')}${city(608,500,.95,'k-blink')}</g>
   <g id="k-armour" filter="url(#lift)">${plates.map((p,i)=>`<g class="plate" data-i="${i}">${P(p,['#4b5468','#555f75','#434b5e','#5a6479','#4f586c','#596378'][i],EDGE)}</g>`).join('')}</g>
-  <path id="k-seam" d="M640 430 L700 470" stroke="#d9eaa0" stroke-width="5" opacity=".8"/>
+  <path id="k-seam" d="M640 430 L700 470" stroke="#ffd890" stroke-width="5" opacity=".8"/>
   <g filter="url(#lift)">${person('k-you',{x:1080,y:660,s:1.9,flip:1,...PEOPLE.you})}</g>
-  ${lantern('k-lamp',880,672,.8)}<g id="k-leaf" opacity="0">${P([[0,0],[30,-14],[44,0],[30,14]],'#9bc27a',EDGE)}</g>${GRAINRECT(.42)}`},
- state:{open:0,rattle:0,leaf:0,moon:0,glow:.25,leo:{head:16,arm:30,fore:40},you:{}},
+  ${lantern('k-lamp',880,672,.8)}<g id="k-leaf" opacity="0">${P([[0,0],[24,0],[24,24],[0,24]],'#ffd890',EDGE)}<path d="M12 0 V24 M0 12 H24" stroke="#8a6a3a" stroke-width="2"/></g>
+  <g id="k-peek" opacity="0"><circle cx="300" cy="190" r="128" fill="#22202c" stroke="#efe3c8" stroke-width="5"/>${city(222,262,1.6,'k-blink2')}<circle cx="300" cy="190" r="128" fill="none" stroke="#000" stroke-opacity=".35" stroke-width="10"/></g>${GRAINRECT(.42)}`},
+ state:{open:0,rattle:0,leaf:0,peek:0,glow:.2,leo:{head:16,arm:30,fore:40},you:{}},
  render(S,f,t){const plates=[...document.querySelectorAll('#k-armour .plate')];
   plates.forEach((g,i)=>{const r=S.rattle?(rng(f*13+i)()-.5)*S.rattle*6:0;const open=i===1?S.open:0;g.setAttribute('transform',`rotate(${(r-open*48).toFixed(1)} 700 300) translate(0 ${(-open*30).toFixed(1)})`)});
-  at('k-gglow',{opacity:S.glow+S.open*.75});at('k-seam',{opacity:.8-S.open*.5});
+  at('k-gglow',{opacity:S.glow+S.open*.75});at('k-seam',{opacity:.8-S.open*.5});at('k-peek',{opacity:S.peek});
+  // One tower counts twice: its window blinks twice, then rests.
+  const ph=(t*1.2)%2,on=!(ph<.18||(ph>.36&&ph<.54));['k-blink','k-blink2'].forEach(id=>at(id,{fill:on?'#ffd890':'#3a3040'}));
   at('k-leaf',{opacity:S.leaf>0?1:0,transform:`translate(${lerp(700,930,S.leaf)} ${lerp(470,650,S.leaf)}) rotate(${S.leaf*200})`});
   pose('k-leo',S.leo,f);pose('k-you',S.you,f)},
  intro:[
-  {dur:5.5,reveal:1,lines:[[1.2,'You','You’ve been quiet since the review.']],to:{leo:{head:18}}},
-  {dur:5,lines:[[.5,'Leo','I’m fine. Just tired.']],sfx:[[.2,'plates']],to:{rattle:.6,leo:{head:22,arm:34,fore:44}}},
+  {dur:5.5,reveal:1,lines:[[1.2,'You','You’ve been quiet since the run-through.','shield-01']],to:{leo:{head:18}}},
+  {dur:5,lines:[[.5,'Dev','It’s fine. It’s one sensor. I’ll fix it.','shield-02']],sfx:[[.2,'plates']],to:{rattle:.6,leo:{head:22,arm:34,fore:44}}},
   {dur:2,to:{rattle:0}},
-  {gate:1,choices:[{id:'tell',label:'Tell him what you’ve noticed',at:[960,430]},{id:'stay',label:'Sit with him; leave the door open',at:[1100,600]}]}],
+  {gate:1,peek:{target:'k-seam',at:[670,450],label:'the light in the seam',sr:'Look closer at the light in the seam of Dev’s armour (optional)',show:{peek:1},thoughtAt:[16,60],
+    thought:'If it counts twice in front of them, they’ll think the whole city’s broken. They’ll think I am.',
+    say:'Through the seam: a small paper city, lit window by window. One tower blinks twice, then rests. Dev thinks: If it counts twice in front of them, they’ll think the whole city’s broken. They’ll think I am.'},
+   choices:[{id:'tell',label:'Tell him what you’ve noticed',at:[960,430]},{id:'stay',label:'Sit with him; leave the door open',at:[1100,600]}]}],
  tell:[
-  {dur:6,lines:[[.3,'You','You used to argue with me in every meeting. I miss hearing what you think.']],to:{you:{head:-4,arm:18,fore:-36,hand:-20}}},
+  {dur:6.5,lines:[[.3,'You','You reset it every time anyone walks past. You don’t have to carry the fault on your own.','shield-t1']],to:{you:{head:-4,arm:18,fore:-36,hand:-20}}},
   {dur:3,sfx:[[.2,'plates']],to:{rattle:1}},
-  {dur:5.5,sfx:[[.6,'unfold']],lines:[[2.6,'Leo','…It’s the first thing I’ve made that I actually care about.']],to:{rattle:0,open:1,leo:{head:4,arm:-10,fore:-40}}},
-  {dur:5,lines:[[.4,'Leo','I didn’t want it torn apart in front of everyone.']],to:{leo:{head:12}},note:'He opens one plate himself. The rest stay where they are.'}],
+  {dur:5.5,sfx:[[.6,'unfold']],lines:[[2.6,'Dev','…It’s the first thing I’ve made that people can touch.','shield-t2']],to:{rattle:0,open:1,leo:{head:4,arm:-10,fore:-40}}},
+  {dur:5,lines:[[.4,'Dev','I didn’t want it to break in front of them.','shield-t3']],to:{leo:{head:12}},note:'He opens one plate himself. Inside, a small paper city; one tower blinks twice. The rest of the armour stays where it is.'}],
  stay:[
-  {dur:6,to:{you:{head:6}},lines:[[3,'Leo','…Not tonight.']]},
+  {dur:6,to:{you:{head:6}},lines:[[3,'Dev','…Not tonight.','shield-s1']]},
   {dur:5,to:{you:{head:-2}},note:'You stay a while longer. The armour stays closed.'},
-  {dur:5,sfx:[[.8,'leaf']],to:{leaf:1},note:'As you get up to go, one leaf slips out through the seam and lands beside you.'}],
+  {dur:5,sfx:[[.8,'leaf']],to:{leaf:1},note:'As you get up to go, one small lit window slips out through the seam and lands beside you.'}],
+ exit:{tell:'Into the morning: before the doors open',stay:'Into the morning: before the doors open'},
+ slateTitle:'The next morning. A minute before the doors open.',slate:{tell:'He opened one plate himself.',stay:'The armour stayed closed. You kept the little window.'},
+ memory:{tell:{none:'One plate is open. The rest stay where they are.',live:'He opened one plate for you. In the morning he ran it live; the fault showed, and a visitor helped him reset it.',rehearsal:'He opened one plate for you. In the morning the city stayed on the recording, perfect and out of reach.'},
+  stay:{none:'The armour stayed closed. A small lit window lies beside you.',live:'You left the door open. In the morning the doors opened too, and the fault showed in front of everyone.',rehearsal:'You left the door open. In the morning the recording ran perfectly, and nobody touched the real thing.'}},
  notes:{tell:'said what I noticed',stay:'left the door open'},
  question:'What was the armour keeping safe? And whose was it to open?'};
-// HELP: trust that does not become absence
+// HELP: trust that does not become absence (Ivy; a recast stays open for lived-experience review)
 ST.help={word:'HELP',title:'The Hand That Opens',desc:'Morning on a hilltop. Ivy holds a great paper wing; three ribbons run from it to your hands.',
  trace:'<path d="M30 150 Q100 30 180 60" stroke="#e8dcc4" stroke-width="5" fill="none"/><path d="M120 120 l14 -10 l14 10" stroke="#e9c27a" stroke-width="4" fill="none"/>',
  build(){return `<rect width="1600" height="900" fill="url(#dawnsky)"/>${P(ell(1340,560,70,70),'#fff1d2')}
   ${P([[-20,900],[-20,700],[400,620],[800,590],[1000,600],[1300,680],[1620,760],[1620,900]],'#a9b48a',EDGE)}${P([[-20,900],[-20,760],[500,700],[900,690],[1620,820],[1620,900]],'#8f9b72')}
   <g id="w-ribbons"></g><g id="w-birds"></g>
-  <g id="w-wing" filter="url(#lift)">${[0,1,2,3,4,5].map(i=>`<path d="${cutd([[0,10],[300-i*10,-200+i*52],[360-i*14,-170+i*52],[40,40]],1.6)}" fill="#f6eed9" fill-opacity="${(.82+i*.02).toFixed(2)}" ${EDGE}/>`).join('')}<path d="M0 10 L60 30" stroke="#8a6a4a" stroke-width="6" stroke-linecap="round"/></g>
+  <g id="w-wing" filter="url(#lift)">${[0,1,2,3,4,5].map(i=>`<path d="${cutd([[0,10],[300-i*10,-200+i*52],[360-i*14,-170+i*52],[40,40]],1.6)}" fill="#f6eed9" fill-opacity="${(.82+i*.02).toFixed(2)}" ${EDGE}/>`).join('')}<path d="M0 10 L60 30" stroke="#8a6a4a" stroke-width="6" stroke-linecap="round"/><circle id="w-peek" cx="20" cy="20" r="46" fill="none" stroke="#4a4652" stroke-width="3" stroke-dasharray="8 6" opacity="0"/></g>
   <g filter="url(#lift)">${person('w-ivy',{x:960,y:600,s:1.05,standing:1,coat:'#c78f4a',coat2:'#8a5c2c',hair:'#2a1f1a',hairStyle:'wild'})}</g>
   <g filter="url(#lift)">${person('w-you',{x:560,y:640,s:1.15,standing:1,...PEOPLE.you})}</g>${GRAINRECT(.38)}`},
- state:{lift:0,wobble:0,kept:3,birds:0,taut:0,feather:0,ivy:{arm:-120,fore:-10},you:{arm:-60,fore:-20,hand:0}},
+ state:{lift:0,wobble:0,kept:3,birds:0,taut:0,feather:0,peek:0,ivy:{arm:-120,fore:-10},you:{arm:-60,fore:-20,hand:0}},
  render(S,f,t){const sway=Math.sin(t*1.3)*6+(S.wobble?Math.sin(t*4.1)*S.wobble*14:0),wx=980+S.lift*40,wy=380-S.lift*230+sway;
-  at('w-wing',{transform:`translate(${wx} ${wy}) rotate(${(-6+sway*.6).toFixed(1)})`});
+  at('w-wing',{transform:`translate(${wx} ${wy}) rotate(${(-6+sway*.6).toFixed(1)})`});at('w-peek',{opacity:S.peek});
   const hx=560+124*1.15*.9,hy=640-170;let rib='';for(let i=0;i<3;i++){if(i>=S.kept)continue;const ex=wx+40+i*14,ey=wy+50+i*4;rib+=`<path d="M${hx} ${hy+i*6} Q${(hx+ex)/2} ${Math.max(hy,ey)+60*(1-S.taut)} ${ex} ${ey}" stroke="${['#c9584a','#e0a14a','#5a8aa8'][i]}" stroke-width="4" fill="none"/>`}$('w-ribbons').innerHTML=rib;
   let b='';for(let i=0;i<S.birds;i++){const u=Math.min(1,(t-(S.birdT||0))*.25+i*.1),x=hx+60+i*90+u*300,y=hy-120-u*260-i*30,wf=(Math.floor(t*6)+i)%2;b+=`<path d="M${x} ${y} l18 ${wf?-12:6} l18 ${wf?12:-6}" stroke="${['#c9584a','#e0a14a','#5a8aa8'][i%3]}" stroke-width="4" fill="none"/>`}if(S.feather>0){const u=S.feather,fx=lerp(wx+80,700,u)+Math.sin(t*3)*20*u,fy=lerp(wy+20,770,u);b+=`<path d="${cutd([[fx-26,fy],[fx,fy-8],[fx+26,fy],[fx,fy+6]],1)}" fill="#f6eed9" transform="rotate(${(Math.sin(t*2)*30).toFixed(0)} ${fx.toFixed(0)} ${fy.toFixed(0)})"/>`}$('w-birds').innerHTML=b;
   pose('w-ivy',S.ivy,f);pose('w-you',S.you,f)},
  intro:[
-  {dur:5,reveal:1,lines:[[1,'Ivy','The wind’s right. I think I can take it up.']]},
-  {dur:4.5,lines:[[.4,'Ivy','If you let go of the lines.']],sfx:[[.4,'wind']],to:{lift:.08,ivy:{arm:-130,head:-6}}},
-  {gate:1,choices:[{id:'keep',label:'Keep one ribbon',at:[700,430]},{id:'free',label:'Let every ribbon go',at:[420,420]}]}],
+  {dur:5,reveal:1,lines:[[1,'Ivy','The wind’s right. I think I can take it up.','help-01']]},
+  {dur:4.5,lines:[[.4,'Ivy','If you let go of the lines.','help-02']],sfx:[[.4,'wind']],to:{lift:.08,ivy:{arm:-130,head:-6}}},
+  {gate:1,peek:{target:'w-peek',at:[990,400],label:'her grip',sr:'Look closer at Ivy’s grip on the wing (optional)',show:{peek:1},thoughtAt:[24,20],
+    thought:'If it falls while you’re still holding a line, at least it won’t be only mine.',
+    say:'Ivy’s knuckles are white on the wing’s spar. Ivy thinks: If it falls while you’re still holding a line, at least it won’t be only mine.'},
+   choices:[{id:'keep',label:'Keep one ribbon',at:[700,430]},{id:'free',label:'Let every ribbon go',at:[420,420]}]}],
  keep:[
   {dur:4.5,sfx:[[.3,'flutter']],to:{kept:1,birds:2,lift:.45,you:{arm:-80,fore:-10}},mark:'birdT'},
-  {dur:4,sfx:[[.2,'wind']],lines:[[.6,'Ivy','Gust—!']],to:{lift:.16,wobble:1.4,taut:1,you:{arm:-96,fore:-4}}},
-  {dur:5,lines:[[.8,'Ivy','It’s holding. Don’t let go of that one.']],to:{lift:.45,wobble:.2,taut:0,ivy:{head:14},you:{arm:-80,fore:-10}}},
-  {dur:4.5,lines:[[.5,'Ivy','Thanks for staying on the line.']],to:{lift:.35},note:'A gust drops it hard, and your ribbon catches it. It flies lower after that, and she keeps looking back at you.'}],
+  {dur:4,sfx:[[.2,'wind']],lines:[[.6,'Ivy','Gust—!','help-k1']],to:{lift:.16,wobble:1.4,taut:1,you:{arm:-96,fore:-4}}},
+  {dur:5,lines:[[.8,'Ivy','It’s holding. Don’t let go of that one.','help-k2']],to:{lift:.45,wobble:.2,taut:0,ivy:{head:14},you:{arm:-80,fore:-10}}},
+  {dur:4.5,lines:[[.5,'Ivy','Thanks for staying on the line.','help-k3']],to:{lift:.35},note:'A gust drops it hard, and your ribbon catches it. It flies lower after that, and she keeps looking back at you.'}],
  free:[
   {dur:4,sfx:[[.3,'flutter'],[.8,'flutter']],to:{kept:0,birds:3,lift:.7,wobble:1,you:{arm:-20,fore:-10,hand:-30}},mark:'birdT'},
-  {dur:4.5,lines:[[.6,'Ivy','It’s pulling. It’s—']],sfx:[[.2,'wind']],to:{lift:.55,wobble:1.6,ivy:{arm:-150,head:-14}}},
-  {dur:5,lines:[[.8,'Ivy','I’ve got it. I’ve got it!']],to:{lift:1,wobble:.3,feather:1,ivy:{arm:-120,head:-4}},note:'It dips hard and she brings it back herself. A feather tears loose and drifts down past you. You are still there, hands open.'}],
+  {dur:4.5,lines:[[.6,'Ivy','It’s pulling. It’s—','help-f1']],sfx:[[.2,'wind']],to:{lift:.55,wobble:1.6,ivy:{arm:-150,head:-14}}},
+  {dur:5,lines:[[.8,'Ivy','I’ve got it. I’ve got it!','help-f2']],to:{lift:1,wobble:.3,feather:1,ivy:{arm:-120,head:-4}},note:'It dips hard and she brings it back herself. A feather tears loose and drifts down past you. You are still there, hands open.'}],
+ exit:{keep:'Into the morning: the exhibition',free:'Into the morning: the exhibition'},
+ slateTitle:'The next morning. The exhibition.',slate:{keep:'You kept one ribbon.',free:'You let every ribbon go, and stayed.'},
+ memory:{keep:{none:'It flies lower, steady. She keeps looking back at you.',lower:'You kept one ribbon so it couldn’t fall. In the morning you stopped the whole display so Jo could reach the big controls.',connect:'You kept one ribbon so it couldn’t fall. In the morning you plugged in a second panel, and Jo ran the show from it.'},
+  free:{none:'It flew high and dipped, and she brought it back. A torn feather lies at your feet.',lower:'You let every ribbon go. In the morning you paused the room, lowered the console, and stepped back.',connect:'You let every ribbon go. In the morning Jo chose the sequence herself on smaller switches, while the show went on.'}},
  notes:{keep:'kept one ribbon',free:'let go, and stayed'},
  question:'What did you keep hold of? Was it for her, or for you?'};
-// SHIP: the light that stays when you are not there
-ST.ship={word:'SHIP',exitAt:[[1160,690],[660,700]],title:'The Lantern and the Horizon',desc:'Night. On the gallery of a paper lighthouse you hold the only flame. Sana stands beside you with an empty lantern. Small dark shelters wait along the horizon.',
+// SHIP: the light that stays when you are not there (Inez, from One More Chair)
+ST.ship={word:'SHIP',exitAt:[[1160,690],[660,700]],title:'The Lantern and the Horizon',desc:'Night. On the gallery of a paper lighthouse you hold the only flame. Inez stands beside you with an empty lantern. Small dark shelters wait along the horizon.',
  trace:'<path d="M20 150 H180" stroke="#e8dcc4" stroke-width="4"/>'+[0,1,2,3,4].map(i=>`<circle cx="${40+i*30}" cy="140" r="6" fill="#e9c27a"/>`).join(''),
  build(){const huts=[...Array(7)].map((_,i)=>{const x=840+i*104,y=520-(i%2)*6;return `<g class="hut" data-i="${i}" transform="translate(${x} ${y})">${P([[-26,-30],[0,-52],[26,-30],[24,0],[-24,0]],'#2c3152',EDGE)}<path d="M-20 0 v30 M20 0 v30" stroke="#2c3152" stroke-width="5"/><rect class="win" x="-7" y="-26" width="14" height="14" fill="#141629"/><circle class="hg" cx="0" cy="-20" r="70" fill="url(#warm)" opacity="0"/></g>`}).join('');
   return `<rect width="1600" height="900" fill="url(#nightsky)"/>${[...Array(40)].map((_,i)=>{const r=rng(i*7+1);return `<circle cx="${(r()*1600).toFixed(0)}" cy="${(r()*420).toFixed(0)}" r="${(1+r()*1.6).toFixed(1)}" fill="#efe6c8" opacity="${(.3+r()*.6).toFixed(2)}"/>`}).join('')}
   ${P([[-20,540],[1620,532],[1620,900],[-20,900]],'#1a2140')}<g id="p-sea"></g><path id="p-beam" fill="#ffe2a0" opacity="0"/>
-  ${huts}<g id="p-help"></g><g id="p-boat" opacity="0" filter="url(#lift)">${boatShape()}</g><g id="p-carry"></g>
+  ${huts}<g id="p-help"></g><g id="p-boat" opacity="0" filter="url(#lift)">${boatShape()}</g><circle id="p-peek" cx="1400" cy="600" r="64" fill="none" stroke="#efe3c8" stroke-width="3" stroke-dasharray="8 6" opacity="0"/><g id="p-carry"></g>
   <g filter="url(#lift)">${P([[250,900],[280,330],[440,330],[470,900]],'#e9dcc0',EDGE)}${[0,1,2].map(i=>P([[262-i*4,470+i*150],[458+i*4,470+i*150],[460+i*4,520+i*150],[260-i*4,520+i*150]],'#b85a4a')).join('')}${P([[220,312],[500,312],[504,332],[216,336]],'#5a4632',EDGE)}${P([[300,240],[420,240],[440,312],[280,312]],'#2a2f4a',EDGE)}</g>
   <g filter="url(#lift)">${person('p-you',{x:330,y:312,s:.62,standing:1,...PEOPLE.you})}</g>
-  <g filter="url(#lift)">${person('p-sana',{x:446,y:312,s:.55,standing:1,flip:1,coat:'#3f6a7a',coat2:'#2c4c58',hair:'#1f1a1e',hairStyle:'bun'})}</g>
+  <g filter="url(#lift)">${person('p-sana',{x:446,y:312,s:.55,standing:1,flip:1,coat:'#4f7a6a',coat2:'#3a5c50',hair:'#1f1a1e',hairStyle:'wild',skin:'#b98763'})}</g>
   <g id="p-flame">${lantern('p-big',360,256,1.1)}</g><g id="p-small">${lantern('p-sl',420,262,.55,false)}</g>${GRAINRECT(.42)}`},
- state:{beam:0,beamA:0,boat:0,wait:0,shared:0,lit:0,mine:1,flicker:0,help:0,sana:{},you:{arm:-70,fore:-30},sanaHere:1,dark:0},
+ state:{beam:0,beamA:0,boat:0,wait:0,shared:0,lit:0,mine:1,flicker:0,help:0,peek:0,sana:{},you:{arm:-70,fore:-30},sanaHere:1,dark:0},
  render(S,f,t){const ph=Math.floor(t*6)/6;$('p-sea').innerHTML=['#1f2a4c','#243258'].map((c,i)=>P(wave(600+i*90,10,ph*1.1+i,c,300+i),c)).join('');
   const a=S.beamA+Math.sin(t*.6)*.25;at('p-beam',{opacity:S.beam*.4,d:S.beam>0?`M360 256 L${360+1400*Math.cos(a-.06)} ${256+1400*Math.sin(a-.06)} L${360+1400*Math.cos(a+.06)} ${256+1400*Math.sin(a+.06)} Z`:''});
-  at('p-boat',{opacity:S.boat>0||S.wait>0?1:0,transform:S.boat>0?`translate(${lerp(1300,560,S.boat)} ${lerp(600,700,S.boat)}) scale(.9)`:`translate(1400 ${(608+Math.sin(t*1.6)*5).toFixed(1)}) rotate(${(Math.sin(t*1.3)*7).toFixed(1)}) scale(.55)`});
+  const far=S.wait>0||S.peek>0;at('p-boat',{opacity:S.boat>0||far?1:0,transform:S.boat>0?`translate(${lerp(1300,560,S.boat)} ${lerp(600,700,S.boat)}) scale(.9)`:`translate(1400 ${(608+Math.sin(t*1.6)*5).toFixed(1)}) rotate(${(Math.sin(t*1.3)*7).toFixed(1)}) scale(.55)`});at('p-peek',{opacity:S.peek});
   $('p-flame').querySelector('.lglow').setAttribute('opacity',(S.mine*(1-S.dark)).toFixed(2));$('p-flame').querySelector('.lflame').setAttribute('opacity',(S.mine>.2?1:.3)*(1-S.dark));
   const sl=$('p-small');sl.querySelector('.lglow').setAttribute('opacity',S.shared?.9:0);sl.querySelector('.lflame').setAttribute('opacity',S.shared?1:0);sl.setAttribute('opacity',S.sanaHere);
   document.querySelectorAll('#st-svg .hut').forEach((h,i)=>{let on=i<S.lit?1:0;if(i===3&&S.flicker)on=(Math.floor(t*5)%3===0)?.3:1;h.querySelector('.hg').setAttribute('opacity',on*.9);h.querySelector('.win').setAttribute('fill',on?'#ffd88c':'#141629')});
-  // A light carried along the horizon (Sana, then a neighbour coming to help).
+  // A light carried along the horizon (Inez, then a neighbour coming to help).
   let c='';if(S.carry>0&&S.lit<1){const x=lerp(420,840,S.carry),y=lerp(262,520,Math.min(1,S.carry*1.4));c=`<circle cx="${x}" cy="${y}" r="40" fill="url(#warm)"/><circle cx="${x}" cy="${y}" r="5" fill="#fff4d0"/>`}
   if(S.help>0){const x=lerp(840+4*104,840+3*104,S.help);c+=`<circle cx="${x}" cy="${500}" r="34" fill="url(#warm)"/><circle cx="${x}" cy="500" r="5" fill="#fff4d0"/>`}$('p-carry').innerHTML=c;
   at('p-sana',{opacity:S.sanaHere});pose('p-you',S.you,f);pose('p-sana',S.sana,f)},
  intro:[
-  {dur:5,reveal:1,lines:[[1,'Sana','The shelters on the far side are dark again.']]},
-  {dur:5,lines:[[.4,'Sana','People are still out there. Can I take some of the flame?']],to:{sana:{arm:-60,fore:-30}}},
-  {gate:1,choices:[{id:'keep',label:'Keep the flame and light the way',at:[300,200]},{id:'share',label:'Share the flame',at:[470,230]}]}],
+  {dur:5,reveal:1,lines:[[1,'Inez','The shelters on the far side are dark again.','ship-01']]},
+  {dur:5.5,lines:[[.4,'Inez','People are still out there. Can I take some of the flame?','ship-02']],to:{sana:{arm:-60,fore:-30}}},
+  {gate:1,peek:{target:'p-peek',at:[1400,600],label:'far out',sr:'Look closer at the dark sea beyond the shelters (optional)',show:{peek:1},thoughtAt:[74,22],
+    thought:'There’s one more boat out there. There’s always one more, right at closing.',
+    say:'Far beyond the shelters, one small boat with no light of its own. Inez thinks: There’s one more boat out there. There’s always one more, right at closing.'},
+   choices:[{id:'keep',label:'Keep the flame and light the way',at:[640,190]},{id:'share',label:'Share the flame',at:[640,330]}]}],
  keep:[
-  {dur:5,sfx:[[.3,'beam']],lines:[[1.5,'You','Stay with me. I’ll light the way for them.']],to:{beam:1,beamA:.15}},
+  {dur:5,sfx:[[.3,'beam']],lines:[[1.5,'You','Stay with me. I’ll light the way for them.','ship-k1']],to:{beam:1,beamA:.15}},
   {dur:6,to:{boat:1,beamA:.22},note:'A boat finds the harbour by your beam. The shelters stay dark.'},
-  {dur:5.5,lines:[[1.6,'Sana','It holds as long as you do.']],to:{beam:.2,mine:.35,you:{arm:-20,fore:-10,head:12}}},
+  {dur:5.5,lines:[[1.6,'Inez','It holds as long as you do.','ship-k2']],to:{beam:.2,mine:.35,you:{arm:-20,fore:-10,head:12}}},
   {dur:3,to:{dark:.8,beam:0},note:'Near dawn you lower the lantern. The boat is home. The shelters never lit, and the whole sea goes dark.'}],
  share:[
   {dur:4,sfx:[[.6,'flame']],to:{shared:1,you:{arm:-40,fore:-50},sana:{arm:-50,fore:-20}}},
   {dur:4,to:{sanaHere:0,carry:.999,mine:.7}},
   {dur:7,sfx:[[.3,'flame'],[1.5,'flame'],[2.7,'flame'],[3.9,'flame']],to:{lit:7,wait:1},note:'One shelter lights the next. Your own flame is smaller now. Far out, a boat has no light to steer by.'},
-  {dur:5,to:{flicker:1},lines:[[1.2,'Sana','(far off) Three is flickering!']]},
+  {dur:5,to:{flicker:1},lines:[[1.2,'Inez','(far off) Three is flickering!','ship-s1']]},
   {dur:5,to:{help:1,flicker:0},note:'Its keeper raises a lantern twice, and the neighbour walks over. Someone answers. The boat out at sea waits for daylight: the small lights don’t reach that far.'}],
+ exit:{keep:'Into the evening: the repair café',share:'Into the evening: the repair café'},
+ slateTitle:'The next evening. The repair café, near closing.',slate:{keep:'You kept the flame and lit the way.',share:'You shared the flame.'},
+ memory:{keep:{none:'The boat is home. The shelters never lit.',extend:'You kept one strong light for the boat out at sea. At the café you made room for one more, and the umbrella’s last seam waited.',return:'You kept one strong light for the boat out at sea. At the café you kept the promises already made, and Sam left with an appointment.'},
+  share:{none:'The shelters glow along the shore. The far boat waits for daylight.',extend:'You shared the flame along the shore. At the café you shared the work too, and ran out of minutes.',return:'You shared the flame, and the far boat waited for daylight. At the café, Sam waited for tomorrow’s first slot.'}},
  notes:{keep:'kept the flame',share:'shared the flame'},
  question:'Who holds a light because of you? And who will they call when it flickers?'};
 // ---------- painted layers: used where they exist, code-cut everywhere else (see art/README.md) ----------
@@ -424,7 +506,7 @@ function artFig(room,who){const set=ARTIDX[room]?.figures?.[who];if(!set)return 
 // ---------- the six words, their bottles and their films (the pairing is a proposal: Bob decides) ----------
 const WORD='LEADERSHIP',TARGETS=['HEARD','LEAD','SHARED','SHIELD','HELP','SHIP'];
 const PLACE={HEARD:[950,300],LEAD:[1220,300],SHARED:[950,480],SHIELD:[1220,480],HELP:[950,660],SHIP:[1220,660]};
-const KEY={HEARD:'heard',LEAD:null,SHARED:'shared',SHIELD:'shield',HELP:'help',SHIP:'ship'};
+const KEY={HEARD:'heard',LEAD:'lead',SHARED:'shared',SHIELD:'shield',HELP:'help',SHIP:'ship'};
 const ROOT='../../../';
 const FILMS={standup:{title:'The Quiet Minute',src:'anthology/episodes/standup/index.html',arrival:'The room has agreed. Not everyone has spoken.'},
  slides:{title:'The Missing Name',src:'anthology/episodes/slides/index.html',arrival:'A beautiful opening is missing its author.'},
@@ -559,10 +641,10 @@ function startBeat(){const b=R.seq[R.i];if(!b){if(R.ghost){const w=R.word;R=null
  if(b.gate){for(const c of b.choices){const btn=document.createElement('button');btn.className='choice';btn.innerHTML=`<span>${c.label}</span>`;btn.setAttribute('aria-label',c.label);btn.style.left=c.at[0]/16+'%';btn.style.top=c.at[1]/9+'%';btn.onclick=()=>b.exit?chooseExit(c.id):choose(c.id);ch.appendChild(btn)}
   if(b.peek&&!R.ghost)requestAnimationFrame(()=>addPeek(b.peek));
   setTimeout(()=>ch.querySelector('button')?.focus({preventScroll:true}),50);announce((b.exit?'Where next: ':'Your choice: ')+b.choices.map(c=>c.label).join(', or ')+(b.peek?'. Or look closer first.':''))}}
-function addPeek(pk){const t=$(pk.target),box=$('story').querySelector('.box').getBoundingClientRect();if(!R)return;const r=t?t.getBoundingClientRect():{left:box.left+pk.at[0]/1600*box.width,top:box.top+pk.at[1]/900*box.height,width:0,height:0};
+function addPeek(pk){const t=$(pk.target),box=$('story').querySelector('.box').getBoundingClientRect();if(!R||R.choice||!R.seq[R.i]?.gate||R.seq[R.i].exit)return;const r=t?t.getBoundingClientRect():{left:box.left+pk.at[0]/1600*box.width,top:box.top+pk.at[1]/900*box.height,width:0,height:0};
  const btn=document.createElement('button');btn.className='peek';btn.innerHTML=`<span>${pk.label}</span>`;btn.setAttribute('aria-label',pk.sr);
  btn.style.left=((r.left+r.width/2-box.left)/box.width*100)+'%';btn.style.top=((r.top+r.height/2-box.top)/box.height*100)+'%';
- btn.onclick=()=>{if(!R)return;G.peeked[R.key]=1;Object.assign(R.S,pk.show);R.force=1;$('thought').textContent=pk.thought;announce(pk.say);Snd.play('pencil');btn.remove();
+ btn.onclick=()=>{if(!R)return;G.peeked[R.key]=1;Object.assign(R.S,pk.show);R.force=1;const th=$('thought');th.style.left=pk.thoughtAt&&!PORTRAIT?pk.thoughtAt[0]+'%':'';th.style.top=pk.thoughtAt&&!PORTRAIT?pk.thoughtAt[1]+'%':'';th.textContent=pk.thought;announce(pk.say);Snd.play('pencil');btn.remove();
   setTimeout(()=>{if(R&&!R.choice){for(const k of Object.keys(pk.show))R.S[k]=0;R.force=1;$('thought').textContent=''}},reduced?9000:7500)};
  $('choices').appendChild(btn)}
 function choose(id){if(!R||R.choice)return;R.choice=id;$('choices').innerHTML='';$('thought').textContent='';for(const k of ['peek'])if(k in R.S)R.S[k]=0;Snd.play('pick');
