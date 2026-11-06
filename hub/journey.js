@@ -269,6 +269,7 @@ if(JM){
  window.addEventListener('message',e=>{if(e.source!==window.parent||e.data?.channel!=='asterwind.hub.v1')return;const m=e.data;
   if(m.type==='state'){J.lit=new Set(m.lit||[]);J.walked=(m.walked||[]).filter(id=>order.includes(id));J.words=m.words||{};label();setNight();if(state==='idle'){renderRoof();setDisplay(clock())}}
   if(m.type==='morning'){finale()}
+  if(m.type==='wake'&&!reduced&&state==='idle'){const l=$('lobby');l.classList.remove('waking');void l.offsetWidth;l.classList.add('waking');setTimeout(()=>l.classList.remove('waking'),T.wake)}
   if(m.type==='sound'){sound.setEnabled(!!m.on);syncSound();if(m.on&&state!=='story')sound.ambience(true)}
   if(m.type==='focus'&&state==='idle'){const want=m.id&&btnFor(m.id);focusQuietly(want&&!want.classList.contains('walked')?want:order.map(btnFor).find(b=>!b.classList.contains('unlit')&&!b.classList.contains('walked'))||btnFor(order[0]))}});
  label();toParent({type:'ready'});

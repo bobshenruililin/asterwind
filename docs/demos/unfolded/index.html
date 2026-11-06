@@ -81,7 +81,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--gold);outline-o
 #title .t-land{display:none}#frame.portrait #title .t-land{display:inline}
 #title.cut{background:transparent;pointer-events:none}#title.cut>*:not(h1){opacity:0}#title.cut h1{color:#26232e}
 /* Corridor: the After Hours dispenser (hub/, journey mode) */
-#corridor{background:#0d0e1a}
+#corridor{background:#0d0e1a}#corridor.offstage{visibility:hidden;pointer-events:none}
 #hubframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block;background:#0d0e1a}
 .cbtn{position:absolute;z-index:2;background:#0b0b12cc;border:1px solid #e9c27a88;border-radius:2px;padding:.55em 1.2em;font:clamp(13px,1.5vw,17px) system-ui;color:var(--ink);min-height:40px}
 #nb-open{left:2.5%;bottom:4%}#morning{right:2.5%;bottom:4%}
@@ -583,12 +583,12 @@ addEventListener('keydown',e=>{if(e.target.tagName==='INPUT')return;
  if(/^[A-Z]$/.test(k)){const i=[...WORD].findIndex((c,j)=>c===k&&!G.picked.includes(j));if(i>=0){e.preventDefault();pick(i)}}
  else if(e.key==='Backspace'){e.preventDefault();unpick()}else if(e.key==='Escape')clear()});
 const SCREENS=['title','notebook','corridor','filmscr','story','mirror','end'];
-function only(...ids){for(const s of SCREENS)$(s).hidden=!ids.includes(s);$('pause').hidden=!ids.includes('story');$('chrome').hidden=ids.includes('filmscr')}
+function only(...ids){for(const s of SCREENS){const on=ids.includes(s);if(s==='corridor'&&HUB.frame){$(s).hidden=false;$(s).classList.toggle('offstage',!on);$(s).inert=!on}else $(s).hidden=!on}$('pause').hidden=!ids.includes('story');$('chrome').hidden=ids.includes('filmscr')}
 // ---------- the corridor: the After Hours dispenser (hub/, journey mode), lit by the words you found ----------
 const DRINK={HEARD:'standup',LEAD:'slides',SHARED:'seam',SHIELD:'ship',HELP:'pixel',SHIP:'scope'},WORD_OF=Object.fromEntries(Object.entries(DRINK).map(([w,d])=>[d,w]));
 const HUB={frame:null,ready:false,queue:[]};
 function hub(msg){if(HUB.ready&&HUB.frame?.contentWindow)HUB.frame.contentWindow.postMessage({channel:'asterwind.hub.v1',...msg},'*');else HUB.queue.push(msg)}
-function mountHub(){if(HUB.frame)return;const f=document.createElement('iframe');f.id='hubframe';f.title='The corridor after hours. A drinks dispenser; the bottles whose words you found are lit.';f.src=ROOT+'hub/index.html?journey=1';$('corridor').prepend(f);HUB.frame=f}
+function mountHub(){if(HUB.frame)return;$('corridor').hidden=false;$('corridor').classList.add('offstage');$('corridor').inert=true;const f=document.createElement('iframe');f.id='hubframe';f.title='The corridor after hours. A drinks dispenser; the bottles whose words you found are lit.';f.src=ROOT+'hub/index.html?journey=1';$('corridor').prepend(f);HUB.frame=f}
 function hubState(){hub({type:'state',lit:G.found.map(w=>DRINK[w]),walked:G.walked.map(w=>DRINK[w]),words:Object.fromEntries(G.found.map(w=>[DRINK[w],w.toLowerCase()]))})}
 addEventListener('message',e=>{if(!HUB.frame||e.source!==HUB.frame.contentWindow||e.data?.channel!=='asterwind.hub.v1')return;const m=e.data;
  if(m.type==='ready'){HUB.ready=true;hubState();hub({type:'sound',on:Snd.on});for(const q of HUB.queue.splice(0))hub(q)}
@@ -596,8 +596,8 @@ addEventListener('message',e=>{if(!HUB.frame||e.source!==HUB.frame.contentWindow
   if(KEY[w])enterRoom(KEY[w],{cross:m.reveal||{}});else startFilm(w,{cross:m.reveal||{}})}
  if(m.type==='unlit'){$('c-cap').textContent=m.walked?'Its empty is already on the roof.':'That bottle is still dark. Its word is in the notebook.';announce($('c-cap').textContent)}
  if(m.type==='held'){$('corridor').classList.toggle('holding',!!m.on);if(m.on)$('c-cap').textContent=''}});
-function showCorridor(focusWord){G.screen='corridor';only('corridor');mountHub();Snd.music(G.dawn?'dawn':null);
- hubState();hub({type:'focus',id:focusWord?DRINK[focusWord]:null});setTimeout(()=>HUB.frame?.focus(),60);
+function showCorridor(focusWord){G.screen='corridor';mountHub();only('corridor');if(!HUB.woke){HUB.woke=1;hub({type:'wake'})}Snd.music(G.dawn?'dawn':null);
+ hubState();setTimeout(()=>{HUB.frame?.focus();hub({type:'focus',id:focusWord?DRINK[focusWord]:null})},60);
  const left=G.found.filter(w=>!G.walked.includes(w)),dark=TARGETS.length-G.found.length;
  $('morning').hidden=!G.walked.length||!!G.dawn;$('nb-open').textContent=G.dawn===2?'Open the notebook':'Back to the notebook';
  $('c-cap').textContent=G.dawn?'':!G.walked.length?'The words you found are lit. Choose a bottle.':left.length?'An empty on the roof. The night goes on.':dark?`${dark===1?'One bottle is':dark+' bottles are'} still dark. Their words are in the notebook.`:'';
@@ -755,7 +755,7 @@ function openNotebook(after){Snd.enable(true);$('snd').setAttribute('aria-presse
   Object.assign(h.style,{position:'absolute',fontSize:(100*k)+'px',lineHeight:'1',left:(r.left-fr.left)+'px',top:(r.top-fr.top+r.height*.5)+'px',transform:'translateY(-58%)',whiteSpace:'nowrap'});at('nb-word',{opacity:0});void h.offsetWidth}
  t.classList.add('cut');Snd.play('page');
  setTimeout(()=>{at('nb-word',{opacity:1});t.hidden=true;t.classList.remove('cut');h.removeAttribute('style');after()},reduced?0:1000)}
-$('begin').onclick=()=>openNotebook(()=>{G.screen='notebook';only('notebook');G.lastFind=now();setTimeout(()=>at('nb-word',{opacity:.16}),reduced?0:500);demo();setTimeout(()=>$('tiles').querySelector('button')?.focus({preventScroll:true}),120)});
+$('begin').onclick=()=>openNotebook(()=>{G.screen='notebook';mountHub();only('notebook');G.lastFind=now();setTimeout(()=>at('nb-word',{opacity:.16}),reduced?0:500);demo();setTimeout(()=>$('tiles').querySelector('button')?.focus({preventScroll:true}),120)});
 $('restart').onclick=()=>{wipe();$('begin').onclick()};
 $('resume').onclick=()=>openNotebook(()=>{const d=saved;
  for(const w of d.found)if(TARGETS.includes(w)&&!G.found.includes(w)){G.found.push(w);$('boats').appendChild(makeBoat(w));at('pl-'+w,{opacity:.85})}
