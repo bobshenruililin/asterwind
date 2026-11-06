@@ -269,7 +269,7 @@ ST.heard={word:'HEARD',title:'The Listening Tide',desc:'Night at the harbour wal
  notes:{offer:'said I’d say it',listen:'Ellis will bring it'},
  question:'What did Ellis need: your voice, or room for theirs?'};
 // SHARED: a roof everyone stands under
-ST.shared={word:'SHARED',title:'The Shared Roof',desc:'Rain at night. Under a vast paper roof, Arun and you stand on a beam beneath a tear. He holds out the clamp.',
+ST.shared={word:'SHARED',exitAt:[[1260,110],[340,110]],title:'The Shared Roof',desc:'Rain at night. Under a vast paper roof, Arun and you stand on a beam beneath a tear. He holds out the clamp.',
  trace:'<path d="M20 120 Q100 30 180 120" stroke="#e8dcc4" stroke-width="5" fill="none"/><path d="M80 80 l10 10 l10 -10 l10 10 l10 -10" stroke="#e9c27a" stroke-width="4" fill="none"/>',
  build(){const ribs=[...Array(15)].map((_,i)=>{const x=-40+i*120;return `<path d="M${x} ${470-Math.sin(Math.max(0,Math.min(1,(x+20)/1640))*3.14)*250} L800 170" stroke="#b89f78" stroke-width="2.4" opacity=".45"/>`}).join('');
   return `<rect width="1600" height="900" fill="url(#nightsky)"/><g id="s-rain"></g>
@@ -375,7 +375,7 @@ ST.help={word:'HELP',title:'The Hand That Opens',desc:'Morning on a hilltop. Ivy
  notes:{keep:'kept one ribbon',free:'let go, and stayed'},
  question:'What did you keep hold of? Was it for her, or for you?'};
 // SHIP: the light that stays when you are not there
-ST.ship={word:'SHIP',title:'The Lantern and the Horizon',desc:'Night. On the gallery of a paper lighthouse you hold the only flame. Sana stands beside you with an empty lantern. Small dark shelters wait along the horizon.',
+ST.ship={word:'SHIP',exitAt:[[1160,690],[660,700]],title:'The Lantern and the Horizon',desc:'Night. On the gallery of a paper lighthouse you hold the only flame. Sana stands beside you with an empty lantern. Small dark shelters wait along the horizon.',
  trace:'<path d="M20 150 H180" stroke="#e8dcc4" stroke-width="4"/>'+[0,1,2,3,4].map(i=>`<circle cx="${40+i*30}" cy="140" r="6" fill="#e9c27a"/>`).join(''),
  build(){const huts=[...Array(7)].map((_,i)=>{const x=840+i*104,y=520-(i%2)*6;return `<g class="hut" data-i="${i}" transform="translate(${x} ${y})">${P([[-26,-30],[0,-52],[26,-30],[24,0],[-24,0]],'#2c3152',EDGE)}<path d="M-20 0 v30 M20 0 v30" stroke="#2c3152" stroke-width="5"/><rect class="win" x="-7" y="-26" width="14" height="14" fill="#141629"/><circle class="hg" cx="0" cy="-20" r="70" fill="url(#warm)" opacity="0"/></g>`}).join('');
   return `<rect width="1600" height="900" fill="url(#nightsky)"/>${[...Array(40)].map((_,i)=>{const r=rng(i*7+1);return `<circle cx="${(r()*1600).toFixed(0)}" cy="${(r()*420).toFixed(0)}" r="${(1+r()*1.6).toFixed(1)}" fill="#efe6c8" opacity="${(.3+r()*.6).toFixed(2)}"/>`}).join('')}
@@ -624,7 +624,7 @@ function addPeek(pk){const t=$(pk.target),box=$('story').querySelector('.box').g
  $('choices').appendChild(btn)}
 function choose(id){if(!R||R.choice)return;R.choice=id;$('choices').innerHTML='';$('thought').textContent='';for(const k of ['peek'])if(k in R.S)R.S[k]=0;Snd.play('pick');
  R.seq.push(...R.st[id]);const f=BOTTLES[R.word]?.film;
- if(f)R.seq.push({gate:1,exit:1,choices:[{id:'film',label:(R.st.exit&&R.st.exit[id])||`Go deeper: ${FILMS[f].title}`,at:[1210,690]},{id:'stay',label:'Stay with the night',at:[400,690]}]});
+ const xa=R.st.exitAt||[[1210,690],[400,690]];if(f)R.seq.push({gate:1,exit:1,choices:[{id:'film',label:(R.st.exit&&R.st.exit[id])||`Go deeper: ${FILMS[f].title}`,at:xa[0]},{id:'stay',label:'Stay with the night',at:xa[1]}]});
  R.i++;startBeat()}
 function chooseExit(id){if(!R)return;$('choices').innerHTML='';Snd.play('pick');finishRoom(id)}
 function finishRoom(id){const w=R.word;G.done[R.key]=R.choice;if(!G.frames[w])G.frames[w]=snap();R=null;if(id==='film')startFilm(w,{fromRoom:true});else toMirror(w)}
