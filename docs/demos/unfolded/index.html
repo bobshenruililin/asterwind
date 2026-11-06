@@ -711,7 +711,8 @@ function lastFilmFrame(fr){try{const doc=fr.contentDocument;const cv=doc.getElem
 addEventListener('message',e=>{const d=e.data;if(!FILM||e.source!==FILM.frame.contentWindow||!d||d.channel!=='asterwind.episode.v1'||d.session!==FILM.session||(d.episodeId&&d.episodeId!==FILM.id))return;
  if(d.type==='ready'){FILM.ready=true;tryStart()}
  if(d.type==='completed')filmEnded(d.outcome)});
-function leaveFilm(){if(!FILM)return;const w=FILM.w,fr=FILM.frame,pic=G.film[w]?lastFilmFrame(fr):null;if(pic)G.memento[w]=pic;FILM=null;try{fr.src='about:blank'}catch{}fr.remove();V2?walkHome(w):toMirror(w)}
+function completedFilm(w){return !!OUTCOMES[DRINK[w]]?.includes(G.film[w])}
+function leaveFilm(){if(!FILM)return;const w=FILM.w,fr=FILM.frame,pic=completedFilm(w)?lastFilmFrame(fr):null;if(pic)G.memento[w]=pic;FILM=null;try{fr.src='about:blank'}catch{}fr.remove();V2?walkHome(w):toMirror(w)}
 $('film-leave').onclick=leaveFilm;$('film-back').onclick=leaveFilm;
 // ---------- the mirror: one question, what happened remembered, the other way open to look at ----------
 function toMirror(w,afterGhost){Snd.stopScene();const key=KEY[w],st=key?ST[key]:null;G.screen='mirror';only('mirror');const m=$('mirror');m.dataset.word=w;
@@ -720,7 +721,7 @@ function toMirror(w,afterGhost){Snd.stopScene();const key=KEY[w],st=key?ST[key]:
  $('mirror-other').hidden=!(st&&c);$('mirror-other').textContent=afterGhost?'See it again':'See the other way';Snd.music(null);Snd.play('hush');
  setTimeout(()=>$(afterGhost?'mirror-go':'mirror-go').focus({preventScroll:true}),400)}
 // Back into the night: the picture folds into the label and the empty finds the roof.
-function walkHome(w){if(!G.walked.includes(w))G.walked.push(w);if(V2&&G.found.length<TARGETS.length)G.found=TARGETS.slice();save();showCorridor();hub({type:'return',id:DRINK[w],walked:true,memento:G.memento[w]||null});if(G.walked.length===TARGETS.length&&!G.dawn)setTimeout(()=>dawn(true),reduced?600:4200)}
+function walkHome(w){if(V2&&!completedFilm(w)){showCorridor(w);hub({type:'return',id:DRINK[w],walked:false});return}if(!G.walked.includes(w))G.walked.push(w);if(V2&&G.found.length<TARGETS.length)G.found=TARGETS.slice();save();showCorridor();hub({type:'return',id:DRINK[w],walked:true,memento:G.memento[w]||null});if(G.walked.length===TARGETS.length&&!G.dawn)setTimeout(()=>dawn(true),reduced?600:4200)}
 $('mirror-go').onclick=()=>walkHome($('mirror').dataset.word);
 $('mirror-other').onclick=()=>{const w=$('mirror').dataset.word,key=KEY[w],st=ST[key];const other=Object.keys(st.notes).find(c=>c!==G.done[key]);enterRoom(key,{ghost:other})};
 function writeNotes(){let n='';for(const w of TARGETS){const key=KEY[w],[x,y]=PLACE[w];let t='';if(V2){if(G.walked.includes(w))t=OUTNOTE[G.film[w]]||'walked';at('pl-'+w,{opacity:G.walked.includes(w)?.85:.14})}else if(key&&G.done[key])t=ST[key].notes[G.done[key]];if(t)n+=`<text x="${x}" y="${y+86}" text-anchor="middle">${t}</text>`;if(G.walked.includes(w))$('boat-'+w)?.classList.add('done')}const g=$('nb-notes');if(g)g.innerHTML=n}
@@ -776,10 +777,9 @@ function wipe(){try{localStorage.removeItem(SAVE)}catch{}}
 // ---------- the title: the word in cream, then the same word in ink on the page ----------
 buildTiles();setLayout();updateGo();only('title');G.screen='title';
 const saved=V2?null:loadSave();
-if(V2){$('title').hidden=true;const d=loadSave();G.found=d?.found?.filter(w=>TARGETS.includes(w))||['HEARD'];if(!G.found.length)G.found=['HEARD'];G.walked=(Array.isArray(d?.walked)?d.walked:[]).filter(w=>G.found.includes(w));G.film={};
- // Keep only outcomes the word's own film allows; anything else in a stale or corrupt save is dropped.
- if(d?.film&&typeof d.film==='object')for(const[w,o]of Object.entries(d.film))if(BOTTLES[w]&&OUTCOMES[BOTTLES[w].film]?.includes(o))G.film[w]=o;
- $('voice').hidden=true;$('nb-open').hidden=true;showCorridor('HEARD');if(d?.dawn){G.dawn=2;hub({type:'morning'});$('nb-open').hidden=false;$('nb-open').textContent='Open the notebook'}}if(saved){$('resume').hidden=false;$('restart').hidden=false;$('begin').hidden=true}
+function restoreNight(d){G.film={};for(const w of TARGETS){const outcome=d?.film?.[w];if(OUTCOMES[DRINK[w]]?.includes(outcome))G.film[w]=outcome}G.walked=TARGETS.filter(w=>Array.isArray(d?.walked)&&d.walked.includes(w)&&completedFilm(w));G.found=G.walked.length?TARGETS.slice():['HEARD'];G.dawn=d?.dawn&&G.walked.length?2:0}
+if(V2){$('title').hidden=true;const d=loadSave();restoreNight(d);
+ $('voice').hidden=true;$('nb-open').hidden=true;showCorridor('HEARD');if(G.dawn===2){hub({type:'morning'});$('nb-open').hidden=false;$('nb-open').textContent='Open the notebook'}}if(saved){$('resume').hidden=false;$('restart').hidden=false;$('begin').hidden=true}
 if(!V2)setTimeout(()=>(saved?$('resume'):$('begin')).focus({preventScroll:true}),60);
 function demo(){// A first word, shown: the obvious one. Then the page lets you look for the rest.
  const DEMO='lead. The obvious one. It’s in there too, but keep looking.';

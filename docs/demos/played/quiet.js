@@ -34,7 +34,7 @@ function burst(f1,f2,len,gain,type='bandpass'){if(!ac||!soundOn)return;const s=a
  f.frequency.setValueAtTime(f1,t);f.frequency.linearRampToValueAtTime(f2,t+len);g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(gain,t+.03);g.gain.linearRampToValueAtTime(0,t+len);s.connect(f);f.connect(g);g.connect(master);s.start(t);s.stop(t+len+.1)}
 function knock(){if(!ac||!soundOn)return;[0,.32,.62].forEach(d=>{const o=ac.createOscillator(),g=ac.createGain(),t=ac.currentTime+d;o.frequency.setValueAtTime(110,t);o.frequency.exponentialRampToValueAtTime(55,t+.12);g.gain.setValueAtTime(.5,t);g.gain.exponentialRampToValueAtTime(.001,t+.18);o.connect(g);g.connect(master);o.start(t);o.stop(t+.2);burst(900,600,.05,.25)})}
 function play(k,gain=1){if(!ac||!soundOn||!buf[k])return;const s=ac.createBufferSource(),g=ac.createGain();s.buffer=buf[k];g.gain.value=gain;s.connect(g);g.connect(master);s.start()}
-async function startSound(){ac=new (window.AudioContext||window.webkitAudioContext)();master=ac.createGain();master.connect(ac.destination);ambience();
+async function startSound(){ac=new (window.AudioContext||window.webkitAudioContext)();master=ac.createGain();master.gain.value=soundOn?1:0;master.connect(ac.destination);if(paused)ac.suspend().catch(()=>{});ambience();
  const V=['qm-01','qm-02','qm-03','qm-04','qm-05','qm-r1','qm-r2','qm-r3','qm-s1','qm-s2','qm-s3','qm-s4'];
  await Promise.all([...V.map(async v=>{buf[v]=await loadBuf('voices/'+v+'.mp3')}),...[['fold','fold.mp3'],['rustle','rustle.mp3'],['tap','tap.mp3'],['pencil','pencil.mp3']].map(async([k,f])=>{buf[k]=await loadBuf('../unfolded/sound/'+f)})])}
 
@@ -57,7 +57,7 @@ function hover(which){if(which&&!(phase==='decision'||(which==='route'&&phase===
  else{tw(S,'hovA',0,.3);showWord('',0,0)}}
 
 /* ---- the scene ---- */
-function begin(){phase='master';stage.show('master');S.dim=1;S.rain=.9;S.lamp=[.18,.06,.34,.55];S.focus=.55;S.str=.02;S.dof=0;S.ang=0;S.so=[0,0];S.disc=null;S.slide=null;S.hov=null;S.hovA=0;
+function begin(){$('thought').hidden=true;phase='master';stage.show('master');S.dim=1;S.rain=.9;S.lamp=[.18,.06,.34,.55];S.focus=.55;S.str=.02;S.dof=0;S.ang=0;S.so=[0,0];S.disc=null;S.slide=null;S.hov=null;S.hovA=0;
  handles([['theoHand',.664,.639,.075],['theoHead',.523,.12,.07],['niaHead',.117,.24,.07],['niaMap',.125,.56,.09],['ellisHead',.875,.13,.07],['ellisPencil',.836,.472,.05],['ellisPaper',.844,.611,.06],['renHead',.211,.62,.09]]);
  for(const n of ['theoHead','niaHead','ellisHead','renHead'])H[n].breathe=1;
  tw(S,'dim',0,2.6);
@@ -95,6 +95,7 @@ for(const id of ['platter','tray'])$(id).addEventListener('pointerup',()=>{if(!d
  if(d.moved<.004){commit(id==='platter'?'round':'slips');return}           // a tap is enough: the hand does the rest
  if(id==='platter'?Math.abs(S.ang)>.12:d.moved>.022)commit(id==='platter'?'round':'slips');
  else{tw(S,'ang',0,.5);tw(S,'so',[0,0],.4);follow(0)}});
+for(const id of ['platter','tray'])PlayedSupport.bindActivation($(id),()=>commit(id==='platter'?'round':'slips'),()=>{if(drag&&drag.what===id){drag=null;tw(S,'ang',0,.4);tw(S,'so',[0,0],.4);follow(0)}});
 // Heads follow the thing that is moving: attention is visible before anyone speaks.
 function follow(k){k=Math.max(-1,Math.min(1,k));if(H.niaHead){H.niaHead.bx=.003*Math.abs(k);H.niaHead.by=-.002*Math.abs(k)}if(H.ellisHead){H.ellisHead.bx=-.003*Math.abs(k)}if(H.theoHead){H.theoHead.by=.002*Math.abs(k)}}
 for(const id of ['platter','tray','route']){const el=$(id);el.addEventListener('pointerenter',()=>{if(phase==='decision'||(id==='route'&&phase==='master'))hover(id)});el.addEventListener('pointerleave',()=>{if(!drag)hover(null)});el.addEventListener('focus',()=>hover(id));el.addEventListener('blur',()=>{if(!drag)hover(null)})}
@@ -106,13 +107,13 @@ $('route').addEventListener('click',()=>look());$('route').addEventListener('key
 function look(){if(peeked||!(phase==='master'||phase==='decision'))return;peeked=true;$('route').hidden=true;hover(null);
  const r=phase==='master'?OBJ.routeMaster:OBJ.routeDecision,pc=S.cam.slice(),pf=S.focus,pd=S.dof;
  tw(S,'cam',[(r.x-.5)*1.4,(r.y-.5)*1.4],1.2);tw(S,'focus',.66,1);tw(S,'dof',.014,1);move('ellisPaper',0,-.004,.8);play('fold',.6);
- const th=$('thought');th.textContent='It’s better. I think it’s better. It just doesn’t end anywhere this beautiful.';th.style.opacity=1;
+ const th=$('thought');th.hidden=false;th.textContent='It’s better. I think it’s better. It just doesn’t end anywhere this beautiful.';th.style.opacity=1;
  live('Ellis’s folded route goes another way: it starts at the courtyard gate and never reaches the harbour. Ellis thinks: It’s better. I think it’s better. It just doesn’t end anywhere this beautiful.');
  const hold=phase==='master'?3.2:6;if(phase==='master'){cues.forEach(c=>c.t+=3.4)}
- at(hold,()=>{th.style.opacity=0;tw(S,'cam',pc,1.2);tw(S,'focus',pf,1);tw(S,'dof',pd,1);move('ellisPaper',0,0,.8)})}
+ at(hold,()=>{th.style.opacity=0;th.hidden=true;tw(S,'cam',pc,1.2);tw(S,'focus',pf,1);tw(S,'dof',pd,1);move('ellisPaper',0,0,.8)})}
 
 /* ---- the choice, then the film's consequence ---- */
-function commit(id){if(phase!=='decision')return;phase='consequence';choice=id;drag=null;hover(null);$('platter').hidden=$('tray').hidden=$('route').hidden=true;
+function commit(id){if(phase!=='decision')return;$('thought').hidden=true;phase='consequence';choice=id;drag=null;hover(null);$('platter').hidden=$('tray').hidden=$('route').hidden=true;
  if(id==='round'){tw(S,'ang',S.ang<-.05?-.32:.32,reduced?.1:.9);play('tap',.5);burst(260,420,.6,.08)}else{tw(S,'so',[-.045,-.01],reduced?.1:.8);play('rustle',.7);burst(1800,700,.5,.05,'lowpass')}
  follow(1);live(id==='round'?'You turn the table.':'You slide the tray of slips into the middle of the table.');
  at(reduced?.2:1.1,()=>{stage.toward(id);tw(S,'mix',1,reduced?.2:2.2);tw(S,'focus',.6,2)});
@@ -158,13 +159,13 @@ function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;
  requestAnimationFrame(frame)}
 requestAnimationFrame(frame);stage.show('master');S.dim=.82;S.lamp=[.18,.06,.34,.55];S.rain=.9;stage.draw();
 
-$('start').onclick=async()=>{$('start').remove();await startSound();begin()};
+$('start').onclick=async()=>{const start=$('start');if(start.disabled)return;start.disabled=true;start.hidden=true;await PlayedSupport.audio(startSound);begin()};
 notify('ready');
-$('start').focus();
+PlayedSupport.ready('Sit down');
 $('snd').onclick=()=>{soundOn=!soundOn;$('snd').setAttribute('aria-pressed',String(soundOn));if(master)master.gain.value=soundOn?1:0};
 $('cc').onclick=()=>{const on=$('cc').getAttribute('aria-pressed')!=='true';$('cc').setAttribute('aria-pressed',String(on));$('cap').style.visibility=on?'visible':'hidden'};
 $('pause').onclick=()=>{paused=!paused;$('pause').setAttribute('aria-pressed',String(paused));$('pause').textContent=paused?'Resume':'Pause';if(ac)paused?ac.suspend():ac.resume()};
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&!paused)$('pause').click()});
 addEventListener('keydown',e=>{if(e.key==='Escape'&&phase==='decision')hover(null)});
 window.QM={get state(){return{phase,choice,T,peeked,ang:S.ang,so:S.so.slice()}},commit,look,skip(to){while(T<to&&phase!=='decision'&&phase!=='end')step(1/30)},step};
-})();
+})().catch(error=>PlayedSupport.fail(error,'../../../anthology/episodes/standup/index.html'));

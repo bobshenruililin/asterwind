@@ -1,7 +1,8 @@
 """Check the shareable folder's declared local assets, without a browser or network.
 
 This is a packaging check, not visual, audio, or playback verification. It covers
-markup/CSS URLs and the existing data-driven art, sound, voice and film contracts.
+markup/CSS URLs and the existing data-driven art, sound, voice and film contracts,
+including the played scenes' generated depth and spoken-line filenames.
 It deliberately does not evaluate arbitrary JavaScript or production provenance.
 """
 from html.parser import HTMLParser
@@ -10,8 +11,17 @@ import json
 import re
 from urllib.parse import unquote, urlsplit
 
+LAUNCH_TARGETS = {
+    'index.html': 'docs/demos/unfolded/?v=2',
+    'v2.html': 'docs/demos/unfolded/?v=2',
+    'legacy.html': 'docs/demos/unfolded/',
+}
+PLAYED = 'docs/demos/played/'
+PLAYED_EPISODES = ('slides', 'scope', 'pixel', 'ship')
 ENTRYPOINTS = (
+    *LAUNCH_TARGETS,
     'docs/demos/unfolded/index.html', 'hub/index.html', 'film/index.html',
+    *(PLAYED + name for name in ('index.html', 'pixel.html', 'scene.html')),
     *(f'anthology/episodes/{name}/index.html' for name in
       ('scope', 'standup', 'ship', 'slides', 'pixel')),
 )
@@ -22,6 +32,8 @@ class RuntimeMarkup(HTMLParser):
     def __init__(self):
         super().__init__()
         self.urls = []
+        self.links = []
+        self.redirects = []
         self.styles = []
         self.in_style = False
 
@@ -38,6 +50,12 @@ class RuntimeMarkup(HTMLParser):
                     self.urls.append(attrs[name])
         if attrs.get('style'):
             self.styles.append(attrs['style'])
+        if tag == 'a' and attrs.get('href'):
+            self.links.append(attrs['href'])
+        if tag == 'meta' and attrs.get('http-equiv', '').lower() == 'refresh':
+            match = re.search(r'\burl\s*=\s*(.+)', attrs.get('content', ''), re.I)
+            if match:
+                self.redirects.append(match[1].strip().strip('\'"'))
 
     def handle_startendtag(self, tag, attrs):
         self.handle_starttag(tag, attrs)
@@ -55,7 +73,7 @@ def verify_play(root):
     root = Path(root).resolve()
     errors, checked = [], set()
 
-    def require(owner, url, base=None):
+    def require(owner, url, base=None, navigation=False):
         if not isinstance(url, str) or not url:
             errors.append(f'{owner.relative_to(root)}: empty or non-string asset path')
             return
@@ -68,6 +86,8 @@ def verify_play(root):
             errors.append(label + ' (must be a local relative asset)')
             return
         path = ((base or owner.parent) / unquote(parsed.path)).resolve()
+        if navigation and path.is_dir():
+            path = (path / 'index.html').resolve()
         if not path.is_relative_to(root):
             errors.append(label + ' (escapes playable folder)')
         elif not path.is_file():
@@ -92,6 +112,17 @@ def verify_play(root):
             parser.feed(text)
             for url in parser.urls:
                 require(owner, url)
+            for url in parser.links:
+                # External documentation links are not runtime dependencies.
+                if not urlsplit(url).scheme and not urlsplit(url).netloc:
+                    require(owner, url, navigation=True)
+            for url in parser.redirects:
+                require(owner, url, navigation=True)
+            launch = owner.relative_to(root).as_posix()
+            if launch in LAUNCH_TARGETS:
+                target = LAUNCH_TARGETS[launch]
+                if target not in parser.redirects or target not in parser.links:
+                    errors.append(f'{launch}: launch must redirect and link to {target}')
             styles.extend(parser.styles)
         for style in styles:
             for _, url in CSS_URL.findall(style):
@@ -132,6 +163,68 @@ def verify_play(root):
     for voice_set in data.get('sets', {}).values():
         for filename in voice_set.get('cues', {}).values():
             require(voices, filename, voices.parent / voice_set.get('dir', ''))
+
+    # These paths are composed at runtime, so markup scanning cannot see them.
+    # Read the small literal declarations without executing JavaScript. Fail
+    # clearly if that source contract changes rather than silently losing QA.
+    played_sources = {}
+    for name in ('stage.js', 'support.js', 'responsive.css', 'quiet.js', 'pixel.js', 'scene.js'):
+        owner = root / PLAYED / name
+        require(root / PLAYED / 'index.html', name)
+        if owner.is_file():
+            played_sources[name] = owner.read_text(encoding='utf-8')
+
+    quiet = root / PLAYED / 'quiet.js'
+    source = played_sources.get('quiet.js', '')
+    base = re.search(r"\bconst\s+PL\s*=\s*['\"]([^'\"]+)['\"]", source)
+    plates = re.search(r'\bconst\s+PLATES\s*=\s*\{([^}]+)\}', source)
+    if not base or not plates:
+        errors.append(f'{PLAYED}quiet.js: cannot verify PL/PLATES asset declarations')
+    else:
+        filenames = re.findall(r"\w+\s*:\s*['\"]([^'\"]+)['\"]", plates[1])
+        if not filenames:
+            errors.append(f'{PLAYED}quiet.js: no declared plates')
+        for filename in filenames:
+            require(quiet, base[1] + filename + '.webp')
+            require(quiet, 'plates/' + filename + '-depth.webp')
+
+    for name in ('quiet.js', 'pixel.js', 'scene.js'):
+        owner = root / PLAYED / name
+        source = played_sources.get(name, '')
+        for cue in set(re.findall(r"['\"](qm-[a-z0-9-]+)['\"]", source)):
+            require(owner, 'voices/' + cue + '.mp3')
+        for filename in set(re.findall(r"['\"]([a-z0-9-]+\.mp3)['\"]", source)):
+            require(owner, '../unfolded/sound/' + filename)
+        # Startup-error fallback links must work in the exported folder too.
+        for url in re.findall(r"['\"](\.\./[^'\"\n]+\.html)['\"]", source):
+            require(owner, url, navigation=True)
+
+    scene = root / PLAYED / 'scene.js'
+    supported = re.search(r'\bOK\s*=\s*\[([^]]+)\]', played_sources.get('scene.js', ''))
+    if (not supported or set(re.findall(r"['\"]([a-z-]+)['\"]", supported[1]))
+            != set(PLAYED_EPISODES)):
+        errors.append(f'{PLAYED}scene.js: supported episodes changed; update the asset contract')
+    for episode in PLAYED_EPISODES:
+        story, data = read(f'anthology/episodes/{episode}/story.json')
+        parts = {'setup': data.get('setup', []), **data.get('branches', {})}
+        for part, beats in parts.items():
+            for index, beat in enumerate(beats):
+                if beat.get('speaker'):
+                    require(scene, f'voices/{episode}-{part}-{index}.mp3')
+        art, data = read(f'anthology/episodes/{episode}/art-manifest.json')
+        for plate in data.get('plates', {}).values():
+            src = plate.get('src')
+            require(art, src)
+            if isinstance(src, str) and src:
+                # Match scene.js's split('/').pop().replace(/\.\w+$/, '').
+                stem = re.sub(r'\.\w+$', '', src.rsplit('/', 1)[-1])
+                require(scene, f'plates/{episode}/{stem}-depth.webp')
+
+    journey = root / 'docs/demos/unfolded/index.html'
+    if journey.is_file():
+        for url in re.findall(r"['\"]((?:anthology|film|docs)/[^'\"\n]+\.html(?:\?[^'\"\n]*)?)['\"]",
+                              journey.read_text(encoding='utf-8')):
+            require(journey, url, root, navigation=True)
 
     for owner in (root / 'anthology/episodes').glob('*/art-manifest.json'):
         for plate in json.loads(owner.read_text(encoding='utf-8')).get('plates', {}).values():
