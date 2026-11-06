@@ -18,3 +18,4 @@ hub/qa/after-hours/
 __pycache__/
 film/qa/*.png
 docs/demos/seam-light-test/renders/
+/dist/

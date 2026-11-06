@@ -232,7 +232,7 @@ async function returned(id,{lastFrame=null,finished:ended=false}={}){
  if(ended){memento[id]=src;await toRoof(id)}else await sink(id);
  closeHeld();restock(id);setNight();lockShelf(false);state='idle';
  if(ended){clockHold=performance.now()+(reduced?2000:T.clockHold);setDisplay(clock(),true);if(morning())finale()}else idleDisplay();
- focusQuietly(btnFor(id));
+ focusQuietly(JM?(order.map(btnFor).find(b=>!b.classList.contains('unlit')&&!b.classList.contains('walked'))||btnFor(id)):btnFor(id));
 }
 async function toRoof(id){
  renderRoof();const li=$('roof').querySelector('li[data-id="'+id+'"]');if(!li)return;li.style.visibility='hidden';

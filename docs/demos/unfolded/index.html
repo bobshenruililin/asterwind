@@ -78,6 +78,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--gold);outline-o
 #title .t-btns{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
 #title button{background:none;border:1px solid #e9c27a99;border-radius:2px;padding:.7em 1.6em;font:clamp(14px,1.5vw,18px) system-ui;color:var(--ink);min-height:44px}
 #title button#begin,#title button#resume{background:#e9c27a1a;border-color:var(--gold);color:#ffe2a0}
+#title .t-land{display:none}#frame.portrait #title .t-land{display:inline}
 #title.cut{background:transparent;pointer-events:none}#title.cut>*:not(h1){opacity:0}#title.cut h1{color:#26232e}
 /* Corridor: the After Hours dispenser (hub/, journey mode) */
 #corridor{background:#0d0e1a}
@@ -129,7 +130,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--gold);outline-o
  </section>
  <section class="screen" id="title" aria-labelledby="t-word">
   <p class="t-kicker">Asterwind</p><h1 id="t-word">Leadership</h1>
-  <p class="t-sub">A night in paper, for one person, about twenty minutes.<br>Sound on, if you can.</p>
+  <p class="t-sub">A night in paper, for one person, about twenty minutes.<br>Sound on, if you can.<span class="t-land"><br>On a phone, turn it sideways.</span></p>
   <div class="t-btns"><button id="begin">Begin</button><button id="resume" hidden>Continue the night</button><button id="restart" hidden>Begin again</button></div>
  </section>
  <section class="screen" id="corridor" hidden aria-label="The corridor after hours">
@@ -582,7 +583,7 @@ addEventListener('keydown',e=>{if(e.target.tagName==='INPUT')return;
  if(/^[A-Z]$/.test(k)){const i=[...WORD].findIndex((c,j)=>c===k&&!G.picked.includes(j));if(i>=0){e.preventDefault();pick(i)}}
  else if(e.key==='Backspace'){e.preventDefault();unpick()}else if(e.key==='Escape')clear()});
 const SCREENS=['title','notebook','corridor','filmscr','story','mirror','end'];
-function only(...ids){for(const s of SCREENS)$(s).hidden=!ids.includes(s);$('pause').hidden=!ids.includes('story')}
+function only(...ids){for(const s of SCREENS)$(s).hidden=!ids.includes(s);$('pause').hidden=!ids.includes('story');$('chrome').hidden=ids.includes('filmscr')}
 // ---------- the corridor: the After Hours dispenser (hub/, journey mode), lit by the words you found ----------
 const DRINK={HEARD:'standup',LEAD:'slides',SHARED:'seam',SHIELD:'ship',HELP:'pixel',SHIP:'scope'},WORD_OF=Object.fromEntries(Object.entries(DRINK).map(([w,d])=>[d,w]));
 const HUB={frame:null,ready:false,queue:[]};
@@ -737,6 +738,7 @@ function wipe(){try{localStorage.removeItem(SAVE)}catch{}}
 // ---------- the title: the word in cream, then the same word in ink on the page ----------
 buildTiles();setLayout();updateGo();only('title');G.screen='title';
 const saved=loadSave();if(saved){$('resume').hidden=false;$('restart').hidden=false;$('begin').hidden=true}
+setTimeout(()=>(saved?$('resume'):$('begin')).focus({preventScroll:true}),60);
 function demo(){// A first word, shown: the obvious one. Then the page lets you look for the rest.
  const DEMO='lead. The obvious one. It’s in there too, but keep looking.';
  if(reduced||EXPORT){$('note').textContent='There are other words inside this one.';return}

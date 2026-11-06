@@ -1,71 +1,90 @@
-# Leadership, unfolded
+# Asterwind · Leadership (Leadership, unfolded)
 
-A playable night through one word. Open `index.html` over HTTP (`python3 -m http.server` at the repository root, then `/docs/demos/unfolded/`). There's no build, account or network. Proposals and placeholder art only: nothing here changes the hub, the films or the app. The films play whole and unchanged inside it.
+One night in paper, built from the strongest pieces of Asterwind:
+- the notebook word find;
+- the **After Hours** corridor and dispenser (`hub/`);
+- six symbolic rooms;
+- the six films, played whole.
 
-## The night in one breath
+## Play it
 
-- **The notebook.** Your CCGL notebook says **Leadership** and asks *What is it?* Inside the word are other words: **heard, lead, shared, shield, help, ship**.
-- **The dispenser.** Each word you find lights a bottle in a dispenser in a corridor at 03:14.
-- **The bottle.** Lift one, turn it to read the wrapper (*Drink when…*, ingredients, small print), and hold it up to the light. Inside the glass, upside down, is a room. It rights itself and you're in.
-- **The room.** It's the inside of one person from a film. You make one choice between two defensible actions; both protect something, and both cost something.
-- **The film.** Stay with the night, or go into the morning: the film where that person sits at a real table, played whole.
-- **The mirror** remembers both choices together and asks one question. You can look at the way you didn't take, in pencil, without changing what you did.
-- **The roof.** An empty goes up on the dispenser roof with a frame of how it ended. At dawn the view leans in on the roof, and the notebook asks again: *Leadership is…*
+- **Locally:** run `python3 -m http.server` at the repository root, then open `http://localhost:8000/docs/demos/unfolded/`.
+- **To share:** run `python3 scripts/build-play.py`. It builds `dist/play/` (a static folder, about 23 MB) and `dist/asterwind-play.zip`. Put the folder on any static host; its `index.html` opens the night.
+- **Before sending to players**, read [PLAYTEST.md](PLAYTEST.md). It has the note to send and what we're watching for.
 
-**Built end to end: HEARD**, with Ellis the night before *The Quiet Minute*. The other words open their rooms and films too; their rooms are earlier sketches.
+## The night
+
+1. **Title.** *Leadership*, in cream; a match cut puts the same word in ink in your CCGL notebook.
+2. **Notebook.** Find the words inside the word: *heard, lead, shared, shield, help, ship*. Type, or tap the letters.
+3. **Corridor, 03:14.** The After Hours dispenser in journey mode:
+   - the bottles whose words you found are lit, and the rest stay dark;
+   - you catch one and turn its tag: the word, *Drink when…*, the ingredients and the small print;
+   - then you open it.
+4. **The label opens.** The room appears upside down in the label's window, rights itself and grows out.
+5. **Room.** The inside of one person from the film:
+   - Ellis, Asha, Julian, Dev, Ivy or Inez;
+   - an optional look at what they carry;
+   - one choice where both actions protect something and both cost something.
+6. **Stay with the night, or go into its film.** The film plays unchanged in the frame; its real ending is read from its own message (or, for *The 3:00 AM Seam*, its read-only adapter).
+7. **Mirror.**
+   - A memory line joins your room choice and the film's outcome, for example: "You said you'd say it for Ellis. Then you turned the table, and Ellis said it."
+   - Then one question.
+   - *See the other way* replays the other branch in pencil without changing anything.
+8. **Back in the corridor.** The film's last frame (or the room as you left it) folds into the label; the empty flies to the roof and the clock moves on.
+9. **Dawn.** After any walk you can *Wait for morning*; after all six it comes on its own. The tube goes off, sun reaches the roof of empties, then *Leadership is…* and *You are in this one too.*
+
+| Word | Bottle | Room | Person | Film |
+| --- | --- | --- | --- | --- |
+| heard | Standup Seltzer | The Listening Tide | Ellis | The Quiet Minute |
+| lead | Slide Deck Bitters | The Map Turns Around | Asha | The Missing Name |
+| shared | 3:00 AM Cold Brew | The Shared Roof | Julian | The 3:00 AM Seam |
+| shield | Ship-It Ginger Ale | What the Armour Keeps | Dev | Before the Doors Open |
+| help | Dead Pixel Tonic | The Hand That Opens | Ivy (recast on hold for lived-experience review) | The Empty Square |
+| ship | Scope Creep Fizz | The Lantern and the Horizon | Inez | One More Chair |
+
+## Play and access
+
+- **Keyboard:**
+  - Enter begins.
+  - Type in the notebook.
+  - Tab to *Close the notebook*.
+  - In the corridor, arrow keys move between bottles, Enter catches and opens, Escape puts back.
+  - In rooms, the first choice takes focus, then the optional look, then the other choice.
+  - The mirror's *Continue* takes focus.
+- **Reduced motion:** cuts instead of the wobble, the crossing, the dispense and the dawn.
+- **Phones:** in portrait the notebook stacks, the corridor uses its portrait layout, and rooms sit in a 16:9 box with captions below. A hint suggests landscape.
+- **Sound** (on from the first click; ♪ toggles):
+  - paper recordings, the music sketch, the corridor's ambience;
+  - **Voices:** scratch Kokoro voices (Apache-2.0) until the team's recordings land in `voices/team/` (see [RECORDING-BRIEF.md](RECORDING-BRIEF.md));
+  - hidden during films, which have their own.
+- **Progress** is kept in this browser only. *Continue the night* or *Begin again* on the title.
+
+## Checked (Chromium, headless)
+
+- **`qa/night.cjs`**, against the built `dist/play/` on its own server:
+  - the whole night: six words, six rooms (each with its look), two films played to their real endings and four entered and left;
+  - the combined mirror lines, six empties, the clock at 06:02, the dawn, the ending and the save;
+  - no failed requests and no console errors.
+- **`qa/keyboard.cjs`**, at 1280×720 and at 390×844 with touch and reduced motion: one full route keyboard-only, focus correct at every step including inside the corridor, no horizontal scroll.
+- **`qa/rooms.cjs`:** every room's choice with its look open, and both endings.
+- **Hub tests:** all pass with journey mode added, and the hub's standalone behaviour is unchanged.
+
+**Not checked:** a human playtest, a screen reader, or listening by ear.
 
 ## Read next
 
 | | |
 | --- | --- |
-| [JOURNEY.md](JOURNEY.md) | The whole night: structure, the six pairings and why, bottle copy, transitions, ending, built vs proposed |
-| [INTERACTION-AUDIT.md](INTERACTION-AUDIT.md) | Every branch in five rooms and six films: why choose it, what it protects, what it costs, whether the consequence follows. Proposed film line changes for Bob. |
-| [CAST.md](CAST.md) | One "you" (Ren), people taken from the films, and exactly what to paint for HEARD |
-| [RECORDING-BRIEF.md](RECORDING-BRIEF.md) | Scripts, direction and a practical guide for recording our own voices |
-| [art/README.md](art/README.md) | How painted layers plug in, with a stand-in set that proves registration |
-
-## Play and access
-
-- **Word find:** tap the letters or just type. Backspace undoes a letter; Escape clears. After a while a letter glows, and later a pencil hint appears.
-- **Dispenser and bottle:**
-  - Tab to a lit bottle and press Enter.
-  - Arrow keys (or drag, or the buttons) turn it.
-  - Enter holds it up to the light; Escape puts it back.
-- **Rooms:**
-  - The first choice takes focus. The optional *look closer* follows the choices in Tab order.
-  - Captions are always on, and descriptions are announced.
-  - Pause is in the corner.
-- **Films:** the episode's own controls work inside the frame. *Back into the night* is always available and takes focus when the film ends.
-- **Reduced motion:** removes the wobble, the stepping, the crossing animation and the dawn push-in. Everything cuts instead.
-- **Phone:** in portrait the notebook's pages stack, the corridor centres on the dispenser, and rooms sit in a 16:9 box with captions below.
-- **Sound** (♪, off by default): paper recordings, the music sketch, and **Voices** (*off · scratch*, plus *team* once recorded).
-
-## Checked (Chromium, headless)
-
-- **The full HEARD route at 1280×720:**
-  - the notebook, bottle, turning and crossing;
-  - the optional look;
-  - both branches;
-  - *The Quiet Minute* auto-starting in the frame and completing (outcome read from its existing message);
-  - the combined mirror line;
-  - *See the other way* (and that it doesn't change the record);
-  - the empty and the clock;
-  - LEAD → *The Missing Name*;
-  - dawn and the ending.
-- **All six bottles:**
-  - each opens its room (or LEAD's film) and offers its film;
-  - five films auto-start;
-  - *The 3:00 AM Seam* loads and waits for its own *Play as Ren* (older adapter).
-- **Keyboard only:** notebook → corridor → bottle → choice → optional look → exit → mirror → morning → ending.
-- **390×844** with touch and reduced motion: the same path, no horizontal scroll.
-- **No console errors** in any run.
-- **Art route:** the stand-in set (`?art=art-standin`) lands in register with the code-cut room (edge overlay).
-
-**Not checked:** a human playtest, a screen reader, or listening by ear. The scratch voices and cues were measured, not heard.
+| [PLAYTEST.md](PLAYTEST.md) | What to send players, and what to watch |
+| [JOURNEY.md](JOURNEY.md) | Structure, pairings and reasons, bottle copy, transitions |
+| [INTERACTION-AUDIT.md](INTERACTION-AUDIT.md) | Every branch: why, protects, costs, follows (the three film changes are now applied) |
+| [CAST.md](CAST.md) | Ren and the film people; Robert's requests and the review of candidates A |
+| [RECORDING-BRIEF.md](RECORDING-BRIEF.md) | Scripts and a practical guide for recording our own voices |
+| [art/README.md](art/README.md) | How painted room layers plug in |
 
 ## What's placeholder
 
-- **All art** is drawn in code as a working stand-in. Painted layers replace it per [art/README.md](art/README.md) and [CAST.md](CAST.md).
-- **The corridor** wants Bob's real photos turned to paper.
-- **Characters and lines in the rooms** are fictional proposals. Film text is untouched; proposed changes are in the audit.
-- **Scratch voices:** Kokoro (Apache-2.0); see `voices/PROVENANCE.md`.
+- **Room art** is code-cut paper; painted layers replace it through `art/index.json`.
+- **Voices** are scratch.
+- **The corridor** is the After Hours plate; Bob's real CCGL photos turned to paper remain a proposal.
+- **Room characters and lines** are fictional proposals.

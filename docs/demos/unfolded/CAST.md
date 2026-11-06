@@ -1,8 +1,19 @@
 # Cast: one "you", the people in the films, and what I need from Robert
 
-6 November 2026, Opus, for Bob and Robert. **Decisions for Bob are in bold**, and nothing here is locked until Bob says so.
+6 November 2026, Opus, for Bob and Robert.
 
-**I haven't seen Robert's candidate pack.** `Asterwind-Heard-Cast-Candidates-A.zip` didn't reach this machine and isn't on any branch. Robert: please push it, for example to `collab/paper-forest-20261105` under `cast/` or to a new `collab/cast-20261106` branch, and I'll screen the actual pixels in the scene. Until then, my notes on Wen and the violet "you" go only by your description.
+**Decided by Bob (6 Nov):**
+- Ellis is the HEARD speaker.
+- Ren is the recurring "you".
+- Wen's design stays available for Nia if it fits.
+- The other recasts follow the pairings.
+- HELP's recast stays open pending lived-experience review.
+
+**Robert's references:**
+- `collab/cast-ren-ellis-20261106`: the Ren and Ellis boards, A;
+- `collab/heard-h01-candidate-20261106`: the H-01 night plate, A.
+
+Both are reviewed in section 6 below.
 
 ## 1. Who "you" are: Ren
 
@@ -17,7 +28,7 @@ The briefs disagreed:
 | *One More Chair* (`anthology/episodes/scope/story.json`) | The lead speaks as **Ren** |
 | *The Quiet Minute* casting (`anthology/episodes/standup/assets/reference-v1/README.md`) | "lead **indigo** sleeves / short dark hair" |
 
-**Proposal: "you" is Ren, all night, every room.**
+**Decided: "you" is Ren, all night, every room.**
 
 - **One person, one age:**
   - indigo coat (`#3f4775`, shadow `#2f355a`), short dark hair;
@@ -36,21 +47,21 @@ Each room is the inside of one person *in* its film. That's how the films become
 | Room | Person | Locked by | Reference that controls identity | Status |
 | --- | --- | --- | --- | --- |
 | heard | **Ellis** | *The Quiet Minute* casting | Plum overshirt, round glasses, short wavy black hair (`anthology/episodes/standup/assets/reference-v1/01-quiet-minute-master.webp`, right) | **In the game now** (code-cut) |
-| lead | **Asha** | *The Missing Name* | `anthology/episodes/slides/assets/master.webp` | Room proposed |
-| shared | **Julian** (replaces Arun) | *The 3:00 AM Seam* | `film/assets/julian.webp` | Recast proposed |
-| shield | **Dev** (replaces Leo) | *Before the Doors Open* | `anthology/episodes/ship/assets/master.webp` | Recast proposed |
+| lead | **Asha** (teal sweater, black bob) | *The Missing Name* | `anthology/episodes/slides/assets/master.webp`, right | **In the game** (code-cut): *The Map Turns Around* |
+| shared | **Julian** (kraft hoodie, tousled brown hair; replaces Arun) | *The 3:00 AM Seam* | `film/assets/julian.webp` | **In the game** (code-cut) |
+| shield | **Dev** (olive work shirt, dark wavy hair; replaces Leo) | *Before the Doors Open* | `anthology/episodes/ship/assets/master.webp`, left | **In the game** (code-cut); the armour keeps a small paper city |
 | help | Ivy (for now) | — | — | **Hold.** Recasting as Jo (*The Empty Square*) needs lived-experience review first. |
-| ship | **Sam** (replaces Sana) | *One More Chair* | `anthology/episodes/scope/assets/runtime/master.webp` | Room proposed |
+| ship | **Inez** (green shirt, curly dark hair; replaces Sana) | *One More Chair* | `anthology/episodes/scope/assets/runtime/master.webp`, left | **In the game** (code-cut). Inez, the volunteer who keeps the hall's promises, asks for the flame; the boat out at sea is the one more at closing. |
 
 ### Wen
 
-**Decision for Bob: Ellis or Wen for HEARD?** My recommendation is Ellis:
+**Decided: Ellis for HEARD.** The reasons:
 
 - the film's caption "Ellis lowers a pencil. Another route stays folded" is the room's whole subject;
 - the folded paper in Ellis's hand is already in the film's locked art;
 - the film's round branch pays it off: "Mine starts here. But we'd lose the harbour."
 
-Robert's Wen work isn't wasted. Muted teal is **Nia**'s colour in the same film (teal cardigan, black bob), so Wen's construction and expression studies carry straight over if Nia gets a moment. Or Wen can simply be retired. Bob decides.
+Robert's Wen work isn't wasted. Muted teal is **Nia**'s colour in the same film (teal cardigan, black bob), so Wen's construction and expression studies carry straight over if Nia gets a moment. Bob's call (6 Nov): keep Wen available for Nia if it fits, rather than forcing it.
 
 ## 3. HEARD: exactly what I need, in order
 
@@ -103,3 +114,51 @@ The templates show *where*; they're deliberately plain. Here's what I hope the p
 4. `art/index.json` lists them, and the code-cut layer stays as the fallback.
 
 Nothing is adopted on my say-so.
+
+## 6. Review of Robert's candidates (6 Nov)
+
+I inspected the PNGs at native size beside *The Quiet Minute* master, and screened H-01 in the playable room against the code-cut plate at the choice and at the end of the listen branch, at 1280×720 and 390×844.
+
+### Ellis board A
+
+**Strong.** It's clearly the film's Ellis:
+- round glasses, wavy dark hair and the plum overshirt over a grey tee;
+- matte paper with real fibre, adult proportions;
+- calm, watchful faces.
+
+The smallest corrections before a pose batch:
+1. **Hair:** cooler and darker (blue-black, like the film), not warm brown highlights.
+2. **Overshirt:** a touch more violet-plum, less red-maroon. The film's Ellis reads plum beside Theo's rust, and the two must never be confused.
+3. **The pencil:** Ellis's prop in the film ("Ellis lowers a pencil"). Add it to the hands row and the *talk* and *low* poses.
+4. **Paper held:** a compact packet folded twice, palm-sized, not an open sheet. *Open* is a separate state.
+5. **The gesture:** make the thumb pressing the fold flat the folding study, so it can be Ellis's signature.
+
+### Ren board A
+
+**Strong, and the right call on construction:**
+- the long indigo coat reads at thumbnail size;
+- the indigo cuffs match the films' lead.
+
+Corrections:
+1. **Keep Ren's face unresolved.** The films show Ren from behind, and the player is Ren. Make the **back** and **three-quarter back** the primary views. The front face can stay as an option, but no pose should depend on it.
+2. **Keep gender open:** a slightly softer jaw, and hair to the ear.
+3. **Same paper-held correction** as Ellis.
+4. **Add a lantern-handle grip with the arm raised.** That's the *hold* pose in HEARD.
+
+### H-01 night plate A
+
+**It lands in register:** moon and wall within a few pixels, in the scene. The material is lovely and quiet.
+
+| Code-cut | H-01 candidate |
+| --- | --- |
+| The back sea moves and rises with Ellis's worry | Static, so the sea behind the wall can't rise |
+
+My production notes:
+1. **Split the wall onto its own transparent layer** (3200×1800, everything else empty). The plate keeps sky, moon and a static far sea. The code then draws the rising back waves *between* plate and wall, and the metaphor stays alive.
+2. **Native 3200×1800**, as you noted.
+3. **Darken the sea** about 10% towards `#24405e`, so the front waves stay the brightest blue.
+
+### For the feedback build
+
+- H-01 stays **opt-in** (`?art=art-heard-h01-candidate-a` on Robert's branch), as Robert asked. The default stays code-cut.
+- **Next art request:** Ellis *brace*, and Ren *hold* and *setdown*, each 3200×1800 transparent at the template anchors. I'll register them in the room before any batch.

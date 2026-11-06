@@ -76,7 +76,9 @@ A branch passes when both answers to question 1 are real, both costs are visible
 
 **Before:** keeping led to darkness and sharing solved everything.
 
-## The six films (proposals only: approved story, not changed)
+## The six films
+
+**Update, 6 Nov:** Bob approved changes 1–3 below, and they're now in the films (commit `60767ff`). Change 4 was not made.
 
 | Film | Branch | Why choose it | Protects | Costs | Follows? |
 | --- | --- | --- | --- | --- | --- |

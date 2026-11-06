@@ -2,6 +2,22 @@
 
 6 November 2026, Opus. This is the structure for the whole of *Leadership, unfolded*. The HEARD route is built and playable from end to end; everything else here is marked as built or proposed. The pairings and story changes are proposals until Bob says otherwise.
 
+## Status, 6 November (evening)
+
+Bob approved the direction. What changed since the first draft below:
+
+- **All built and playable:** every word has its room and its film, and the whole night runs end to end.
+- **The corridor is the real After Hours dispenser** (`hub/` in journey mode), not a code-cut stand-in.
+  - Bottles light as their words are found.
+  - The tag carries the word, *Drink when…* and the ingredients.
+  - The empty lands on the roof and the clock moves.
+  - The hub's dawn finale is the morning.
+- **Pairings as proposed**, with one revision:
+  - **ship** keeps *The Lantern and the Horizon*, recast with **Inez** from *One More Chair*. The boat out at sea is the one more at closing.
+  - It's cheaper than a new room and it holds the same dilemma (one strong light, or many small ones). *The Last Boat* is no longer needed.
+- **The three film line changes are applied** (see `INTERACTION-AUDIT.md`).
+- **Not yet:** Bob's classroom opening joined to the notebook, and painted room art.
+
 ## In one breath
 
 A notebook says *Leadership — what is it?* You find words inside the word, and each one lights a bottle in a dispenser in a corridor at night.
