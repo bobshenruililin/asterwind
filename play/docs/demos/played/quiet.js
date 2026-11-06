@@ -5,7 +5,7 @@
 'use strict';
 const $=id=>document.getElementById(id),reduced=matchMedia('(prefers-reduced-motion: reduce)').matches,Q=new URLSearchParams(location.search);
 const PL='../../../anthology/episodes/standup/assets/reference-v1/';
-const stage=Stage($('cv')),S=stage.S;
+const stage=Stage($('cv')),S=stage.S,direction=PlayedDirection.create({frame:$('frame'),screen:$('screen')});
 const PLATES={master:'01-quiet-minute-master',decision:'02-turn-or-pass-decision',round:'03-turn-shared-unfinished',slips:'04-slips-nuance-unresolved'};
 await Promise.all(Object.entries(PLATES).map(([k,f])=>stage.add(k,PL+f+'.webp','plates/'+f+'-depth.webp')));
 // Ellis's route close-ups (Robert's P2a/P2b) are review candidates until Bob approves them: ?p2=1 turns them on.
@@ -61,16 +61,16 @@ const OBJ={platter:{x:.401,y:.528,rx:.232,ry:.283},tray:{x0:.703,y0:.478,x1:.931
 function placeEl(el,x0,y0,x1,y1){Object.assign(el.style,{left:x0*100+'%',top:y0*100+'%',width:(x1-x0)*100+'%',height:(y1-y0)*100+'%'})}
 function showWord(text,x,y){const w=$('word');w.textContent=text;w.style.left=x*100+'%';w.style.top=y*100+'%';w.style.opacity=text?1:0}
 
-let phase='start',choice=null,hoverTarget=null,peeked=false,looking=false;
+let phase='start',choice=null,firstChoice=null,replayMode=null,hoverTarget=null,peeked=false,looking=false;
 const pointer={x:.5,y:.5};
-function hover(which){if(looking||(which&&!(phase==='decision'||(which==='route'&&phase==='master'))))which=null;hoverTarget=which;const p=OBJ.platter,t=OBJ.tray;
- if(which==='platter'){S.hov=[p.x,p.y,p.rx*1.02,p.ry*1.02,0];tw(S,'hovA',1,.25);showWord('turn',.27,.9)}
- else if(which==='tray'){S.hov=[(t.x0+t.x1)/2,(t.y0+t.y1)/2,(t.x1-t.x0)/2+.01,(t.y1-t.y0)/2+.01,1];tw(S,'hovA',1,.25);showWord('pass',.68,.9)}
+function hover(which){if(looking||(which&&!(phase==='decision'||(which==='route'&&phase==='master'))))which=null;hoverTarget=which;direction.focus(which==='platter'?'round':which==='tray'?'slips':null);const p=OBJ.platter,t=OBJ.tray;
+ if(which==='platter'){S.hov=[p.x,p.y,p.rx*1.02,p.ry*1.02,0];tw(S,'hovA',1,.25);showWord('',0,0)}
+ else if(which==='tray'){S.hov=[(t.x0+t.x1)/2,(t.y0+t.y1)/2,(t.x1-t.x0)/2+.01,(t.y1-t.y0)/2+.01,1];tw(S,'hovA',1,.25);showWord('',0,0)}
  else if(which==='route'){const r=phase==='master'?OBJ.routeMaster:OBJ.routeDecision;S.hov=[r.x,r.y,r.rx,r.ry,0];tw(S,'hovA',.8,.25);showWord('look',r.x-.02,r.y-r.ry-.05)}
  else{tw(S,'hovA',0,.3);showWord('',0,0)}}
 
 /* ---- the scene ---- */
-function begin(){if(layered)stage.resetObjects('decision');window.Clips&&Clips.stop();looking=false;$('thought').hidden=true;phase='master';stage.show('master');S.dim=1;S.rain=.9;S.lamp=[.18,.06,.34,.55];S.focus=.55;S.str=.02;S.dof=0;S.ang=0;S.so=[0,0];S.disc=null;S.slide=null;S.hov=null;S.hovA=0;
+function begin(){direction.hide();direction.replay(null);replayMode=null;if(layered)stage.resetObjects('decision');window.Clips&&Clips.stop();looking=false;$('thought').hidden=true;phase='master';stage.show('master');S.dim=1;S.rain=.9;S.lamp=[.18,.06,.34,.55];S.focus=.55;S.str=.02;S.dof=0;S.ang=0;S.so=[0,0];S.disc=null;S.slide=null;S.hov=null;S.hovA=0;
  handles([['theoHand',.664,.639,.075],['theoHead',.523,.12,.07],['niaHead',.117,.24,.07],['niaMap',.125,.56,.09],['ellisHead',.875,.13,.07],['ellisPencil',.836,.472,.05],['ellisPaper',.844,.611,.06],['renHead',.211,.62,.09]]);
  for(const n of ['theoHead','niaHead','ellisHead','renHead'])H[n].breathe=1;
  tw(S,'dim',0,2.6);
@@ -83,14 +83,16 @@ function begin(){if(layered)stage.resetObjects('decision');window.Clips&&Clips.s
  at(15.8,()=>{say('You','We haven’t heard the whole route yet.','qm-05');tw(S,'cam',[0,0],2.5)});
  at(18.6,toDecision)}
 function placeR(k){const r=OBJ[k];placeEl($('route'),r.x-r.rx,r.y-r.ry,r.x+r.rx,r.y+r.ry)}
-function toDecision(){if(phase!=='master')return;phase='turning';hover(null);stage.toward('decision');tw(S,'mix',1,reduced?.2:2);tw(S,'dof',0,1.5);tw(S,'focus',.7,2);
- at(reduced?.25:2.05,()=>{stage.settle();phase='decision';S.ang=0;S.so=[0,0];if(layered)stage.resetObjects('decision');
+function toDecision(replayTo=null){if(phase!=='master'&&phase!=='revisiting')return;phase='turning';hover(null);stage.toward('decision');tw(S,'mix',1,reduced?.2:2);tw(S,'dof',0,1.5);tw(S,'focus',.7,2);
+ at(reduced?.25:2.05,()=>{stage.settle();phase=replayTo?'revisiting':'decision';S.ang=0;S.so=[0,0];if(layered)stage.resetObjects('decision');
   handles([['niaHead',.094,.08,.07],['theoHead',.53,.06,.07],['ellisHead',.875,.07,.07],['ellisPaper',.83,.375,.06],['handL',.234,.833,.09],['handR',.633,.847,.09],['token',.39,.867,.035]]);
   for(const n of ['niaHead','theoHead','ellisHead','handL','handR'])H[n].breathe=1;
   const p=OBJ.platter,t=OBJ.tray;S.disc=[p.x,p.y,p.rx,p.ry];S.slide=[t.x0-.01,t.y0-.01,t.x1+.01,t.y1+.01];
   placeEl($('platter'),p.x-p.rx,p.y-p.ry,p.x+p.rx,p.y+p.ry);placeEl($('tray'),t.x0,t.y0,t.x1,t.y1);placeR('routeDecision');
-  $('platter').hidden=$('tray').hidden=$('route').hidden=false;live('Your hands rest on the table. The model is within reach, and so is the tray of blank slips.');
-  setTimeout(()=>$('platter').focus({preventScroll:true}),60);
+  if(replayTo){$('platter').hidden=$('tray').hidden=$('route').hidden=true;at(reduced?.12:.6,()=>{if(phase==='revisiting')performChoice(replayTo)});return}
+  direction.show([{id:'round',label:'Turn the table',x:.40,y:.92},{id:'slips',label:'Pass the slips',x:.81,y:.84}]);
+  $('platter').hidden=$('tray').hidden=false;$('route').hidden=peeked;live('Your hands rest on the table. The model is within reach, and so is the tray of blank slips.');
+  at(.06,()=>{if(phase==='decision'&&!looking)$('platter').focus({preventScroll:true})});
   // If nothing happens for a while, the two objects catch the lamp once. No instructions.
   at(7,()=>{if(phase!=='decision'||hoverTarget)return;hover('platter');at(1.4,()=>{if(hoverTarget==='platter'&&phase==='decision'&&!drag)hover('tray')});at(2.8,()=>{if(phase==='decision'&&!drag&&hoverTarget==='tray')hover(null)})})})}
 
@@ -128,7 +130,7 @@ function look(){if(peeked||!(phase==='master'||phase==='decision'))return;peeked
 
 /* The close look: cut in to Ellis's hands on the folded packet; it opens (a generated clip if one is approved, else
    an authored lift and dissolve); the thought; then back to the table exactly as it was. The timeline waits. */
-function lookClose(){looking=true;const from=stage.current,inMaster=phase==='master',keep={cam:S.cam.slice(),focus:S.focus,dof:S.dof,zoom:S.zoom,cen:S.cen.slice(),warps:S.warps,dim:S.dim,rain:S.rain,lamp:S.lamp,disc:S.disc,slide:S.slide};
+function lookClose(){looking=true;direction.hide();const from=stage.current,inMaster=phase==='master',keep={cam:S.cam.slice(),focus:S.focus,dof:S.dof,zoom:S.zoom,cen:S.cen.slice(),warps:S.warps,dim:S.dim,rain:S.rain,lamp:S.lamp,disc:S.disc,slide:S.slide};
  const objs=['platter','tray'].filter(id=>!$(id).hidden);objs.forEach(id=>$(id).hidden=true);const th=$('thought');th.classList.add('close');
  let open=false;const OPENED=2.4,HOLD=5.2,TOTAL=1+OPENED+HOLD+1.1;if(inMaster)cues.forEach(c=>c.t+=TOTAL);
  live('You look closer. Ellis’s hands rest on a folded sheet.');
@@ -143,10 +145,11 @@ function lookClose(){looking=true;const from=stage.current,inMaster=phase==='mas
    at(1.6,()=>{stage.settle();S.warps=[];opened()})}})||null;
   at(OPENED+HOLD,()=>{th.style.opacity=0;th.hidden=true;stage.toward(from);S.zoomB=keep.zoom;S.cenB=keep.cen;tw(S,'mix',1,1);
    at(1.05,()=>{stage.settle();window.Clips&&Clips.stop();Object.assign(S,{zoom:keep.zoom,cen:keep.cen,cam:keep.cam,focus:keep.focus,dof:keep.dof,dim:keep.dim,rain:keep.rain,lamp:keep.lamp,disc:keep.disc,slide:keep.slide});S.warps=keep.warps;
-    looking=false;th.classList.remove('close');objs.forEach(id=>{if(phase==='decision')$(id).hidden=false});live(phase==='decision'?'Back at the table. The model is within reach, and so is the tray of blank slips.':'Back at the table.')})})})}
+    looking=false;th.classList.remove('close');if(phase==='decision')direction.show([{id:'round',label:'Turn the table',x:.40,y:.92},{id:'slips',label:'Pass the slips',x:.81,y:.84}]);objs.forEach(id=>{if(phase==='decision')$(id).hidden=false});live(phase==='decision'?'Back at the table. The model is within reach, and so is the tray of blank slips.':'Back at the table.')})})})}
 
 /* ---- the choice, then the film's consequence ---- */
-function commit(id){if(phase!=='decision'||looking)return;$('thought').hidden=true;phase='consequence';choice=id;drag=null;hover(null);$('platter').hidden=$('tray').hidden=$('route').hidden=true;
+function commit(id){if(phase!=='decision'||looking||!['round','slips'].includes(id))return;performChoice(id)}
+function performChoice(id){direction.hide();$('thought').hidden=true;phase='consequence';choice=id;drag=null;hover(null);$('platter').hidden=$('tray').hidden=$('route').hidden=true;
  if(id==='round'){tw(S,'ang',S.ang<-.05?-.32:.32,reduced?.1:.9);play('tap',.5);burst(260,420,.6,.08)}else{tw(S,'so',[-.045,-.01],reduced?.1:.8);play('rustle',.7);burst(1800,700,.5,.05,'lowpass')}
  follow(1);live(id==='round'?'You turn the table.':'You slide the tray of slips into the middle of the table.');
  at(reduced?.2:1.1,()=>{stage.toward(id);tw(S,'mix',1,reduced?.2:2.2);tw(S,'focus',.6,2)});
@@ -170,10 +173,12 @@ function commit(id){if(phase!=='decision'||looking)return;$('thought').hidden=tr
    at(25,ending)}})}
 const SESSION=Q.get('session')||'standalone',EMBED=parent!==window;let reported=false;
 function notify(type,outcome){if(EMBED)parent.postMessage({channel:'asterwind.episode.v1',episodeId:'standup',session:SESSION,type,...(outcome?{outcome}:{})},'*')}
-function ending(){phase='end';$('end').hidden=false;$('again').focus({preventScroll:true});live('The Quiet Minute. Again, or the other way.');if(!reported){reported=true;notify('completed',choice)}}
+function ending(){phase='end';if(firstChoice===null)firstChoice=choice;$('end').hidden=false;$('other').textContent=choice===firstChoice?'The other way':'Your first way';$('again').focus({preventScroll:true});live('The Quiet Minute. '+(replayMode?'Your first choice stays with the night. ':'')+'Again, or '+$('other').textContent.toLowerCase()+'.');if(!reported){reported=true;notify('completed',choice)}}
 $('again').onclick=()=>{$('end').hidden=true;cues.length=0;tweens.length=0;peeked=false;T=0;$('cap').querySelector('.line').textContent='';begin()};
-$('other').onclick=()=>{$('end').hidden=true;cues.length=0;tweens.length=0;const other=choice==='round'?'slips':'round';S.mix=0;toDecisionInstant(other)};
-function toDecisionInstant(other){phase='master';stage.show('master');toDecision();at(reduced?.4:2.4,()=>commit(other))}
+$('other').onclick=()=>{if(phase!=='end')return;$('end').hidden=true;cues.length=0;tweens.length=0;const other=choice==='round'?'slips':'round';
+ phase='revisiting';drag=null;looking=false;direction.hide();replayMode=other===firstChoice?'remembered':'alternative';direction.replay(replayMode);
+ $('cap').querySelector('.line').textContent='';$('cap').querySelector('.who').textContent='';$('thought').hidden=true;$('route').hidden=true;
+ live((replayMode==='alternative'?'The other way. ':'Your first way. ')+'An authored replay. Your first choice stays with the night.');toDecision(other)};
 
 /* ---- the frame: camera breath, pointer parallax, lamp flicker, breathing ---- */
 $('frame').addEventListener('pointermove',e=>{const [x,y]=fr(e);pointer.x=x;pointer.y=y});
@@ -183,10 +188,10 @@ function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;
  const t=T,live=!reduced;
  // the camera: scripted target + where you look + a slow breath
  const look=live?[(pointer.x-.5)*.5,(pointer.y-.5)*.3]:[0,0],br=live?[Math.sin(t*.23)*.25,Math.sin(t*.17)*.12]:[0,0];
- const cam=S.cam;S._cam=S._cam||[0,0];S._cam[0]+=((cam[0]+look[0]+br[0])-S._cam[0])*.06;S._cam[1]+=((cam[1]+look[1]+br[1])-S._cam[1])*.06;
+ const cam=S.cam;S._cam=S._cam||[0,0];if(!paused){S._cam[0]+=((cam[0]+look[0]+br[0])-S._cam[0])*.06;S._cam[1]+=((cam[1]+look[1]+br[1])-S._cam[1])*.06;}
  const keep=S.cam;S.cam=S._cam;
  for(const k in H){const h=H[k];const b=live&&h.breathe?Math.sin(t*1.7+k.length)*.0012:0;h.dx=h.bx;h.dy=h.by+b}
- if(S.lamp){S.lamp[3]=.55*(1+(live?(Math.sin(t*9.1)*.03+Math.sin(t*23.7)*.02+(Math.random()-.5)*.03):0))}
+ if(S.lamp){S.lamp[3]=.55*(1+(live?(Math.sin(t*9.1)*.03+Math.sin(t*23.7)*.02+Math.sin(t*37.3)*.015):0))}
  if(layered){
   const study=layerMode==='registration-study';
   stage.setObjectPose('decision','platter',{angle:study?(reduced?0:S.ang*.024):S.ang});
@@ -205,5 +210,5 @@ $('cc').onclick=()=>{const on=$('cc').getAttribute('aria-pressed')!=='true';$('c
 $('pause').onclick=()=>{paused=!paused;window.Clips&&Clips.pause(paused);$('pause').setAttribute('aria-pressed',String(paused));$('pause').textContent=paused?'Resume':'Pause';if(ac)paused?ac.suspend():ac.resume()};
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&!paused)$('pause').click()});
 addEventListener('keydown',e=>{if(e.key==='Escape'&&phase==='decision')hover(null)});
-window.QM={get state(){return{phase,choice,T,peeked,layered,layerMode,looking,ang:S.ang,so:S.so.slice()}},commit,look,skip(to){while(T<to&&phase!=='decision'&&phase!=='end')step(1/30)},step};
+window.QM={get state(){return{phase,choice,firstChoice,replayMode,T,peeked,layered,layerMode,looking,ang:S.ang,so:S.so.slice()}},commit,look,skip(to){while(T<to&&phase!=='decision'&&phase!=='end')step(1/30)},step};
 })().catch(error=>PlayedSupport.fail(error,'../../../anthology/episodes/standup/index.html'));

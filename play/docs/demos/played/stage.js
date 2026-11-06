@@ -177,6 +177,32 @@ function Stage(canvas){
   }
   target.restore();
  }
+ // Canvas is also the shipping renderer on small GPUs with occluded props.
+ // Keep the same neutral object attention and practical-light language there.
+ // These are bounded screen-space treatments, not a claim of depth/acting parity.
+ function paintAtmosphere(){
+  if(typeof ctx.createRadialGradient!=='function'||typeof ctx.save!=='function')return;
+  const w=canvas.width,h=canvas.height,f=crop(S.zoom,S.cen),point=(x,y)=>[(x-f.c[0])*w*f.z+w/2,(y-f.c[1])*h*f.z+h/2];
+  ctx.save();ctx.globalAlpha=1;
+  if(S.lamp&&S.lamp[2]>0&&S.lamp[3]>0){
+   const [x,y]=point(S.lamp[0],S.lamp[1]),r=Math.max(1,S.lamp[2]*h*f.z),gain=clamp(S.lamp[3]*.23,0,.42),light=ctx.createRadialGradient(x,y,0,x,y,r*1.8);
+   light.addColorStop(0,'rgba(255,193,102,'+gain+')');light.addColorStop(.46,'rgba(255,174,72,'+(gain*.34)+')');light.addColorStop(1,'rgba(255,167,58,0)');
+   ctx.globalCompositeOperation='screen';ctx.fillStyle=light;ctx.fillRect(0,0,w,h);
+  }
+  if(S.hov&&S.hovA>0&&S.hov[2]>0&&S.hov[3]>0){
+   const [x,y]=point(S.hov[0],S.hov[1]),rx=S.hov[2]*w*f.z,ry=S.hov[3]*h*f.z,a=clamp(S.hovA,0,1);
+   ctx.globalCompositeOperation='screen';ctx.beginPath();
+   if(S.hov[4])ctx.rect(x-rx,y-ry,rx*2,ry*2);else ctx.ellipse(x,y,rx,ry,0,0,Math.PI*2);
+   ctx.fillStyle='rgba(255,211,140,'+(a*.065)+')';ctx.fill();
+   ctx.strokeStyle='rgba(255,224,173,'+(a*.6)+')';ctx.lineWidth=Math.max(1,Math.min(w,h)*.002);ctx.stroke();
+  }
+  if(S.vig>0){
+   ctx.globalCompositeOperation='source-over';ctx.scale(w,h);
+   const vignette=ctx.createRadialGradient(.5,.5,.13,.5,.5,.72),a=clamp(S.vig*.9,0,.7);
+   vignette.addColorStop(0,'rgba(0,0,0,0)');vignette.addColorStop(.55,'rgba(0,0,0,'+(a*.32)+')');vignette.addColorStop(1,'rgba(0,0,0,'+a+')');ctx.fillStyle=vignette;ctx.fillRect(0,0,1,1);
+  }
+  ctx.restore();
+ }
  function drawStill(){
   const w=canvas.width,h=canvas.height;ctx.globalAlpha=1;ctx.fillStyle='#000';ctx.fillRect(0,0,w,h);
   const paint=(plate,z,cen,alpha)=>{
@@ -193,7 +219,7 @@ function Stage(canvas){
    const f=crop(z,cen);ctx.globalAlpha=alpha;ctx.drawImage(plate.image,(f.c[0]-f.half)*plate.w,(f.c[1]-f.half)*plate.h,plate.w/f.z,plate.h/f.z,0,0,w,h);
   };
   paint(A,S.zoom,S.cen,1);if(B&&S.mix>0)paint(B,S.zoomB,S.cenB,clamp(S.mix,0,1));
-  ctx.globalAlpha=clamp(S.dim,0,1);ctx.fillRect(0,0,w,h);ctx.globalAlpha=1;
+  paintAtmosphere();ctx.fillStyle='#000';ctx.globalAlpha=clamp(S.dim,0,1);ctx.fillRect(0,0,w,h);ctx.globalAlpha=1;
  }
  function needsLayers(){return !!(A&&A.layers||B&&S.mix>0&&B.layers)}
  function layerIssue(set){return set&&(!layerGPU?layerReason:set.objects.length>layerCapacity?'Occluded object layers require 10 fragment texture units; using native Canvas':null)}

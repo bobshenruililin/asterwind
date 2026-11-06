@@ -1,0 +1,12 @@
+[
+  {
+    "path": "assets/corridor.webp",
+    "sha256": "7fb2484b738871e0ffc1bd59b5a262521857e2cdeaae2aa1e1be8998b3b010d5",
+    "bytes": 200704
+  },
+  {
+    "path": "assets/studio-opening.webp",
+    "sha256": "b79e98f8de46582ceef15287004792db263edc18b478d4e2de31bbdb996ab0a1",
+    "bytes": 282400
+  }
+]

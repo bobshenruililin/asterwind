@@ -1,0 +1,147 @@
+{
+  "id": "scope",
+  "title": "One More Chair",
+  "origin": "Original fictional scenario, not a representation of Amanda or Hannah's workbook.",
+  "setup": [
+    {
+      "shot": "wide",
+      "duration": 6500,
+      "speaker": "",
+      "line": "Rain brings the last students into the repair café. Closing time: 6:00.",
+      "stage": "open"
+    },
+    {
+      "shot": "hands",
+      "duration": 7500,
+      "speaker": "Inez",
+      "line": "Three booked repairs left. The hall must be clear at six. I'll finish the lamp.",
+      "stage": "booked"
+    },
+    {
+      "shot": "door",
+      "duration": 7500,
+      "speaker": "Sam",
+      "line": "My bag split on the way here. I start my placement tomorrow. Could you help?",
+      "stage": "arrival"
+    },
+    {
+      "shot": "chair",
+      "duration": 8000,
+      "speaker": "Bo",
+      "line": "I can stitch that. But I'm already repairing this umbrella. We promised its owner five-fifty.",
+      "stage": "capacity"
+    },
+    {
+      "shot": "lead",
+      "duration": 8000,
+      "speaker": "Ren",
+      "line": "If we take one more, something else has to move. We can't promise everyone the same minutes.",
+      "stage": "choice"
+    }
+  ],
+  "choice": {
+    "prompt": "Make room for one more?",
+    "actions": [
+      {
+        "id": "extend",
+        "label": "Pull in the spare chair",
+        "description": "Take the bag now; redistribute the work."
+      },
+      {
+        "id": "return",
+        "label": "Offer the return-slot box",
+        "description": "Protect today's bookings; arrange a specific next step."
+      }
+    ]
+  },
+  "branches": {
+    "extend": [
+      {
+        "stage": "chair-action",
+        "shot": "chair",
+        "duration": 1500,
+        "speaker": "",
+        "line": ""
+      },
+      {
+        "shot": "chair",
+        "duration": 7000,
+        "speaker": "Ren",
+        "line": "Bo, take the bag. I'll finish the umbrella. Inez, please tell me if the lamp slips.",
+        "stage": "extend"
+      },
+      {
+        "shot": "hands",
+        "duration": 7000,
+        "speaker": "Bo",
+        "line": "The needle goes back through the same hole. Slowly. I'll show you once.",
+        "stage": "teach"
+      },
+      {
+        "shot": "clock",
+        "duration": 7000,
+        "speaker": "",
+        "line": "5:58. The bag is mended. The umbrella's final seam is not.",
+        "stage": "late"
+      },
+      {
+        "shot": "lead",
+        "duration": 8500,
+        "speaker": "Ren",
+        "line": "I took on work I couldn't finish in time. I'm sorry. May I finish it with you outside, or arrange a collection tomorrow?",
+        "stage": "own"
+      },
+      {
+        "shot": "wide",
+        "duration": 8500,
+        "speaker": "Inez",
+        "line": "Sam's bag will make it through tomorrow. We'll call the umbrella's owner tonight.",
+        "stage": "ending-extend"
+      }
+    ],
+    "return": [
+      {
+        "stage": "card-action",
+        "shot": "chair",
+        "duration": 1500,
+        "speaker": "",
+        "line": ""
+      },
+      {
+        "shot": "chair",
+        "duration": 7500,
+        "speaker": "Ren",
+        "line": "We can't stitch it properly before closing. Let's find a real next step, not just send you away.",
+        "stage": "return"
+      },
+      {
+        "shot": "hands",
+        "duration": 8000,
+        "speaker": "Inez",
+        "line": "The library lends carry bags until eight. We can reserve tomorrow's first repair slot. Would those help?",
+        "stage": "offer"
+      },
+      {
+        "shot": "door",
+        "duration": 7500,
+        "speaker": "Sam",
+        "line": "The loan bag gets me through tomorrow. I wish I'd come earlier. I'll take that slot.",
+        "stage": "accepted"
+      },
+      {
+        "shot": "clock",
+        "duration": 7000,
+        "speaker": "",
+        "line": "5:57. The three booked repairs are ready. Sam leaves with an appointment, not a repaired bag.",
+        "stage": "time"
+      },
+      {
+        "shot": "wide",
+        "duration": 8500,
+        "speaker": "Bo",
+        "line": "We kept a promise. Let's also make the next café easier to reach before closing.",
+        "stage": "ending-return"
+      }
+    ]
+  }
+}

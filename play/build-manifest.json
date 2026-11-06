@@ -1,8 +1,8 @@
 {
- "source_commit": "d4fca19274d1b4d12ca73aff53322df91bda23b1",
+ "source_commit": "833b5f19a5a5b5737d153d14fd2e4a46a262ba9b",
  "source_clean": true,
- "files": 374,
- "bytes": 32508248,
+ "files": 376,
+ "bytes": 32516077,
  "sha256_16": {
   ".nojekyll": "e3b0c44298fc1c14",
   "anthology/episodes/pixel/art-data.js": "b9f6e93da1a226bb",
@@ -102,7 +102,9 @@
   "docs/demos/played/art/standup/collab/quiet-p0-review-20261106/tray-registered.png": "4cc55c2a0721f234",
   "docs/demos/played/clips/manifest.json": "ca3d163bab055381",
   "docs/demos/played/clips.js": "f682c8a02487534a",
-  "docs/demos/played/index.html": "04e4dc95575d889a",
+  "docs/demos/played/direction.css": "c11a478145ec209f",
+  "docs/demos/played/direction.js": "2438006a7e8cd37e",
+  "docs/demos/played/index.html": "637ca2f07c96139e",
   "docs/demos/played/pixel.html": "01a4fedbdc83e0dd",
   "docs/demos/played/pixel.js": "4be89814e135184a",
   "docs/demos/played/plates/01-quiet-minute-master-depth.webp": "086259eca4c81613",
@@ -164,12 +166,12 @@
   "docs/demos/played/plates/slides/performance-microphone-offer-depth.webp": "8c7b35fd92f2d179",
   "docs/demos/played/plates/slides/performance-notebook-action-depth.webp": "ad66094037b0cf1f",
   "docs/demos/played/plates/slides/performance-source-credit-depth.webp": "e8bdef8e7c166ce2",
-  "docs/demos/played/quiet.js": "df9a8ce085133bcd",
+  "docs/demos/played/quiet.js": "1c4796916700a039",
   "docs/demos/played/responsive.css": "d09ef1b57ab162f5",
-  "docs/demos/played/scene.html": "4f732e51de57e38b",
-  "docs/demos/played/scene.js": "497ace6ebfb830d0",
+  "docs/demos/played/scene.html": "591f897f599994d4",
+  "docs/demos/played/scene.js": "bdd9999fbd96da4a",
   "docs/demos/played/seam-adapter.js": "a030d9a92676f4d4",
-  "docs/demos/played/stage.js": "0b3a470c59793958",
+  "docs/demos/played/stage.js": "512b4beab00d258b",
   "docs/demos/played/support.js": "82cfa6985b50aa2b",
   "docs/demos/played/voices/pixel-connect-1.mp3": "012a9ebe51d1b4c6",
   "docs/demos/played/voices/pixel-connect-2.mp3": "b30c7826bd5f6239",
@@ -375,8 +377,8 @@
   "hub/registry-data.js": "31e0a676e4cd220e",
   "hub/sound.js": "4338a8853d52dc88",
   "hub/timing.js": "8b075b79a227d3b8",
-  "index.html": "9b6a19f09ac16b22",
-  "legacy.html": "d580dd3117cc8280",
-  "v2.html": "9b6a19f09ac16b22"
+  "index.html": "80b5ae2dc97c685e",
+  "legacy.html": "9491bcda2d2612b6",
+  "v2.html": "80b5ae2dc97c685e"
  }
 }

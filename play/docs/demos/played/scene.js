@@ -13,6 +13,9 @@ const REG={seam:{backup:{x:.115,y:.72,w:.30,h:.19},repair:{x:.685,y:.47,w:.285,h
 // Physical destinations are the authored direction of the action, not a preferred outcome.
 const MOVE={microphone:[.045,-.03],notebook:[-.02,.035],extend:[.07,.05],return:[-.02,-.04],lower:[0,.05],connect:[-.03,-.04],live:[.012,-.012],rehearsal:[0,0]};
 const GLOW={rehearsal:[.79,.66,.10,.9]};
+// Positions were checked against the decision plates. Labels stay beside the object, below faces and work.
+const LABELS={seam:{backup:[.25,.94],repair:[.82,.88]},slides:{microphone:[.22,.88],notebook:[.80,.84]},scope:{extend:[.25,.91],return:[.82,.79]},pixel:{lower:[.23,.80],connect:[.81,.96]},ship:{live:[.19,.89],rehearsal:[.80,.89]}}[EP];
+const direction=PlayedDirection.create({frame:$('frame'),screen:$('screen')});
 const ENTER={seam:'Join the table',slides:'Take your seat',scope:'Come in',pixel:'Step up',ship:'Walk in'}[EP];
 const [rawStory,rawArt]=await Promise.all([PlayedSupport.json(BASE+'story.json'),PlayedSupport.json(BASE+(EP==='seam'?'audio/manifest.json':'art-manifest.json'))]);
 const seam=EP==='seam'?PlayedSeam.adapt(rawStory,rawArt):null,story=seam?seam.story:rawStory,art=seam?seam.art:rawArt;
@@ -72,8 +75,7 @@ function playBeats(list,part,then){if(seam){playSeamBeats(list,then);return}let 
  at(t,()=>{shot(b.stage,d);acting.enter({plate:camFor(b.stage).plate,beat:b.stage,time:T,duration:d,phase});if(b.line)say(b.speaker,b.line,b.speaker?cueId(part,i):null);if(/action/.test(b.stage))play('tap',.6)});t+=d});at(t,then)}
 
 /* ---- the decision: the two objects are within reach ---- */
-let phase='start',choice=null,drag=null,hovered=null,motionAction=null;
-const verb=a=>a.label.split(' ')[0].toLowerCase();
+let phase='start',choice=null,firstChoice=null,replayMode=null,drag=null,hovered=null,motionAction=null;
 function region(id){const r=REG[id];return{cx:r.x+r.w/2,cy:r.y+r.h/2,...r}}
 function takeObject(id){
  // A cancelled return must not move a different object during the next action.
@@ -81,10 +83,11 @@ function takeObject(id){
  if(motionAction!==id){S.so=[0,0];if(layered)stage.resetObjects('decision')}motionAction=id;const r=region(id);
  S.slide=layered?null:[r.x-.012,r.y-.012,r.x+r.w+.012,r.y+r.h+.012];
 }
-function hover(id){if(phase!=='decision')id=null;hovered=id;const w=$('word');if(!id){tw(S,'hovA',0,.25);w.style.opacity=0;return}
- const r=region(id),a=story.choice.actions.find(a=>a.id===id);S.hov=[r.cx,r.cy,r.w/2+.008,r.h/2+.008,1];tw(S,'hovA',1,.2);w.textContent=verb(a);w.style.left=r.cx*100+'%';w.style.top=Math.min(.95,r.y+r.h+.04)*100+'%';w.style.opacity=1}
+function hover(id){if(phase!=='decision')id=null;hovered=id;direction.focus(id);if(!id){tw(S,'hovA',0,.25);return}
+ const r=region(id);S.hov=[r.cx,r.cy,r.w/2+.008,r.h/2+.008,1];tw(S,'hovA',1,.2)}
 function decision(){phase='decision';$('film-time').hidden=true;if(seam){stage.show(art.beats.choice.plate);S.dim=0}else shot('choice',2);S.zoom=1;S.cen=[.5,.5];
  acting.enter({plate:camFor('choice').plate,beat:'choice',time:T,duration:1,phase});motionAction=null;S.so=[0,0];S.slide=null;S.lamp=null;if(layered)stage.resetObjects('decision');
+ direction.show(story.choice.actions.map(a=>({...a,x:LABELS[a.id][0],y:LABELS[a.id][1]})));
  for(const a of story.choice.actions){const b=document.createElement('button'),r=REG[a.id];b.className='obj rect';b.id='obj-'+a.id;b.setAttribute('aria-label',a.label+': '+a.description);
   Object.assign(b.style,{left:r.x*100+'%',top:r.y*100+'%',width:r.w*100+'%',height:r.h*100+'%'});$('objs').appendChild(b);
   b.addEventListener('pointerenter',()=>hover(a.id));b.addEventListener('pointerleave',()=>{if(!drag)hover(null)});b.addEventListener('focus',()=>hover(a.id));b.addEventListener('blur',()=>{if(!drag)hover(null)});
@@ -93,9 +96,10 @@ function decision(){phase='decision';$('film-time').hidden=true;if(seam){stage.s
   b.addEventListener('pointermove',e=>{if(!drag||drag.id!==a.id)return;const p=fp(e),L=layered?.07:.04,o=[Math.max(-L,Math.min(L,p[0]-drag.p0[0])),Math.max(-L,Math.min(L,p[1]-drag.p0[1]))];S.so=layered&&GLOW[a.id]?[0,0]:o;drag.m=Math.hypot(...o)});
   b.addEventListener('pointerup',()=>{if(!drag||drag.id!==a.id)return;const d=drag;drag=null;if(d.m<.004||d.m>.016)commit(a.id);else{tw(S,'so',[0,0],.3)}});
   PlayedSupport.bindActivation(b,()=>commit(a.id),()=>{if(drag&&drag.id===a.id){drag=null;tw(S,'so',[0,0],.3)}})}
- live('The decision is in front of you: '+story.choice.actions.map(a=>a.label).join(', or ')+'. Take your time.');setTimeout(()=>$('objs').querySelector('button')?.focus({preventScroll:true}),60)}
+ live('The decision is in front of you: '+story.choice.actions.map(a=>a.label).join(', or ')+'. Take your time.');at(.06,()=>{if(phase==='decision')$('objs').querySelector('button')?.focus({preventScroll:true})})}
 const fp=e=>{const r=$('frame').getBoundingClientRect();return[(e.clientX-r.left)/r.width,(e.clientY-r.top)/r.height]};
-function commit(id){if(phase!=='decision')return;phase='consequence';choice=id;drag=null;hover(null);$('objs').innerHTML='';const r=region(id);
+function commit(id){if(phase!=='decision'||!story.choice.actions.some(a=>a.id===id))return;performChoice(id)}
+function performChoice(id){phase='consequence';choice=id;drag=null;hover(null);direction.hide();$('objs').innerHTML='';const r=region(id);
  if(seam){S.slide=null;S.so=[0,0];playSeamBeats(story.branches[id],ending);return}
  takeObject(id);
  if(layered){tw(S,'so',MOVE[id]||[0,0],reduced?.1:.8);play('paper',.6)}
@@ -104,16 +108,23 @@ function commit(id){if(phase!=='decision')return;phase='consequence';choice=id;d
  play('tap',.7);
  live('You '+story.choice.actions.find(a=>a.id===id).label.toLowerCase()+'.');
  at(reduced?.2:.9,()=>{if(!layered){S.slide=null;S.so=[0,0];motionAction=null}playBeats(story.branches[id],id,ending)})}
-function ending(){phase='end';$('end').hidden=false;$('again').focus({preventScroll:true});live(story.title+'. Again, or the other way.');if(!ending.sent){ending.sent=1;notify('completed',choice)}}
-function begin(){phase='setup';motionAction=null;acting.reset();if(layered)stage.resetObjects('decision');S.lamp=null;S.str=seam?0:.018;$('cap').querySelector('.line').textContent='';stage.show(camFor('open').plate);S.mix=0;S.zoom=1;S.cen=[.5,.5];S.dim=1;S.so=[0,0];S.slide=null;tw(S,'dim',0,2.2);
+function ending(){phase='end';if(firstChoice===null)firstChoice=choice;$('end').hidden=false;$('other').textContent=choice===firstChoice?'The other way':'Your first way';$('again').focus({preventScroll:true});live(story.title+'. '+(replayMode?'Your first choice stays with the night. ':'')+'Again, or '+$('other').textContent.toLowerCase()+'.');if(!ending.sent){ending.sent=1;notify('completed',choice)}}
+function begin(){direction.hide();direction.replay(null);replayMode=null;phase='setup';motionAction=null;acting.reset();if(layered)stage.resetObjects('decision');S.lamp=null;S.str=seam?0:.018;$('cap').querySelector('.line').textContent='';stage.show(camFor('open').plate);S.mix=0;S.zoom=1;S.cen=[.5,.5];S.dim=1;S.so=[0,0];S.slide=null;tw(S,'dim',0,2.2);
  playBeats(story.setup,'setup',decision)}
 $('again').onclick=()=>{$('end').hidden=true;cues.length=0;tws.length=0;begin()};
-$('other').onclick=()=>{$('end').hidden=true;cues.length=0;tws.length=0;const o=story.choice.actions.find(a=>a.id!==choice).id;stage.show(camFor('choice').plate);S.dim=0;S.zoom=1;S.cen=[.5,.5];decision();at(reduced?.1:.8,()=>commit(o))};
+$('other').onclick=()=>{if(phase!=='end')return;const other=story.choice.actions.find(a=>a.id!==choice).id;
+ $('end').hidden=true;cues.length=0;tws.length=0;phase='revisiting';drag=null;hover(null);direction.hide();$('objs').innerHTML='';
+ replayMode=other===firstChoice?'remembered':'alternative';direction.replay(replayMode);$('cap').querySelector('.line').textContent='';$('cap').querySelector('.who').textContent='';$('film-time').hidden=true;
+ live((replayMode==='alternative'?'The other way. ':'Your first way. ')+'An authored replay. Your first choice stays with the night.');
+ // Return to the same object before it moves, without offering a second decision.
+ stage.toward(camFor('choice').plate);S.zoomB=1;S.cenB=[.5,.5];S.dim=0;tw(S,'mix',1,reduced?.18:1);
+ at(reduced?.2:1.05,()=>{stage.settle();S.zoom=1;S.cen=[.5,.5];S.so=[0,0];S.slide=null;S.lamp=null;motionAction=null;if(layered)stage.resetObjects('decision');acting.enter({plate:camFor('choice').plate,beat:'choice',time:T,duration:1,phase})});
+ at(reduced?.32:1.7,()=>{if(phase==='revisiting')performChoice(other)})};
 
 /* ---- the frame ---- */
 const pointer={x:.5,y:.5};$('frame').addEventListener('pointermove',e=>{const [x,y]=fp(e);pointer.x=x;pointer.y=y});
 function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;if(!paused&&phase!=='start')step(dt);
- const lv=!reduced,look=lv?[(pointer.x-.5)*.6,(pointer.y-.5)*.35]:[0,0],br=lv?[Math.sin(T*.23)*.3,Math.sin(T*.17)*.15]:[0,0];S._c=S._c||[0,0];S._c[0]+=(look[0]+br[0]-S._c[0])*.06;S._c[1]+=(look[1]+br[1]-S._c[1])*.06;
+ const lv=!reduced,look=lv?[(pointer.x-.5)*.6,(pointer.y-.5)*.35]:[0,0],br=lv?[Math.sin(T*.23)*.3,Math.sin(T*.17)*.15]:[0,0];S._c=S._c||[0,0];if(!paused){S._c[0]+=(look[0]+br[0]-S._c[0])*.06;S._c[1]+=(look[1]+br[1]-S._c[1])*.06;}
  const motion=motionAction&&stage.current==='decision'&&(S.slide||layered)?{action:motionAction,dx:S.so[0],dy:S.so[1]}:null;
  if(layered&&motionAction)stage.setObjectPose('decision',motionAction,{x:S.so[0],y:S.so[1]});
  S.warps=acting.sample({plate:stage.current,time:T,phase:motion?'decision':phase,paused,reducedMotion:reduced,mix:S.mix,motion});
@@ -125,5 +136,5 @@ $('snd').onclick=()=>{soundOn=!soundOn;$('snd').setAttribute('aria-pressed',Stri
 $('cc').onclick=()=>{const on=$('cc').getAttribute('aria-pressed')!=='true';$('cc').setAttribute('aria-pressed',String(on));$('cap').style.visibility=on?'visible':'hidden'};
 $('pause').onclick=()=>{paused=!paused;$('pause').setAttribute('aria-pressed',String(paused));$('pause').textContent=paused?'Resume':'Pause';if(ac)paused?ac.suspend():ac.resume()};
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&!paused)$('pause').click()});
-window.FILMPLAY={get state(){return{phase,choice,T,ep:EP,layered}},commit,step};
+window.FILMPLAY={get state(){return{phase,choice,firstChoice,replayMode,T,ep:EP,layered}},commit,step};
 })().catch(error=>PlayedSupport.fail(error,new URLSearchParams(location.search).get('ep')==='seam'?'../../../film/index.html':'../../../anthology/episodes/'+(['slides','scope','pixel','ship'].includes(new URLSearchParams(location.search).get('ep'))?new URLSearchParams(location.search).get('ep'):'scope')+'/index.html'));

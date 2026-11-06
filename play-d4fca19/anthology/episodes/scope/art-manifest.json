@@ -1,0 +1,116 @@
+{
+  "schemaVersion": 1,
+  "dimensions": [
+    1672,
+    941
+  ],
+  "kind": "authored-still-shot-sequence",
+  "plates": {
+    "master": {
+      "src": "assets/runtime/master.webp",
+      "alt": "Rain-dark student repair café: Inez works on a lamp, Bo holds an umbrella, Sam waits with a torn bag, and Ren is seated near a spare chair."
+    },
+    "capacity": {
+      "src": "assets/runtime/capacity.webp",
+      "alt": "Bo's hands are occupied with the umbrella. Sam holds the torn gray bag beside him."
+    },
+    "decision": {
+      "src": "assets/runtime/decision.webp",
+      "alt": "From Ren's seat, the spare sage chair is within reach on the left; an appointment-card box waits on the right."
+    },
+    "extend": {
+      "src": "assets/runtime/extend.webp",
+      "alt": "Bo hands Sam a visibly mended bag while Ren is still working on the unfinished umbrella."
+    },
+    "return": {
+      "src": "assets/runtime/return.webp",
+      "alt": "Ren offers Sam an appointment card. Sam's gray bag is still torn; the booked umbrella is finished and the spare chair remains empty."
+    },
+    "chair-action": {
+      "src": "assets/runtime/chair-action.webp",
+      "alt": "Ren grips the spare sage chair and draws it closer. Sam still holds his torn bag; the booked umbrella is unfinished."
+    },
+    "teach": {
+      "src": "assets/runtime/teach.webp",
+      "alt": "Bo points to the umbrella seam, showing Ren where to stitch. Sam waits beside them with the bag still visibly torn."
+    },
+    "card-action": {
+      "src": "assets/runtime/card-action.webp",
+      "alt": "Ren draws a blank appointment card from the box. The spare chair stays unmoved."
+    },
+    "offer": {
+      "src": "assets/runtime/offer.webp",
+      "alt": "Ren holds the appointment card near his chest while offering a next step. Sam has not accepted it and keeps his hands on his torn bag. Bo is still stitching the umbrella."
+    }
+  },
+  "beats": {
+    "open": {
+      "plate": "master",
+      "focus": 50
+    },
+    "booked": {
+      "plate": "master",
+      "focus": 38
+    },
+    "arrival": {
+      "plate": "capacity",
+      "focus": 78
+    },
+    "capacity": {
+      "plate": "capacity",
+      "focus": 49
+    },
+    "choice": {
+      "plate": "decision",
+      "focus": 50
+    },
+    "extend": {
+      "plate": "teach",
+      "focus": 35
+    },
+    "teach": {
+      "plate": "teach",
+      "focus": 35
+    },
+    "late": {
+      "plate": "extend",
+      "focus": 50
+    },
+    "own": {
+      "plate": "extend",
+      "focus": 24
+    },
+    "ending-extend": {
+      "plate": "extend",
+      "focus": 50
+    },
+    "return": {
+      "plate": "offer",
+      "focus": 65
+    },
+    "offer": {
+      "plate": "offer",
+      "focus": 65
+    },
+    "accepted": {
+      "plate": "return",
+      "focus": 77
+    },
+    "time": {
+      "plate": "return",
+      "focus": 50
+    },
+    "ending-return": {
+      "plate": "return",
+      "focus": 38
+    },
+    "chair-action": {
+      "plate": "chair-action",
+      "focus": 25
+    },
+    "card-action": {
+      "plate": "card-action",
+      "focus": 78
+    }
+  }
+}

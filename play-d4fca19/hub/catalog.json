@@ -1,0 +1,44 @@
+[
+  {
+    "id": "seam",
+    "name": "3:00 AM Cold Brew",
+    "story": "The 3:00 AM Seam",
+    "status": "existing-playable",
+    "color": "#e2b25c"
+  },
+  {
+    "id": "standup",
+    "name": "Standup Seltzer",
+    "story": "The Quiet Minute",
+    "status": "playable-prototype",
+    "color": "#9cae98"
+  },
+  {
+    "id": "slides",
+    "name": "Slide Deck Bitters",
+    "story": "The Missing Name",
+    "status": "playable-prototype",
+    "color": "#c58f7f"
+  },
+  {
+    "id": "scope",
+    "name": "Scope Creep Fizz",
+    "story": "One More Chair",
+    "status": "playable-prototype",
+    "color": "#9da6c2"
+  },
+  {
+    "id": "pixel",
+    "name": "Dead Pixel Tonic",
+    "story": "The Empty Square",
+    "status": "playable-prototype",
+    "color": "#b1a4bc"
+  },
+  {
+    "id": "ship",
+    "name": "Ship-It Ginger Ale",
+    "story": "Before the Doors Open",
+    "status": "playable-prototype",
+    "color": "#c1ac79"
+  }
+]

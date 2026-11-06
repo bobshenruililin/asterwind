@@ -1,0 +1,12 @@
+/* Two small annotations attached to the things the player can actually move.
+   They are visible without hover; no extra panel, timer or commitment is added. */
+#decision-cues{position:absolute;inset:0;pointer-events:none;z-index:1}
+.action-cue{position:absolute;transform:translate(-50%,-50%);max-width:42%;width:max-content;padding:.1em .38em;color:#ffedc9;font:clamp(13px,1.7vw,23px)/1.2 Kalam,cursive;text-align:center;text-wrap:balance;text-shadow:0 1px 3px #000,0 2px 10px #000,0 0 18px #000;background:radial-gradient(ellipse,#11101888,transparent 74%);opacity:.88}
+.action-cue::before{content:'';position:absolute;left:50%;bottom:calc(100% + 3px);width:1px;height:clamp(5px,.7vw,10px);background:linear-gradient(#f4d99c99,#f4d99c22)}
+.action-cue.active{color:#fff6e1;opacity:1;text-shadow:0 1px 3px #000,0 0 12px #6c4e18,0 0 22px #000}
+#replay-mark{position:absolute;left:3%;top:3%;z-index:2;margin:0;border-top:1px solid #e8d5ae88;padding-top:7px;color:#eee0c8;font:italic clamp(13px,1.4vw,18px)/1.25 Georgia,serif;text-shadow:0 2px 7px #000;pointer-events:none}
+#screen[data-replay=alternative] #film-time,#screen[data-replay=remembered] #film-time{top:10%}
+@media(max-aspect-ratio:1/1){
+ .action-cue{font-size:clamp(12px,3.2vw,16px);max-width:43%;padding:.12em .28em}
+ #replay-mark{position:relative;inset:auto;order:0;width:max-content;max-width:90%;margin:0 auto 10px;text-shadow:none}
+}

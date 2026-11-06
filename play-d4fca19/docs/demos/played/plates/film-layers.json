@@ -1,0 +1,91 @@
+{
+ "source": "codex/opus-remaining-cleanplates-20261106 @ f108040",
+ "takes": {
+  "slides": "missing-name-02.png",
+  "scope": "one-more-chair-03.png",
+  "pixel": "pixel-03.png",
+  "ship": "ship-03.png"
+ },
+ "layers": {
+  "slides": {
+   "microphone": {
+    "pixels": 97573,
+    "box": [
+     91,
+     475,
+     627,
+     804
+    ]
+   },
+   "notebook": {
+    "pixels": 222525,
+    "box": [
+     961,
+     315,
+     1630,
+     832
+    ]
+   }
+  },
+  "scope": {
+   "extend": {
+    "pixels": 266168,
+    "box": [
+     50,
+     117,
+     752,
+     804
+    ]
+   },
+   "return": {
+    "pixels": 133010,
+    "box": [
+     1095,
+     258,
+     1646,
+     682
+    ]
+   }
+  },
+  "pixel": {
+   "lower": {
+    "pixels": 48432,
+    "box": [
+     58,
+     268,
+     342,
+     710
+    ]
+   },
+   "connect": {
+    "pixels": 49209,
+    "box": [
+     1145,
+     625,
+     1672,
+     889
+    ]
+   }
+  },
+  "ship": {
+   "live": {
+    "pixels": 193331,
+    "box": [
+     0,
+     399,
+     610,
+     851
+    ]
+   },
+   "rehearsal": {
+    "pixels": 174490,
+    "box": [
+     1145,
+     239,
+     1672,
+     851
+    ]
+   }
+  }
+ }
+}
