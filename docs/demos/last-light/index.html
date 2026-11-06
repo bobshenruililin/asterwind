@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#0b2229"><title>The Last Light · Asterwind</title><link rel="stylesheet" href="style.css"><link rel="preload" href="assets/harbor.png" as="image"></head>
+<body>
+<main id="game" aria-label="The Last Light, an Asterwind playable story">
+ <div id="stage"><canvas id="scene" width="1600" height="900" aria-hidden="true"></canvas>
+  <div id="opening"><p class="eyebrow">Asterwind</p><h1>The Last<br><em>Light</em></h1><p class="invitation">One shore. One departure. One light.</p><button id="begin" disabled>Lighting the harbor…</button><p id="load-error" role="alert" hidden>The harbor could not load. <button id="retry">Try again</button></p></div>
+  <div id="choices" hidden role="group" aria-label="Choose where the light stays"><button id="shore" class="target" aria-label="Keep the light on the shore"><span class="target-mark" aria-hidden="true"></span><span class="label">On the shore</span></button><button id="boat" class="target" aria-label="Give the light to the traveler"><span class="target-mark" aria-hidden="true"></span><span class="label">With the traveler</span></button><button id="lamp" aria-label="Pick up the lantern. Drag it to the shore or boat, or use the two choice buttons." tabindex="-1"></button></div>
+  <p id="caption" aria-hidden="true"></p><p id="narration" class="sr-only" role="status" aria-live="polite"></p>
+  <div id="ending" hidden><button id="replay">Return to the shore <span aria-hidden="true">↺</span></button></div>
+  <div id="paused" hidden><p>The tide can wait.</p><button id="resume">Continue</button></div>
+ </div>
+ <nav id="tools" aria-label="Playback controls"><button id="pause" aria-label="Pause story" disabled>Pause</button><button id="sound" aria-pressed="false">Sound off</button><button id="captions" aria-pressed="true">Captions on</button><button id="motion" aria-pressed="false">Less motion</button><button id="help" aria-expanded="false" aria-controls="instructions">?</button></nav>
+ <aside id="instructions" role="dialog" aria-modal="true" aria-label="How to play" hidden><h2>A light, not a test.</h2><p>Watch the boat arrive. Then touch a place for the lantern, or carry it there. Either choice lets the story continue.</p><p>Keyboard: Tab to a choice, Enter to place the light. Space pauses. Escape cancels a drag or closes these notes.</p><p>Headphones are optional. Nothing depends on speed, precision, or sound.</p><button id="close-help">Back to the shore</button></aside>
+ <p id="footer">An Asterwind experiment <span>·</span> A minute by the sea</p>
+</main>
+<script src="scene.js"></script><script src="app.js"></script>
+</body></html>
