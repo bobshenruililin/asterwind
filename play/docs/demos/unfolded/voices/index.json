@@ -1,0 +1,60 @@
+{
+ "note": "Voice sets by cue id. Drop the team's recordings into voices/team/ as <cue-id>.mp3 and list them under sets.team.cues; the Voices button cycles through every set that has files.",
+ "sets": {
+  "team": {
+   "label": "team",
+   "dir": "team",
+   "gain": 1,
+   "cues": {}
+  },
+  "scratch": {
+   "label": "on",
+   "dir": "scratch",
+   "gain": 0.9,
+   "cues": {
+    "heard-01": "heard-01.mp3",
+    "heard-02": "heard-02.mp3",
+    "heard-03": "heard-03.mp3",
+    "heard-l1": "heard-l1.mp3",
+    "heard-l2": "heard-l2.mp3",
+    "heard-l3": "heard-l3.mp3",
+    "heard-l4": "heard-l4.mp3",
+    "heard-o1": "heard-o1.mp3",
+    "heard-o2": "heard-o2.mp3",
+    "heard-o3": "heard-o3.mp3",
+    "help-01": "help-01.mp3",
+    "help-02": "help-02.mp3",
+    "help-f1": "help-f1.mp3",
+    "help-f2": "help-f2.mp3",
+    "help-k1": "help-k1.mp3",
+    "help-k2": "help-k2.mp3",
+    "help-k3": "help-k3.mp3",
+    "lead-01": "lead-01.mp3",
+    "lead-02": "lead-02.mp3",
+    "lead-03": "lead-03.mp3",
+    "lead-i1": "lead-i1.mp3",
+    "lead-i2": "lead-i2.mp3",
+    "lead-i3": "lead-i3.mp3",
+    "lead-l1": "lead-l1.mp3",
+    "lead-l2": "lead-l2.mp3",
+    "shared-01": "shared-01.mp3",
+    "shared-02": "shared-02.mp3",
+    "shared-h1": "shared-h1.mp3",
+    "shared-h2": "shared-h2.mp3",
+    "shared-t1": "shared-t1.mp3",
+    "shared-t2": "shared-t2.mp3",
+    "shield-01": "shield-01.mp3",
+    "shield-02": "shield-02.mp3",
+    "shield-s1": "shield-s1.mp3",
+    "shield-t1": "shield-t1.mp3",
+    "shield-t2": "shield-t2.mp3",
+    "shield-t3": "shield-t3.mp3",
+    "ship-01": "ship-01.mp3",
+    "ship-02": "ship-02.mp3",
+    "ship-k1": "ship-k1.mp3",
+    "ship-k2": "ship-k2.mp3",
+    "ship-s1": "ship-s1.mp3"
+   }
+  }
+ }
+}
