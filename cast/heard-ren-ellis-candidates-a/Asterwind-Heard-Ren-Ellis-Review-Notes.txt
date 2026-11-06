@@ -1,0 +1,49 @@
+Asterwind / HEARD
+Ren and Ellis: private exploratory cast sheets
+6 November 2026
+
+STATUS
+These are separate candidate designs for Bob's review. They do not approve Ren as the one-night lead, approve Ellis replacing Wen, retire Wen, or establish final character canon. Nothing has been committed to the project, uploaded to GitHub, listed in art/index.json, or tested in the playable room.
+
+CONTENTS
+Asterwind-Heard-Ren-Cast-Candidate-A.png
+Asterwind-Heard-Ellis-Cast-Candidate-A.png
+The two complete generation prompts.
+
+WHAT IS SHOWN
+Each sheet has front, left profile, right profile and left-facing three-quarter views, plus open palm, handle grip, paper held and paper-folding hand studies. Both use neutral grey card and even light, rather than the earlier boards' indigo background and warm rim light. Both are opaque RGB PNGs, 1672 x 941 pixels. They are not the requested 3200 x 1800 transparent runtime canvases.
+
+REN
+The previous young-adult player's proportions and long-coat construction are preserved in a new indigo direction. The short hair is smoother, closer to the foreground figure in The Quiet Minute, rather than the previous wispy tousled crop. Gender presentation is intended to remain open. Ren's film face is mostly unseen; the front face remains a proposal, not verified continuity. Exact age is not specified in CAST.md, and no numeric age has been invented. All selected views retain an adult impression.
+
+ELLIS
+The right-hand figure in The Quiet Minute master controls the round glasses, short wavy black hair, plum overshirt, grey undershirt and warm paper skin. The new sheet resembles that identity but is a generated interpretation, not a traced turnaround. Charcoal trousers and plain brown shoes are provisional completions because the seated film reference does not show them. Facial detail, glasses size, hair silhouette and age impression need Bob's review before full pose production.
+
+COMPARISON WITH PREVIOUS BOARDS
+These are not replacements for the prior Wen/player candidates. The earlier Wen design has long dark hair and a teal coat; that is a different identity from Ellis. Its material and posture studies are reusable, but repainting the costume alone would not establish Ellis continuity. Likewise, Wen is not automatically Nia: Nia's film reference has a black bob rather than Wen's long hair.
+The earlier player board used violet, dark background and warm light. This Ren candidate uses indigo and neutral light; lower contrast in skin and costume should be judged under the actual harbour lighting later.
+
+CANDID REVIEW
+- Both whole images were visually inspected. Required view directions, adult proportions, paper materials, no written text and uncropped shoes are present.
+- The folded-paper-held exercise was generated as a partly open, creased sheet on both boards, not a compact folded packet. It does not yet meet that exact H-00 hand-state requirement.
+- Ellis's folding study is useful general hand construction, but the thumb-pressing-fold gesture is not distinctive enough to call an approved signature.
+- Face and coat consistency within each board is useful for selection, but fine hair/costume shapes drift slightly between viewpoints. These are not mechanically registered rotations.
+- Paper in the studies is blank. It is not the route sheet or boat, and no claim of crease-for-crease continuity is made.
+- No back view is included because H-00 requests front, both profiles and three-quarter. A back view should be added before matching the film's usual Ren framing.
+- No transparent layers, hip registration, 200-pixel scene-read test, phone crop, reduced motion, branch review or lighting-consequence swap has been produced or verified.
+
+BEFORE PRODUCTION
+Bob decides the proposed recast and one-night Ren identity. Then lock selected references, correct the paper-held exercise, add Ren's back view, and prove one Ellis brace and Ren hold/setdown transition against the exact scene template before batching poses. Keep the lantern, route and boat separate. Preserve the real route-to-boat fold relationship rather than inventing separate drawings.
+
+PROVENANCE
+Created using the built-in image generation tool, one generation per selected sheet. Specific model version, seed and cost were not exposed. No paid video tools were used. Original generated PNG bytes are preserved, with no pixel editing, resizing or cropping.
+References were actually inspected: the previous private Wen/player candidates and The Quiet Minute master.
+
+SOURCES
+Current proposal:
+https://github.com/bobshenruililin/asterwind/blob/3b81078d30e4ed5cc5eca830bddfa2c146779fb3/docs/demos/unfolded/CAST.md
+Film identity:
+https://github.com/bobshenruililin/asterwind/blob/3b81078d30e4ed5cc5eca830bddfa2c146779fb3/anthology/episodes/standup/assets/reference-v1/01-quiet-minute-master.webp
+Film casting notes:
+https://github.com/bobshenruililin/asterwind/blob/3b81078d30e4ed5cc5eca830bddfa2c146779fb3/anthology/episodes/standup/assets/reference-v1/README.md
+
