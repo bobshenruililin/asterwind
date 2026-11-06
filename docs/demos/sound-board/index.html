@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sound board</title>
+<!-- Sound alternatives for Bob to compare by ear. Every file here has its licence and source listed; nothing is
+     adopted. Serve the repository root over HTTP and open /docs/demos/sound-board/ -->
+<style>
+:root{color-scheme:dark;--ink:#fbefd9;--gold:#e3b76d;--dim:#b9ad9c;--line:#2c2833}
+*{box-sizing:border-box}
+body{margin:0;background:#0d0c12;color:var(--ink);font:15px/1.55 Georgia,serif}
+main{max-width:1040px;margin:0 auto;padding:20px 16px 60px}
+h1{font-weight:400;font-size:28px;margin:6px 0 4px}h2{font-weight:400;font-size:21px;margin:34px 0 8px;border-top:1px solid var(--line);padding-top:18px}
+p,li{color:#e6dccb}.small{font:12px/1.5 system-ui;color:var(--dim)}
+.flag{font:10px system-ui;letter-spacing:.18em;text-transform:uppercase;color:#1b1610;background:var(--gold);padding:3px 7px;border-radius:2px}
+table{border-collapse:collapse;width:100%;font:13px/1.4 system-ui}th,td{border-bottom:1px solid var(--line);padding:7px 6px;text-align:left;vertical-align:top}th{color:var(--dim);font-weight:500}
+button.play{background:#1a1822;border:1px solid #bda77f88;color:var(--ink);border-radius:16px;min-width:44px;min-height:34px;padding:4px 10px;font:12px system-ui;cursor:pointer}
+button.play[aria-pressed=true]{background:#e3b76d33}
+a{color:#e8c98f}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+.card{border:1px solid var(--line);border-radius:6px;padding:12px;background:#13121a}.card h3{font-weight:400;font-size:16px;margin:0 0 6px}
+@media(max-width:640px){table{font-size:12px}th:nth-child(1),td:nth-child(1){max-width:120px}}
+</style>
+</head>
+<body>
+<main>
+<span class="flag">For listening</span>
+<h1>Sound board</h1>
+<p>Alternatives for the paper film's sound, to compare by ear. I can render and measure audio but can't hear it, so <strong>your ears decide</strong>. Every file is properly licensed and listed with its source. Nothing here is adopted, and no paid service is used.</p>
+<p class="small">To hear a choice in the scene, open the paper film with <code>?voice=kokoro-a</code>, <code>?voice=kokoro-b</code> or <code>?voice=piper</code>, plus <code>&amp;music=sketch</code> or <code>&amp;music=km-gymnopedie-no-1</code>. Then switch on Temp voices. For example: <a href="../paper-film/?voice=kokoro-a&amp;music=sketch">the paper film with Kokoro A and the sketch</a>.</p>
+
+<h2>1 · Voices</h2>
+<p>The same approved lines in four voices. <strong>My recommendation is still people:</strong> scratch recordings by teammates, on a phone, will carry breath and hesitation that no engine does. Of the engines, Kokoro is the most natural I can run locally under an open licence.</p>
+<table id="voices"><thead><tr><th>Line</th><th>Now: flite</th><th>Piper</th><th>Kokoro A (British)</th><th>Kokoro B (American)</th></tr></thead><tbody></tbody></table>
+<p class="small">
+<strong>flite:</strong> the current timing guides (CMU flite voices slt, rms, awb).<br>
+<strong>Piper 1.8:</strong> Mara is en_GB-cori-high (public domain); Julian and Ren are en_US-libritts_r-medium speakers 14 and 51 (CC BY 4.0, which requires credit to LibriTTS-R).<br>
+<strong>Kokoro-82M v1.0:</strong> Apache-2.0, run locally from the ONNX export. Kokoro A is bf_emma, bm_lewis and bm_george; Kokoro B is af_heart, am_michael and am_adam.<br>
+I excluded voices whose licences are non-commercial or share-alike. <strong>Paid options</strong> (ElevenLabs, OpenAI, Azure, Google) would need your approval before any account or spending.</p>
+
+<h2>2 · Recorded textures</h2>
+<p>Real paper, tape, switch, fan, rain and birds, in place of synthesis. These come only from Wikimedia Commons under public domain, CC0 or CC BY, with author and licence listed. <strong>The best source is still us:</strong> a 30-minute phone foley session with real card and kraft tape, a desk-lamp switch, a fan and the actual corridor, which gives us sound we own outright.</p>
+<div id="textures" class="cards"><p class="small">Loading…</p></div>
+
+<h2>3 · Music</h2>
+<p>A warm, whimsical direction, in three kinds of alternative:</p>
+<div class="cards" id="music"></div>
+<p class="small">
+<strong>Original sketch:</strong> composed in code for this project and rendered with FluidSynth and the FluidR3 GM SoundFont (MIT). It's ours outright; the instruments will sound like a General MIDI set, and a real player or better samples would lift it.<br>
+<strong>Kevin MacLeod:</strong> 45-second excerpts (trimmed and faded) from incompetech.com, licensed under Creative Commons: By Attribution 4.0 (creativecommons.org/licenses/by/4.0). Credit is required wherever used.<br>
+<strong>Not tried, and needing your approval:</strong>
+</p>
+<ul class="small">
+ <li>commissioning a composer;</li>
+ <li>paid libraries such as Epidemic Sound or Artlist;</li>
+ <li>AI music services, whose licensing terms vary.</li>
+</ul>
+</main>
+<script>
+'use strict';
+const CUE={'setup-00-00':['Julian','Again.'],'setup-02-00':['Mara',"Ren, you're leading this. I need your call."],'setup-04-00':['Mara','My fellowship application closes at noon. This test is the footage I have.'],'setup-05-00':['Julian','I know. I just… wanted to be here when my design moved.'],'setup-07-00':['Ren','We can fit the spare, or spend that time on this seam.'],'backup-00-00':['Ren','Use the spare. Julian, do you want a break?'],'backup-01-00':['Julian','Yeah. Just a minute. Keep my drawing here.'],'backup-06-00':['Mara','There.'],'backup-07-00':['Julian','I missed it.'],'repair-00-00':['Ren',"Let's splint it. Together."],'repair-01-00':['Mara','Then I need you on the canopy with me.'],'repair-02-00':['Julian','Hold it there.'],'repair-03-00':['Mara','I am.'],'repair-06-00':['Julian','It held.'],'repair-07-00':['Mara','Half of it.']};
+let current=null;
+function btn(src,label){const b=document.createElement('button');b.className='play';b.textContent='▶';b.setAttribute('aria-label',label);b.setAttribute('aria-pressed','false');
+ b.onclick=()=>{if(current&&current.b===b){current.a.pause();b.textContent='▶';b.setAttribute('aria-pressed','false');current=null;return}
+  if(current){current.a.pause();current.b.textContent='▶';current.b.setAttribute('aria-pressed','false')}
+  const a=new Audio(src);a.play().catch(()=>{});b.textContent='■';b.setAttribute('aria-pressed','true');current={a,b};a.onended=()=>{b.textContent='▶';b.setAttribute('aria-pressed','false');current=null}};return b}
+const tb=document.querySelector('#voices tbody');
+for(const [id,[who,text]] of Object.entries(CUE)){const tr=document.createElement('tr');const td=document.createElement('td');td.innerHTML=`<strong>${who}</strong> · ${text}`;tr.appendChild(td);
+ for(const [set,src] of [['flite',`../../../film/audio/${id}.mp3`],['Piper',`../paper-film/voices/piper/${id}.mp3`],['Kokoro A',`../paper-film/voices/kokoro-a/${id}.mp3`],['Kokoro B',`../paper-film/voices/kokoro-b/${id}.mp3`]]){const c=document.createElement('td');c.appendChild(btn(src,`${set}: ${who}, ${text}`));tr.appendChild(c)}
+ tb.appendChild(tr)}
+const MUSIC=[['Original sketch · night','music/seam-night-sketch.mp3','6/8 lullaby in D: celesta, harp, pizzicato, clarinet; a borrowed minor before home. 46 s.'],
+ ['Original sketch · dawn','music/seam-dawn-sketch.mp3','The same tune, brighter: flute, strings, glockenspiel. 40 s.'],
+ ['Kevin MacLeod · Gymnopedie No 1','music/km-gymnopedie-no-1-excerpt.mp3','Satie, solo piano. Warm and still. Excerpt.'],
+ ['Kevin MacLeod · Dreamy Flashback','music/km-dreamy-flashback-excerpt.mp3','Soft and nostalgic. Excerpt.'],
+ ['Kevin MacLeod · Wholesome','music/km-wholesome-excerpt.mp3','Gentle and warm. Excerpt.'],
+ ['Kevin MacLeod · Carefree','music/km-carefree-excerpt.mp3','Light and whimsical, possibly too jaunty for 3 AM. Excerpt.']];
+const mu=document.getElementById('music');for(const [t,src,d] of MUSIC){const c=document.createElement('div');c.className='card';c.innerHTML=`<h3>${t}</h3><p class="small">${d}</p>`;c.appendChild(btn(src,'Play '+t));mu.appendChild(c)}
+fetch('textures/manifest.json').then(r=>r.json()).then(m=>{const box=document.getElementById('textures');box.innerHTML='';
+ for(const x of m.items){const c=document.createElement('div');c.className='card';c.innerHTML=`<h3>${x.use}</h3><p class="small">${x.title} · ${x.license} · ${x.artist||'author on source page'}<br><a href="${x.page}">source</a>${x.changes?' · '+x.changes:''}</p>`;c.appendChild(btn('textures/'+x.file,'Play '+x.use));box.appendChild(c)}})
+ .catch(()=>{document.getElementById('textures').innerHTML='<p class="small">No textures yet: the Commons survey is rate-limited. See the note above about recording our own.</p>'});
+</script>
+</body>
+</html>

@@ -1,0 +1,380 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>What the shadows say</title>
+<!-- ROUGH PAPER-FILM PROOF for the Creative Exchange. Not the approved film, not a build. Everything on stage is
+     cut in code from card shapes (Robert's reference-consistent frames can replace each pose one for one), animated
+     on stepped low-fps frames with a deliberate hand-photographed wobble. Approved lines only (film/story.json).
+     Serve the repository root over HTTP and open /docs/demos/paper-film/ -->
+<style>
+:root{color-scheme:dark;--ink:#fbefd9;--gold:#e3b76d;--dim:#b9ad9c}
+*{box-sizing:border-box}
+html,body{margin:0;background:#0b0a10;color:var(--ink);font-family:Georgia,serif}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible{outline:2px solid var(--gold);outline-offset:4px}
+[hidden]{display:none!important}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+header{padding:14px 16px 8px;display:flex;flex-wrap:wrap;gap:6px 18px;align-items:baseline}
+header h1{font-weight:400;font-size:22px;margin:0}
+header p{margin:0;font:12px/1.5 system-ui;color:var(--dim);max-width:820px}
+.flag{font:10px system-ui;letter-spacing:.18em;text-transform:uppercase;color:#1b1610;background:var(--gold);padding:3px 7px;border-radius:2px}
+#frame{position:relative;width:min(calc(100% - 32px),calc((100vh - 150px)*1.7778));aspect-ratio:16/9;margin:0 auto;overflow:hidden;background:#060509;touch-action:none;user-select:none;-webkit-user-select:none}
+#stage{position:absolute;inset:0;width:100%;height:100%;display:block}
+#caption{position:absolute;left:50%;bottom:4.5%;transform:translateX(-50%);width:min(780px,86%);margin:0;text-align:center;text-shadow:0 2px 7px #000,0 0 2px #000;font-size:clamp(15px,2.1vw,27px);line-height:1.35;pointer-events:none}
+#who{display:block;color:var(--gold);font:10px system-ui;letter-spacing:.2em;text-transform:uppercase;margin-bottom:6px}
+.act{position:absolute;border:0;background:none;padding:0;border-radius:12px}
+.act span{position:absolute;left:50%;transform:translateX(-50%);white-space:nowrap;font:clamp(14px,1.9vw,24px) Georgia;text-shadow:0 2px 6px #000,0 0 2px #000}
+.act:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+#end{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;align-items:flex-start;padding:4% 5%;background:linear-gradient(0deg,#07060bdd,transparent 60%)}
+#end h2{font-weight:400;font-size:clamp(22px,3vw,40px);margin:0 0 12px}
+#end .row{display:flex;gap:10px;flex-wrap:wrap}
+#end button,nav button{background:#14121c99;border:1px solid #bda77f99;border-radius:2px;padding:10px 15px;min-height:44px;font:13px system-ui}
+nav{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;padding:12px 16px 20px}
+nav button[aria-pressed=true]{background:#e3b76d2a;color:#fff3dc}
+#review{max-width:820px;margin:0 auto 26px;padding:0 16px;font:12px/1.6 system-ui;color:var(--dim)}
+body.export header,body.export nav,body.export #review{display:none}
+body.export #frame{width:100vw;height:100vh;aspect-ratio:auto}
+@media (max-width:700px){#end{position:static;background:none;padding:14px 4px}}
+</style>
+</head>
+<body>
+<header>
+ <span class="flag">Rough proof</span>
+ <h1>What the shadows say</h1>
+ <p>The Seam as a cut-paper film. The lamp throws everyone's shadow on the wall, and the shadows show what nobody says. Pick something up and do it with your own hands. Approved lines only; everything is cut in code and will be replaced by Robert's frames.</p>
+</header>
+<div id="frame">
+ <svg id="stage" viewBox="0 0 1600 900" aria-hidden="true" focusable="false"></svg>
+ <button class="act" id="pick-spare" hidden aria-describedby="d-spare"><span style="top:115%">Fit the backup</span></button>
+ <button class="act" id="pick-strip" hidden aria-describedby="d-strip"><span style="top:115%">Repair together</span></button>
+ <button class="act" id="do-act" hidden><span id="do-label" style="bottom:-34px"></span></button>
+ <p id="caption" aria-hidden="true"><span id="who"></span><span id="line"></span></p>
+ <div id="end" hidden><h2>The Seam</h2><div class="row"><button id="again">Play again</button><button id="other">Try the other way</button></div></div>
+</div>
+<span class="sr" id="d-spare">Mara’s pre-cut spare rib. Pick it up.</span>
+<span class="sr" id="d-strip">A strip of kraft tape for splinting Julian’s original rib. Pick it up.</span>
+<p class="sr" id="live" aria-live="polite"></p>
+<nav aria-label="Demo controls">
+ <button id="play">Play</button>
+ <button id="pause" aria-pressed="false">Pause</button>
+ <button id="voices" aria-pressed="false">Temp voices</button>
+</nav>
+<section id="review" aria-label="Review notes"><p><strong>What it tests.</strong> Whether paper can bend reality to show feeling, cost and what goes unsaid. The tools: cut-card figures with jointed poses, independent shadow puppets on the wall, one real action done by the player's hands, and a consequence you can see in light and shadow. Frames are stepped at 12 fps with a small hand-photographed wobble.</p><p><strong>Not yet:</strong> Robert's painted frames, recorded sound, real voices, a phone-portrait staging.</p></section>
+<script>
+'use strict';
+const $=id=>document.getElementById(id),NS='http://www.w3.org/2000/svg',Q=new URLSearchParams(location.search),EXPORT=Q.has('export');
+if(EXPORT)document.body.classList.add('export');
+const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches,FPS=12;
+function rng(seed){let s=seed>>>0;return()=>{s=(s+0x6D2B79F5)>>>0;let t=s;t=Math.imul(t^t>>>15,t|1);t^=t+Math.imul(t^t>>>7,t|61);return((t^t>>>14)>>>0)/4294967296}}
+// ---------- scissor-cut shapes: polygons subdivided and nudged, so every edge is cut by hand ----------
+let SEED=11;
+function cut(pts,amp=1.3,step=16){const r=rng(SEED+=7),out=[];for(let i=0;i<pts.length;i++){const [x0,y0]=pts[i],[x1,y1]=pts[(i+1)%pts.length],n=Math.max(1,Math.round(Math.hypot(x1-x0,y1-y0)/step));for(let k=0;k<n;k++){const u=k/n;out.push([x0+(x1-x0)*u+(k?(r()-.5)*2*amp:0),y0+(y1-y0)*u+(k?(r()-.5)*2*amp:0)])}}return'M'+out.map(p=>p[0].toFixed(1)+' '+p[1].toFixed(1)).join('L')+'Z'}
+const P=(pts,fill,extra='')=>`<path d="${cut(pts)}" fill="${fill}" ${extra}/>`;
+const EDGE='stroke="#fff3e0" stroke-opacity=".22" stroke-width="1.4" stroke-linejoin="round"';
+// ---------- the puppets: each part rotates about its own pivot; shadows are the same rigs in black ----------
+function mara(id,sil){const f=c=>sil?'#110d17':c,e=sil?'':EDGE;
+ return `<g id="${id}" class="rig">
+ <g data-part="body" data-pivot="470 640">
+  ${P([[372,402],[452,388],[540,392],[566,404],[604,640],[352,640]],f('#66653a'),e)}
+  ${P([[452,392],[486,388],[520,470],[492,474]],f('#4f4e28'),e)}${P([[486,388],[540,394],[526,440],[512,452]],f('#575630'),e)}
+  ${P([[352,560],[604,560],[608,640],[348,640]],f('#545329'))}
+  <g data-part="head" data-pivot="474 372">
+   ${P([[452,362],[494,362],[498,402],[452,404]],f('#d9a57e'))}
+   <g class="face-profile">
+    ${P([[436,302],[456,266],[504,272],[516,300],[532,318],[519,326],[523,335],[516,341],[515,356],[491,369],[468,371],[440,347]],f('#e2b08a'),e)}
+    ${sil?'':`<path d="M503 304 q6 -3 10 1 q-5 3 -10 -1z" fill="#2a1a14"/><path d="M505 296 q6 -4 11 -1" stroke="#3a2420" stroke-width="3" fill="none"/><path d="M516 334 q4 2 7 0" stroke="#8c4a3a" stroke-width="2.4" fill="none"/>`}
+    ${P([[428,304],[446,262],[480,250],[508,262],[514,284],[496,276],[470,282],[462,318],[450,350],[432,340]],f('#3a2420'),e)}
+    ${P([[408,262],[420,238],[444,236],[456,256],[446,276],[420,278]],f('#3a2420'),e)}
+    ${P([[396,214],[402,210],[436,252],[430,256]],f('#e8b83a'),e)}${P([[396,214],[392,206],[402,210]],f('#3a2a20'))}
+   </g>
+   <g class="face-turn" hidden>
+    ${P([[442,300],[452,272],[480,262],[508,272],[516,300],[512,338],[496,364],[478,370],[460,364],[446,340]],f('#e2b08a'),e)}
+    ${sil?'':`<path d="M460 310 q6 -4 12 0 q-6 4 -12 0z M488 310 q6 -4 12 0 q-6 4 -12 0z" fill="#2a1a14"/><path d="M458 300 q8 -5 16 -1 M486 299 q8 -4 16 1" stroke="#3a2420" stroke-width="3" fill="none"/><path d="M478 318 l-4 18 l8 0" stroke="#b07a5a" stroke-width="2" fill="none"/><path d="M470 348 q9 4 18 0" stroke="#8c4a3a" stroke-width="2.6" fill="none"/>`}
+    ${P([[436,312],[440,270],[466,252],[500,254],[520,276],[520,310],[510,286],[486,272],[462,276],[448,300],[446,336]],f('#3a2420'),e)}
+    ${P([[440,250],[452,228],[478,226],[490,244],[480,262],[454,262]],f('#3a2420'),e)}
+    ${P([[430,200],[436,198],[464,240],[458,244]],f('#e8b83a'),e)}
+   </g>
+  </g>
+  <g data-part="arm" data-pivot="540 414">
+   ${P([[524,404],[560,410],[602,512],[568,526]],f('#5e5d33'),e)}
+   <g data-part="fore" data-pivot="585 516">
+    ${P([[566,504],[602,512],[650,572],[622,592]],f('#5e5d33'),e)}
+    <g data-part="hand" data-pivot="636 584">
+     ${P([[624,570],[652,566],[674,576],[676,590],[650,600],[628,598]],f('#e2b08a'),e)}${P([[640,566],[648,552],[656,556],[654,570]],f('#e2b08a'),e)}
+     <g class="held-phone" hidden>${P([[648,540],[682,536],[688,598],[654,602]],f('#2b2b30'),e)}${sil?'':P([[652,546],[680,543],[684,592],[657,595]],'#a9b8c8')}</g>
+    </g>
+   </g>
+  </g>
+ </g></g>`}
+function julian(id,sil){const f=c=>sil?'#110d17':c,e=sil?'':EDGE;
+ return `<g id="${id}" class="rig">
+ <g data-part="body" data-pivot="1130 640">
+  ${P([[1010,420],[1060,398],[1196,396],[1250,420],[1276,640],[994,640]],f('#b9a284'),e)}
+  ${P([[1150,396],[1206,398],[1226,430],[1182,424]],f('#9c8669'),e)}
+  ${P([[1000,560],[1272,560],[1276,640],[994,640]],f('#a38d70'))}
+  ${sil?'':`<path d="M1104 404 l-6 70 M1124 404 l2 66" stroke="#e9dcc4" stroke-width="3" fill="none" opacity=".8"/>`}
+  <g data-part="head" data-pivot="1128 386">
+   ${P([[1106,372],[1150,372],[1152,410],[1106,408]],f('#d4a47e'))}
+   ${P([[1164,300],[1146,270],[1100,276],[1088,304],[1070,322],[1082,330],[1078,340],[1086,346],[1088,362],[1112,376],[1138,378],[1166,350]],f('#dcae88'),e)}
+   ${sil?'':`<path d="M1090 309 q-6 -3 -10 1 q5 3 10 -1z" fill="#2a1a14"/><path d="M1088 300 q-6 -4 -12 -1" stroke="#3b2a1e" stroke-width="3" fill="none"/><ellipse cx="1104" cy="338" rx="12" ry="7" fill="#6e6762" opacity=".45"/><path d="M1080 339 q-4 2 -7 0" stroke="#8c4a3a" stroke-width="2.4" fill="none"/>`}
+   ${P([[1170,330],[1178,300],[1172,272],[1180,262],[1160,256],[1162,240],[1142,250],[1132,232],[1120,252],[1100,246],[1104,264],[1084,268],[1094,284],[1086,300],[1106,290],[1126,296],[1144,288],[1152,312],[1158,336]],f('#4b3423'),e)}
+  </g>
+  <g data-part="arm" data-pivot="1062 432">
+   ${P([[1046,420],[1082,428],[1048,540],[1012,528]],f('#ab9476'),e)}
+   <g data-part="fore" data-pivot="1030 532">
+    ${P([[1012,520],[1048,540],[966,580],[952,556]],f('#ab9476'),e)}
+    <g data-part="hand" data-pivot="958 568">
+     ${P([[964,552],[938,550],[916,560],[914,574],[940,584],[962,582]],f('#dcae88'),e)}${P([[950,550],[944,536],[936,540],[938,554]],f('#dcae88'),e)}
+     ${sil?'':'<path d="M920 568 l12 2" stroke="#6e6762" stroke-width="3" opacity=".6"/>'}
+     <g class="held-rib" hidden>${P([[930,560],[900,470],[912,462],[944,552]],f('#e8d6b0'))}${[0,1,2,3].map(i=>P([[904+i*6,478-i*4],[860-i*8,430-i*14],[866-i*8,424-i*14],[910+i*6,472-i*4]],f('#f4ead2'))).join('')}</g>
+    </g>
+   </g>
+  </g>
+ </g></g>`}
+// The pavilion model: base, rib (original or spare), six tissue louvres hinged up the rib, the splint.
+const HINGE=[...Array(6)].map((_,i)=>[884+i*4.6,478-i*10.4]);
+function model(id,sil){const f=c=>sil?'#110d17':c,e=sil?'':EDGE,lv=sil?'#110d17':'#f4ead2';
+ return `<g id="${id}" class="rig">
+ ${P([[836,592],[972,590],[974,604],[834,606]],f('#c7a77a'),e)}
+ <g class="rib-original">
+  ${P([[872,592],[866,520],[872,508],[882,510],[888,592]],f('#e8d6b0'),e)}
+  <g data-part="ribtop" data-pivot="878 512">${P([[866,514],[868,470],[884,438],[908,420],[920,428],[896,446],[884,476],[884,514]],f('#e8d6b0'),e)}</g>
+  ${sil?'':'<path d="M868 512 l6 -4 l4 6 l6 -5 l4 4" stroke="#7a5a36" stroke-width="2" fill="none"/>'}
+  <g class="splint">${[0,1,2].map(i=>`<g class="wrap" data-n="${i+1}" hidden>${P([[862,520-i*9],[892,516-i*9],[893,526-i*9],[861,530-i*9]],f('#a87a4c'),e)}</g>`).join('')}</g>
+ </g>
+ <g class="rib-spare" hidden>${P([[872,592],[866,520],[868,470],[884,438],[908,420],[920,428],[896,446],[884,476],[886,520],[888,592]],f('#f1e4c6'),e)}</g>
+ ${HINGE.map(([hx,hy],i)=>`<g data-part="louvre${i}" data-pivot="${hx} ${hy}">${P([[hx+2,hy-4],[hx-132,hy-16],[hx-140,hy-6],[hx-2,hy+5]],lv,(sil?'':EDGE)+(sil?'':' fill-opacity=".86"'))}</g>`).join('')}
+ </g>`}
+function lamp(){return `<g id="lamp">
+ ${P([[690,640],[784,640],[780,626],[694,626]],'#8a6a3a',EDGE)}
+ ${P([[730,628],[740,628],[748,560],[738,558]],'#b8873c',EDGE)}${P([[738,560],[748,556],[772,520],[762,516]],'#b8873c',EDGE)}
+ <g id="shade">${P([[752,520],[800,486],[812,506],[776,540]],'#8a5a25',EDGE)}<path id="shadeglow" d="M800 486 L812 506 L822 492 Z" fill="#ffd38a"/></g>
+ <circle cx="744" cy="560" r="5" fill="#e0b060"/></g>`}
+function hands(){return `<g id="hands">
+ <g id="hand-l">${P([[560,900],[640,900],[668,770],[618,756]],'#2f3a62',EDGE)}${P([[612,760],[668,772],[664,792],[608,780]],'#e9e3d6',EDGE)}${P([[612,764],[664,774],[690,730],[676,716],[640,722],[618,742]],'#d9a982',EDGE)}</g>
+ <g id="hand-r">${P([[1040,900],[960,900],[932,770],[982,756]],'#2f3a62',EDGE)}${P([[988,760],[932,772],[936,792],[992,780]],'#e9e3d6',EDGE)}${P([[988,764],[936,774],[910,730],[924,716],[960,722],[982,742]],'#d9a982',EDGE)}</g>
+ <g id="carry-spare" hidden>${P([[650,712],[840,700],[842,712],[652,724]],'#f1e4c6',EDGE)}</g>
+ <g id="carry-strip" hidden>${P([[900,722],[1010,716],[1012,728],[902,734]],'#a87a4c',EDGE)}<ellipse cx="1000" cy="730" rx="18" ry="12" fill="#8a5f38"/></g>
+ </g>`}
+function build(){
+ const grain='../../../hub/art/textures/paper-grain.webp';
+ $('stage').innerHTML=`<defs>
+  <radialGradient id="lampwall" cx="790" cy="470" r="820" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#c98d55"/><stop offset=".42" stop-color="#7d5844"/><stop offset="1" stop-color="#2b283d"/></radialGradient>
+  <linearGradient id="dawnsky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f3c3a0"/><stop offset="1" stop-color="#f7e6c6"/></linearGradient>
+  <linearGradient id="beam" x1="0" y1="0" x2="1" y2=".4"><stop offset="0" stop-color="#fff2d4" stop-opacity=".7"/><stop offset="1" stop-color="#fff2d4" stop-opacity=".05"/></linearGradient><radialGradient id="dawnwall" cx="300" cy="200" r="1300" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#e7c6a0"/><stop offset=".5" stop-color="#a88f88"/><stop offset="1" stop-color="#5b5470"/></radialGradient>
+  <pattern id="grain" width="512" height="512" patternUnits="userSpaceOnUse"><image href="${grain}" width="512" height="512"/></pattern>
+  <filter id="lift" x="-10%" y="-10%" width="130%" height="130%"><feDropShadow dx="4" dy="6" stdDeviation="3" flood-color="#000" flood-opacity=".5"/></filter>
+  <filter id="soft" x="-10%" y="-10%" width="120%" height="120%"><feGaussianBlur stdDeviation="1.1"/></filter>
+  <clipPath id="wallclip"><rect x="0" y="0" width="1600" height="600"/></clipPath>
+ </defs>
+ <g id="film">
+  <rect width="1600" height="900" fill="#2b283d"/>
+  <rect id="wall-lit" width="1600" height="600" fill="url(#lampwall)"/><rect id="wall-dawn" width="1600" height="600" fill="url(#dawnwall)" opacity="0"/>
+  <g id="window">${P([[34,60],[236,58],[238,334],[32,336]],'#5a4632',EDGE)}
+   <g id="sky-night">${P([[50,76],[220,74],[222,318],[48,320]],'#1c2246')}<path d="M176 108 a26 26 0 1 0 17 46 a20 20 0 1 1 -17 -46z" fill="#efe6c8"/>${[[80,110],[110,200],[160,260],[70,290],[200,240]].map(([x,y])=>`<path d="M${x} ${y-5} l2 4 l5 1 l-4 3 l1 5 l-4 -3 l-4 3 l1 -5 l-4 -3 l5 -1z" fill="#efe6c8" opacity=".8"/>`).join('')}</g>
+   <g id="sky-dawn" opacity="0">${P([[50,76],[220,74],[222,318],[48,320]],'url(#dawnsky)')}<circle cx="110" cy="282" r="30" fill="#fff4d6"/></g>
+   ${P([[130,74],[140,74],[142,320],[132,320]],'#5a4632')}${P([[48,196],[222,194],[222,204],[48,206]],'#5a4632')}
+  </g>
+  ${P([[1290,120],[1520,116],[1524,132],[1292,136]],'#3a3550')}${P([[1300,250],[1520,246],[1522,262],[1302,266]],'#3a3550')}
+  ${[0,1,2,3].map(i=>P([[1312+i*48,118-40-i*6],[1340+i*48,118-46-i*6],[1344+i*48,118],[1316+i*48,118]],'#4a4360')).join('')}
+  <path id="beam" d="M236 70 L1500 250 L1500 600 L236 334 Z" fill="url(#beam)" opacity="0"/>
+  <rect width="1600" height="600" fill="url(#grain)" opacity=".42"/>
+  <g id="screen" opacity="0" style="mix-blend-mode:screen"><rect id="sh-frame" x="0" y="0" width="100" height="160" rx="16" fill="#2f6dff" fill-opacity=".34" stroke="#a9c8ff" stroke-opacity=".75" stroke-width="6"/><g id="glitch" hidden><rect x="0" y="0" width="1600" height="26" fill="#05040a" opacity=".85"/><rect x="0" y="60" width="1600" height="14" fill="#05040a" opacity=".85"/></g></g>
+  <g id="shadows" clip-path="url(#wallclip)" filter="url(#soft)">
+   <g id="sh-mara-wrap">${mara('sh-mara',true)}</g><g id="sh-julian-wrap">${julian('sh-julian',true)}</g><g id="sh-model-wrap">${model('sh-model',true)}</g>
+  </g>
+  <g filter="url(#lift)">${mara('mara',false)}</g>
+  <g filter="url(#lift)">${julian('julian',false)}</g>
+  ${P([[0,596],[1600,592],[1600,642],[0,646]],'#6b4a32',EDGE)}
+  ${P([[0,640],[1600,636],[1600,900],[0,900]],'#4a3222')}
+  ${[...Array(60)].map((_,i)=>`<path d="M${i*27} 652 q13 -9 27 0" stroke="#3a2618" stroke-width="3" fill="none" opacity=".6"/>`).join('')}
+  <g id="phone-stand" filter="url(#lift)">${P([[640,598],[672,598],[664,584],[648,584]],'#8a7656',EDGE)}<g id="phone">${P([[636,520],[676,516],[680,588],[640,590]],'#2b2b30',EDGE)}<g id="phone-screen">${P([[642,526],[672,523],[675,580],[645,583]],'#9fb0c2')}</g></g></g>
+  <g id="spare-on-table" filter="url(#lift)">${P([[650,600],[800,594],[802,604],[652,610]],'#f1e4c6',EDGE)}${[0,1,2,3,4].map(i=>`<path d="M${670+i*26} 598 v5" stroke="#b89a6e" stroke-width="2"/>`).join('')}</g>
+  <g id="strip-on-table" filter="url(#lift)">${P([[990,606],[1080,600],[1082,610],[992,616]],'#a87a4c',EDGE)}<ellipse cx="1092" cy="598" rx="20" ry="14" fill="#8a5f38"/><ellipse cx="1092" cy="598" rx="8" ry="6" fill="#5a3c22"/></g>
+  <g id="original-aside" hidden filter="url(#lift)">${P([[990,604],[1110,598],[1112,606],[1000,612]],'#e8d6b0',EDGE)}<path d="M1040 600 l5 -3 l3 5 l5 -4" stroke="#7a5a36" stroke-width="2" fill="none"/></g>
+  <g filter="url(#lift)">${model('model',false)}</g>
+  <g filter="url(#lift)">${lamp()}</g>
+  <g filter="url(#lift)">${hands()}</g>
+  <rect width="1600" height="900" fill="url(#grain)" opacity=".35"/>
+  <rect id="dark" width="1600" height="900" fill="#05040a" opacity="1"/>
+  <rect width="1600" height="900" fill="url(#vig)" pointer-events="none"/>
+ </g>`;
+ const d=$('stage').querySelector('defs');d.insertAdjacentHTML('beforeend','<radialGradient id="vig" cx="800" cy="450" r="1000" gradientUnits="userSpaceOnUse"><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".6"/></radialGradient>');
+ for(const g of $('stage').querySelectorAll('[data-part]')){const [x,y]=g.dataset.pivot.split(' ').map(Number);g._p=[x,y];g._id=g.closest('.rig').id+'.'+g.dataset.part}
+}
+build();
+// ---------- poses: degrees per part; a figure's shadow is another rig with its own poses ----------
+const POSE={
+ mara:{rest:{body:0,head:0,arm:0,fore:0,hand:0},ask:{body:-2,head:-4,turn:1},phone:{body:3,head:14,arm:-24,fore:-38,hand:-10,phone:1},lookphone:{body:2,head:16},
+  frame:{body:-2,head:4,arm:-62,fore:-50,hand:-18,phone:1},relief:{body:-3,head:-6,arm:-8,fore:-6},holdcanopy:{body:6,head:8,arm:-6,fore:24,hand:10},down:{body:4,head:20},toward:{body:-2,head:-8,turn:1}},
+ julian:{rest:{body:0,head:0,arm:0,fore:0,hand:0},spent:{body:4,head:18,arm:6,fore:10},hover:{body:2,head:12,arm:-6,fore:-6,hand:-6},cradle:{body:2,head:10,arm:-14,fore:-20,hand:-18},
+  lower:{body:6,head:24,arm:12,fore:20,hand:10,rib:1},keep:{body:10,head:30,arm:-8,fore:-34,hand:-24,rib:1},splint:{body:6,head:16,arm:-4,fore:6,hand:4},glad:{body:-3,head:-6,arm:-2,fore:-2},toward:{body:-2,head:-2}},
+ model:{intact:{ribtop:0,l:[18,16,14,12,10,8]},buckle:{ribtop:14,l:[60,64,70,72,76,80]},bird1:{ribtop:-6,l:[-58,-48,-38,-28,-18,-8]},bird2:{ribtop:4,l:[24,30,36,42,48,54]},
+  folded:{ribtop:30,l:[84,86,88,88,88,88]},open:{ribtop:0,l:[-44,-36,-28,-20,-12,-4]},half:{ribtop:4,l:[-40,-32,-24,-16,58,70]},closed:{ribtop:0,l:[40,42,44,46,48,50]}}
+};
+// ---------- the script: segments with tracks [t, actor, pose, moveSeconds], lines, sound, light ----------
+const L={
+ s00:['setup-00-00','Julian','Again.',.84],s02:['setup-02-00','Mara',"Ren, you're leading this. I need your call.",3.12],
+ s04:['setup-04-00','Mara','My fellowship application closes at noon. This test is the footage I have.',4.85],
+ s05:['setup-05-00','Julian','I know. I just… wanted to be here when my design moved.',3.86],s07:['setup-07-00','Ren','We can fit the spare, or spend that time on this seam.',3.65],
+ b00:['backup-00-00','Ren','Use the spare. Julian, do you want a break?',3.14],b01:['backup-01-00','Julian','Yeah. Just a minute. Keep my drawing here.',3.17],
+ b06:['backup-06-00','Mara','There.',.72],b07:['backup-07-00','Julian','I missed it.',1.0],
+ r00:['repair-00-00','Ren',"Let's splint it. Together.",1.9],r01:['repair-01-00','Mara','Then I need you on the canopy with me.',2.3],
+ r02:['repair-02-00','Julian','Hold it there.',1.32],r03:['repair-03-00','Mara','I am.',.91],r06:['repair-06-00','Julian','It held.',.9],r07:['repair-07-00','Mara','Half of it.',1.08]
+};
+// Actors: mara, julian, model (the real things) and smara, sjulian, smodel (their shadows). fx: frame (the phone's shadow grown into a screen), bird (shadow louvres beat).
+const SEG={
+ open:{dur:4.6,light:[[0,'off'],[1.2,'flick'],[1.6,'lamp']],sfx:[[1.1,'switch'],[1.5,'hum']],tracks:[[0,'model','intact'],[0,'smodel','intact']],slate:'03:14'},
+ again:{dur:4.4,lines:[[1.8,'s00']],sfx:[[1.2,'creak']],tracks:[[.4,'julian','hover',.6],[.4,'sjulian','hover',.6],[1.1,'model','buckle',.5],[1.1,'smodel','buckle',.5],[2.4,'julian','spent',.8],[2.4,'sjulian','spent',.8]]},
+ ask:{dur:4.6,lines:[[.6,'s02']],tracks:[[.2,'mara','ask',.4],[.2,'smara','lookphone',.6],[.3,'model','intact',.4],[.3,'smodel','intact',.4]],note:'Mara looks at you. Her shadow keeps looking at her phone.'},
+ footage:{dur:6.6,lines:[[.6,'s04']],sfx:[[2.4,'frame']],tracks:[[.2,'mara','rest',.4],[.4,'smara','phone',.6],[2.2,'smara','frame',.8]],fx:[[2.4,'frame',1],[4.6,'frame',2]],note:'Her phone’s shadow grows into the footage that is her future.'},
+ design:{dur:6,lines:[[.5,'s05']],sfx:[[2.4,'flutter']],tracks:[[.2,'julian','hover',.6],[.4,'sjulian','cradle',.8]],fx:[[2,'bird',1]],note:'To Julian it is alive: his shadow cradles it, and it beats like a wing.'},
+ call:{dur:4.8,lines:[[.4,'s07']],tracks:[[.2,'mara','toward',.4],[.2,'julian','toward',.5]],fx:[[0,'hands','up']]},
+ choice:{gate:'choice'},
+ // Backup
+ slot:{gate:'act',kind:'spare',steps:1},
+ b1:{dur:8.4,lines:[[.6,'b00'],[4.2,'b01']],sfx:[[0,'snap']],fx:[[0,'frame',0],[0,'bird',0],[0,'hands','down']],tracks:[[0,'model','closed',.5],[0,'smodel','closed',.5],[0,'smara','relief',.6],[.2,'mara','relief',.4],[2,'sjulian','lower',.8],[4,'julian','glad',.4],[6.2,'julian','exit',1.6],[6.4,'sjulian','keep',.8]],note:'Julian takes his break. His shadow stays behind with what it was holding.'},
+ night1:{dur:1.6,light:[[0,'lamp'],[.6,'off']],sfx:[[.4,'switch']]},
+ b2:{dur:7.2,light:[[0,'dawn']],sfx:[[.3,'fan'],[1.4,'rustle']],lines:[[2.6,'b06']],tracks:[[.6,'model','open',1.2],[.6,'smodel','open',1.2],[.2,'mara','toward',.4]],slate:'08:00',note:'The canopy opens on the spare. Julian’s shadow is still at the table, holding his folded design.'},
+ b3:{dur:5,lines:[[1.6,'b07']],tracks:[[.2,'julian','return',1.2],[.2,'mara','toward',.3]],note:'He is back. His shadow is not.'},
+ // Repair
+ wrap:{gate:'act',kind:'strip',steps:3},
+ r1:{dur:9.4,lines:[[.4,'r00'],[3,'r01'],[6,'r02'],[7.6,'r03']],sfx:[[2.4,'frame'],[6.2,'creak']],fx:[[0,'hands','down'],[2.2,'frame',-1],[0,'bird',0]],tracks:[[0,'model','intact',.4],[0,'smodel','intact',.4],[2.2,'smara','holdcanopy',.8],[2.6,'mara','holdcanopy',.6],[4.6,'sjulian','splint',.6],[4.8,'julian','splint',.6]],note:'Her shadow puts the footage down to hold the canopy. Three shadows hold one thing.'},
+ night2:{dur:1.6,light:[[0,'lamp'],[.6,'off']],sfx:[[.4,'switch']]},
+ r2:{dur:8.2,light:[[0,'dawn']],sfx:[[.3,'fan'],[2,'flutter']],lines:[[3,'r06'],[5.6,'r07']],tracks:[[.6,'model','half',1.2],[.6,'smodel','half',1.2],[.2,'julian','glad',.4],[4.8,'mara','down',.6],[4.8,'smara','down',.6]],fx:[[5.2,'frame',3]],slate:'08:00',note:'It holds, half open. On the wall, her footage comes back with two louvres caught.'},
+ r3:{dur:4.4,tracks:[[.4,'julian','toward',.6],[.6,'mara','toward',.6],[.6,'smara','toward',.6]],note:'They turn to each other. Their shadows do too.'}
+};
+const PROGRAM={seq:['open','again','ask','footage','design','call','choice'],spare:['slot','b1','night1','b2','b3'],strip:['wrap','r1','night2','r2','r3']};
+// ---------- runner (deterministic: a function of time and input) ----------
+let S=null;
+function start(opt={}){S={segs:PROGRAM.seq.slice(),i:0,t:0,T:0,fired:new Set(),log:[],pose:{},light:'off',lightT:0,fx:{frame:0,bird:0,hands:'down'},fxT:{},choice:null,step:0,stepT:-9,actT:0,done:false,paused:false,cap:null,script:opt.script||null,hover:null,exitX:0};
+ for(const a of ['mara','julian','smara','sjulian'])S.pose[a]={from:POSE[a.replace(/^s/,'')].rest,to:POSE[a.replace(/^s/,'')].rest,t0:0,dur:0,name:'rest'};
+ for(const a of ['model','smodel'])S.pose[a]={from:POSE.model.intact,to:POSE.model.intact,t0:0,dur:0,name:'intact'};
+ $('end').hidden=true;enter()}
+const seg=()=>SEG[S.segs[S.i]];
+function emit(e){e.T=S.T;S.log.push(e);live(e)}
+function enter(){const g=seg();if(!g){finish();return}S.t=0;S.actT=0;S.step=0;
+ if(g.gate==='choice')announce('Two things on the table: Mara’s spare, and a strip of tape for Julian’s rib. Pick one up.');
+ if(g.gate==='act')announce(g.kind==='spare'?'Slot the spare into the model.':'Wrap the cracked rib. Three times.')}
+function next(){S.i++;enter()}
+function finish(){S.done=true;$('end').hidden=false;announce('The Seam. Play again, or try the other way.')}
+function choose(c){if(!S||seg()?.gate!=='choice'||S.choice)return;S.choice=c;emit({type:'sfx',kind:'pick'});S.segs.push(...PROGRAM[c]);next()}
+function act(){const g=seg();if(!g||g.gate!=='act')return;if(S.T-S.stepT<.5)return;S.step++;S.stepT=S.T;emit({type:'sfx',kind:g.kind==='spare'?'slide':'tape'});if(S.step>=g.steps){S.doneAt=S.T}}
+function poseOf(a,name){const base=a.replace(/^s/,'');if(name==='exit'||name==='return')return POSE[base].glad;return POSE[base][name]}
+function setPose(a,name,dur){const cur=S.pose[a];const now=sample(a);S.pose[a]={from:now,to:poseOf(a,name)||now,t0:S.T,dur:reduced?0:(dur||0),name};if(a==='julian'&&(name==='exit'||name==='return'))S.walk={dir:name,t0:S.T,dur:dur||1.2}}
+function lerpPose(A,B,u){const o={};for(const k of new Set([...Object.keys(A),...Object.keys(B)])){const a=A[k],b=B[k];if(Array.isArray(a)||Array.isArray(b)){const aa=a||b,bb=b||a;o[k]=aa.map((v,i)=>v+(bb[i]-v)*u)}else if(typeof (a??b)==='number')o[k]=(a??0)+((b??0)-(a??0))*u;else o[k]=u<.5?a:b}return o}
+function sample(a){const p=S.pose[a];if(!p.dur)return p.to;let u=Math.min(1,(S.T-p.t0)/p.dur);
+ // Stepped like a stop-motion move: positions change on twos (6 a second), eased.
+ if(!reduced)u=Math.min(1,Math.round(u*p.dur*6)/(p.dur*6));const e=u<.5?2*u*u:1-Math.pow(-2*u+2,2)/2;return lerpPose(p.from,p.to,e)}
+function step(dt){if(!S||S.done||S.paused)return;const g=seg();if(!g){finish();return}S.T+=dt;const sc=S.script;
+ if(g.gate==='choice'){S.actT+=dt;if(sc&&S.actT>=sc.choiceAt)choose(sc.choice);return}
+ if(g.gate==='act'){S.actT+=dt;if(sc&&S.actT>=sc.firstAct&&S.step<g.steps&&S.T-S.stepT>=sc.every)act();if(!sc&&S.actT>10&&S.step<g.steps&&S.T-S.stepT>1.2)act();if(S.doneAt!=null&&S.T-S.doneAt>.9){S.doneAt=null;next()}return}
+ S.t+=dt;
+ for(const [at,k] of g.lines||[]){const key=S.i+':'+k;if(S.t>=at&&!S.fired.has(key)){S.fired.add(key);const [id,who,text,d]=L[k];S.cap={who,text,until:S.T+Math.max(1.8,d+1)};emit({type:'line',id,who,text,d})}}
+ for(const [at,kind] of g.sfx||[]){const key=S.i+':s:'+kind+at;if(S.t>=at&&!S.fired.has(key)){S.fired.add(key);emit({type:'sfx',kind})}}
+ for(const [at,a,name,dur] of g.tracks||[]){const key=S.i+':t:'+a+at;if(S.t>=at&&!S.fired.has(key)){S.fired.add(key);setPose(a,name,dur)}}
+ for(const [at,k,v] of g.fx||[]){const key=S.i+':f:'+k+at;if(S.t>=at&&!S.fired.has(key)){S.fired.add(key);S.fx[k]=v;S.fxT[k]=S.T}}
+ for(const [at,v] of g.light||[]){const key=S.i+':l:'+at;if(S.t>=at&&!S.fired.has(key)){S.fired.add(key);S.light=v;S.lightT=S.T}}
+ if(S.cap&&S.T>S.cap.until)S.cap=null;
+ if(S.t>=g.dur)next()}
+// ---------- render: quantised to the film's frame rate, with a hand-photographed wobble ----------
+function boil(id,frame){if(reduced)return[0,0,0];const r=rng(frame*977+[...id].reduce((a,c)=>a*31+c.charCodeAt(0),7)>>>0);return[(r()-.5)*.7,(r()-.5)*.8,(r()-.5)*.8]}
+function applyRig(rigId,pose,frame){const root=$(rigId);if(!root)return;
+ for(const g of root.querySelectorAll('[data-part]')){const part=g.dataset.part;let ang=0;
+  if(part.startsWith('louvre'))ang=-((pose.l||[])[+part.slice(6)]||0);else ang=pose[part]||0;
+  const [bx,by,br]=boil(g._id,frame),[px,py]=g._p;g.setAttribute('transform',`translate(${bx.toFixed(2)} ${by.toFixed(2)}) rotate(${(ang+br).toFixed(2)} ${px} ${py})`)}
+ const prof=root.querySelector('.face-profile'),turn=root.querySelector('.face-turn');if(prof&&turn){prof.toggleAttribute('hidden',!!pose.turn);turn.toggleAttribute('hidden',!pose.turn)}
+ const ph=root.querySelector('.held-phone');if(ph)ph.toggleAttribute('hidden',!pose.phone);const hr=root.querySelector('.held-rib');if(hr)hr.toggleAttribute('hidden',!pose.rib)}
+const LIGHTS={lamp:{o:[770,700],k:1.42},dawn:{o:[140,240],k:1.16}};
+const proj=({o:[ox,oy],k})=>`translate(${ox} ${oy}) scale(${k}) translate(${-ox} ${-oy})`;
+let lastFrame=-1;
+function render(){if(!S)return;const frame=Math.floor(S.T*FPS);if(frame===lastFrame&&!S.forceRender)return;lastFrame=frame;S.forceRender=false;const g=seg()||{};
+ // Light: off, a flickering switch-on, the lamp, or dawn through the window.
+ const lt=S.light,on=lt==='lamp'||(lt==='flick'&&frame%3!==0),dawn=lt==='dawn';
+ $('dark').setAttribute('opacity',lt==='off'&&!dawn?(S.i===0?.94:.7):0);
+ $('wall-lit').setAttribute('opacity',on?1:0);$('shadeglow').setAttribute('opacity',on?1:.15);
+ $('wall-dawn').setAttribute('opacity',dawn?1:0);$('sky-night').setAttribute('opacity',dawn?0:1);$('sky-dawn').setAttribute('opacity',dawn?1:0);$('beam').setAttribute('opacity',dawn?1:0);
+ // Shadows: the same rigs, projected from the light onto the wall; in the morning they swing to the window's angle.
+ const now=dawn?LIGHTS.dawn:LIGHTS.lamp,leftBehind=S.choice==='spare'&&['night1','b2','b3'].includes(S.segs[S.i]);
+ $('sh-mara-wrap').setAttribute('transform',proj(now));$('sh-model-wrap').setAttribute('transform',proj(now));
+ // After the backup, Julian's shadow stays where last night's lamp put it, even in daylight.
+ $('sh-julian-wrap').setAttribute('transform',proj(leftBehind?LIGHTS.lamp:now));
+ $('shadows').setAttribute('opacity',on?.84:dawn?.62:(leftBehind?.62:0));
+ $('sh-julian-wrap').setAttribute('opacity',leftBehind&&!on?1.25:1);
+ for(const a of ['mara','julian','model','smara','sjulian','smodel']){const rig=a.startsWith('s')?'sh-'+a.slice(1):a;let p=sample(a);
+  if(a==='smodel'&&S.fx.bird)p=(frame>>2)%2?POSE.model.bird1:POSE.model.bird2;
+   applyRig(rig,p,frame)}
+ // The shadow model in the backup route keeps the original's shape; the real model shows the spare.
+ const spare=S.choice==='spare'&&S.i>PROGRAM.seq.length;
+ $('model').querySelector('.rib-original').toggleAttribute('hidden',spare);$('model').querySelector('.rib-spare').toggleAttribute('hidden',!spare);
+ $('original-aside').toggleAttribute('hidden',!spare);$('spare-on-table').toggleAttribute('hidden',S.choice==='spare'&&S.i>=PROGRAM.seq.length);
+ $('strip-on-table').toggleAttribute('hidden',S.choice==='strip'&&S.i>=PROGRAM.seq.length);
+ const wraps=S.choice==='strip'?(S.segs[S.i]==='wrap'?S.step:3):0;$('model').querySelectorAll('.wrap').forEach(w=>w.toggleAttribute('hidden',+w.dataset.n>wraps));
+ // Julian leaving and coming back (backup): the figure walks, the shadow stays.
+ let jx=0;if(S.walk){const u=Math.min(1,(S.T-S.walk.t0)/S.walk.dur),q=reduced?1:Math.round(u*8)/8;jx=S.walk.dir==='exit'?q*480:480-q*220}
+ if(S.choice==='spare'&&['night1','b2'].includes(S.segs[S.i]))jx=480;
+ $('julian').parentNode.setAttribute('transform',`translate(${jx} 0)`);
+ // The phone's shadow, grown: the screen of her future, framing the model.
+ const fr=$('sh-frame'),fv=S.fx.frame,fu=Math.min(1,(S.T-(S.fxT.frame||0))/1.1);const qu=reduced?1:Math.round(fu*6)/6;
+ const sizes={0:[258,150,46,74],1:[230,96,200,270],2:[600,120,420,330],3:[600,120,420,330]};
+ const target=sizes[Math.max(0,fv)]||sizes[0];if(S.frKey!==fv){S.frFrom=S.frCur||sizes[0];S.frKey=fv}const cur=target.map((v,i)=>S.frFrom[i]+(v-S.frFrom[i])*qu);S.frCur=cur;
+ fr.setAttribute('x',cur[0]);fr.setAttribute('y',cur[1]);fr.setAttribute('width',cur[2]);fr.setAttribute('height',cur[3]);
+ $('screen').setAttribute('opacity',fv>0?(fv===3?.75:1):fv<0?Math.max(0,1-qu):0);
+ const gl=$('glitch');gl.toggleAttribute('hidden',fv!==3);if(fv===3)gl.setAttribute('transform',`translate(0 ${cur[1]+120+((frame>>1)%3)*40})`);
+ // The player's paper hands: up to choose, carrying what they chose, down when done.
+ const hs=S.fx.hands,act=g.gate==='act',up=hs==='up'||g.gate==='choice'||act;
+ const steps=g.steps||1,prog=act?Math.min(1,S.step/steps):0;
+ const [hbx,hby]=boil('hands',frame),Y=up?-150:40;$('hands').setAttribute('transform',`translate(${hbx.toFixed(1)} ${(Y+hby).toFixed(1)})`);
+ const cs=$('carry-spare'),ct=$('carry-strip'),hl=$('hand-l'),hr=$('hand-r');
+ // Slot: three stepped frames after the press (lift, turn upright, home), then the real spare stands in the model.
+ const ph=act&&g.kind==='spare'&&S.doneAt!=null?(reduced?3:Math.min(3,Math.floor((S.T-S.doneAt)/.22)+1)):0;
+ const SL=[[0,0,0],[60,-40,-28],[150,-110,-62],[196,-150,-84]][ph];
+ cs.toggleAttribute('hidden',!(act&&g.kind==='spare'&&ph<3));cs.setAttribute('transform',`translate(${SL[0]} ${SL[1]}) rotate(${SL[2]} 746 712)`);
+ hl.setAttribute('transform',act&&g.kind==='spare'?`translate(${SL[0]} ${SL[1]})`:'');
+ // Wrap: the right hand works at the crack; each press turns the strip once round the rib.
+ ct.toggleAttribute('hidden',!(act&&g.kind==='strip'&&S.step<steps));
+ hr.setAttribute('transform',act&&g.kind==='strip'?`translate(-64 -78) rotate(${S.step%2?-16:10} 960 760)`:'');
+ ct.setAttribute('transform',act&&g.kind==='strip'?'translate(-60 -62)':'');
+ // Film: the whole frame shifts a hair and its exposure breathes, like stills shot one by one.
+ const [fx,fy]=boil('film',frame);$('film').setAttribute('transform',`translate(${(fx*.8).toFixed(2)} ${(fy*.8).toFixed(2)})`);
+ $('stage').style.filter=reduced?'':`brightness(${(1+(rng(frame)()-.5)*.035).toFixed(3)})`;
+ // Controls, captions.
+ const ch=g.gate==='choice';$('pick-spare').hidden=!ch;$('pick-strip').hidden=!ch;
+ $('spare-on-table').setAttribute('transform',ch&&S.hover==='spare'?'translate(0 -10)':'');$('strip-on-table').setAttribute('transform',ch&&S.hover==='strip'?'translate(0 -10)':'');
+ const da=$('do-act');da.hidden=!act||S.step>=steps;if(act){da.setAttribute('aria-label',g.kind==='spare'?'Slot the spare into the model':`Wrap the rib (${Math.min(S.step+1,3)} of 3)`);$('do-label').textContent=g.kind==='spare'?'Slot it in':'Wrap';}
+ $('caption').style.visibility=S.cap?'visible':'hidden';if(S.cap){$('who').textContent=S.cap.who;$('line').textContent=S.cap.text}
+}
+// Hit areas for the controls, in stage coordinates.
+function place(el,[x,y,w,h]){Object.assign(el.style,{left:x/16+'%',top:y/9+'%',width:w/16+'%',height:h/9+'%'})}
+place($('pick-spare'),[630,560,190,70]);place($('pick-strip'),[970,560,150,70]);place($('do-act'),[820,420,160,200]);
+// ---------- live loop, input ----------
+let last=0;function loop(ts){const dt=Math.min(.05,(ts-(last||ts))/1000);last=ts;if(!EXPORT){step(dt);render()}requestAnimationFrame(loop)}requestAnimationFrame(loop);
+$('pick-spare').onclick=()=>{choose('spare');setTimeout(()=>$('do-act').focus(),60)};$('pick-strip').onclick=()=>{choose('strip');setTimeout(()=>$('do-act').focus(),60)};
+$('do-act').onclick=()=>act();
+for(const [b,c] of [['pick-spare','spare'],['pick-strip','strip']]){const el=$(b);for(const ev of ['pointerenter','focus'])el.addEventListener(ev,()=>S&&(S.hover=c));for(const ev of ['pointerleave','blur'])el.addEventListener(ev,()=>S&&(S.hover=null))}
+$('play').onclick=()=>{Snd.unlock();start();};$('again').onclick=()=>{Snd.unlock();start()};
+$('other').onclick=()=>{const c=S?.choice==='spare'?'strip':'spare';Snd.unlock();start();S.segs=['choice'];S.i=0;S.light='lamp';S.fx.hands='up';S.fx.frame=2;S.fxT.frame=-9;S.frKey=2;S.frFrom=S.frCur=[600,120,420,330];S.fx.bird=1;enter();announce('Back at the table. '+(c==='spare'?'Mara’s spare is on the left.':'The tape is on the right.'))};
+$('pause').onclick=()=>{if(!S)return;S.paused=!S.paused;$('pause').setAttribute('aria-pressed',String(S.paused));$('pause').textContent=S.paused?'Resume':'Pause'};
+$('voices').onclick=()=>{prefs.voices=!prefs.voices;$('voices').setAttribute('aria-pressed',String(prefs.voices))};
+const prefs={voices:false};
+function announce(t){$('live').textContent=t}
+function live(e){if(EXPORT)return;if(e.type==='line'){announce(e.who+': '+e.text);if(prefs.voices)Snd.voice(e.id)}else if(e.type==='sfx')Snd.play(e.kind)}
+// ---------- sound: recorded samples when present (sound/manifest.json), else a quiet synthesised stand-in ----------
+const Snd=(()=>{let c=null,out=null;const buf={},VO=id=>(Q.get('voice')?`voices/${Q.get('voice')}/${id}.mp3`:`../../../film/audio/${id}.mp3`);
+ async function load(url){try{const a=await(await fetch(url)).arrayBuffer();return await c.decodeAudioData(a)}catch{return null}}
+ function noise(len){const b=c.createBuffer(1,c.sampleRate*len,c.sampleRate),d=b.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;return b}
+ function synth(kind){const t=c.currentTime,s=c.createBufferSource(),f=c.createBiquadFilter(),g=c.createGain();s.buffer=noise(1.2);s.connect(f);f.connect(g);g.connect(out);
+  const P={switch:[2400,4,.25,.04],creak:[700,9,.18,.35],flutter:[3000,3,.12,.5],snap:[1800,2,.3,.06],slide:[1400,1,.1,.4],tape:[1900,1,.14,.35],pick:[900,1,.08,.2],rustle:[2600,.7,.07,.4],frame:[500,6,.06,.6],hum:[120,8,.04,1],fan:[300,1,.08,1.1]}[kind]||[1000,1,.05,.2];
+  f.type='bandpass';f.frequency.value=P[0];f.Q.value=P[1];g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(P[2],t+.01);g.gain.exponentialRampToValueAtTime(.0001,t+P[3]);s.start(t);s.stop(t+P[3]+.05)}
+ return{async unlock(){if(c)return;c=new AudioContext();out=c.createGain();out.gain.value=.9;out.connect(c.destination);
+   try{const m=await(await fetch('sound/manifest.json')).json();for(const [k,v] of Object.entries(m.cues||{}))load('sound/'+v.file).then(b=>{if(b)buf[k]={b,gain:v.gain??1}})}catch{}},
+  play(kind){if(!c)return;const s=buf[kind];if(s){const n=c.createBufferSource(),g=c.createGain();n.buffer=s.b;g.gain.value=s.gain;n.connect(g);g.connect(out);n.start()}else synth(kind)},
+  async voice(id){if(!c)return;const b=await load(VO(id));if(b){const n=c.createBufferSource();n.buffer=b;n.connect(out);n.start()}}}})();
+// ---------- review hooks ----------
+window.Film={begin(script){start({script});S.forceRender=true;render();return true},frame(dt){step(dt);S.forceRender=true;render();return{done:S.done,T:S.T}},log:()=>S.log};
+if(!EXPORT){start();S.paused=true;S.forceRender=true;render()}
+</script>
+</body>
+</html>
