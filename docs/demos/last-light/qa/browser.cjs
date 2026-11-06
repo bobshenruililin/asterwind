@@ -52,10 +52,11 @@ const {
     await page.waitForTimeout(300);
     assert.equal(await page.evaluate(()=>LastLightInspection.snapshot().time),before);
     await page.locator('#resume').click();
-    await page.getByRole('button',{
-      name:'Keep the light on the shore',exact:true
-    }
-    ).focus();
+    await page.getByRole('button',{name:/Lift the lantern/}).focus();
+    await page.keyboard.press('Enter');
+    await page.keyboard.press('ArrowDown');
+    await page.keyboard.press('ArrowDown');
+    await page.keyboard.press('ArrowDown');
     await page.keyboard.press('Enter');
     await page.waitForFunction(()=>LastLightInspection.snapshot().phase==='ended',{
     }
@@ -102,7 +103,7 @@ const {
     }
     );
     assert.deepEqual(errors,[]);
-    console.log('PASS: actual browser desktop/mobile, keyboard shore choice, traveler choice, pause, replay, no page errors. Still not physical device, listening or screen-reader QA.');
+    console.log('PASS: actual browser desktop/mobile, keyboard physical shore carry, traveler choice, pause, replay, no page errors. Still not physical device, listening or screen-reader QA.');
   }
   finally{
     await browser.close();

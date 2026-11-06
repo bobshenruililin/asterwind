@@ -71,7 +71,7 @@
       if(!this.on||!this.ctx||s.paused)return;
       this.stopTones();
       const c=this.ctx;
-      [choice==='shore'?220:246.94,329.63,440].forEach((f,i)=>{
+      [220,329.63,440].forEach((f,i)=>{
         const o=c.createOscillator(),g=c.createGain(),t=c.currentTime+i*.4;
         o.type='sine';
         o.frequency.value=f;
@@ -110,6 +110,7 @@
     $('pause').setAttribute('aria-label',s.paused?'Continue story':'Pause story');
     $('motion').setAttribute('aria-pressed',String(s.reduced));
     $('caption').hidden=!captions;
+    $('lamp').setAttribute('aria-pressed',String(!!s.drag));
     const text=L.caption(s);
     if(text!==oldCaption){
       oldCaption=text;
@@ -118,7 +119,7 @@
     }
     if(phase!==oldPhase){
       oldPhase=phase;
-      if(phase==='arrival')announce('A traveler approaches the jetty in a small boat. The keeper holds a lantern.');
+      if(phase==='arrival')announce('The harbor beacon is out. A traveler approaches through rough water. A surge hits the jetty and the keeper braces, protecting the lantern.');
       if(phase==='choice')announce('The boat waits beside the keeper. Choose: keep the light on the shore, or give it to the traveler. You may use either button.');
       if(phase==='departure')announce(s.choice==='shore'?'The keeper sets the lantern on the jetty. The traveler leaves.':'The keeper hands the lantern to the traveler. Its light leaves with the boat.');
       if(phase==='ended'){
@@ -204,7 +205,7 @@
     $('begin').textContent='Lighting the harbor…';
     $('load-error').hidden=true;
     try{
-      const pairs=await Promise.all(['harbor','boat','keeper','lantern','departure','fishers'].map(async key=>[key,await loadImage('assets/'+key+'.png')]));
+      const pairs=await Promise.all(['harbor','boat','keeper','lantern','departure','fishers','brace','reach','place','receive','surge'].map(async key=>[key,await loadImage('assets/'+key+'.png')]));
       if(epoch!==loading)return;
       Object.assign(assets,Object.fromEntries(pairs));
       loaded=true;
@@ -222,10 +223,7 @@
   }
   function point(e){
     const r=canvas.getBoundingClientRect(),scale=Math.min(r.width/L.W,r.height/L.H),x=r.left+(r.width-L.W*scale)/2,y=r.top+(r.height-L.H*scale)/2;
-    return{
-      x:(e.clientX-x)/scale,y:(e.clientY-y)/scale
-    }
-    ;
+    return L.unproject(s,(e.clientX-x)/scale,(e.clientY-y)/scale);
   }
   $('stage').addEventListener('pointerdown',e=>{
     if(e.button!==0||dragPointer!==null)return;
@@ -294,6 +292,19 @@
     }
     );
   }
+  // Optional keyboard manipulation gives the same physical toy as touch, never an extra gate.
+  $('lamp').addEventListener('click', e => {
+    if (e.detail > 0 || s.paused || s.phase !== 'choice') return;
+    if (!s.drag) {
+      L.pickup(s,s.light.x,s.light.y);
+      announce('Lantern lifted. Use arrow keys to carry it, Enter to place it, or Escape to return it. The shore and traveler buttons also work directly.');
+    } else {
+      const destination=L.hit(s.drag.x,s.drag.y);
+      if(destination) choose(destination);
+      else { L.cancel(s); announce('Lantern returned to the keeper.'); }
+    }
+    sync(); draw();
+  });
   $('begin').addEventListener('click',begin);
   $('replay').addEventListener('click',begin);
   $('retry').addEventListener('click',()=>{
@@ -378,8 +389,17 @@
       );
       return;
     }
+    if(e.target.id==='lamp'&&s.drag&&!s.paused&&s.phase==='choice'&&['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(e.key)){
+      e.preventDefault();
+      const before=s.hover,dx=e.key==='ArrowLeft'?-45:e.key==='ArrowRight'?45:0,dy=e.key==='ArrowUp'?-35:e.key==='ArrowDown'?35:0;
+      L.move(s,s.drag.x+dx,s.drag.y+dy);
+      if(s.hover&&s.hover!==before)announce(s.hover==='shore'?'Over the shore. Enter places the light.':'Over the traveler. Enter gives the light.');
+      draw(); return;
+    }
     if(e.key==='Escape'){
+      const carrying=!!s.drag;
       L.cancel(s);
+      if(carrying)announce('Lantern returned to the keeper.');
       dragPointer=null;
       if(!$('instructions').hidden)closeHelp();
       else if(s.paused)setPaused(false);

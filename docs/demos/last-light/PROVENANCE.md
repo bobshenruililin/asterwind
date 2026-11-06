@@ -1,6 +1,6 @@
 # Asset provenance
 
-All six PNGs were generated for this original Asterwind experiment on 2026-11-06 using the built-in image generation tool. No paid video generation or outside reference photography was used. Files are copied unchanged from the generated outputs; transparency is the generated alpha. They are implementation assets, not merely presentation references.
+The six original PNGs were generated for this original Asterwind experiment on 2026-11-06 using the built-in image generation tool. No paid video generation or outside reference photography was used. Files are copied unchanged from the generated outputs; transparency is the generated alpha. They are implementation assets, not merely presentation references.
 
 The direction uses neutral descriptive traits: mature painterly coastal animation, realistic gouache/oil texture, indigo/teal storm light, restrained amber, natural proportions and readable silhouettes. No named artist or studio is the style source.
 
@@ -29,6 +29,30 @@ Image edit using `boat.png` as the only reference. Preserve exact weathered rowi
 ### fishers.png
 
 An isolated small fishing dinghy arriving at a storm harbor, complete wooden boat and two adult fishers, side three-quarter profile facing left. Tired adults in muted ochre oilskin hoods and slate-blue wool, one standing low holding an oar, looking left toward harbor light. Low weatherbeaten moss-green hull, cream stripe, rope and canvas sacks. Mature painted animation sprite, realistic gouache/oil texture, moonlit blue edge with subtle warm left light, natural proportions and credible perspective. Complete silhouette, wide frame, transparent alpha. No water, landscape, reflections, shadows, ground, lantern, text or border.
+
+## Performance revision assets
+
+Five additional final PNGs were generated with the same built-in tool on 2026-11-06, using the original keeper or boat only as identity references where noted. No third-party image, music, code or paid video was incorporated.
+
+### brace.png
+
+Reference: keeper.png. Preserve exact face, short bob, teal raincoat, ochre scarf, boots and painted texture. She braces hard into a sudden gust from the right, knees bent and feet grounded, left forearm shielding her face, right arm extended low holding an invisible lantern loop. No prop is painted. Alarm and protective determination; coat and scarf blow left. Full body uncropped, transparent alpha, cyan moonlit edge and amber under-light, no ground, scenery or particles.
+
+### reach.png
+
+Reference: keeper.png. Same identity and clothing, kneeling on left knee with right foot forward, leaning far right over an unseen jetty edge, right arm reaching down and out to hand an invisible lantern to a lower boat, left hand braced on her own knee. Care and resolve, gaze down-right. Full figure, hands and boots uncropped. Textured gouache/oil, cyan edge and warm amber under-light, transparent alpha, no prop or surrounding scene.
+
+### place.png
+
+Reference: keeper.png, then a targeted edit of the first placement output. Keeper crouches on both feet, facing right, bending forward deliberately to set an invisible lantern beyond her right boot; left palm on knee. Preserve identity, costume, texture and framing. Final edit raises the pinched fingers to knee height, leaving forty centimeters above the boots so a separately animated full-size lantern fits naturally beneath her hand. No lantern, handle, ground or other object is painted. Transparent alpha.
+
+### receive.png
+
+Reference: boat.png. Preserve the weathered navy-teal hull, full side-on silhouette and rust-red cloaked traveler. She has moved to the left seat near the bow, in a low secure crouch, leaning left and reaching her left hand up beyond the bow to receive an invisible lantern from someone above. Right hand braces on the gunwale, face lifted with grateful determination. Entire boat and fingers uncropped, transparent alpha, no lantern, sea, scenery, reflection or other person. Same mature gouache/oil rendering and moonlit/amber lighting.
+
+### surge.png
+
+Production VFX sprite: one moonlit storm surge in a wide three-to-one composition. A dark indigo/teal crest rushes right-to-left and explodes in fine pale sea-green foam at the left tip, as if striking an absent pier. Tall spray at left, low wave extending right; intricate gouache/oil texture, broken edges, mist transparency, dark thin underside. Genuine alpha around every edge, no rectangular slab, sky, boats, pier, people or text. The first smooth code-drawn ribbon was discarded after pixel review.
 
 ## Code and sound
 

@@ -2,7 +2,7 @@
 from pathlib import Path
 import hashlib, json, zipfile
 ROOT = Path(__file__).resolve().parent
-FILES = ['index.html', 'style.css', 'scene.js', 'app.js', 'README.md', 'PROVENANCE.md'] + ['assets/' + n + '.png' for n in ['harbor', 'boat', 'keeper', 'lantern', 'departure', 'fishers']]
+FILES = ['index.html', 'style.css', 'motion.js', 'scene.js', 'app.js', 'README.md', 'PROVENANCE.md'] + ['assets/' + n + '.png' for n in ['harbor', 'boat', 'keeper', 'lantern', 'departure', 'fishers', 'brace', 'reach', 'place', 'receive', 'surge']]
 def build():
     manifest = {}
     for name in FILES:

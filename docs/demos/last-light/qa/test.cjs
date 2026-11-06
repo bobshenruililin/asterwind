@@ -139,14 +139,14 @@ test('Shore lantern remains on the jetty after boat leaves',()=>{
   L.choose(s,'shore');
   tick(s,37);
   const p=L.pose(s);
-  assert.equal(p.lamp.x,650);
-  assert.equal(p.lamp.y,391);
+  assert(Math.abs(p.lamp.x-650)<.001);
+  assert(Math.abs(p.lamp.y-391)<.001);
   assert(p.bx>1400);
 }
 );
 test('No outcome is in the pre-choice caption',()=>{
   const s=atChoice();
-  assert.equal(L.caption(s),'Where should it stay?');
+  assert.equal(L.caption(s),'Where should the light stay?');
 }
 );
 test('Reduced-motion render does not change story outcome',()=>{
@@ -404,7 +404,7 @@ async function started(){
   h.advance(18);
   return h;
 }
-test('DOM waits for all six decoded assets, no autoplay audio',async()=>{
+test('DOM waits for all eleven decoded assets, no autoplay audio',async()=>{
   const h=harness();
   assert.equal(h.ready(),false);
   await h.flush();
@@ -609,6 +609,75 @@ test('All main controls have semantic button markup',()=>{
   assert.match(html,/aria-label="Give the light to the traveler"/);
 }
 );
+test('Lantern has physical weight rather than snapping to the pointer',()=>{
+  const s=atChoice();L.pickup(s,s.light.x,s.light.y);const x=s.light.x;L.move(s,1000,500);L.step(s,1/60);
+  assert(s.light.x>x&&s.light.x<1000);assert(s.light.angle<0);tick(s,3);assert(Math.abs(s.light.x-1000)<.01);
+});
+test('Pause freezes physical motion and camera as well as the clock',()=>{
+  const s=atChoice();L.pickup(s,s.light.x,s.light.y);L.move(s,1100,600);L.step(s,.1);s.paused=true;
+  const before=JSON.stringify(s.light),cam=L.camera(s);tick(s,10);assert.equal(JSON.stringify(s.light),before);assert.deepEqual(L.camera(s),cam);
+});
+test('Bad pointer coordinates never poison physical state',()=>{
+  const s=atChoice(),before=JSON.stringify(s.pointer);L.move(s,NaN,Infinity);assert.equal(JSON.stringify(s.pointer),before);
+  assert.equal(L.pickup(s,NaN,319),false);assert.equal(L.hit(NaN,425),null);
+});
+test('A canceled carry smoothly returns without choosing',()=>{
+  const s=atChoice();L.pickup(s,s.light.x,s.light.y);L.move(s,1000,500);tick(s,1);L.cancel(s);tick(s,4);
+  assert.equal(s.choice,null);assert.equal(s.phase,'choice');assert(Math.abs(s.light.x-601)<.01);assert(Math.abs(s.light.y-319)<.01);
+});
+test('Both branches get equal action time and close camera',()=>{
+  const a=atChoice(),b=atChoice();L.choose(a,'shore');L.choose(b,'boat');tick(a,2.5);tick(b,2.5);
+  assert.deepEqual(L.camera(a),L.camera(b));assert(L.camera(a).zoom>1.5);assert.equal(L.pose(a).action,L.pose(b).action);
+  tick(a,41);tick(b,41);assert.equal(a.phase,'ended');assert.equal(b.phase,'ended');
+});
+test('Choice camera never moves, even after a long deliberation',()=>{
+  const s=atChoice();tick(s,180);assert.deepEqual(L.camera(s),{zoom:1,x:800,y:450});assert.equal(s.choice,null);
+});
+test('Camera projection and pointer inverse remain registered',()=>{
+  const s=atChoice();L.choose(s,'boat');tick(s,2.5);const c=L.camera(s),x=736,y=408;
+  const p=L.unproject(s,(x-c.x)*c.zoom+800,(y-c.y)*c.zoom+450);assert(Math.abs(p.x-x)<1e-9);assert(Math.abs(p.y-y)<1e-9);
+});
+test('Reduced motion removes camera movement and lantern inertia',()=>{
+  const s=atChoice();s.reduced=true;L.pickup(s,s.light.x,s.light.y);L.move(s,900,500);L.step(s,.1);
+  assert.equal(s.light.x,900);assert.equal(s.light.angle,0);L.choose(s,'boat');tick(s,3);assert.equal(L.camera(s).zoom,1);
+});
+test('Storm is a single arrival beat, never a penalty for deliberation',()=>{
+  const s=L.create();L.begin(s);tick(s,9);assert(L.pose(s).force>.9);tick(s,9);assert.equal(L.pose(s).force,0);tick(s,60);assert.equal(L.pose(s).force,0);
+});
+test('Keyboard carrying commits through the same physical destination',async()=>{
+  const h=await started();h.el('lamp').focus();h.el('lamp').fire('click',{detail:0});assert(h.get().drag);
+  for(let i=0;i<3;i++)h.emit('keydown',{key:'ArrowDown',target:h.el('lamp')});assert.equal(h.get().hover,'shore');
+  h.el('lamp').fire('click',{detail:0});assert.equal(h.get().choice,'shore');assert.equal(h.get().drag,null);
+});
+test('Keyboard carrying can reach the traveler without pointer input',async()=>{
+  const h=await started();h.el('lamp').fire('click',{detail:0});
+  for(let i=0;i<8;i++)h.emit('keydown',{key:'ArrowRight',target:h.el('lamp')});
+  for(let i=0;i<6;i++)h.emit('keydown',{key:'ArrowDown',target:h.el('lamp')});
+  assert.equal(h.get().hover,'boat');h.el('lamp').fire('click',{detail:0});assert.equal(h.get().choice,'boat');
+});
+test('Keyboard cancellation and pause never place the lantern',async()=>{
+  const h=await started();h.el('lamp').fire('click',{detail:0});h.emit('keydown',{key:'ArrowRight',target:h.el('lamp')});
+  h.emit('keydown',{key:'Escape',target:h.el('lamp')});assert.equal(h.get().drag,null);assert.equal(h.get().choice,null);
+  h.el('pause').fire('click');h.el('lamp').fire('click',{detail:0});assert.equal(h.get().drag,null);
+});
+test('Pointer-generated click cannot trigger a second keyboard pickup',async()=>{
+  const h=await started();h.el('lamp').fire('click',{detail:1});assert.equal(h.get().drag,null);
+});
+test('Traveler ending remains as visually substantial as the arriving fishing boat',()=>{
+  for(const reduced of [false,true]){
+    const s=atChoice();s.reduced=reduced;L.choose(s,'boat');tick(s,44);
+    const width=L.pose(s).scale*436*L.camera(s).zoom;
+    assert(width>=300&&width<=350);assert.equal(s.phase,'ended');
+  }
+});
+test('Escape announces the same lantern return as a canceled placement',async()=>{
+  const h=await started();h.el('lamp').fire('click',{detail:0});h.emit('keydown',{key:'Escape',target:h.el('lamp')});
+  assert.match(h.el('narration').textContent,/Lantern returned to the keeper/);
+});
+test('Runtime loads motion before scene and both actions share a sound motif',()=>{
+  const html=fs.readFileSync(path.join(__dirname,'../index.html'),'utf8'),app=fs.readFileSync(path.join(__dirname,'../app.js'),'utf8');
+  assert(html.indexOf('src="motion.js"')<html.indexOf('src="scene.js"'));assert.match(app,/\[220,329\.63,440\]/);
+});
 (async()=>{
   for(const [name,fn]of tests){
     await fn();
