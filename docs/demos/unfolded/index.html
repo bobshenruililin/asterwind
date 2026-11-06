@@ -776,7 +776,9 @@ function wipe(){try{localStorage.removeItem(SAVE)}catch{}}
 // ---------- the title: the word in cream, then the same word in ink on the page ----------
 buildTiles();setLayout();updateGo();only('title');G.screen='title';
 const saved=V2?null:loadSave();
-if(V2){$('title').hidden=true;const d=loadSave();G.found=d?.found?.filter(w=>TARGETS.includes(w))||['HEARD'];if(!G.found.length)G.found=['HEARD'];G.walked=(d?.walked||[]).filter(w=>G.found.includes(w));G.film=d?.film&&typeof d.film==='object'?d.film:{};
+if(V2){$('title').hidden=true;const d=loadSave();G.found=d?.found?.filter(w=>TARGETS.includes(w))||['HEARD'];if(!G.found.length)G.found=['HEARD'];G.walked=(Array.isArray(d?.walked)?d.walked:[]).filter(w=>G.found.includes(w));G.film={};
+ // Keep only outcomes the word's own film allows; anything else in a stale or corrupt save is dropped.
+ if(d?.film&&typeof d.film==='object')for(const[w,o]of Object.entries(d.film))if(BOTTLES[w]&&OUTCOMES[BOTTLES[w].film]?.includes(o))G.film[w]=o;
  $('voice').hidden=true;$('nb-open').hidden=true;showCorridor('HEARD');if(d?.dawn){G.dawn=2;hub({type:'morning'});$('nb-open').hidden=false;$('nb-open').textContent='Open the notebook'}}if(saved){$('resume').hidden=false;$('restart').hidden=false;$('begin').hidden=true}
 if(!V2)setTimeout(()=>(saved?$('resume'):$('begin')).focus({preventScroll:true}),60);
 function demo(){// A first word, shown: the obvious one. Then the page lets you look for the rest.

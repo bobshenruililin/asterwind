@@ -27,7 +27,7 @@ Serve the repository root with `python3 -m http.server 8000`, then open one of t
   - `qa/audio-browser.cjs <base>`
   - `node docs/demos/played/qa/films.cjs <base> <out> fast`
   - `qa/keyboard.cjs` (played)
-  - `qa/night-v2.cjs`
+  - `qa/night-v2.cjs` (played; exits non-zero on any failed step)
 
 ## Read
 
