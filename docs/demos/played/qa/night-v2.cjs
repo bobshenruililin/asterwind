@@ -19,5 +19,12 @@ const until=async(p,fn,ms=60000)=>{const t=Date.now();while(Date.now()-t<ms){if(
  const mv=await p.isVisible('#morning');need(mv,'morning offered');console.log('lit',JSON.stringify(await p.evaluate(()=>Game.state().found)),'morning visible',mv);
  await p.click('#morning');need(await until(p,()=>Game.state().dawn===2,20000),'dawn');await w(800);await p.screenshot({path:O+'8-dawn.png'});
  await p.click('#nb-open');await w(1500);await p.screenshot({path:O+'9-notebook.png'});
+ // The ending, then Begin again: it must clear the night and start fresh (only HEARD lit, nothing walked).
+ need(await until(p,()=>!document.getElementById('closebook').hidden,20000),'notebook ready');await p.fill('#mine','listening');await p.click('#closebook');
+ need(await until(p,()=>Game.state().screen==='end',20000),'ending shown');await w(600);await p.screenshot({path:O+'10-end.png'});
+ const endTxt=await p.textContent('#end .small');need(/story/.test(endTxt),'ending speaks of stories');
+ await p.click('#again');await w(1500);need(await until(p,()=>{try{return Game.state().hubReady}catch{return false}},20000),'hub ready again');
+ const fresh=await p.evaluate(()=>({found:Game.state().found,walked:Game.state().walked,dawn:Game.state().dawn}));console.log('after begin again',JSON.stringify(fresh));
+ need(fresh.found.length===1&&fresh.found[0]==='HEARD'&&!fresh.walked.length&&!fresh.dawn,'begin again starts fresh');
  console.log('bad',bad.length?bad:'none','errors',errs.length?errs:'none');await b.close();if(errs.length)fails.push('console errors');if(bad.length)fails.push('failed requests');
  if(fails.length){console.log('FAILED',fails);process.exit(1)}console.log('draft night played')})();

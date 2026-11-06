@@ -733,7 +733,9 @@ function beginEnding(){Snd.stopScene();G.ending=1;G.screen='notebook';only('note
 $('go').onclick=()=>showCorridor();
 $('closebook').onclick=()=>{const v=$('mine').value.trim();if(v){G.mine=v.replace(/[<>&"]/g,'');endWords();Snd.play('pencil')}
  $('mine').hidden=true;$('closebook').hidden=true;setTimeout(()=>{only('end');G.screen='end';Snd.music(null);setTimeout(()=>$('again').focus({preventScroll:true}),300)},v?2200:600)};
-$('again').onclick=()=>location.reload();
+// In the draft night the save holds the dawn, so beginning again has to clear it first.
+$('again').onclick=()=>{if(V2)wipe();location.reload()};
+if(V2)$('end').querySelector('.small').textContent='Every story asked the same question a different way. Nothing was scored, and nothing you wrote was kept.';
 // ---------- sound: recorded paper when present (sound/manifest.json), music if switched on, voices by cue id ----------
 const Snd=(()=>{let c=null,on=false,paused=false,buf={},mus=null,musBuf={},vIdx=null,vSet=Q.has('voices')?(Q.get('voices')==='off'?null:Q.get('voices')):'scratch',vSrc=null,voiceEpoch=0,musicEpoch=0,transport=Promise.resolve();
  const sources=new Set();
