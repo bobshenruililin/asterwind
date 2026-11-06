@@ -1,6 +1,6 @@
 # Current handoff (keep this short and current)
 
-Updated 6 November 2026 by Opus. Branch `claude/awesome-hypatia-6bf97q`.
+Updated 6 November 2026 by Opus. Branch `claude/awesome-hypatia-6bf97q`, tested at `a291d81`.
 
 ## Play
 
@@ -48,5 +48,6 @@ Serve the repository root with `python3 -m http.server 8000`, then open one of t
 
 ## Open decisions for Bob
 
-- **Publish `/play/`?** It would put `dist/play/` on `pages-runtime` under `/play/`. The current Pages root stays unchanged.
+- **Publish `/play/`?** It would put `dist/play/` (built at `a291d81`; 335 files, 25.1 MB) on `pages-runtime` under `/play/`. The current Pages root stays unchanged. Details are in [the PR #1 summary](https://github.com/bobshenruililin/asterwind/pull/1#issuecomment-6685550805).
+- **The Empty Square in a shared build:** share it with a line in the playtest note, or hide that bottle until the lived-experience review.
 - **Kling experiment K1**: about 90 credits, after P2a and P2b exist.
