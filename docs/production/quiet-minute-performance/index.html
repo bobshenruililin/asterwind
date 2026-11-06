@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quiet Minute · Performance study</title>
+<style>
+:root{color-scheme:dark;font:16px/1.5 system-ui,sans-serif;background:#151a20;color:#eee9dd}*{box-sizing:border-box}body{margin:0;padding:clamp(16px,3vw,44px);max-width:1600px;margin-inline:auto}header{max-width:920px;margin-bottom:22px}h1{font:500 clamp(24px,3vw,38px)/1.2 Georgia,serif;margin:0 0 12px}p{margin:8px 0;color:#c3c9cc}small{color:#c3c9cc}.controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:20px 0}button{font:inherit;color:inherit;background:#29343b;border:1px solid #60717b;border-radius:8px;min-height:44px;padding:8px 16px;cursor:pointer}button:hover{background:#394952}button:focus-visible{outline:3px solid #ffdc8b;outline-offset:3px}button[aria-pressed=true]{background:#675232;border-color:#e0bc73}.boards{display:grid;gap:24px}.boards.framed{grid-template-columns:repeat(2,minmax(0,1fr))}article{min-width:0}h2{font:500 22px/1.3 Georgia,serif;margin:0 0 8px}.sheet{display:block;width:100%;height:auto;border:1px solid #343e44;border-radius:6px}.frame{aspect-ratio:1;background-size:300% 100%;background-position-x:0%;border:1px solid #343e44;border-radius:6px}.round{background-image:url('assets/round-acting-study.png')}.slips{background-image:url('assets/slips-acting-study.png')}.caption{min-height:3em;margin:10px 0 0;max-width:75ch}[hidden]{display:none!important}footer{margin-top:24px;max-width:1000px;font-size:14px}a{color:#ffdc8b}@media(max-width:700px){.boards.framed{grid-template-columns:1fr}.caption{min-height:0}}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
+</style>
+<header><h1>Make room without a winner.</h1><p>Quiet Minute performance study. Same cast and warmth, two defensible interventions.</p><small>Acting references only. Not a playable build, a chosen art style, or registered animation frames.</small></header>
+<div class="controls" aria-label="Review acting poses">
+<button id="overview" aria-pressed="true">Full studies</button>
+<button class="beat" data-frame="0" aria-pressed="false">Impulse</button>
+<button class="beat" data-frame="1" aria-pressed="false">Response</button>
+<button class="beat" data-frame="2" aria-pressed="false">Room for another</button>
+</div>
+<main class="boards" id="boards">
+<article><h2>Turn the table</h2><img class="sheet" src="assets/round-acting-study.png" alt="Three reference poses: Theo begins to interrupt Nia, notices she is still speaking, then settles his hand and listens. The speaking token remains beside Nia."><div class="frame round" hidden role="img" aria-label=""></div><p class="caption" id="round-caption">Theo starts to answer, then leaves the speaking space with Nia. The unfinished harbour remains a separate ending beat.</p></article>
+<article><h2>Pass the slips</h2><img class="sheet" src="assets/slips-acting-study.png" alt="Three reference poses: Nia notices a misreading, points to clarify the courtyard route, then the lead opens a hand in acknowledgment while Theo adds a sketch. A separate slip remains on the table."><div class="frame slips" hidden role="img" aria-label=""></div><p class="caption" id="slips-caption">Nia can correct the meaning. The lead receives it without defensiveness; Theo contributes. One slip remains uncertain.</p></article>
+</main>
+<p id="status" role="status" aria-live="polite">Showing both complete studies.</p>
+<footer><p>The source references are the current paper treatment. Transfer the gestures to the selected style, not these exact pixels. No video generation credits spent. <a href="README.md">Integration notes and source limits</a>.</p></footer>
+<script src="viewer.js"></script>
+</html>
