@@ -10,6 +10,11 @@ const BASE='../../../anthology/episodes/'+EP+'/',SESSION=Q.get('session')||'stan
 // Hotspot regions on each decision plate, from the episode's own layout.js (fractions of the plate).
 const REG={slides:{microphone:{x:.08,y:.53,w:.27,h:.30},notebook:{x:.60,y:.36,w:.35,h:.40}},scope:{extend:{x:.055,y:.15,w:.37,h:.68},return:{x:.68,y:.30,w:.28,h:.40}},
  pixel:{lower:{x:.06,y:.31,w:.12,h:.42},connect:{x:.71,y:.69,w:.28,h:.23}},ship:{live:{x:.02,y:.45,w:.32,h:.43},rehearsal:{x:.71,y:.28,w:.27,h:.60}}}[EP];
+// Where each object goes when you choose it (plate UV): the microphone towards Asha, the chair pulled in, the catches down.
+const MOVE={microphone:[.045,-.03],notebook:[-.02,.035],extend:[.07,.05],return:[-.02,-.04],lower:[0,.05],connect:[-.03,-.04],live:[.012,-.012],rehearsal:[0,0]};
+// Lio's hand rests on the projector, so it doesn't slide: playing the rehearsal lights its lens instead.
+const GLOW={rehearsal:[.79,.66,.10,.9]};
+const NONE='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR4nGNgYGBgAAAABQABpfZFQAAAAABJRU5ErkJggg==';
 const ENTER={slides:'Take your seat',scope:'Come in',pixel:'Step up',ship:'Walk in'}[EP];
 const [story,art]=await Promise.all([PlayedSupport.json(BASE+'story.json'),PlayedSupport.json(BASE+'art-manifest.json')]);
 document.title=story.title+', played';$('frame').setAttribute('aria-label',story.title+', played.');$('start').querySelector('span').textContent=ENTER;
@@ -17,6 +22,11 @@ document.title=story.title+', played';$('frame').setAttribute('aria-label',story
 if(EP==='pixel'){const n=document.createElement('small');n.textContent='A draft: this story hasn’t yet had a lived-experience accessibility review.';$('start').appendChild(n)}
 const stage=Stage($('cv')),S=stage.S,stem=s=>s.split('/').pop().replace(/\.\w+$/,'');
 await Promise.all(Object.entries(art.plates).map(([k,p])=>stage.add(k,BASE+p.src,'plates/'+EP+'/'+stem(p.src)+'-depth.webp')));
+// The real objects (P0): a clean plate and each object as its own layer, so what you move leaves the room behind it.
+// If they fail to load, the decision falls back to sliding an image region.
+const ACTS=story.choice.actions.map(a=>a.id),LY='plates/'+EP+'/layers/';let layered=false;
+stage.layer((art.beats.choice||{}).plate||'decision',{clean:LY+'clean.webp',disc:LY+ACTS[0]+'.webp',slide:LY+ACTS[1]+'.webp',over:LY+'over.webp'}).then(()=>{layered=true}).catch(()=>{});
+const offKey=id=>layered&&ACTS.indexOf(id)===0?'so0':'so';
 const notify=(type,outcome)=>{if(EMBED)parent.postMessage({channel:'asterwind.episode.v1',episodeId:EP,session:SESSION,type,...(outcome?{outcome}:{})},'*')};
 
 /* ---- clock, tweens, cues ---- */
@@ -55,23 +65,24 @@ const verb=a=>a.label.split(' ')[0].toLowerCase();
 function region(id){const r=REG[id];return{cx:r.x+r.w/2,cy:r.y+r.h/2,...r}}
 function hover(id){if(phase!=='decision')id=null;hovered=id;const w=$('word');if(!id){tw(S,'hovA',0,.25);w.style.opacity=0;return}
  const r=region(id),a=story.choice.actions.find(a=>a.id===id);S.hov=[r.cx,r.cy,r.w/2+.008,r.h/2+.008,1];tw(S,'hovA',1,.2);w.textContent=verb(a);w.style.left=r.cx*100+'%';w.style.top=Math.min(.95,r.y+r.h+.04)*100+'%';w.style.opacity=1}
-function decision(){phase='decision';shot('choice',2);S.zoom=1;S.cen=[.5,.5];
+function decision(){phase='decision';shot('choice',2);S.zoom=1;S.cen=[.5,.5];S.so=[0,0];S.so0=[0,0];
  for(const a of story.choice.actions){const b=document.createElement('button'),r=REG[a.id];b.className='obj rect';b.id='obj-'+a.id;b.setAttribute('aria-label',a.label+': '+a.description);
   Object.assign(b.style,{left:r.x*100+'%',top:r.y*100+'%',width:r.w*100+'%',height:r.h*100+'%'});$('objs').appendChild(b);
   b.addEventListener('pointerenter',()=>hover(a.id));b.addEventListener('pointerleave',()=>{if(!drag)hover(null)});b.addEventListener('focus',()=>hover(a.id));b.addEventListener('blur',()=>{if(!drag)hover(null)});
   b.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();commit(a.id)}});
-  b.addEventListener('pointerdown',e=>{e.preventDefault();b.setPointerCapture(e.pointerId);const R=region(a.id);S.slide=[R.x-.012,R.y-.012,R.x+R.w+.012,R.y+R.h+.012];drag={id:a.id,p0:fp(e),m:0};play('paper',.4)});
-  b.addEventListener('pointermove',e=>{if(!drag||drag.id!==a.id)return;const p=fp(e);S.so=[Math.max(-.04,Math.min(.04,p[0]-drag.p0[0])),Math.max(-.04,Math.min(.04,p[1]-drag.p0[1]))];drag.m=Math.hypot(...S.so)});
-  b.addEventListener('pointerup',()=>{if(!drag||drag.id!==a.id)return;const d=drag;drag=null;if(d.m<.004||d.m>.016)commit(a.id);else{tw(S,'so',[0,0],.3)}});
-  PlayedSupport.bindActivation(b,()=>commit(a.id),()=>{if(drag&&drag.id===a.id){drag=null;tw(S,'so',[0,0],.3)}})}
+  b.addEventListener('pointerdown',e=>{e.preventDefault();b.setPointerCapture(e.pointerId);const R=region(a.id);if(!layered)S.slide=[R.x-.012,R.y-.012,R.x+R.w+.012,R.y+R.h+.012];drag={id:a.id,p0:fp(e),m:0};play('paper',.4)});
+  b.addEventListener('pointermove',e=>{if(!drag||drag.id!==a.id)return;const p=fp(e),L=layered?.07:.04,o=[Math.max(-L,Math.min(L,p[0]-drag.p0[0])),Math.max(-L,Math.min(L,p[1]-drag.p0[1]))];S[offKey(a.id)]=o;drag.m=Math.hypot(...o)});
+  b.addEventListener('pointerup',()=>{if(!drag||drag.id!==a.id)return;const d=drag;drag=null;if(d.m<.004||d.m>.016)commit(a.id);else{tw(S,offKey(a.id),[0,0],.3)}});
+  PlayedSupport.bindActivation(b,()=>commit(a.id),()=>{if(drag&&drag.id===a.id){drag=null;tw(S,offKey(a.id),[0,0],.3)}})}
  live('The decision is in front of you: '+story.choice.actions.map(a=>a.label).join(', or ')+'. Take your time.');setTimeout(()=>$('objs').querySelector('button')?.focus({preventScroll:true}),60)}
 const fp=e=>{const r=$('frame').getBoundingClientRect();return[(e.clientX-r.left)/r.width,(e.clientY-r.top)/r.height]};
 function commit(id){if(phase!=='decision')return;phase='consequence';choice=id;drag=null;hover(null);$('objs').innerHTML='';const r=region(id);
- if(!S.slide)S.slide=[r.x-.012,r.y-.012,r.x+r.w+.012,r.y+r.h+.012];tw(S,'so',[(.5-r.cx)*.06,(.5-r.cy)*.06],reduced?.1:.7);play('tap',.7);
+ if(layered){tw(S,offKey(id),MOVE[id]||[0,0],reduced?.1:.8);play('paper',.6)}if(GLOW[id]){S.lamp=[GLOW[id][0],GLOW[id][1],.001,0];tw(S,'lamp',GLOW[id],reduced?.1:.6)}// the object goes where you sent it, and stays while the consequence dissolves in
+ else{if(!S.slide)S.slide=[r.x-.012,r.y-.012,r.x+r.w+.012,r.y+r.h+.012];tw(S,'so',[(.5-r.cx)*.06,(.5-r.cy)*.06],reduced?.1:.7)}play('tap',.7);
  live('You '+story.choice.actions.find(a=>a.id===id).label.toLowerCase()+'.');
- at(reduced?.2:.9,()=>{S.slide=null;S.so=[0,0];playBeats(story.branches[id],id,ending)})}
+ at(reduced?.2:.9,()=>{if(!layered){S.slide=null;S.so=[0,0]}playBeats(story.branches[id],id,ending)})}
 function ending(){phase='end';$('end').hidden=false;$('again').focus({preventScroll:true});live(story.title+'. Again, or the other way.');if(!ending.sent){ending.sent=1;notify('completed',choice)}}
-function begin(){phase='setup';$('cap').querySelector('.line').textContent='';stage.show(camFor('open').plate);S.mix=0;S.zoom=1;S.cen=[.5,.5];S.dim=1;S.so=[0,0];S.slide=null;tw(S,'dim',0,2.2);
+function begin(){phase='setup';$('cap').querySelector('.line').textContent='';stage.show(camFor('open').plate);S.mix=0;S.zoom=1;S.cen=[.5,.5];S.dim=1;S.so=[0,0];S.so0=[0,0];S.slide=null;tw(S,'dim',0,2.2);
  playBeats(story.setup,'setup',decision)}
 $('again').onclick=()=>{$('end').hidden=true;cues.length=0;tws.length=0;begin()};
 $('other').onclick=()=>{$('end').hidden=true;cues.length=0;tws.length=0;const o=story.choice.actions.find(a=>a.id!==choice).id;stage.show(camFor('choice').plate);S.dim=0;S.zoom=1;S.cen=[.5,.5];decision();at(reduced?.1:.8,()=>commit(o))};
@@ -88,5 +99,5 @@ $('snd').onclick=()=>{soundOn=!soundOn;$('snd').setAttribute('aria-pressed',Stri
 $('cc').onclick=()=>{const on=$('cc').getAttribute('aria-pressed')!=='true';$('cc').setAttribute('aria-pressed',String(on));$('cap').style.visibility=on?'visible':'hidden'};
 $('pause').onclick=()=>{paused=!paused;$('pause').setAttribute('aria-pressed',String(paused));$('pause').textContent=paused?'Resume':'Pause';if(ac)paused?ac.suspend():ac.resume()};
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&!paused)$('pause').click()});
-window.FILMPLAY={get state(){return{phase,choice,T,ep:EP}},commit,step};
+window.FILMPLAY={get state(){return{phase,choice,T,ep:EP,layered}},commit,step};
 })().catch(error=>PlayedSupport.fail(error,'../../../anthology/episodes/'+(['slides','scope','pixel','ship'].includes(new URLSearchParams(location.search).get('ep'))?new URLSearchParams(location.search).get('ep'):'scope')+'/index.html'));

@@ -10,6 +10,10 @@ const PLATES={master:'01-quiet-minute-master',decision:'02-turn-or-pass-decision
 await Promise.all(Object.entries(PLATES).map(([k,f])=>stage.add(k,PL+f+'.webp','plates/'+f+'-depth.webp')));
 // Ellis's route close-ups (Robert's P2a/P2b) are review candidates until Bob approves them: ?p2=1 turns them on.
 const P2=new URLSearchParams(location.search).get('p2')==='1';let P2ready=false;
+// The real objects (P0): a clean table with the platter, the tray and the hands as separate layers, so the platter
+// turns under Theo's hand and the tray slides with its own shadow. If they fail to load, the region warp stays.
+const LAYERS='plates/qm-layers/';let layered=false;
+stage.layer('decision',{clean:LAYERS+'clean.webp',disc:LAYERS+'platter.webp',slide:LAYERS+'tray.webp',over:LAYERS+'occluder.webp'}).then(()=>{layered=true}).catch(()=>{});
 if(P2)Promise.all([stage.add('routeClosed','plates/qm-route-closed.webp','plates/qm-route-closed-depth.webp'),stage.add('routeOpen','plates/qm-route-open.webp','plates/qm-route-open-depth.webp')]).then(()=>{P2ready=true}).catch(()=>{});
 
 /* ---- clock, tweens, cues: everything pauses together ---- */
@@ -190,5 +194,5 @@ $('cc').onclick=()=>{const on=$('cc').getAttribute('aria-pressed')!=='true';$('c
 $('pause').onclick=()=>{paused=!paused;window.Clips&&Clips.pause(paused);$('pause').setAttribute('aria-pressed',String(paused));$('pause').textContent=paused?'Resume':'Pause';if(ac)paused?ac.suspend():ac.resume()};
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&!paused)$('pause').click()});
 addEventListener('keydown',e=>{if(e.key==='Escape'&&phase==='decision')hover(null)});
-window.QM={get state(){return{phase,choice,T,peeked,ang:S.ang,so:S.so.slice()}},commit,look,skip(to){while(T<to&&phase!=='decision'&&phase!=='end')step(1/30)},step};
+window.QM={get state(){return{phase,choice,T,peeked,layered,ang:S.ang,so:S.so.slice()}},commit,look,skip(to){while(T<to&&phase!=='decision'&&phase!=='end')step(1/30)},step};
 })().catch(error=>PlayedSupport.fail(error,'../../../anthology/episodes/standup/index.html'));
