@@ -35,6 +35,7 @@ def build(root=ROOT):
         shutil.rmtree(OUT)
     OUT.mkdir(parents=True)
     tree(root / 'docs/demos/unfolded', OUT / 'docs/demos/unfolded')
+    tree(root / 'docs/demos/played', OUT / 'docs/demos/played')
     for f in ['seam-night-sketch.mp3', 'seam-dawn-sketch.mp3', 'PROVENANCE.md']:
         one(f'docs/demos/sound-board/music/{f}')
     tree(root / 'hub', OUT / 'hub')
@@ -44,8 +45,8 @@ def build(root=ROOT):
     for f in ['Kalam-Regular.ttf', 'Kalam-Bold.ttf', 'OFL.txt']:
         one(f'app/assets/fonts/{f}')
     (OUT / 'index.html').write_text('''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Asterwind</title><meta http-equiv="refresh" content="0; url=docs/demos/unfolded/"><style>body{background:#08080d;color:#e9c27a;font:16px Georgia,serif;display:grid;place-items:center;height:100vh;margin:0}a{color:inherit}</style></head>
-    <body><p><a href="docs/demos/unfolded/">Asterwind · Leadership</a></p></body></html>\n''')
+    <title>Asterwind · After Hours (draft)</title><meta http-equiv="refresh" content="0; url=docs/demos/unfolded/?v=2"><style>body{background:#08080d;color:#e9c27a;font:16px Georgia,serif;display:grid;place-items:center;height:100vh;margin:0}a{color:inherit}</style></head>
+    <body><p><a href="docs/demos/unfolded/?v=2">Asterwind · After Hours (draft playtest)</a></p></body></html>\n''')
     (OUT / '.nojekyll').write_text('')
     verify_play(OUT)  # Fail before packaging if a declared runtime asset did not survive export.
     files = sorted(p for p in OUT.rglob('*') if p.is_file())
