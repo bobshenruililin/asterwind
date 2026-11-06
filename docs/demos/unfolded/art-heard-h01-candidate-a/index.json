@@ -1,0 +1,10 @@
+{
+  "note": "H-01 CANDIDATE A, native 1672x941. NOT production accepted. See heard/PROVENANCE.md.",
+  "rooms": {
+    "heard": {
+      "plate": {
+        "night": "heard-plate-night-candidate-a.png"
+      }
+    }
+  }
+}
