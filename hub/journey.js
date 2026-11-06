@@ -27,6 +27,8 @@ const focusQuietly=el=>el?.focus({preventScroll:true});
 const CLOSURE={seam:[.19,.275],standup:[.095,.14],slides:[.23,.35],scope:[.13,.24],pixel:[.22,.29],ship:[.18,.26]};
 // After a real ending the clock holds the new time, so the night visibly moves even as focus returns.
 let state='idle',heldId=null,displayTimer=null,clockHold=0;const memento={},rasters={};
+// Journey mode: the parent journey says which drinks are lit (their words found) and which are walked.
+const JM=!!window.__dispenser.journey,J={lit:new Set(),walked:[],words:{}},toParent=m=>window.parent.postMessage({channel:'asterwind.hub.v1',...m},'*');
 const order=D.DRINKS.map(d=>d.id),slot=id=>order.indexOf(id),btnFor=id=>document.querySelector('.drink[data-id="'+id+'"]');
 const root=document.documentElement,front=$('front'),glass=front.querySelector('.glass'),keys=[...front.querySelectorAll('.keylights i')];
 const soundBtn=$('sound'),soundHome=soundBtn.parentNode,soundAfter=soundBtn.nextSibling;
@@ -88,7 +90,7 @@ const portraitNight=portraitPlate()?MAN.corridor?.portrait:null;
 if(portraitNight)probe(portraitNight).then(ok=>{if(ok){document.querySelector('.corridor-plate').src=portraitNight;loadDawn(MAN.corridor?.portraitDawn)}else loadDawn(MAN.corridor?.dawn)});else loadDawn(MAN.corridor?.dawn);
 
 /* ---- night, clock and the roof ---------------------------------------------------------- */
-const done=()=>{const c=window.__dispenser.state.progress?.completed||{};return order.filter(id=>c[id]?.length)};
+const done=()=>{if(JM)return order.filter(id=>J.walked.includes(id));const c=window.__dispenser.state.progress?.completed||{};return order.filter(id=>c[id]?.length)};
 function setDisplay(text,flip=false){const t=$('display-text');if(t.textContent===text)return;t.textContent=text;if(flip&&!reduced){t.classList.remove('flip');void t.offsetWidth;t.classList.add('flip')}}
 const clock=()=>D.NIGHT[done().length];
 function idleDisplay(delay=0){clearTimeout(displayTimer);displayTimer=setTimeout(()=>{if(state==='idle')setDisplay(clock())},delay)}
@@ -97,7 +99,7 @@ function renderRoof(landing=null){const roof=$('roof');roof.innerHTML=done().map
 setNight();renderRoof();setDisplay(clock());
 // Six finished before this visit: the corridor is simply morning, with no replay.
 const morning=()=>done().length===6;
-if(morning()){$('lobby').classList.add('morning');sound.morning?.(true)}
+if(!JM&&morning()){$('lobby').classList.add('morning');sound.morning?.(true)}
 async function finale(){
  const lobby=$('lobby');if(lobby.classList.contains('morning'))return;
  for(const [k,v] of [['--tube-t',T.finale.tubeOff],['--lamp-t',T.finale.lampOff],['--sun-t',T.finale.sunrise],['--glint-t',T.finale.glint],['--glint-at',T.finale.tubeOff+T.finale.lampOff*.6]])lobby.style.setProperty(k,(reduced?0:v)+'ms');
@@ -118,7 +120,7 @@ $('lobby').addEventListener('pointerdown',e=>{if(state==='idle')clearFog(e.clien
 let lastTick=0;
 for(const b of document.querySelectorAll('.drink')){
  const id=b.dataset.id,d=D.byId[id],i=slot(id);
- const show=()=>{if(state!=='idle')return;keys[i].classList.add('warm');if(performance.now()<clockHold)return;clearTimeout(displayTimer);setDisplay(d.lines.join(' '))};
+ const show=()=>{if(state!=='idle')return;keys[i].classList.add('warm');if(performance.now()<clockHold)return;clearTimeout(displayTimer);setDisplay(JM&&!J.lit.has(id)?'· · ·':d.lines.join(' '))};
  const hide=()=>{keys[i].classList.remove('warm');idleDisplay(900)};
  b.addEventListener('pointerenter',e=>{show();if(e.pointerType==='mouse'&&performance.now()-lastTick>140){lastTick=performance.now();sound.play('hover')}});b.addEventListener('pointerleave',hide);
  b.addEventListener('focus',()=>{show();if(b.matches(':focus-visible'))attend(b)});b.addEventListener('blur',hide);
@@ -130,6 +132,7 @@ for(const b of document.querySelectorAll('.drink')){
 function lockShelf(on){document.querySelectorAll('.drink').forEach(b=>b.disabled=on);$('turn').disabled=on}
 async function dispense(id){
  if(state!=='idle'||!window.__dispenser.canPlay(id)||window.__dispenser.state.busy)return;
+ if(JM&&(!J.lit.has(id)||J.walked.includes(id))){const w=J.walked.includes(id);$('status').textContent=w?'Its empty is already on the roof.':'This bottle is dark. Its word is still in the notebook.';toParent({type:'unlit',id,walked:w});sound.play('hover');return}
  state='dispensing';heldId=id;sound.unlock();clearTimeout(displayTimer);
  const b=btnFor(id),i=slot(id),d=D.byId[id];lockShelf(true);setDisplay(d.lines.join(' '));keys.forEach(k=>k.classList.remove('warm'));keys[i].classList.add('lit');sound.play('press');
  if(!reduced){
@@ -150,9 +153,10 @@ function tagString(){const btn=$('open-drink'),tag=$('tag');if($('held').hidden)
 function setTag(flipped){const tag=$('tag');tag.classList.toggle('flipped',flipped);$('flip-tag').setAttribute('aria-expanded',String(flipped));$('flip-tag').setAttribute('aria-label',flipped?'Turn the tag back over':'Turn the tag over to read the ingredients');$('tag-back').setAttribute('aria-hidden',String(!flipped));tag.querySelector('.tag-front').setAttribute('aria-hidden',String(flipped))}
 async function showHeld(id,{from=null,s='sealed',src=null,quietly=false}={}){
  const d=D.byId[id],e=stories[id]||{},held=$('held'),btn=$('open-drink'),[cy]=CLOSURE[id];
- heldId=id;$('held-title').textContent=e.title||d.name;$('held-arrival').textContent=e.arrival||'';$('ingredients').innerHTML=d.ingredients.map(x=>'<li>'+esc(x)+'</li>').join('');
- btn.style.setProperty('--cy',(cy*100)+'%');btn.setAttribute('aria-label','Open the '+d.name+' and begin '+(e.title||'the story'));btn.querySelector('.verb').textContent=d.verb;btn.querySelector('.held-art').innerHTML=drinkMarkup(id,s,src,true);btn.classList.remove('opening','idle');settle(btn,$('tag'));btn.removeAttribute('style');btn.style.setProperty('--cy',(cy*100)+'%');
- setTag(false);held.hidden=false;dockSound(true);held.classList.remove('ready');$('stage3d').inert=true;
+ const jc=JM?D.JOURNEY?.[id]:null;
+ heldId=id;$('held-title').textContent=jc?(J.words[id]||jc.word):(e.title||d.name);$('held-arrival').textContent=jc?'Drink when '+jc.when:(e.arrival||'');$('ingredients').innerHTML=[...d.ingredients,...(jc?.extra||[])].map(x=>'<li>'+esc(x)+'</li>').join('')+(jc?.small||[]).map(x=>'<li class="small-print">'+esc(x)+'</li>').join('');$('held').classList.toggle('journey-tag',!!jc);
+ btn.style.setProperty('--cy',(cy*100)+'%');btn.setAttribute('aria-label',jc?'Open the '+d.name:'Open the '+d.name+' and begin '+(e.title||'the story'));btn.querySelector('.verb').textContent=d.verb;btn.querySelector('.held-art').innerHTML=drinkMarkup(id,s,src,true);btn.classList.remove('opening','idle');settle(btn,$('tag'));btn.removeAttribute('style');btn.style.setProperty('--cy',(cy*100)+'%');
+ setTag(false);held.hidden=false;dockSound(true);if(JM)toParent({type:'held',on:true,id});held.classList.remove('ready');$('stage3d').inert=true;
  await new Promise(r=>requestAnimationFrame(r));held.classList.add('show');tagString();
  if(from&&!reduced){
   const to=btn.getBoundingClientRect(),dx=(from.left+from.width/2)-(to.left+to.width/2),dy=(from.top+from.height/2)-(to.top+to.height/2),sc=Math.max(.06,from.width/to.height);
@@ -170,7 +174,7 @@ async function showHeld(id,{from=null,s='sealed',src=null,quietly=false}={}){
    joins its Tab cycle; it returns to the corridor when the dialog closes. Same node, same place. */
 function dockSound(inHeld){if(inHeld){if(soundBtn.parentNode!==$('held'))$('held').appendChild(soundBtn)}else if(soundBtn.parentNode!==soundHome)soundHome.insertBefore(soundBtn,soundAfter)}
 const heldStops=()=>[$('open-drink'),$('flip-tag'),$('put-back'),soundBtn].filter(el=>el.isConnected&&!el.disabled&&el.closest('#held'));
-function closeHeld(){const held=$('held');held.hidden=true;dockSound(false);held.classList.remove('lights-down');held.classList.remove('show','ready','flying-done');settle($('open-drink'),$('tag'));$('stage3d').inert=false;$('open-drink').removeAttribute('style');setTag(false);heldId=null}
+function closeHeld(){const held=$('held');if(JM&&!held.hidden)toParent({type:'held',on:false});held.hidden=true;dockSound(false);held.classList.remove('lights-down');held.classList.remove('show','ready','flying-done');settle($('open-drink'),$('tag'));$('stage3d').inert=false;$('open-drink').removeAttribute('style');setTag(false);heldId=null}
 function restock(id,{animate=true}={}){const b=btnFor(id);if(!b)return;b.classList.remove('dispensed','falling','restock');b.querySelector('.drink-body').innerHTML=drinkMarkup(id,'sealed',D.byId[id].cameo.src);if(animate&&!reduced){void b.offsetWidth;b.classList.add('restock');setTimeout(()=>b.classList.remove('restock'),T.restock)}}
 
 /* ---- house lights and the light on the glass ----------------------------------------------
@@ -258,6 +262,17 @@ addEventListener('resize',()=>{tagString()});
 if(!reduced){$('lobby').classList.add('waking');setTimeout(()=>$('lobby').classList.remove('waking'),T.wake)}
 if(window.__dispenser.state.screen)state='story';
 
+if(JM){
+ root.classList.add('jm');$('turn').hidden=true;
+ const label=()=>{for(const b of document.querySelectorAll('.drink')){const id=b.dataset.id,d=D.byId[id],lit=J.lit.has(id),w=J.walked.includes(id);b.classList.toggle('unlit',!lit);b.classList.toggle('walked',w);
+  b.setAttribute('aria-label',w?d.name+'. Its empty is on the roof.':lit?d.name+'. On the label: '+(J.words[id]||D.JOURNEY?.[id]?.word||'')+'.':'A dark bottle. Its word is still in the notebook.')}};
+ window.addEventListener('message',e=>{if(e.source!==window.parent||e.data?.channel!=='asterwind.hub.v1')return;const m=e.data;
+  if(m.type==='state'){J.lit=new Set(m.lit||[]);J.walked=(m.walked||[]).filter(id=>order.includes(id));J.words=m.words||{};label();setNight();if(state==='idle'){renderRoof();setDisplay(clock())}}
+  if(m.type==='morning'){finale()}
+  if(m.type==='sound'){sound.setEnabled(!!m.on);syncSound();if(m.on&&state!=='story')sound.ambience(true)}
+  if(m.type==='focus'&&state==='idle'){const want=m.id&&btnFor(m.id);focusQuietly(want&&!want.classList.contains('walked')?want:order.map(btnFor).find(b=>!b.classList.contains('unlit')&&!b.classList.contains('walked'))||btnFor(order[0]))}});
+ label();toParent({type:'ready'});
+}
 window.AsterwindJourney={returned,
  storyEnded(){},
  turned(on){sound.play('turn');if(on){setTimeout(()=>{focusQuietly($('mechanism').querySelector('.paper-fold:not(:disabled)')||$('turn-back'))},reduced?0:T.turnFocus)}else focusQuietly($('turn'))},

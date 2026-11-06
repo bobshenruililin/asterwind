@@ -1,4 +1,28 @@
-{"note":"Voice sets by cue id. Drop the team's recordings into voices/team/ as <cue-id>.mp3 and list them under sets.team.cues; the Voices button cycles through every set that has files.",
- "sets":{
-  "team":{"label":"team","dir":"team","gain":1,"cues":{}},
-  "scratch":{"label":"scratch","dir":"scratch","gain":0.9,"cues":{"heard-01":"heard-01.mp3","heard-02":"heard-02.mp3","heard-03":"heard-03.mp3","heard-o1":"heard-o1.mp3","heard-o2":"heard-o2.mp3","heard-o3":"heard-o3.mp3","heard-l1":"heard-l1.mp3","heard-l2":"heard-l2.mp3","heard-l3":"heard-l3.mp3","heard-l4":"heard-l4.mp3"}}}}
+{
+ "note": "Voice sets by cue id. Drop the team's recordings into voices/team/ as <cue-id>.mp3 and list them under sets.team.cues; the Voices button cycles through every set that has files.",
+ "sets": {
+  "team": {
+   "label": "team",
+   "dir": "team",
+   "gain": 1,
+   "cues": {}
+  },
+  "scratch": {
+   "label": "on",
+   "dir": "scratch",
+   "gain": 0.9,
+   "cues": {
+    "heard-01": "heard-01.mp3",
+    "heard-02": "heard-02.mp3",
+    "heard-03": "heard-03.mp3",
+    "heard-o1": "heard-o1.mp3",
+    "heard-o2": "heard-o2.mp3",
+    "heard-o3": "heard-o3.mp3",
+    "heard-l1": "heard-l1.mp3",
+    "heard-l2": "heard-l2.mp3",
+    "heard-l3": "heard-l3.mp3",
+    "heard-l4": "heard-l4.mp3"
+   }
+  }
+ }
+}

@@ -31,7 +31,16 @@ const DRINKS=[
   sound:'cork'}
 ];
 // The display clock moves toward morning as stories end. Seven states: none to all six finished.
+// Journey copy (Leadership, unfolded): the word found in the notebook, a "Drink when…" line, the
+// unexpected ingredients and the small print. Never names an outcome.
+const JOURNEY={
+ seam:{word:'shared',when:'two good things want the same hour.',extra:['Someone else’s deadline.','A pinch of courage.'],small:['Store away from direct light.','Best shared before it sets.']},
+ standup:{word:'heard',when:'you’ve said it in your head three times.',extra:['The end of someone else’s sentence.','A pause (2%).','Courage (trace).'],small:['Best served without interrupting.']},
+ slides:{word:'lead',when:'everyone’s looking at you to start.',extra:['Nerve.'],small:['Not the only word in the bottle.','Credits may settle at the bottom.']},
+ scope:{word:'ship',when:'it’s almost closing and someone’s at the door.',extra:['Room.'],small:['Ask about tomorrow’s batch.']},
+ pixel:{word:'help',when:'you’re about to do it for them.',extra:['An open hand.','Patience (to taste).'],small:['Shake gently. Let them open it.']},
+ ship:{word:'shield',when:'you’d rather it looked perfect.',extra:['One honest sentence.'],small:['Seal may show signs of tampering.','That’s the point.']}};
 const NIGHT=['03:14','03:41','04:08','04:36','05:03','05:31','06:02'];
 const byId=Object.fromEntries(DRINKS.map(d=>[d.id,d]));
-return{DRINKS,byId,NIGHT};
+return{DRINKS,byId,NIGHT,JOURNEY};
 });

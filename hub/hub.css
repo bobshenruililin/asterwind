@@ -269,3 +269,11 @@ button:focus-visible{outline:3px solid #fff4d0;outline-offset:4px}
 .waking .drink:nth-child(1) .drink-body{--slot:0}.waking .drink:nth-child(2) .drink-body{--slot:1}.waking .drink:nth-child(3) .drink-body{--slot:2}.waking .drink:nth-child(4) .drink-body{--slot:3}.waking .drink:nth-child(5) .drink-body{--slot:4}.waking .drink:nth-child(6) .drink-body{--slot:5}
 @keyframes surface{0%{opacity:0;transform:translateY(3%)}100%{opacity:1;transform:none}}
 .waking #display-text{animation:wake 1.6s .4s steps(1) both}
+/* Journey mode (Leadership, unfolded): bottles whose word is not yet found stay dark; walked ones
+   leave their slot for the roof. The corridor's own sound and turn controls belong to the journey. */
+.jm .drink.unlit .drink-body,.jm .drink.unlit:hover .drink-body,.jm .drink.unlit:focus-visible .drink-body{filter:brightness(.13) saturate(.15) contrast(1.15);transform:none}
+.jm .drink.unlit{cursor:default}
+.jm .drink.walked .drink-body{visibility:hidden}
+.jm #sound{display:none}
+.journey-tag #held-title{font-family:Kalam,'Segoe Print',cursive;letter-spacing:.02em}
+.journey-tag #ingredients li.small-print{font-style:italic;opacity:.75;list-style:none;margin-top:.35em}

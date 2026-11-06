@@ -70,21 +70,24 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--gold);outline-o
 #chrome:hover,#chrome:focus-within{opacity:1}
 #chrome button{background:#0b0b12aa;border:1px solid #ffffff22;border-radius:16px;min-width:40px;height:34px;padding:0 10px;font:12px system-ui}
 #chrome button[aria-pressed=true]{color:var(--gold);border-color:#e9c27a88}
-/* Corridor and dispenser */
+/* Title */
+#title{background:radial-gradient(90% 80% at 50% 40%,#1b1d33,#08080d 75%);z-index:6;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;transition:background-color .9s steps(5),opacity .9s steps(5)}
+#title .t-kicker{margin:0 0 .6em;font:12px system-ui;letter-spacing:.42em;text-transform:uppercase;color:var(--gold)}
+#title h1{margin:0;font:400 clamp(44px,7vw,96px) Georgia,serif;color:#f1e6cc;transition:color .9s steps(5)}
+#title .t-sub{margin:1.1em 0 2em;font:clamp(14px,1.6vw,19px)/1.6 Georgia,serif;color:var(--dim)}
+#title .t-btns{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+#title button{background:none;border:1px solid #e9c27a99;border-radius:2px;padding:.7em 1.6em;font:clamp(14px,1.5vw,18px) system-ui;color:var(--ink);min-height:44px}
+#title button#begin,#title button#resume{background:#e9c27a1a;border-color:var(--gold);color:#ffe2a0}
+#title.cut{background:transparent;pointer-events:none}#title.cut>*:not(h1){opacity:0}#title.cut h1{color:#26232e}
+/* Corridor: the After Hours dispenser (hub/, journey mode) */
 #corridor{background:#0d0e1a}
-#corridor .slot{position:absolute;border:0;background:none;padding:0;border-radius:6px}
-#corridor .slot:hover,#corridor .slot:focus-visible{background:#ffe2a01a}
-.cbtn{position:absolute;background:#0b0b12cc;border:1px solid #e9c27a88;border-radius:2px;padding:.55em 1.2em;font:clamp(13px,1.5vw,18px) system-ui;color:var(--ink)}
-#nb-open{left:3%;bottom:5%}#morning{right:3%;bottom:5%}
-#c-cap{position:absolute;left:50%;bottom:4.2%;transform:translateX(-50%);width:min(620px,52%);margin:0;text-align:center;font:clamp(14px,1.8vw,24px)/1.35 Georgia,serif;text-shadow:0 2px 8px #000;pointer-events:none}
-/* A bottle in the hand */
-#held{background:radial-gradient(70% 90% at 50% 40%,#2a2238,#0a0a12 70%)}
-#held .lift{transition:transform .7s steps(6)}#held.up .lift{transform:translateY(-7%) scale(1.04)}
-#held .hbtns{position:absolute;left:0;right:0;bottom:4%;display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
-#held .hbtns button{background:#0b0b12cc;border:1px solid #ffffff33;border-radius:2px;padding:.55em 1.1em;font:clamp(13px,1.5vw,18px) system-ui;color:var(--ink);min-height:40px}
-#held .hbtns #hold-up{border-color:#e9c27a;color:#ffe2a0}
-#frame.portrait #held .hbtns{bottom:2%}
-#frame.portrait #c-cap{bottom:11%;width:88%}#frame.portrait .cbtn{bottom:3%}
+#hubframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block;background:#0d0e1a}
+.cbtn{position:absolute;z-index:2;background:#0b0b12cc;border:1px solid #e9c27a88;border-radius:2px;padding:.55em 1.2em;font:clamp(13px,1.5vw,17px) system-ui;color:var(--ink);min-height:40px}
+#nb-open{left:2.5%;bottom:4%}#morning{right:2.5%;bottom:4%}
+#c-cap{position:absolute;z-index:2;left:50%;bottom:4.6%;transform:translateX(-50%);width:min(560px,50%);margin:0;text-align:center;font:clamp(14px,1.7vw,22px)/1.35 Georgia,serif;text-shadow:0 2px 8px #000,0 0 3px #000;pointer-events:none}
+#corridor.holding .cbtn,#corridor.holding #c-cap{display:none}
+#frame.portrait #c-cap{bottom:12%;width:88%}#frame.portrait .cbtn{bottom:3%}
+#story.crossing{background:none!important}
 /* The crossing and the film */
 .crossing{z-index:5}
 #filmscr{background:#050507;z-index:4}#filmscr.crossing{background:none}
@@ -124,16 +127,14 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--gold);outline-o
   <input id="mine" hidden maxlength="24" aria-label="Leadership is… (optional; stays on this screen only)" placeholder="your word">
   <button id="closebook" hidden>Done</button>
  </section>
- <section class="screen" id="corridor" hidden aria-label="A corridor at night. A drinks dispenser glows in the corner.">
-  <svg viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false" id="co-svg"></svg>
-  <div id="slots" role="group" aria-label="Bottles in the dispenser"></div>
-  <p id="c-cap" aria-live="polite"></p>
-  <button class="cbtn" id="nb-open">Open the notebook</button><button class="cbtn" id="morning" hidden>Wait for morning</button>
+ <section class="screen" id="title" aria-labelledby="t-word">
+  <p class="t-kicker">Asterwind</p><h1 id="t-word">Leadership</h1>
+  <p class="t-sub">A night in paper, for one person, about twenty minutes.<br>Sound on, if you can.</p>
+  <div class="t-btns"><button id="begin">Begin</button><button id="resume" hidden>Continue the night</button><button id="restart" hidden>Begin again</button></div>
  </section>
- <section class="screen" id="held" hidden aria-label="A bottle in your hand">
-  <svg viewBox="0 0 1600 900" aria-hidden="true" focusable="false" id="hb-svg"></svg>
-  <p class="sr" id="label-text" aria-live="polite"></p>
-  <div class="hbtns"><button id="turn-l" aria-label="Turn the bottle left">‹ Turn</button><button id="hold-up">Hold it up to the light</button><button id="turn-r" aria-label="Turn the bottle right">Turn ›</button><button id="put-back">Put it back</button></div>
+ <section class="screen" id="corridor" hidden aria-label="The corridor after hours">
+  <p id="c-cap" aria-live="polite"></p>
+  <button class="cbtn" id="nb-open">Back to the notebook</button><button class="cbtn" id="morning" hidden>Wait for morning</button>
  </section>
  <section class="screen" id="filmscr" hidden aria-label="">
   <div id="slate" hidden><b></b><span></span></div>
@@ -152,6 +153,7 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--gold);outline-o
  <div id="chrome"><button id="snd" aria-pressed="false" aria-label="Sound">♪</button><button id="voice" hidden aria-label="Voices">Voices: off</button><button id="pause" aria-pressed="false" hidden>Pause</button></div>
 </div></div>
 <p class="sr" id="live" aria-live="polite"></p>
+<script src="../../../hub/legacy-seam.js"></script>
 <script>
 'use strict';
 const $=id=>document.getElementById(id),Q=new URLSearchParams(location.search),EXPORT=Q.has('export');
@@ -430,25 +432,13 @@ const FILMS={standup:{title:'The Quiet Minute',src:'anthology/episodes/standup/i
  ship:{title:'Before the Doors Open',src:'anthology/episodes/ship/index.html',arrival:'The doors are about to open.'},
  pixel:{title:'The Empty Square',src:'anthology/episodes/pixel/index.html',arrival:'The next sequence should be Jo’s to choose.'},
  scope:{title:'One More Chair',src:'anthology/episodes/scope/index.html',arrival:'One more student waits at the door.'}};
-// Manufactured, a little uncanny: real-looking wrappers whose small print knows too much. Never names an outcome.
-const BOTTLES={
- HEARD:{film:'standup',brand:['STANDUP','SELTZER'],tint:'#9cae98',glass:'#5f7a6c',cap:'ring',tag:'For loud rooms.',
-  when:['you’ve said it in','your head three times.'],ingr:['Carbonated water','Lightly carbonated agreement','One confident route','The end of someone else’s sentence','A pause (2%)','Courage (trace)'],small:['Best served without interrupting.','Contains one folded alternative.','Room booked until the next group.']},
- LEAD:{film:'slides',brand:['SLIDE DECK','BITTERS'],tint:'#c58f7f',glass:'#7a4a40',cap:'wax',tag:'A few drops transform any opening.',
-  when:['everyone’s looking','at you to start.'],ingr:['Bitter orange','One beautiful route diagram','One pencilled field notebook','Nerve','Made by: ______________'],small:['Not the only word in the bottle.','Credits may settle at the bottom.','Shake before presenting.']},
- SHARED:{film:'seam',brand:['3:00 AM','COLD BREW'],tint:'#e2b25c',glass:'#4a3220',cap:'crown',tag:'Steeped since midnight.',
-  when:['two good things want','the same hour.'],ingr:['Cold-brewed coffee','A spare rib, cut clean','The original, still cracked','Someone else’s deadline','A pinch of courage'],small:['Hands off at 4:30.','Store away from direct light.','Best shared before it sets.']},
- SHIELD:{film:'ship',brand:['SHIP-IT','GINGER ALE'],tint:'#c1ac79',glass:'#6a5a30',cap:'cork',tag:'Brewed to open on time.',
-  when:['you’d rather it','looked perfect.'],ingr:['Ginger','Sugar','One paper city','A sensor that sometimes counts twice','One honest sentence'],small:['Live product may vary.','Seal may show signs of tampering.','That’s the point.']},
- HELP:{film:'pixel',brand:['DEAD PIXEL','TONIC'],tint:'#b1a4bc',glass:'#5a4e6a',cap:'crown',tag:'Clear, with a bitter edge.',
-  when:['you’re about to','do it for them.'],ingr:['Tonic water','One paper world','Large controls, mounted high','An open hand','Patience (to taste)'],small:['Shake gently.','Let them open it.','The next sequence: yet to be chosen.']},
- SHIP:{film:'scope',brand:['SCOPE CREEP','FIZZ'],tint:'#9da6c2',glass:'#4a5678',cap:'swing',tag:'Contents under pressure.',
-  when:['it’s almost closing and','someone’s at the door.'],ingr:['Rainwater','Three booked repairs','One torn bag, one spare chair','Room'],small:['Hall clear by six.','Pressure rises with each addition.','Ask about tomorrow’s batch.']}};
+// Each word's bottle opens one film. The wrapper copy lives with the drinks (hub/drinks.js, JOURNEY).
+const BOTTLES={HEARD:{film:'standup'},LEAD:{film:'slides'},SHARED:{film:'seam'},SHIELD:{film:'ship'},HELP:{film:'pixel'},SHIP:{film:'scope'}};
 const LEADQ={question:'Whose map was it? And who said so out loud?',trace:'<path d="M40 150 q30 -90 60 -40 t60 -60" stroke="#e8dcc4" stroke-width="5" fill="none" stroke-dasharray="10 8"/><circle cx="160" cy="50" r="12" fill="#e9c27a"/>'};
 const NIGHT=['03:14','03:41','04:08','04:36','05:03','05:31','06:02'];
 const HINT={HEARD:'what listening leaves behind: H _ _ _ _',LEAD:'the obvious one: L _ _ _',SHARED:'a load that isn’t only yours: S _ _ _ _ _',SHIELD:'what we hold up when we’re afraid: S _ _ _ _ _',HELP:'the hardest thing to ask for: H _ _ _',SHIP:'what carries everyone: S _ _ _'};
 const BONUS={LEADER:'leader. A noun. We’re after what it asks of you.',READ:'read. As in the room.',DEAL:'deal. Sometimes.',PRIDE:'pride. Careful with that one.',PERIL:'peril. Not yet.',PLEAD:'plead. Ask instead.',SPIRAL:'spiral. Breathe.',DESPAIR:'despair. Not today.',DEALERSHIP:'dealership. Wrong kind of shop.',SHED:'shed. Let it go.',HIRED:'hired. A start.',HEAL:'heal. Slowly.',HELD:'held. Hold that thought.',SPARE:'spare. A minute?',HEADS:'heads up.',ASPIRE:'aspire. Good.',PRAISED:'praised. Say it out loud.',SHAPED:'shaped. By other people.',PERISH:'perish. Dramatic.',HIRE:'hire.',RELISHED:'relished. Ha.',PEARL:'pearl.',SPIED:'spied. Notice, don’t spy.'};
-const G={found:[],done:{},film:{},walked:[],frames:{},peeked:{},picked:[],lastFind:0,screen:'notebook',hintLevel:0,mine:''};
+const G={found:[],done:{},film:{},walked:[],frames:{},memento:{},peeked:{},picked:[],lastFind:0,screen:'notebook',hintLevel:0,mine:''};
 function pencilMap(){const sk={HEARD:'<path d="M-60 10 q20 -30 40 0 t40 0 t40 0" />',LEAD:'<path d="M-50 20 q20 -40 40 -10 t40 -30" stroke-dasharray="8 6"/><circle cx="34" cy="-22" r="6"/>',SHARED:'<path d="M-60 10 Q0 -50 60 10" /><path d="M-40 10 v24 M40 10 v24"/>',SHIELD:'<path d="M-30 -30 h60 l10 40 l-40 34 l-40 -34 z"/>',HELP:'<path d="M-60 30 Q0 -10 60 30"/><path d="M0 0 l50 -40 l10 18 z"/>',SHIP:'<path d="M-40 6 h80 l-14 18 h-52 z"/><path d="M-2 6 v-40 l26 34"/>'};
  return Object.entries(PLACE).map(([w,[x,y]])=>`<g class="place" id="pl-${w}" transform="translate(${x} ${y})" stroke="#4a4652" stroke-width="2.4" fill="none" stroke-linecap="round" opacity=".14">${sk[w]}</g>`).join('')}
 // Where the two pages sit: identity on a wide screen; stacked and enlarged on a tall one.
@@ -478,13 +468,12 @@ function layoutOverlays(){const k=PORTRAIT?K:1;
  for(const w of G.found){const b=$('boat-'+w);if(b){const [x,y]=PLACE[w];place(b,RP(x,y-40))}}
  document.querySelectorAll('.boat').forEach(b=>b.style.width=(PORTRAIT?11:6.4)+'%')}
 function setLayout(){const p=innerWidth<innerHeight&&innerWidth<900;if(p!==PORTRAIT||!$('nb-svg').innerHTML){PORTRAIT=p;$('frame').classList.toggle('portrait',p);
- const done=G.found.slice();buildNotebook();for(const w of done)at('pl-'+w,{opacity:.85});if(done.length)$('nb-maptitle').setAttribute('opacity',1);writeNotes();if(G.ended)endWords()}
- if(!$('held').hidden)drawBottle();if(!$('corridor').hidden)placeSlots()}
+ const done=G.found.slice();buildNotebook();for(const w of done)at('pl-'+w,{opacity:.85});if(done.length)$('nb-maptitle').setAttribute('opacity',1);writeNotes();if(G.ended)endWords()}}
 addEventListener('resize',()=>setLayout());
 function buildTiles(){const box=$('tiles');box.innerHTML='';[...WORD].forEach((ch,i)=>{const b=document.createElement('button');b.className='tile';b.textContent=ch;b.dataset.i=i;b.setAttribute('aria-pressed','false');b.setAttribute('aria-label','Letter '+ch);b.style.setProperty('--r',((i%3)-1)*3+'deg');b.onclick=()=>pick(i);box.appendChild(b)})}
 function formed(){return G.picked.map(i=>WORD[i]).join('')}
 function renderTiles(){document.querySelectorAll('.tile').forEach(b=>b.setAttribute('aria-pressed',String(G.picked.includes(+b.dataset.i))));$('spell').textContent=formed().split('').join(' ')}
-function pick(i){if(G.screen!=='notebook'||G.lock||G.ending)return;if(G.picked.includes(i))return;G.picked.push(i);Snd.play('tap');renderTiles();check()}
+function pick(i){if(G.screen!=='notebook'||G.lock||G.ending)return;if(G.demo){stopDemo();$('note').textContent=''}if(G.picked.includes(i))return;G.picked.push(i);Snd.play('tap');renderTiles();check()}
 function unpick(){G.picked.pop();renderTiles()}
 function clear(){G.picked=[];renderTiles()}
 function check(){const w=formed();
@@ -507,95 +496,49 @@ function hints(){if(G.screen!=='notebook'||G.ending)return;const left=TARGETS.fi
  if(idle>40&&G.hintLevel<1){G.hintLevel=1;$('note').textContent=HINT[w]}}
 // Typing: any letter picks the next free tile with that letter.
 addEventListener('keydown',e=>{if(e.target.tagName==='INPUT')return;
- if(G.screen==='held'){if(e.key==='ArrowLeft'){e.preventDefault();turn(-1)}else if(e.key==='ArrowRight'){e.preventDefault();turn(1)}else if(e.key==='Escape')putBack();return}
  if(G.screen!=='notebook'||G.ending)return;const k=e.key.toUpperCase();
  if(/^[A-Z]$/.test(k)){const i=[...WORD].findIndex((c,j)=>c===k&&!G.picked.includes(j));if(i>=0){e.preventDefault();pick(i)}}
  else if(e.key==='Backspace'){e.preventDefault();unpick()}else if(e.key==='Escape')clear()});
-const SCREENS=['notebook','corridor','held','filmscr','story','mirror','end'];
+const SCREENS=['title','notebook','corridor','filmscr','story','mirror','end'];
 function only(...ids){for(const s of SCREENS)$(s).hidden=!ids.includes(s);$('pause').hidden=!ids.includes('story')}
-// ---------- the corridor: the dispenser, lit by the words you found ----------
-const SLOT=TARGETS.map((w,i)=>[720+(i%3)*80,i<3?390:590]),BH=150,BW=58;
-function bottleOutline(cx,base,h,w){return[[cx-w/2,base],[cx+w/2,base],[cx+w/2,base-h*.58],[cx+w*.2,base-h*.76],[cx+w*.15,base-h],[cx-w*.15,base-h],[cx-w*.2,base-h*.76],[cx-w/2,base-h*.58]]}
-function buildCorridor(){$('co-svg').innerHTML=`<rect width="1600" height="900" fill="#191b30"/>
- ${[...Array(9)].map((_,i)=>`<path d="M${i*200-40} 0 V800" stroke="#0f1122" stroke-width="3" opacity=".6"/>`).join('')}
- ${P([[1180,120],[1420,116],[1424,384],[1176,388]],'#4a3d36',EDGE)}${P([[1196,136],[1404,134],[1406,368],[1194,370]],'#10132a')}<g id="co-win"></g>${P(ell(1330,210,22,22),'#d8d2bc')}
- ${P([[0,800],[1600,792],[1600,900],[0,900]],'#0f101e')}${P([[0,792],[1600,786],[1600,800],[0,806]],'#2a2c44')}
- ${P([[90,150],[250,146],[254,800],[86,804]],'#14162a',EDGE)}${P([[104,166],[236,164],[238,792],[102,794]],'#0d0f1f')}
- <ellipse cx="800" cy="836" rx="330" ry="44" fill="url(#warm)" opacity=".42" id="co-pool"/>
- <g filter="url(#lift)">${P([[628,150],[972,146],[978,806],[622,810]],'#3a2a30',EDGE)}${P([[614,140],[986,136],[990,154],[610,158]],'#5a4248',EDGE)}
- ${P([[652,192],[948,190],[950,618],[650,620]],'#e8d9b8',EDGE)}${P([[662,200],[938,198],[940,608],[660,610]],'#14101c')}</g>
- <rect id="co-glow" x="662" y="200" width="278" height="410" fill="url(#warm)" opacity=".5"/>
- ${P([[664,392],[938,390],[938,402],[664,404]],'#6b4a32',EDGE)}${P([[664,592],[938,590],[938,602],[664,604]],'#6b4a32',EDGE)}
- <g id="co-bottles"></g>
- <path d="M690 200 L760 200 L680 610 L662 610 L662 330 Z" fill="#fff" opacity=".06"/>
- ${P([[700,632],[900,630],[902,676],[698,678]],'#0b1510',EDGE)}<text id="co-clock" x="800" y="664" text-anchor="middle" font-family="ui-monospace,Menlo,monospace" font-size="30" letter-spacing="4" fill="#9fe0b0" opacity=".85"></text>
- ${P([[918,640],[938,640],[938,676],[918,676]],'#1a1218')}${P([[700,704],[900,702],[904,764],[696,766]],'#0c0a10',EDGE)}
- <g id="co-roof"></g><g id="co-dawn" opacity="0"><rect width="1600" height="900" fill="url(#dawnsky)" opacity=".42" style="mix-blend-mode:soft-light"/>${P([[1196,136],[1404,134],[1406,368],[1194,370]],'#f1d6b3')}<path d="M1196 370 L1406 368 L1300 900 L760 900 Z" fill="#ffe9c0" opacity=".16"/></g>${GRAINRECT(.42)}`}
-function miniFrame(w,x,y,wd){const f=G.frames[w]||`<rect width="1600" height="900" fill="#efe3c8"/><g transform="translate(500 30) scale(4.2)">${LEADQ.trace.replace(/#e8dcc4/g,'#4a4652')}</g>`;
- return `<svg x="${x}" y="${y}" width="${wd}" height="${wd*9/16}" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">${f}</svg>`}
-function renderCorridor(){let b='';TARGETS.forEach((w,i)=>{const [cx,base]=SLOT[i],bt=BOTTLES[w];if(G.walked.includes(w))return;
-  if(G.found.includes(w)){b+=`<circle cx="${cx}" cy="${base-70}" r="60" fill="url(#warm)" opacity=".55"/>${P(bottleOutline(cx,base,BH,BW),bt.glass,EDGE)}${P([[cx-BW/2+2,base-BH*.5],[cx+BW/2-2,base-BH*.5],[cx+BW/2-2,base-BH*.2],[cx-BW/2+2,base-BH*.2]],'#efe3c8')}<rect x="${cx-BW/2+2}" y="${base-BH*.5}" width="${BW-4}" height="9" fill="${bt.tint}"/><path d="M${cx-BW*.3} ${base-BH*.56} V${base-8}" stroke="#fff" stroke-opacity=".25" stroke-width="5"/>`}
-  else b+=P(bottleOutline(cx,base,BH,BW),'#0b0910','stroke="#3a3342" stroke-width="1.5"')});
- $('co-bottles').innerHTML=b;at('co-glow',{opacity:G.found.some(w=>!G.walked.includes(w))?.55:.18});
- // The empties: each carries a frame of how it ended for you.
- $('co-roof').innerHTML=G.walked.map((w,i)=>{const cx=652+i*59,base=140,h=128,wd=54;return `${P(bottleOutline(cx,base,h,wd),'#cfe0e6','fill-opacity=".16" stroke="#efe3c8" stroke-opacity=".55" stroke-width="2"')}${miniFrame(w,cx-24,base-h*.52,48)}<path d="M${cx-wd*.28} ${base-h*.55} V${base-8}" stroke="#fff" stroke-opacity=".3" stroke-width="3"/>`}).join('');
- $('co-clock').textContent=NIGHT[Math.min(G.walked.length,6)]}
-function placeSlots(){const svg=$('co-svg'),m=svg.getScreenCTM(),fr=$('frame').getBoundingClientRect();if(!m)return;const pt=svg.createSVGPoint();
- const scr=(x,y)=>{pt.x=x;pt.y=y;const p=pt.matrixTransform(m);return[p.x-fr.left,p.y-fr.top]};
- for(const b of $('slots').children){const i=+b.dataset.i,[cx,base]=SLOT[i],[x0,y0]=scr(cx-BW/2-8,base-BH-6),[x1,y1]=scr(cx+BW/2+8,base);Object.assign(b.style,{left:x0+'px',top:y0+'px',width:(x1-x0)+'px',height:(y1-y0)+'px'})}}
-function showCorridor(focusWord){G.screen='corridor';only('corridor');if(!$('co-svg').innerHTML)buildCorridor();renderCorridor();Snd.music('night');
- const box=$('slots');box.innerHTML='';TARGETS.forEach((w,i)=>{if(!G.found.includes(w)||G.walked.includes(w))return;const bt=BOTTLES[w],b=document.createElement('button');b.className='slot';b.dataset.i=i;b.id='slot-'+w;
-  b.setAttribute('aria-label',`${bt.brand.join(' ').toLowerCase()}. On the label: ${w.toLowerCase()}.`);b.onclick=()=>showBottle(w);box.appendChild(b)});
- requestAnimationFrame(placeSlots);
+// ---------- the corridor: the After Hours dispenser (hub/, journey mode), lit by the words you found ----------
+const DRINK={HEARD:'standup',LEAD:'slides',SHARED:'seam',SHIELD:'ship',HELP:'pixel',SHIP:'scope'},WORD_OF=Object.fromEntries(Object.entries(DRINK).map(([w,d])=>[d,w]));
+const HUB={frame:null,ready:false,queue:[]};
+function hub(msg){if(HUB.ready&&HUB.frame?.contentWindow)HUB.frame.contentWindow.postMessage({channel:'asterwind.hub.v1',...msg},'*');else HUB.queue.push(msg)}
+function mountHub(){if(HUB.frame)return;const f=document.createElement('iframe');f.id='hubframe';f.title='The corridor after hours. A drinks dispenser; the bottles whose words you found are lit.';f.src=ROOT+'hub/index.html?journey=1';$('corridor').prepend(f);HUB.frame=f}
+function hubState(){hub({type:'state',lit:G.found.map(w=>DRINK[w]),walked:G.walked.map(w=>DRINK[w]),words:Object.fromEntries(G.found.map(w=>[DRINK[w],w.toLowerCase()]))})}
+addEventListener('message',e=>{if(!HUB.frame||e.source!==HUB.frame.contentWindow||e.data?.channel!=='asterwind.hub.v1')return;const m=e.data;
+ if(m.type==='ready'){HUB.ready=true;hubState();hub({type:'sound',on:Snd.on});for(const q of HUB.queue.splice(0))hub(q)}
+ if(m.type==='opened'){const w=WORD_OF[m.id];if(!w||G.screen!=='corridor')return;G.screen='crossing';$('c-cap').textContent='';$('corridor').classList.add('holding');
+  if(KEY[w])enterRoom(KEY[w],{cross:m.reveal||{}});else startFilm(w,{cross:m.reveal||{}})}
+ if(m.type==='unlit'){$('c-cap').textContent=m.walked?'Its empty is already on the roof.':'That bottle is still dark. Its word is in the notebook.';announce($('c-cap').textContent)}
+ if(m.type==='held'){$('corridor').classList.toggle('holding',!!m.on);if(m.on)$('c-cap').textContent=''}});
+function showCorridor(focusWord){G.screen='corridor';only('corridor');mountHub();Snd.music(G.dawn?'dawn':null);
+ hubState();hub({type:'focus',id:focusWord?DRINK[focusWord]:null});setTimeout(()=>HUB.frame?.focus(),60);
  const left=G.found.filter(w=>!G.walked.includes(w)),dark=TARGETS.length-G.found.length;
- $('morning').hidden=!G.walked.length;
- $('c-cap').textContent=!G.walked.length?`${NIGHT[0]}. The words you found are lit.`:left.length?`${NIGHT[Math.min(G.walked.length,6)]}. An empty on the roof.`:dark?`${NIGHT[Math.min(G.walked.length,6)]}. ${dark===1?'One slot is':dark+' slots are'} still dark. The notebook is still open.`:'Every bottle is on the roof.';
- announce('The corridor. '+$('c-cap').textContent);
- setTimeout(()=>{const t=focusWord&&$('slot-'+focusWord)||box.querySelector('button')||$('morning').hidden&&$('nb-open')||$('morning');t?.focus({preventScroll:true})},120);
- if(G.walked.length===TARGETS.length&&!G.dawn)setTimeout(dawn,1800)}
+ $('morning').hidden=!G.walked.length||!!G.dawn;$('nb-open').textContent=G.dawn===2?'Open the notebook':'Back to the notebook';
+ $('c-cap').textContent=G.dawn?'':!G.walked.length?'The words you found are lit. Choose a bottle.':left.length?'An empty on the roof. The night goes on.':dark?`${dark===1?'One bottle is':dark+' bottles are'} still dark. Their words are in the notebook.`:'';
+ announce('The corridor. '+$('c-cap').textContent)}
 $('nb-open').onclick=()=>{if(G.dawn===2){beginEnding();return}backToNotebook()};
 $('morning').onclick=()=>dawn();
-function dawn(){if(G.dawn)return;G.dawn=1;$('morning').hidden=true;$('slots').innerHTML='';Snd.music('dawn');$('c-cap').textContent='Morning comes up the corridor. The empties catch it first.';announce($('c-cap').textContent);
- const d=$('co-dawn');if(reduced)at(d,{opacity:1});else{let k=0;const id=setInterval(()=>{k++;at(d,{opacity:(k/8).toFixed(2)});if(k>=8)clearInterval(id)},380)}
- $('co-roof').querySelectorAll('path[stroke-opacity=".55"]').forEach(p=>p.setAttribute('stroke','#ffe2a0'));
- setTimeout(()=>{zoomRoof();G.dawn=2;$('nb-open').textContent='Open the notebook';setTimeout(()=>$('nb-open').focus({preventScroll:true}),reduced?0:2400)},reduced?300:3400)}
-function zoomRoof(){const n=G.walked.length,x0=652-40,x1=652+(n-1)*59+40,r=$('frame').getBoundingClientRect(),A=r.width/r.height,nw=x1-x0+60,nh=200;let W,H;if(nw/nh>A){W=nw;H=W/A}else{H=nh;W=H*A}const to=[(x0+x1)/2-W/2,80-H/2,W,H],svg=$('co-svg');$('c-cap').textContent=n===1?'One empty on the roof.':`${n} empties on the roof. Each one holds how it ended.`;
- if(reduced){svg.setAttribute('viewBox',to.join(' '));return}let k=0;const id=setInterval(()=>{k++;const u=qe(k/12,12),v=[0,0,1600,900].map((a,i)=>lerp(a,to[i],u));svg.setAttribute('viewBox',v.map(x=>x.toFixed(1)).join(' '));if(k>=12)clearInterval(id)},170)}
-// ---------- a bottle in your hand: turn it, read it, hold it up to the light ----------
-let HB={w:null,turn:0};
-function panel(k,b,w,x0){const cx=x0+240,T=(y,s,size,font='Georgia,serif',extra='')=>`<text x="${cx}" y="${y}" text-anchor="middle" font-family="${font}" font-size="${size}" fill="#2b2731" ${extra}>${s}</text>`;
- const face=((k%4)+4)%4;let o=`<rect x="${x0}" y="360" width="480" height="400" fill="#efe3c8"/><rect x="${x0}" y="360" width="480" height="30" fill="${b.tint}"/><rect x="${x0}" y="730" width="480" height="30" fill="${b.tint}"/><path d="M${x0} 360 V760" stroke="#cdbb98" stroke-width="2"/>`;
- if(face===0)o+=T(474,b.brand[0],b.brand[0].length>8?50:64,'Georgia,serif','letter-spacing="5"')+T(536,b.brand[1],40,'Georgia,serif','letter-spacing="7"')+`<rect x="${cx-110}" y="568" width="220" height="74" fill="none" stroke="#2b2731" stroke-width="2"/>`+T(622,w.toLowerCase(),46,'Kalam,cursive','fill-opacity=".9"')+T(696,b.tag,24,'Georgia,serif','font-style="italic"');
- if(face===1)o+=T(452,'DRINK WHEN',17,'system-ui','letter-spacing="6"')+b.when.map((l,i)=>T(530+i*56,l,38,'Kalam,cursive')).join('')+`<path d="M${cx-60} 680 h120" stroke="#2b2731" stroke-width="1.5"/>`;
- if(face===2)o+=T(428,'INGREDIENTS',17,'system-ui','letter-spacing="6"')+b.ingr.map((l,i)=>T(474+i*40,l,21)).join('');
- if(face===3)o+=b.small.map((l,i)=>T(462+i*36,l,20,'Georgia,serif','font-style="italic"')).join('')+T(640,'Hold up to the light.',32,'Kalam,cursive')+`<g transform="translate(${cx-50} 668)" stroke="#2b2731" stroke-width="1.4">${[...Array(14)].map((_,i)=>`<path d="M${i*7} 0 v${i%3?24:34}"/>`).join('')}</g>`;
- return o}
-function labelText(w,k){const b=BOTTLES[w],f=((k%4)+4)%4;return['Front: '+b.brand.join(' ')+'. In a stamped window: '+w.toLowerCase()+'. '+b.tag,'Drink when '+b.when.join(' '),'Ingredients: '+b.ingr.join(', ')+'.',b.small.join(' ')+' Hold up to the light.'][f]}
-function capShape(b){const c=b.cap;if(c==='cork')return P([[772,6],[828,6],[832,70],[768,70]],'#b08a5a',EDGE);if(c==='wax')return P([[762,30],[838,30],[846,96],[820,84],[800,110],[778,86],[754,96]],b.tint,EDGE);if(c==='swing')return P([[766,40],[834,40],[834,72],[766,72]],'#d9d2c4',EDGE)+'<path d="M770 70 q-40 40 -6 90 M830 70 q40 40 6 90" stroke="#9a948a" stroke-width="5" fill="none"/>';if(c==='ring')return P([[762,40],[838,40],[842,78],[758,78]],'#b9b4aa',EDGE)+'<circle cx="800" cy="30" r="16" fill="none" stroke="#b9b4aa" stroke-width="6"/>';return P([[758,44],[842,44],[848,80],[752,80]],b.tint,EDGE)+P([[752,80],[848,80],[844,88],[756,88]],'#6b5420')}
-function drawBottle(){const w=HB.w,b=BOTTLES[w],svg=$('hb-svg');svg.setAttribute('viewBox',PORTRAIT?'500 0 600 1300':'0 0 1600 900');
- const body=[[560,1420],[1040,1420],[1040,318],[1030,282],[1004,252],[960,226],[900,206],[862,190],[848,166],[846,70],[754,70],[752,166],[738,190],[700,206],[640,226],[596,252],[570,282],[560,318]];
- let strip='';for(let k=-8;k<=12;k++)strip+=panel(k,b,w,560+k*480);
- svg.innerHTML=`<defs><clipPath id="lbl"><rect x="560" y="360" width="480" height="400"/></clipPath><linearGradient id="curve" x1="0" x2="1"><stop offset="0" stop-color="#000" stop-opacity=".62"/><stop offset=".2" stop-color="#000" stop-opacity=".08"/><stop offset=".33" stop-color="#fff" stop-opacity=".16"/><stop offset=".42" stop-color="#000" stop-opacity="0"/><stop offset=".82" stop-color="#000" stop-opacity=".12"/><stop offset="1" stop-color="#000" stop-opacity=".6"/></linearGradient></defs>
-  <g class="lift"><circle cx="800" cy="300" r="520" fill="url(#warm)" opacity=".22"/>
-  <g filter="url(#lift)">${P(body,b.glass,EDGE+' fill-opacity=".94"')}</g>${P([[566,520],[1034,520],[1034,1420],[566,1420]],'#1a1218','opacity=".35"')}
-  <g clip-path="url(#lbl)"><g id="lbl-strip" style="transform:translateX(${-HB.turn*480}px);transition:transform ${reduced?0:.5}s steps(6)">${strip}</g></g>
-  <rect x="560" y="360" width="480" height="400" fill="url(#curve)"/><path d="M612 230 L612 1400" stroke="#fff" stroke-opacity=".22" stroke-width="16"/><path d="M640 300 L640 1400" stroke="#fff" stroke-opacity=".1" stroke-width="5"/>
-  ${capShape(b)}<rect width="1600" height="1400" fill="url(#grain)" opacity=".3"/></g>`;
- $('label-text').textContent=labelText(w,HB.turn)}
-function showBottle(w){HB={w,turn:0};G.screen='held';only('held');$('held').classList.remove('up');Snd.play('clink');drawBottle();
- $('held').setAttribute('aria-label',`${BOTTLES[w].brand.join(' ').toLowerCase()}, in your hand`);setTimeout(()=>$('hold-up').focus({preventScroll:true}),80)}
-function turn(d){if(G.screen!=='held')return;HB.turn=Math.max(-8,Math.min(8,HB.turn+d));const s=$('lbl-strip');if(s)s.style.transform=`translateX(${-HB.turn*480}px)`;$('label-text').textContent=labelText(HB.w,HB.turn);Snd.play('paper')}
-function putBack(){if(G.screen!=='held')return;showCorridor(HB.w)}
-$('turn-l').onclick=()=>turn(-1);$('turn-r').onclick=()=>turn(1);$('put-back').onclick=putBack;
-$('hold-up').onclick=()=>holdUp();
-{let x0=null;$('hb-svg').addEventListener('pointerdown',e=>{x0=e.clientX});$('hb-svg').addEventListener('pointerup',e=>{if(x0!=null&&Math.abs(e.clientX-x0)>30)turn(e.clientX<x0?1:-1);x0=null})}
-// Held up to the light, the bottle becomes a camera obscura: the room inside appears upside down, rights itself, and opens out.
-function holdUp(){if(G.screen!=='held')return;const w=HB.w,key=KEY[w];G.screen='crossing';$('held').classList.add('up');Snd.play('unfold');announce('You hold it up to the light. Something inside turns the right way up.');
- setTimeout(()=>{if(key)enterRoom(key,{cross:true});else startFilm(w,{cross:true})},reduced?0:650)}
-function crossInto(el,box,done){if(reduced||!box.animate){$('held').hidden=true;el.hidden=false;done();return}
+// Morning: the hub runs its finale (tube off, lamp off, sunrise on the roof of empties), then the notebook.
+function dawn(auto){if(G.dawn)return;G.dawn=1;save();$('morning').hidden=true;if(!auto)hub({type:'morning'});Snd.music('dawn');
+ $('c-cap').textContent='Morning comes up the corridor. The empties catch it first.';announce($('c-cap').textContent);
+ setTimeout(()=>{G.dawn=2;save();$('nb-open').textContent='Open the notebook';$('c-cap').textContent=G.walked.length===1?'One empty on the roof, holding how it ended.':`${G.walked.length} empties on the roof. Each one holds how it ended.`;$('nb-open').focus({preventScroll:true})},reduced?800:7500)}
+// A picture the empty can keep: the film's last frame if it ended, otherwise the room as you left it.
+function roomPicture(){try{const svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900">${DEFS.replace(/<pattern[\s\S]*?<\/pattern>/,'')}${G.frames[R?.word]||''}</svg>`;return 'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg.replace(/fill="url\(#grain\)"/g,'fill="none"'))}catch{return null}}
+// The room grows out of the label's window: upside down at first, as through a lens, then righting itself and opening out.
+function crossInto(el,box,done,from){const pAR=box.querySelector('svg')?.getAttribute('preserveAspectRatio');
+ if(reduced||!box.animate){el.hidden=false;done();return}
  el.hidden=false;el.classList.add('crossing');
- const a=box.animate([{transform:'rotate(180deg) scale(.3)',clipPath:'circle(30% at 50% 50%)',offset:0},{transform:'rotate(180deg) scale(.3)',clipPath:'circle(30% at 50% 50%)',offset:.28},{transform:'rotate(0deg) scale(.34)',clipPath:'circle(30% at 50% 50%)',offset:.62},{transform:'none',clipPath:'circle(75% at 50% 50%)',offset:1}],{duration:2600,easing:'steps(18)'});
- a.onfinish=()=>{el.classList.remove('crossing');$('held').hidden=true;$('held').classList.remove('up');done()}}
+ const fr=$('frame').getBoundingClientRect(),e=box.getBoundingClientRect(),E={x:e.left-fr.left,y:e.top-fr.top,w:e.width,h:e.height};
+ const r=from&&from.rect&&from.rect.w>4?from.rect:{x:E.x+E.w*.42,y:E.y+E.h*.36,w:E.w*.16,h:E.h*.28},round=/50%/.test(from?.radius||''),px=v=>v.toFixed(1)+'px';
+ const at=q=>({position:'absolute',left:px(q.x),top:px(q.y),width:px(q.w),height:px(q.h),right:'auto',bottom:'auto',overflow:'hidden'});
+ const svg=box.querySelector('svg');if(svg)svg.setAttribute('preserveAspectRatio','xMidYMid slice');
+ const start={...at(r),borderRadius:round?'50%':'8px'},end={...at(E),borderRadius:'0px'};
+ const a=box.animate([{...start,offset:0},{...start,offset:.58},{...end,offset:1}],{duration:2600,easing:'steps(18)'});
+ const inner=box.firstElementChild;inner?.animate?.([{transform:'rotate(180deg)'},{transform:'rotate(180deg)',offset:.18},{transform:'rotate(0deg)',offset:.52},{transform:'rotate(0deg)'}],{duration:2600,easing:'steps(10)'});
+ a.onfinish=()=>{if(svg){if(pAR)svg.setAttribute('preserveAspectRatio',pAR);else svg.removeAttribute('preserveAspectRatio')}el.classList.remove('crossing');done()}}
 // ---------- a room: the choice, the consequence, the threshold into its film ----------
 let R=null;
 function enterRoom(key,o={}){const st=ST[key];G.screen='story';$('note').textContent='';Snd.play('page');Snd.music(key==='help'?'dawn':'night');
@@ -605,7 +548,7 @@ function enterRoom(key,o={}){const st=ST[key];G.screen='story';$('note').textCon
  if(o.ghost){// Replay the setup silently, then play the way you didn't take.
   for(const b of st.intro){if(b.gate)break;R.S=blend(R.S,beatTo(st,b),1)}R.choice=o.ghost;R.seq=st[o.ghost].slice();announce('Another way. It doesn’t change what you did. '+st.title)}
  else announce(st.title+'. '+st.desc);
- if(o.cross){$('pause').hidden=true;$('story').hidden=false;R.st.render(R.S,0,0);crossInto($('story'),$('story').querySelector('.box'),()=>{only('story');R.hold=false;startBeat()})}
+ if(o.cross){$('pause').hidden=true;$('story').hidden=false;R.st.render(R.S,0,0);crossInto($('story'),$('story').querySelector('.box'),()=>{only('story');R.hold=false;startBeat()},o.cross)}
  else{only('story');startBeat()}}
 function beatTo(st,b){const to=JSON.parse(JSON.stringify(b.to||{}));for(const [who,name] of Object.entries(b.pose||{})){to[who]=st.poses[who][name];to[who+'Pose']=name}return to}
 function startBeat(){const b=R.seq[R.i];if(!b){if(R.ghost){const w=R.word;R=null;$('story').classList.remove('ghost');toMirror(w,true)}else finishRoom('stay');return}
@@ -627,7 +570,7 @@ function choose(id){if(!R||R.choice)return;R.choice=id;$('choices').innerHTML=''
  const xa=R.st.exitAt||[[1210,690],[400,690]];if(f)R.seq.push({gate:1,exit:1,choices:[{id:'film',label:(R.st.exit&&R.st.exit[id])||`Go deeper: ${FILMS[f].title}`,at:xa[0]},{id:'stay',label:'Stay with the night',at:xa[1]}]});
  R.i++;startBeat()}
 function chooseExit(id){if(!R)return;$('choices').innerHTML='';Snd.play('pick');finishRoom(id)}
-function finishRoom(id){const w=R.word;G.done[R.key]=R.choice;if(!G.frames[w])G.frames[w]=snap();R=null;if(id==='film')startFilm(w,{fromRoom:true});else toMirror(w)}
+function finishRoom(id){const w=R.word;G.done[R.key]=R.choice;if(!G.frames[w])G.frames[w]=snap();G.memento[w]=roomPicture();save();R=null;if(id==='film')startFilm(w,{fromRoom:true});else toMirror(w)}
 function snap(){return $('st-svg').innerHTML.replace(/\sid="[^"]*"/g,'').replace(/\sfilter="[^"]*"/g,'').replace(/\sclass="[^"]*"/g,'')}
 function blend(from,to,u){const o=Array.isArray(from)?[]:{};for(const k of Object.keys({...from,...to})){const a=from?.[k],b=to?.[k];if(b===undefined)o[k]=a;else if(typeof b==='number'&&typeof (a??0)==='number')o[k]=lerp(a??0,b,u);else if(Array.isArray(b))o[k]=b.map((v,i)=>lerp((a||b)[i],v,u));else if(typeof b==='object')o[k]=blend(a||{},b,u);else o[k]=b}return o}
 function stepStory(dt){if(!R||R.paused||R.hold)return;const b=R.seq[R.i];if(!b)return;R.T+=dt;
@@ -647,21 +590,25 @@ $('story').addEventListener('pointermove',e=>{const r=$('st-svg').getBoundingCli
 let FILM=null;
 function startFilm(w,o={}){const id=BOTTLES[w].film,f=FILMS[id],key=KEY[w],c=key&&G.done[key];G.screen='film';Snd.music(null);
  const scr=$('filmscr');scr.setAttribute('aria-label',f.title);
- const slate=$('slate');slate.hidden=false;slate.querySelector('b').textContent=key==='heard'&&o.fromRoom?'The next morning.':f.title;
+ const slate=$('slate');slate.hidden=false;slate.querySelector('b').textContent=(o.fromRoom&&key&&ST[key].slateTitle)||f.title;
  slate.querySelector('span').textContent=(key&&ST[key].slate&&c&&ST[key].slate[c])||f.arrival;
  $('film-back').hidden=true;scr.querySelector('iframe')?.remove();
  const fr=document.createElement('iframe');fr.title=f.title;fr.hidden=true;const session='unfolded-'+Date.now().toString(36);fr.src=ROOT+f.src+'?session='+session;scr.appendChild(fr);
  FILM={w,id,frame:fr,session,ready:false,slateDone:false};announce(slate.textContent);
  const afterSlate=()=>setTimeout(()=>{if(!FILM||FILM.frame!==fr)return;FILM.slateDone=true;slate.hidden=true;fr.hidden=false;tryStart()},reduced?1800:3200);
- if(o.cross){crossInto(scr,slate,()=>{only('filmscr');afterSlate()})}
+ if(o.cross){crossInto(scr,slate,()=>{only('filmscr');afterSlate()},o.cross)}
  else{only('filmscr');if(!reduced&&slate.animate)slate.animate([{transform:'translateX(100%)'},{transform:'none'}],{duration:900,easing:'steps(8)'});Snd.play('page');afterSlate()}
- fr.addEventListener('load',()=>{if(FILM?.frame===fr&&fr.contentWindow?.__asterwindEpisode?.assetsReady){FILM.ready=true;tryStart()}})}
+ fr.addEventListener('load',()=>{if(FILM?.frame!==fr)return;const win=fr.contentWindow;if(win?.__asterwindEpisode?.assetsReady||win?.__seam){FILM.ready=true;tryStart()}})}
 function tryStart(){if(!FILM||!FILM.ready||!FILM.slateDone||FILM.started)return;FILM.started=true;const win=FILM.frame.contentWindow;
- try{win.__asterwindEpisode?.start();setTimeout(()=>{try{(win.document.getElementById('pause')||FILM.frame).focus()}catch{FILM.frame.focus()}},120)}catch{FILM.frame.focus()}}
+ try{if(win.__seam){win.document.getElementById('start')?.click();watchSeam()}else win.__asterwindEpisode?.start();setTimeout(()=>{try{(win.document.getElementById('pause')||FILM.frame).focus()}catch{FILM.frame.focus()}},120)}catch{FILM.frame.focus()}}
+// The preserved Seam film posts no message; its real ending is read the way the hub reads it (hub/legacy-seam.js).
+function watchSeam(){const f=FILM;const id=setInterval(()=>{if(FILM!==f){clearInterval(id);return}let o=null;try{o=window.AsterwindLegacySeam?.completed(f.frame.contentWindow,f.frame.contentDocument)}catch{}if(o){clearInterval(id);filmEnded(o)}},500)}
+function filmEnded(outcome){if(!FILM)return;if(!G.film[FILM.w]){G.film[FILM.w]=outcome;save()}const b=$('film-back');b.hidden=false;setTimeout(()=>b.focus({preventScroll:true}),900);announce('The film has ended. Back into the night when you’re ready.')}
+function lastFilmFrame(fr){try{const doc=fr.contentDocument;const img=['art-front','front','back'].map(id=>doc.getElementById(id)).find(el=>el&&!el.hidden&&el.currentSrc&&el.style.opacity!=='0');return img?img.currentSrc:null}catch{return null}}
 addEventListener('message',e=>{const d=e.data;if(!FILM||e.source!==FILM.frame.contentWindow||!d||d.channel!=='asterwind.episode.v1'||d.session!==FILM.session)return;
  if(d.type==='ready'){FILM.ready=true;tryStart()}
- if(d.type==='completed'){if(!G.film[FILM.w])G.film[FILM.w]=d.outcome;const b=$('film-back');b.hidden=false;setTimeout(()=>b.focus({preventScroll:true}),900);announce('The film has ended. Back into the night when you’re ready.')}});
-function leaveFilm(){if(!FILM)return;const w=FILM.w,fr=FILM.frame;FILM=null;try{fr.src='about:blank'}catch{}fr.remove();if(!G.frames[w])G.frames[w]=null;toMirror(w)}
+ if(d.type==='completed')filmEnded(d.outcome)});
+function leaveFilm(){if(!FILM)return;const w=FILM.w,fr=FILM.frame,pic=G.film[w]?lastFilmFrame(fr):null;if(pic)G.memento[w]=pic;FILM=null;try{fr.src='about:blank'}catch{}fr.remove();toMirror(w)}
 $('film-leave').onclick=leaveFilm;$('film-back').onclick=leaveFilm;
 // ---------- the mirror: one question, what happened remembered, the other way open to look at ----------
 function toMirror(w,afterGhost){const key=KEY[w],st=key?ST[key]:null;G.screen='mirror';only('mirror');const m=$('mirror');m.dataset.word=w;
@@ -669,9 +616,9 @@ function toMirror(w,afterGhost){const key=KEY[w],st=key?ST[key]:null;G.screen='m
  m.querySelector('.q').textContent=st?st.question:LEADQ.question;m.querySelector('.trace').innerHTML=st?st.trace:LEADQ.trace;
  $('mirror-other').hidden=!(st&&c);$('mirror-other').textContent=afterGhost?'See it again':'See the other way';Snd.music(null);Snd.play('hush');
  setTimeout(()=>$(afterGhost?'mirror-go':'mirror-go').focus({preventScroll:true}),400)}
-$('mirror-go').onclick=()=>{const w=$('mirror').dataset.word;if(!G.walked.includes(w))G.walked.push(w);Snd.play('clink');showCorridor()};
+$('mirror-go').onclick=()=>{const w=$('mirror').dataset.word;if(!G.walked.includes(w))G.walked.push(w);save();showCorridor();hub({type:'return',id:DRINK[w],walked:true,memento:G.memento[w]||null});if(G.walked.length===TARGETS.length&&!G.dawn)setTimeout(()=>dawn(true),reduced?600:4200)};
 $('mirror-other').onclick=()=>{const w=$('mirror').dataset.word,key=KEY[w],st=ST[key];const other=Object.keys(st.notes).find(c=>c!==G.done[key]);enterRoom(key,{ghost:other})};
-function writeNotes(){let n='';for(const w of TARGETS){const key=KEY[w],[x,y]=PLACE[w];let t='';if(key&&G.done[key])t=ST[key].notes[G.done[key]];else if(!key&&G.walked.includes(w))t={microphone:'moved the microphone',notebook:'showed the notebook'}[G.film[w]]||'heard whose map it was';if(t)n+=`<text x="${x}" y="${y+86}" text-anchor="middle">${t}</text>`;if(G.walked.includes(w))$('boat-'+w)?.classList.add('done')}const g=$('nb-notes');if(g)g.innerHTML=n}
+function writeNotes(){let n='';for(const w of TARGETS){const key=KEY[w],[x,y]=PLACE[w];let t='';if(key&&G.done[key])t=ST[key].notes[G.done[key]];if(t)n+=`<text x="${x}" y="${y+86}" text-anchor="middle">${t}</text>`;if(G.walked.includes(w))$('boat-'+w)?.classList.add('done')}const g=$('nb-notes');if(g)g.innerHTML=n}
 function backToNotebook(){G.screen='notebook';only('notebook');writeNotes();updateGo();Snd.music(null);setTimeout(()=>($('tiles').querySelector('button'))?.focus({preventScroll:true}),100)}
 // ---------- the ending: the word, rewritten by what you did ----------
 function endWords(){const ws=TARGETS.filter(t=>G.found.includes(t)).map(t=>t.toLowerCase());const pos=[[300,370],[650,370],[300,440],[650,440],[300,510],[650,510]];
@@ -683,11 +630,11 @@ $('closebook').onclick=()=>{const v=$('mine').value.trim();if(v){G.mine=v.replac
  $('mine').hidden=true;$('closebook').hidden=true;setTimeout(()=>{only('end');G.screen='end';Snd.music(null);setTimeout(()=>$('again').focus({preventScroll:true}),300)},v?2200:600)};
 $('again').onclick=()=>location.reload();
 // ---------- sound: recorded paper when present (sound/manifest.json), music if switched on, voices by cue id ----------
-const Snd=(()=>{let c=null,on=false,buf={},mus=null,musBuf={},vIdx=null,vSet=Q.get('voices')||null,vSrc=null;
+const Snd=(()=>{let c=null,on=false,buf={},mus=null,musBuf={},vIdx=null,vSet=Q.has('voices')?(Q.get('voices')==='off'?null:Q.get('voices')):'scratch',vSrc=null;
  async function load(u){try{return await c.decodeAudioData(await(await fetch(u)).arrayBuffer())}catch{return null}}
- return{async enable(v){on=v;if(on&&!c){c=new AudioContext();try{const m=await(await fetch('sound/manifest.json')).json();for(const [k,f] of Object.entries(m.cues))load('sound/'+f.file).then(b=>b&&(buf[k]={b,g:f.gain??1}));for(const [k,f] of Object.entries(m.music||{}))load('sound/'+f).then(b=>b&&(musBuf[k]=b))}catch{}
+ return{get on(){return on},async enable(v){on=v;hub({type:'sound',on:v});if(on&&!c){c=new AudioContext();try{const m=await(await fetch('sound/manifest.json')).json();for(const [k,f] of Object.entries(m.cues))load('sound/'+f.file).then(b=>b&&(buf[k]={b,g:f.gain??1}));for(const [k,f] of Object.entries(m.music||{}))load('sound/'+f).then(b=>b&&(musBuf[k]=b))}catch{}
    try{vIdx=await(await fetch('voices/index.json')).json()}catch{vIdx=null}this.voiceUI()}if(!on)this.music(null);$('voice').hidden=!on||!vIdx},
-  play(k){if(!on||!c||!buf[k])return;const s=c.createBufferSource(),g=c.createGain();s.buffer=buf[k].b;g.gain.value=buf[k].g;s.connect(g);g.connect(c.destination);s.start()},
+  play(k){if(!on||!c||!buf[k])return;if(c.state==='suspended')c.resume();const s=c.createBufferSource(),g=c.createGain();s.buffer=buf[k].b;g.gain.value=buf[k].g;s.connect(g);g.connect(c.destination);s.start()},
   music(k){if(mus){const m=mus;m.g.gain.setTargetAtTime(0,c.currentTime,.6);setTimeout(()=>m.s.stop(),2500);mus=null}if(!on||!c||!k||!musBuf[k])return;const s=c.createBufferSource(),g=c.createGain();s.buffer=musBuf[k];s.loop=true;g.gain.value=0;g.gain.setTargetAtTime(vSet?.16:.32,c.currentTime,1);s.connect(g);g.connect(c.destination);s.start();mus={s,g}},
   sets(){return vIdx?Object.keys(vIdx.sets).filter(k=>Object.keys(vIdx.sets[k].cues||{}).length):[]},
   cycle(){const s=this.sets(),i=s.indexOf(vSet);vSet=i+1<s.length?s[i+1]:null;this.voiceUI()},
@@ -700,15 +647,42 @@ $('pause').onclick=()=>{if(!R)return;R.paused=!R.paused;$('pause').setAttribute(
 const now=()=>performance.now()/1000;let last=0;
 function loop(ts){const dt=Math.min(.05,(ts-(last||ts))/1000);last=ts;if(!EXPORT){stepStory(dt);renderStory();hints()}requestAnimationFrame(loop)}
 function announce(t){$('live').textContent=t}
-buildTiles();setLayout();setTimeout(()=>at('nb-word',{opacity:.16}),reduced?0:600);G.lastFind=now();updateGo();
-// A first word, shown: the obvious one. Then the page lets you look for the rest.
-const DEMO='lead. The obvious one. It’s in there too, but keep looking.';
-if(!reduced&&!EXPORT){[0,1,2,3].forEach((i,k)=>setTimeout(()=>{if(!G.found.length){G.picked.push(i);renderTiles()}},900+k*260));setTimeout(()=>{if(G.found.length)return;$('note').textContent=DEMO;setTimeout(()=>{if(G.found.length)return;clear();$('note').textContent='There are other words inside this one.'},2400)},2100)}
-else $('note').textContent='There are other words inside this one.';
+// ---------- the night keeps: progress survives a reload (this browser only; nothing leaves it) ----------
+const SAVE='asterwind.unfolded.v1';
+function save(){try{localStorage.setItem(SAVE,JSON.stringify({v:1,found:G.found,done:G.done,film:G.film,walked:G.walked,dawn:G.dawn?1:0}))}catch{}}
+function loadSave(){try{const d=JSON.parse(localStorage.getItem(SAVE)||'null');if(d&&d.v===1&&Array.isArray(d.found)&&d.found.some(w=>TARGETS.includes(w)))return d}catch{}return null}
+function wipe(){try{localStorage.removeItem(SAVE)}catch{}}
+// ---------- the title: the word in cream, then the same word in ink on the page ----------
+buildTiles();setLayout();updateGo();only('title');G.screen='title';
+const saved=loadSave();if(saved){$('resume').hidden=false;$('restart').hidden=false;$('begin').hidden=true}
+function demo(){// A first word, shown: the obvious one. Then the page lets you look for the rest.
+ const DEMO='lead. The obvious one. It’s in there too, but keep looking.';
+ if(reduced||EXPORT){$('note').textContent='There are other words inside this one.';return}
+ const T=G.demo=[];const go=(f,ms)=>T.push(setTimeout(f,ms));
+ [0,1,2,3].forEach((i,k)=>go(()=>{G.picked.push(i);renderTiles()},1500+k*260));
+ go(()=>{$('note').textContent=DEMO},2700);go(()=>{stopDemo();$('note').textContent='There are other words inside this one.'},5100)}
+// The demonstration steps aside the moment you touch a letter.
+function stopDemo(){if(!G.demo)return;G.demo.forEach(clearTimeout);G.demo=null;G.picked=[];renderTiles()}
+function openNotebook(after){Snd.enable(true);$('snd').setAttribute('aria-pressed','true');
+ const t=$('title'),h=$('t-word');$('notebook').hidden=false;
+ const r=$('nb-word').getBoundingClientRect(),fr=$('frame').getBoundingClientRect();
+ if(!reduced){// Fit the cream word exactly over the ink word, then let the page show through around it.
+  h.style.fontSize='100px';h.style.display='inline-block';const k=r.width/h.getBoundingClientRect().width;
+  Object.assign(h.style,{position:'absolute',fontSize:(100*k)+'px',lineHeight:'1',left:(r.left-fr.left)+'px',top:(r.top-fr.top+r.height*.5)+'px',transform:'translateY(-58%)',whiteSpace:'nowrap'});at('nb-word',{opacity:0});void h.offsetWidth}
+ t.classList.add('cut');Snd.play('page');
+ setTimeout(()=>{at('nb-word',{opacity:1});t.hidden=true;t.classList.remove('cut');h.removeAttribute('style');after()},reduced?0:1000)}
+$('begin').onclick=()=>openNotebook(()=>{G.screen='notebook';only('notebook');G.lastFind=now();setTimeout(()=>at('nb-word',{opacity:.16}),reduced?0:500);demo();setTimeout(()=>$('tiles').querySelector('button')?.focus({preventScroll:true}),120)});
+$('restart').onclick=()=>{wipe();$('begin').onclick()};
+$('resume').onclick=()=>openNotebook(()=>{const d=saved;
+ for(const w of d.found)if(TARGETS.includes(w)&&!G.found.includes(w)){G.found.push(w);$('boats').appendChild(makeBoat(w));at('pl-'+w,{opacity:.85})}
+ G.done=d.done&&typeof d.done==='object'?d.done:{};G.film=d.film&&typeof d.film==='object'?d.film:{};G.walked=(d.walked||[]).filter(w=>G.found.includes(w));G.seenTip=1;
+ $('nb-maptitle').setAttribute('opacity',1);at('nb-word',{opacity:.16});layoutOverlays();writeNotes();updateGo();G.lastFind=now();
+ $('note').textContent='Your night so far.';if(d.dawn)G.dawn=2;showCorridor();if(d.dawn){hub({type:'morning'});$('c-cap').textContent='Morning. The notebook is waiting.'}});
 requestAnimationFrame(loop);
 // ---------- review hooks ----------
-window.Game={find:w=>{G.picked=[...w].map(ch=>[...WORD].findIndex((c,j)=>c===ch&&!G.picked.includes(j)));check()},enter:k=>enterRoom(k),corridor:showCorridor,bottle:showBottle,turn,holdUp,choose,exit:chooseExit,
- state:()=>({screen:G.screen,found:G.found,done:G.done,film:G.film,walked:G.walked,beat:R?.i,choice:R?.choice,ghost:R?.ghost,gate:!!(R&&R.seq[R.i]?.gate),exitGate:!!(R&&R.seq[R.i]?.exit),filmReady:FILM?.ready,filmStarted:FILM?.started}),
+window.Game={find:w=>{G.picked=[...w].map(ch=>[...WORD].findIndex((c,j)=>c===ch&&!G.picked.includes(j)));check()},enter:k=>enterRoom(k),corridor:showCorridor,choose,exit:chooseExit,begin:()=>$('begin').onclick(),
+ open:async w=>{const J=HUB.frame.contentWindow.AsterwindJourney;await J.dispense(DRINK[w]);await new Promise(r=>setTimeout(r,400));J.openHeld()},hub:()=>HUB,
+ state:()=>({screen:G.screen,found:G.found,done:G.done,film:G.film,walked:G.walked,dawn:G.dawn,hubReady:HUB.ready,beat:R?.i,choice:R?.choice,ghost:R?.ghost,gate:!!(R&&R.seq[R.i]?.gate),exitGate:!!(R&&R.seq[R.i]?.exit),filmReady:FILM?.ready,filmStarted:FILM?.started}),
  step(dt){stepStory(dt);if(R)R.force=1;renderStory()},seek(t){while(R&&R.T<t&&R.seq[R.i]&&!R.seq[R.i].gate)this.step(1/24)},toGate(){while(R&&R.seq[R.i]&&!R.seq[R.i].gate&&!R.hold)this.step(1/12)},leaveFilm,dawn,art:()=>ARTIDX,room:()=>R,poses:()=>POSES};
 
 </script>
