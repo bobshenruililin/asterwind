@@ -6,7 +6,7 @@ import tempfile
 import unittest
 import zipfile
 
-from play_assets import ENTRYPOINTS, verify_play
+from play_assets import ENTRYPOINTS, LAUNCH_TARGETS, PLAYED, PLAYED_EPISODES, verify_play
 
 spec = importlib.util.spec_from_file_location('play_build', Path(__file__).with_name('build-play.py'))
 build = importlib.util.module_from_spec(spec)
@@ -28,6 +28,18 @@ class PlayBuildTests(unittest.TestCase):
         self.put(self.art + 'index.json', {'rooms': {}})
         self.put('docs/demos/unfolded/sound/manifest.json', {'cues': {}, 'music': {}})
         self.put('docs/demos/unfolded/voices/index.json', {'sets': {}})
+        self.put(PLAYED + 'quiet.js', "const PL='../../../anthology/episodes/standup/assets/reference-v1/';"
+                 "const PLATES={master:'quiet-master'};const V=['qm-01'];const sound='tap.mp3';")
+        self.put('anthology/episodes/standup/assets/reference-v1/quiet-master.webp', 'quiet plate')
+        self.put(PLAYED + 'plates/quiet-master-depth.webp', 'quiet depth')
+        self.put(PLAYED + 'voices/qm-01.mp3', 'quiet voice')
+        self.put('docs/demos/unfolded/sound/tap.mp3', 'paper sound')
+        self.put(PLAYED + 'scene.js', "const OK=['slides','scope','pixel','ship'];")
+        for name in ('stage.js', 'support.js', 'pixel.js', 'responsive.css'):
+            self.put(PLAYED + name, '/* fixture */')
+        for episode in PLAYED_EPISODES:
+            self.put(f'anthology/episodes/{episode}/story.json', {'setup': [], 'branches': {}})
+            self.put(f'anthology/episodes/{episode}/art-manifest.json', {'plates': {}})
 
     def tearDown(self):
         self.temp.cleanup()
@@ -43,6 +55,109 @@ class PlayBuildTests(unittest.TestCase):
             'plate': {'night': 'plate-night.png'},
             'figures': {'ellis': {'brace': filename}}}}})
         self.put(self.art + 'heard/plate-night.png', 'synthetic PNG fixture')
+
+    def played_scene(self, episode='scope'):
+        self.put(f'anthology/episodes/{episode}/story.json', {
+            'setup': [{'speaker': '', 'line': 'Silent beat'}, {'speaker': 'Ren', 'line': 'Setup'}],
+            'branches': {'extend': [{'speaker': 'Bo', 'line': 'One way'}],
+                         'return': [{'speaker': 'Ren', 'line': 'The other way'}]}})
+        self.put(f'anthology/episodes/{episode}/art-manifest.json', {
+            'plates': {'master': {'src': 'assets/runtime/performance-master.webp'}}})
+        paths = [f'anthology/episodes/{episode}/assets/runtime/performance-master.webp',
+                 PLAYED + f'plates/{episode}/performance-master-depth.webp',
+                 *(PLAYED + f'voices/{episode}-{cue}.mp3'
+                   for cue in ('setup-1', 'extend-0', 'return-0'))]
+        for path in paths:
+            self.put(path, 'synthetic ' + path)
+        return paths
+
+    def test_played_runtime_and_launches_survive_folder_and_zip(self):
+        paths = self.played_scene()
+        paths += [PLAYED + name for name in
+                  ('index.html', 'pixel.html', 'scene.html', 'quiet.js', 'scene.js',
+                   'pixel.js', 'stage.js', 'support.js', 'responsive.css',
+                   'voices/qm-01.mp3', 'plates/quiet-master-depth.webp')]
+        out, archive = build.build(self.root)
+        manifest = json.loads((out / 'build-manifest.json').read_text())
+        with zipfile.ZipFile(archive) as bundle:
+            for path in paths:
+                self.assertEqual((out / path).read_bytes(), (self.root / path).read_bytes())
+                self.assertEqual(bundle.read('asterwind-play/' + path), (self.root / path).read_bytes())
+                self.assertIn(path, manifest['sha256_16'])
+            for launch, target in LAUNCH_TARGETS.items():
+                text = (out / launch).read_text()
+                self.assertIn('url=' + target, text)
+                self.assertIn(f'href="{target}"', text)
+                self.assertEqual(bundle.read('asterwind-play/' + launch), (out / launch).read_bytes())
+
+    def test_missing_played_runtime_and_dynamic_assets_fail_before_zip(self):
+        paths = self.played_scene()
+        paths += [PLAYED + name for name in
+                  ('scene.html', 'support.js', 'responsive.css', 'voices/qm-01.mp3',
+                   'plates/quiet-master-depth.webp')]
+        paths += ['anthology/episodes/standup/assets/reference-v1/quiet-master.webp',
+                  'docs/demos/unfolded/sound/tap.mp3', 'anthology/episodes/scope/story.json']
+        for path in paths:
+            with self.subTest(path=path):
+                original = (self.root / path).read_bytes()
+                (self.root / path).unlink()
+                try:
+                    with self.assertRaisesRegex(ValueError, Path(path).name):
+                        build.build(self.root)
+                    self.assertFalse((self.root / 'dist/asterwind-play.zip').exists())
+                finally:
+                    (self.root / path).write_bytes(original)
+
+    def test_new_spoken_beat_requires_matching_played_voice(self):
+        self.played_scene()
+        self.put('anthology/episodes/scope/story.json', {
+            'setup': [{'speaker': 'Ren', 'line': 'New first line'}], 'branches': {}})
+        with self.assertRaisesRegex(ValueError, 'scope-setup-0.mp3'):
+            build.build(self.root)
+
+    def test_changed_played_declarations_cannot_silently_skip_validation(self):
+        for name, source in (('quiet.js', '// removed plate declarations'),
+                             ('scene.js', "const OK=['new-episode'];")):
+            with self.subTest(name=name):
+                path = self.root / PLAYED / name
+                original = path.read_text()
+                path.write_text(source)
+                try:
+                    with self.assertRaisesRegex(ValueError, name):
+                        build.build(self.root)
+                finally:
+                    path.write_text(original)
+
+    def test_v2_launch_cannot_lose_its_query(self):
+        out, _ = build.build(self.root)
+        launch = out / 'v2.html'
+        launch.write_text(launch.read_text().replace('?v=2', ''))
+        with self.assertRaisesRegex(ValueError, 'v2.html: launch must redirect'):
+            verify_play(out)
+
+    def test_played_authoring_and_qa_stay_out_of_folder_and_zip(self):
+        for path in ('make-depth.py', 'make-voices.py', 'make-film-voices.py',
+                     'qa/night-v2.cjs', 'source/private.json', 'review/private.png'):
+            self.put(PLAYED + path, 'not runtime')
+        self.put(PLAYED + 'PROVENANCE.md', 'attribution')
+        out, archive = build.build(self.root)
+        with zipfile.ZipFile(archive) as bundle:
+            for path in ('make-depth.py', 'make-voices.py', 'make-film-voices.py',
+                         'qa/night-v2.cjs', 'source/private.json', 'review/private.png'):
+                self.assertFalse((out / PLAYED / path).exists())
+                self.assertNotIn('asterwind-play/' + PLAYED + path, bundle.namelist())
+            self.assertIn('asterwind-play/' + PLAYED + 'PROVENANCE.md', bundle.namelist())
+
+    def test_missing_dynamic_journey_route_is_caught(self):
+        self.put('docs/demos/unfolded/index.html',
+                 "<script>const film='docs/demos/played/gone.html?ep=scope';</script>")
+        with self.assertRaisesRegex(ValueError, 'played/gone.html'):
+            build.build(self.root)
+
+    def test_missing_local_fallback_link_is_caught(self):
+        self.put(PLAYED + 'index.html', '<a href="missing.html">Original film</a>')
+        with self.assertRaisesRegex(ValueError, 'missing.html'):
+            build.build(self.root)
 
     def test_png_layers_survive_folder_and_zip(self):
         self.heard()

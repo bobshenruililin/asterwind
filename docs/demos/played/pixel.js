@@ -1,6 +1,6 @@
 /* The Quiet Minute, in pixels: the same beat as quiet.js, authored at 320×180.
    One camera (your seat), the film's lines, the same two physical gestures. Light is a dithered lamp pass. */
-(function(){
+(async function(){
 'use strict';
 const $=id=>document.getElementById(id),reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const W=320,H=180,cv=$('cv'),g=cv.getContext('2d');g.imageSmoothingEnabled=false;
@@ -86,7 +86,7 @@ function light(t){const img=g.getImageData(0,0,W,H),d=img.data,fl=S.lampFlick;
   near=y>100?.12:0,v=.34+L+win+near,th=(B4[(y&3)*4+(x&3)]+.5)/16,lv=Math.min(1.12,Math.floor(v*5+th)/5)*(1-S.fade);
   const warm=L*.18;d[i]=Math.min(255,d[i]*lv*(1+warm*.9));d[i+1]=Math.min(255,d[i+1]*lv*(1+warm*.35));d[i+2]=d[i+2]*lv*(1-warm*.4)}
  g.putImageData(img,0,0)}
-function draw(){const t=S.t;room(t);people(t);table(t);arms(t);disc(t);tray(t);hands(t);light(t)}
+function draw(){const t=reduced?0:S.t;room(t);people(t);table(t);arms(t);disc(t);tray(t);hands(t);light(t)}
 /* ---- clock, tweens, cues (same shape as quiet.js) ---- */
 let T=0,paused=false,last=performance.now();const tws=[],cues=[];const ease=u=>u<.5?4*u*u*u:1-Math.pow(-2*u+2,3)/2;
 const tw=(k,to,dur,delay=0)=>tws.push({k,to,from:null,t0:T+delay,dur:reduced?Math.min(dur,.2):dur});const at=(dt,fn)=>{cues.push({t:T+dt,fn});cues.sort((a,b)=>a.t-b.t)};
@@ -96,7 +96,7 @@ let ac=null,master=null,soundOn=true;const buf={};
 async function lb(u){try{return await ac.decodeAudioData(await(await fetch(u)).arrayBuffer())}catch{return null}}
 function play(k,gain=1){if(!ac||!soundOn||!buf[k])return;const s=ac.createBufferSource(),gn=ac.createGain();s.buffer=buf[k];gn.gain.value=gain;s.connect(gn);gn.connect(master);s.start()}
 function blip(f,len,gain){if(!ac||!soundOn)return;const o=ac.createOscillator(),gn=ac.createGain(),t=ac.currentTime;o.type='square';o.frequency.setValueAtTime(f,t);o.frequency.exponentialRampToValueAtTime(f*.7,t+len);gn.gain.setValueAtTime(gain,t);gn.gain.exponentialRampToValueAtTime(.001,t+len);o.connect(gn);gn.connect(master);o.start(t);o.stop(t+len)}
-async function sound(){ac=new (window.AudioContext||window.webkitAudioContext)();master=ac.createGain();master.connect(ac.destination);
+async function sound(){ac=new (window.AudioContext||window.webkitAudioContext)();master=ac.createGain();master.gain.value=soundOn?1:0;master.connect(ac.destination);if(paused)ac.suspend().catch(()=>{});
  const n=ac.createBufferSource(),b=ac.createBuffer(1,ac.sampleRate*3,ac.sampleRate),d=b.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;n.buffer=b;n.loop=true;const f=ac.createBiquadFilter();f.type='bandpass';f.frequency.value=2400;const gn=ac.createGain();gn.gain.value=.04;n.connect(f);f.connect(gn);gn.connect(master);n.start();
  await Promise.all([...['qm-01','qm-02','qm-03','qm-04','qm-05','qm-r1','qm-r2','qm-r3','qm-s1','qm-s2','qm-s3','qm-s4'].map(async v=>{buf[v]=await lb('voices/'+v+'.mp3')}),...[['fold','fold.mp3'],['tap','tap.mp3'],['pencil','pencil.mp3']].map(async([k,f])=>{buf[k]=await lb('../unfolded/sound/'+f)})])}
 let capUntil=0;const live=t=>{$('live').textContent=t};
@@ -117,12 +117,13 @@ for(const id of ['platter','tray']){const el=$(id);
   if(id==='platter'?d.m>.35:d.m>24)commit(id==='platter'?'round':'slips');else{tw(id==='platter'?'ang':'trayX',id==='platter'?d.s0??S.ang:0,.4);if(id==='tray')tw('trayY',0,.4)}});
  el.addEventListener('pointerenter',()=>hover(id));el.addEventListener('pointerleave',()=>{if(!drag)hover(null)});el.addEventListener('focus',()=>hover(id));el.addEventListener('blur',()=>hover(null));
  el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();commit(id==='platter'?'round':'slips')}})}
+for(const id of ['platter','tray'])PlayedSupport.bindActivation($(id),()=>commit(id==='platter'?'round':'slips'),()=>{if(drag&&drag.w===id){const d=drag;drag=null;tw('ang',d.s0??S.ang,.4);tw('trayX',0,.4);tw('trayY',0,.4)}});
 const routeEl=$('route');routeEl.addEventListener('pointerenter',()=>hover('route'));routeEl.addEventListener('pointerleave',()=>hover(null));routeEl.addEventListener('focus',()=>hover('route'));routeEl.addEventListener('blur',()=>hover(null));
 routeEl.addEventListener('click',look);
-function look(){if(peeked)return;peeked=true;routeEl.hidden=true;hover(null);tw('routeOpen',1,.3);play('fold',.6);const th=$('thought');th.textContent='It’s better. I think it’s better. It just doesn’t end anywhere this beautiful.';th.style.opacity=1;
- live('Ellis’s folded route starts at the courtyard gate and never reaches the harbour. Ellis thinks: It’s better. I think it’s better. It just doesn’t end anywhere this beautiful.');if(phase==='master')cues.forEach(c=>c.t+=3.4);at(phase==='master'?3.2:6,()=>{th.style.opacity=0;tw('routeOpen',0,.3)})}
+function look(){if(peeked)return;peeked=true;routeEl.hidden=true;hover(null);tw('routeOpen',1,.3);play('fold',.6);const th=$('thought');th.hidden=false;th.textContent='It’s better. I think it’s better. It just doesn’t end anywhere this beautiful.';th.style.opacity=1;
+ live('Ellis’s folded route starts at the courtyard gate and never reaches the harbour. Ellis thinks: It’s better. I think it’s better. It just doesn’t end anywhere this beautiful.');if(phase==='master')cues.forEach(c=>c.t+=3.4);at(phase==='master'?3.2:6,()=>{th.style.opacity=0;th.hidden=true;tw('routeOpen',0,.3)})}
 /* ---- the script: the film's beats, one camera ---- */
-function begin(){phase='master';Object.assign(S,{fade:1,ang:0,trayX:0,trayY:0,theoArm:1,theoLean:0,niaMap:0,niaHead:0,niaPoint:0,ellisPencil:0,ellisHead:0,ellisHand:0,harbourOff:0,slips:0,routeOpen:0});
+function begin(){$('thought').hidden=true;phase='master';Object.assign(S,{fade:1,ang:0,trayX:0,trayY:0,theoArm:1,theoLean:0,niaMap:0,niaHead:0,niaPoint:0,ellisPencil:0,ellisHead:0,ellisHand:0,harbourOff:0,slips:0,routeOpen:0});
  tw('fade',0,2.2);
  at(1.4,()=>{say('Theo','Main gate, courtyard, then the harbour. Everyone happy?','qm-01');tw('ang',.32,1.6);tw('theoLean',2,1)});
  at(6.0,()=>{say('Nia','The courtyard gate closes—','qm-02');tw('niaMap',1,.5);tw('niaHead',1,.4)});
@@ -131,13 +132,13 @@ function begin(){phase='master';Object.assign(S,{fade:1,ang:0,trayX:0,trayY:0,th
  at(12.6,()=>{tw('ellisPencil',1,1.2);tw('ellisHead',1,1.2);play('pencil',.5);routeEl.hidden=false;place(routeEl,236,92,266,112);live('Ellis lowers a pencil. Another route stays folded.')});
  at(15.8,()=>say('You','We haven’t heard the whole route yet.','qm-05'));
  at(18.4,()=>{phase='decision';place($('platter'),CX-RX-3,CY-RY-3,CX+RX+3,CY+RY+3);place($('tray'),226,114,288,148);$('platter').hidden=$('tray').hidden=false;$('platter').focus({preventScroll:true});live('Your hands rest on the table. The model is within reach, and so is the tray of blank slips.')})}
-function commit(id){if(phase!=='decision')return;phase='consequence';choice=id;drag=null;hover(null);$('platter').hidden=$('tray').hidden=routeEl.hidden=true;
+function commit(id){if(phase!=='decision')return;$('thought').hidden=true;phase='consequence';choice=id;drag=null;hover(null);$('platter').hidden=$('tray').hidden=routeEl.hidden=true;
  if(id==='round'){tw('ang',-1.05,reduced?.2:1.2);tw('niaHead',2,.8);tw('theoArm',0,1.2,.3);tw('theoLean',0,1.2,.3);blip(330,.08,.04);
   at(1.6,()=>say('You','One concern each. No replies until we’ve gone around.','qm-r1'));
   at(6.6,()=>{say('Nia','The gate will be shut. We need to reach the courtyard first.','qm-r2');tw('niaPoint',1,1)});
   at(11.2,()=>{say('','Theo starts to answer, then leaves the speaking token with Nia.');tw('theoLean',-2,1)});
   at(15,()=>{say('Ellis','Mine starts here. But we’d lose the harbour.','qm-r3');tw('ellisHand',1,1.6);tw('ellisHead',0,.8);tw('harbourOff',1,1.2,1.2)});
-  at(20.4,()=>{blip(90,.18,.2);setTimeout(()=>blip(90,.18,.2),300);say('','The next group knocks. The harbour is still unfinished. Every seat now faces part of the route.')});
+  at(20.4,()=>{blip(90,.18,.2);at(.3,()=>blip(90,.18,.2));say('','The next group knocks. The harbour is still unfinished. Every seat now faces part of the route.')});
   at(26.6,end)}
  else{tw('trayX',-56,reduced?.2:.9);tw('trayY',-6,.9);play('fold',.6);
   at(1.4,()=>say('You','Put down the concern you haven’t said. Then we’ll sort them together.','qm-s1'));
@@ -155,9 +156,9 @@ let acc=0;function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;if
  if(acc>=1/12||phase==='decision'){acc=0;S.lampFlick=reduced?1:1+(Math.sin(T*9)*.03+(Math.random()-.5)*.04);draw()}
  if(T>capUntil){$('cap').querySelector('.line').textContent='';$('cap').querySelector('.who').textContent=''}requestAnimationFrame(frame)}
 S.fade=.7;draw();requestAnimationFrame(frame);
-$('start').onclick=async()=>{$('start').remove();await sound();begin()};$('start').focus();
+$('start').onclick=async()=>{const start=$('start');if(start.disabled)return;start.disabled=true;start.hidden=true;await PlayedSupport.audio(sound);begin()};PlayedSupport.ready('Sit down');
 $('snd').onclick=()=>{soundOn=!soundOn;$('snd').setAttribute('aria-pressed',String(soundOn));if(master)master.gain.value=soundOn?1:0};
 $('pause').onclick=()=>{paused=!paused;$('pause').setAttribute('aria-pressed',String(paused));$('pause').textContent=paused?'Resume':'Pause';if(ac)paused?ac.suspend():ac.resume()};
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&!paused)$('pause').click()});
 window.PX={get state(){return{phase,choice,T,ang:S.ang}},commit,step};
-})();
+})().catch(error=>PlayedSupport.fail(error,'../../../anthology/episodes/standup/index.html'));

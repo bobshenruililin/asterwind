@@ -44,30 +44,84 @@ void main(){
  c+=(h(v*vec2(1913.,1087.)+fract(uTime*7.))-.5)*uGrain;
  gl_FragColor=vec4(c,1.);}`;
 function Stage(canvas){
- const gl=canvas.getContext('webgl',{antialias:false,premultipliedAlpha:false,preserveDrawingBuffer:true});
+ // Keep decoded art so a lost or unavailable GPU never blanks the story.
+ let gl=null,pr=null,U={},fallback=null,ctx=null,gpu=false;
+ const plates={};let A=null,B=null;
+ function initGL(){
+ gl=canvas.getContext('webgl',{antialias:false,premultipliedAlpha:false,preserveDrawingBuffer:true});
  if(!gl)throw Error('WebGL unavailable');
- const sh=(t,s)=>{const o=gl.createShader(t);gl.shaderSource(o,s);gl.compileShader(o);if(!gl.getShaderParameter(o,gl.COMPILE_STATUS))throw Error(gl.getShaderInfoLog(o));return o};
- const pr=gl.createProgram();gl.attachShader(pr,sh(gl.VERTEX_SHADER,VS));gl.attachShader(pr,sh(gl.FRAGMENT_SHADER,FS));gl.linkProgram(pr);gl.useProgram(pr);
+ const sh=(t,s)=>{const o=gl.createShader(t);gl.shaderSource(o,s);gl.compileShader(o);if(!gl.getShaderParameter(o,gl.COMPILE_STATUS)){const error=Error(gl.getShaderInfoLog(o)||'Shader compilation failed');gl.deleteShader(o);throw error}return o};
+ pr=gl.createProgram();const shaders=[];
+ try{shaders.push(sh(gl.VERTEX_SHADER,VS));shaders.push(sh(gl.FRAGMENT_SHADER,FS));for(const shader of shaders)gl.attachShader(pr,shader);gl.linkProgram(pr);
+ if(!gl.getProgramParameter(pr,gl.LINK_STATUS))throw Error(gl.getProgramInfoLog(pr)||'Shader link failed');
+ }catch(error){gl.deleteProgram(pr);throw error}finally{for(const shader of shaders)gl.deleteShader(shader)}
+ gl.useProgram(pr);
  const b=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,b);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
  const loc=gl.getAttribLocation(pr,'p');gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
- const U={};for(const n of ['tA','dA','tB','dB','uMix','uTime','uAsp','uStr','uFocus','uDof','uGrain','uVig','uRain','uWarm','uCam','uW','uWo','uDisc','uAng','uSlide','uSo','uLamp','uHov','uHovA','uHovRect','uDim','uZoom','uCen','uZoomB','uCenB'])U[n]=gl.getUniformLocation(pr,n);
- const tex=img=>{const t=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,t);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,img);
+ U={};for(const n of ['tA','dA','tB','dB','uMix','uTime','uAsp','uStr','uFocus','uDof','uGrain','uVig','uRain','uWarm','uCam','uW','uWo','uDisc','uAng','uSlide','uSo','uLamp','uHov','uHovA','uHovRect','uDim','uZoom','uCen','uZoomB','uCenB'])U[n]=gl.getUniformLocation(pr,n);
+ gpu=true;
+ for(const plate of Object.values(plates))upload(plate);
+ if(fallback){fallback.hidden=true;fallback.style.display='none'}
+ }
+ function useFallback(){
+ gpu=false;
+ if(!fallback){
+  // A WebGL canvas cannot also provide a 2D context. Layer a sibling in
+  // the same stage, leaving the original canvas and its listeners intact.
+  fallback=canvas.ownerDocument.createElement('canvas');
+  fallback.setAttribute('aria-hidden','true');
+  fallback.style.cssText='position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none';
+  canvas.insertAdjacentElement('afterend',fallback);ctx=fallback.getContext('2d');
+ }
+ fallback.hidden=false;fallback.style.display='block';
+ if(!ctx)throw Error('Neither WebGL nor a 2D canvas is available');
+ }
+ try{initGL()}catch(error){useFallback()}
+ canvas.addEventListener('webglcontextlost',event=>{event.preventDefault();useFallback();draw()});
+ canvas.addEventListener('webglcontextrestored',()=>{try{initGL()}catch(error){useFallback()}draw()});
+ const tex=img=>{const t=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,t);if(img)gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,img);
+  else gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,1,1,0,gl.RGBA,gl.UNSIGNED_BYTE,new Uint8Array([128,128,128,255]));
   for(const [k,v] of [[gl.TEXTURE_MIN_FILTER,gl.LINEAR],[gl.TEXTURE_MAG_FILTER,gl.LINEAR],[gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE],[gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE]])gl.texParameteri(gl.TEXTURE_2D,k,v);return t};
- const plates={};let A=null,B=null;
+ function checkGL(){if(gl.isContextLost()||gl.getError()!==gl.NO_ERROR)throw Error('WebGL rendering failed')}
+ function upload(plate){plate.t=tex(plate.image);plate.d=tex(plate.depth);checkGL()}
  const S={zoom:1,cen:[.5,.5],zoomB:1,cenB:[.5,.5],mix:0,time:0,str:.018,focus:.55,dof:0,grain:.035,vig:.55,rain:0,warm:0,cam:[0,0],warps:[],disc:null,ang:0,slide:null,so:[0,0],lamp:null,hov:null,hovA:0,dim:0};
- function size(){const r=canvas.getBoundingClientRect(),k=Math.min(2,devicePixelRatio||1),w=Math.max(2,Math.round(r.width*k)),h=Math.max(2,Math.round(r.height*k));if(canvas.width!==w||canvas.height!==h){canvas.width=w;canvas.height=h}gl.viewport(0,0,w,h)}
+ function size(){const r=canvas.getBoundingClientRect(),k=Math.min(2,root.devicePixelRatio||1),w=Math.max(2,Math.round(r.width*k)),h=Math.max(2,Math.round(r.height*k));if(canvas.width!==w||canvas.height!==h){canvas.width=w;canvas.height=h}if(gpu)gl.viewport(0,0,w,h);if(fallback&&(fallback.width!==w||fallback.height!==h)){fallback.width=w;fallback.height=h}}
  function bind(unit,t){gl.activeTexture(gl.TEXTURE0+unit);gl.bindTexture(gl.TEXTURE_2D,t)}
- function draw(){if(!A)return;size();
+ const clamp=(v,lo,hi)=>Math.max(lo,Math.min(hi,v));
+ function drawStill(){
+  const w=canvas.width,h=canvas.height;
+  ctx.globalAlpha=1;ctx.fillStyle='#000';ctx.fillRect(0,0,w,h);
+  const paint=(plate,z,cen,alpha)=>{z=Math.max(1,z);const half=.5/z,cx=clamp(cen[0],half,1-half),cy=clamp(cen[1],half,1-half);
+   ctx.globalAlpha=alpha;ctx.drawImage(plate.image,(cx-half)*plate.w,(cy-half)*plate.h,plate.w/z,plate.h/z,0,0,w,h)};
+  paint(A,S.zoom,S.cen,1);if(B)paint(B,S.zoomB,S.cenB,clamp(S.mix,0,1));
+  ctx.globalAlpha=clamp(S.dim,0,1);ctx.fillRect(0,0,w,h);ctx.globalAlpha=1;
+ }
+ function draw(){if(!A)return;
+ try{size();if(!gpu){drawStill();return}drawGL()}catch(error){useFallback();size();drawStill()}
+ }
+ function drawGL(){
   bind(0,A.t);bind(1,A.d);bind(2,(B||A).t);bind(3,(B||A).d);gl.uniform1i(U.tA,0);gl.uniform1i(U.dA,1);gl.uniform1i(U.tB,2);gl.uniform1i(U.dB,3);
   gl.uniform1f(U.uMix,B?S.mix:0);gl.uniform1f(U.uTime,S.time);gl.uniform1f(U.uAsp,canvas.width/canvas.height);gl.uniform1f(U.uStr,S.str);gl.uniform1f(U.uFocus,S.focus);gl.uniform1f(U.uDof,S.dof);
   gl.uniform1f(U.uGrain,S.grain);gl.uniform1f(U.uVig,S.vig);gl.uniform1f(U.uRain,S.rain);gl.uniform1f(U.uWarm,S.warm);gl.uniform2fv(U.uCam,S.cam);gl.uniform1f(U.uDim,S.dim);const cl=(z,c)=>{const h=.5/z;return[Math.max(h,Math.min(1-h,c[0])),Math.max(h,Math.min(1-h,c[1]))]};gl.uniform1f(U.uZoom,Math.max(1,S.zoom));gl.uniform2fv(U.uCen,cl(Math.max(1,S.zoom),S.cen));gl.uniform1f(U.uZoomB,Math.max(1,S.zoomB));gl.uniform2fv(U.uCenB,cl(Math.max(1,S.zoomB),S.cenB));
   const w=new Float32Array(32),o=new Float32Array(16);S.warps.slice(0,8).forEach((h,i)=>{w.set([h.x,h.y,h.r,0],i*4);o.set([h.dx||0,h.dy||0],i*2)});gl.uniform4fv(U.uW,w);gl.uniform2fv(U.uWo,o);
   gl.uniform4fv(U.uDisc,S.disc||[0,0,0,0]);gl.uniform1f(U.uAng,S.ang);gl.uniform4fv(U.uSlide,S.slide||[0,0,0,0]);gl.uniform2fv(U.uSo,S.so);
   gl.uniform4fv(U.uLamp,S.lamp||[0,0,0,0]);gl.uniform4fv(U.uHov,S.hov?S.hov.slice(0,4):[0,0,1,1]);gl.uniform1f(U.uHovRect,S.hov&&S.hov[4]?1:0);gl.uniform1f(U.uHovA,S.hov?S.hovA:0);
-  gl.drawArrays(gl.TRIANGLE_STRIP,0,4)}
- const load=src=>new Promise((res,rej)=>{const i=new Image();i.onload=()=>res(i);i.onerror=()=>rej(Error('image '+src));i.src=src});
+  gl.drawArrays(gl.TRIANGLE_STRIP,0,4);checkGL()}
+ const load=src=>new Promise((res,rej)=>{
+  if(!src){rej(Error('Missing image URL'));return}
+  const i=new Image();let done=false;
+  const finish=error=>{if(done)return;done=true;clearTimeout(timer);i.onload=i.onerror=null;if(error){i.src='';rej(error)}else res(i)};
+  const timer=setTimeout(()=>finish(Error('Image timed out after 15 seconds: '+src)),15000);
+  i.onload=()=>finish(i.naturalWidth===0?Error('Empty image: '+src):null);
+  i.onerror=()=>finish(Error('Image could not load: '+src));i.src=src;
+ });
  return{S,draw,canvas,
-  async add(id,src,depth){const [i,d]=await Promise.all([load(src),load(depth)]);plates[id]={t:tex(i),d:tex(d),w:i.width,h:i.height};return plates[id]},
+  async add(id,src,depth){
+   const [i,d]=await Promise.all([load(src),depth?load(depth).catch(()=>null):Promise.resolve(null)]);
+   const plate={image:i,depth:d,t:null,d:null,w:i.naturalWidth||i.width,h:i.naturalHeight||i.height};
+   if(gpu)try{upload(plate)}catch(error){useFallback()}
+   plates[id]=plate;return plate;
+  },
   show(id){A=plates[id];B=null;S.mix=0},
   toward(id){B=plates[id];S.mix=0},
   settle(){if(B){A=B;B=null;S.mix=0}},

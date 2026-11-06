@@ -1,14 +1,16 @@
-"""Assemble the shareable playable build of Asterwind ("Leadership, unfolded" + After Hours + six films)
+"""Assemble the shareable playable build of Asterwind (both nights + After Hours + six films)
 into dist/play/ (static, no server code, no network) and dist/asterwind-play.zip.
 
     python3 scripts/build-play.py
 
 Host the folder on any static host (GitHub Pages, Netlify, a USB stick served by `python3 -m http.server`).
-The root index.html opens the journey. Paths inside keep the repository layout, so nothing is rewritten.
+The root index.html and v2.html open the played-scene night; legacy.html opens the original journey.
+Paths inside keep the repository layout, so nothing is rewritten. Serve the folder
+over HTTP: the played scenes fetch their local story/audio files, so file:// is not supported.
 Run python3 film/build.py, anthology/build-all.py and hub/build.py first if their sources changed."""
 from pathlib import Path
 import shutil, zipfile, json, hashlib, subprocess
-from play_assets import verify_play
+from play_assets import LAUNCH_TARGETS, verify_play
 
 ROOT = Path(__file__).resolve().parents[1]
 SKIP_DIRS = {'qa', 'dist', '__pycache__', 'source', 'incoming', 'review', 'art-standin', 'art-brief', 'templates', 'node_modules', 'reference-v1-originals'}
@@ -57,9 +59,11 @@ def build(root=ROOT):
     tree(root / 'film', OUT / 'film')
     for f in ['Kalam-Regular.ttf', 'Kalam-Bold.ttf', 'OFL.txt']:
         one(f'app/assets/fonts/{f}')
-    (OUT / 'index.html').write_text('''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Asterwind · After Hours (draft)</title><meta http-equiv="refresh" content="0; url=docs/demos/unfolded/?v=2"><style>body{background:#08080d;color:#e9c27a;font:16px Georgia,serif;display:grid;place-items:center;height:100vh;margin:0}a{color:inherit}</style></head>
-    <body><p><a href="docs/demos/unfolded/?v=2">Asterwind · After Hours (draft playtest)</a></p></body></html>\n'''.replace('</head>', f'<meta name="asterwind-build" content="{(sha or "unknown")[:12]}{"-modified" if clean is False else ""}"></head>'))
+    stamp = f'<meta name="asterwind-build" content="{(sha or "unknown")[:12]}{"-modified" if clean is False else ""}">'
+    for launch, target in LAUNCH_TARGETS.items():
+        (OUT / launch).write_text(f'''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Asterwind</title>{stamp}<meta http-equiv="refresh" content="0; url={target}"><style>body{{background:#08080d;color:#e9c27a;font:16px Georgia,serif;display:grid;place-items:center;height:100vh;margin:0}}a{{color:inherit}}</style></head>
+    <body><p><a href="{target}">Asterwind · Leadership</a></p></body></html>\n''', encoding='utf-8')
     (OUT / '.nojekyll').write_text('')
     verify_play(OUT)  # Fail before packaging if a declared runtime asset did not survive export.
     files = sorted(p for p in OUT.rglob('*') if p.is_file())

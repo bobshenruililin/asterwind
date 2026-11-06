@@ -36,21 +36,25 @@ canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 @media (prefers-reduced-motion:reduce){#word,#thought{transition:none}}
 </style>
+<link rel="stylesheet" href="responsive.css">
 </head>
 <body>
+<div id="screen">
 <div id="frame" aria-label="The Quiet Minute, played. A committee table at night: Theo, Nia and Ellis plan a night walk around a paper model of the campus.">
  <canvas id="cv" aria-hidden="true"></canvas>
  <button class="obj" id="platter" hidden aria-label="Turn the table: one concern each, before replies."></button>
  <button class="obj rect" id="tray" hidden aria-label="Pass the slips: collect each concern, then discuss."></button>
  <button class="obj rect" id="route" hidden aria-label="Look at Ellis's folded route (optional)."></button>
  <div id="word" aria-hidden="true"></div>
- <p id="thought" aria-hidden="true"></p>
+ <button id="start" disabled><span>Loading scene…</span></button>
+</div>
+ <p id="thought" hidden aria-hidden="true"></p>
  <p id="cap" aria-hidden="true"><span class="who"></span><span class="line"></span></p>
  <div id="end" hidden><button id="again">Again</button><button id="other">The other way</button></div>
- <button id="start"><span>Sit down</span></button>
  <div id="chrome"><button id="snd" aria-pressed="true" aria-label="Sound">♪</button><button id="cc" aria-pressed="true">Captions</button><button id="pause" aria-pressed="false">Pause</button></div>
 </div>
 <p class="sr" id="live" aria-live="polite"></p>
+<script src="support.js"></script>
 <script src="stage.js"></script>
 <script src="clips.js"></script>
 <script src="quiet.js"></script>
