@@ -1,0 +1,6 @@
+{"cues":{
+ "page":{"file":"page.mp3","gain":0.9},"pick":{"file":"page.mp3","gain":0.6},"fold":{"file":"fold.mp3","gain":0.9},"unfold":{"file":"fold.mp3","gain":0.8},
+ "paper":{"file":"rustle.mp3","gain":0.6},"wave":{"file":"rustle.mp3","gain":0.5},"wind":{"file":"rustle.mp3","gain":0.45},"flutter":{"file":"page.mp3","gain":0.5},
+ "tap":{"file":"tap.mp3","gain":0.8},"clamp":{"file":"tap.mp3","gain":1},"leaf":{"file":"tap.mp3","gain":0.5},"flame":{"file":"tap.mp3","gain":0.55},
+ "pencil":{"file":"pencil.mp3","gain":0.7},"stitch":{"file":"scratch.mp3","gain":0.8},"plates":{"file":"crumple.mp3","gain":0.7}},
+ "music":{"night":"../../sound-board/music/seam-night-sketch.mp3","dawn":"../../sound-board/music/seam-dawn-sketch.mp3"}}
