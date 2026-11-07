@@ -1,0 +1,38 @@
+{
+  "sha": "1bfa7b88babcc631d201abe65b402fc9a9eb4591",
+  "method": "Node VM with minimal DOM and scheduled callback doubles; no browser rendering, audio playback or visual integration tested",
+  "checks": [
+    {
+      "name": "Week has 12 moves, not advertised 15",
+      "moves": 12,
+      "day": 4,
+      "on": false
+    },
+    {
+      "name": "Dev checked Monday but left stuck Wednesday and Thursday",
+      "stillStuck": true,
+      "ending": "Dev freezes when he’s stuck and won’t ask. A one-to-one unsticks him."
+    },
+    {
+      "name": "Ask timeout from previous run ends new run before asking",
+      "before": {
+        "on": true,
+        "left": 3
+      },
+      "after": {
+        "on": false,
+        "left": 3
+      }
+    },
+    {
+      "name": "Hold-room Restart creates uncollected animation/audio loops",
+      "queuedRAF": 3,
+      "activeMurmurs": 3
+    },
+    {
+      "name": "Notes corrupt-save outcome",
+      "crashed": true,
+      "message": "NOTES[c] is not iterable"
+    }
+  ]
+}
