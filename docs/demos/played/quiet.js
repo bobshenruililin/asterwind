@@ -9,6 +9,8 @@ const stage=Stage($('cv')),S=stage.S;
 const PLATES={master:'01-quiet-minute-master',decision:'02-turn-or-pass-decision',round:'03-turn-shared-unfinished',slips:'04-slips-nuance-unresolved'};
 await Promise.all(Object.entries(PLATES).map(([k,f])=>stage.add(k,PL+f+'.webp','plates/'+f+'-depth.webp')));
 // Ellis's route close-ups (Robert's P2a/P2b) are review candidates until Bob approves them: ?p2=1 turns them on.
+// The played script (scripts/standup.json): who's who, the lines with their acting, the question and the reflections.
+const SCRIPT=window.StoryUI?await StoryUI.load('standup'):null,UI=SCRIPT?StoryUI.create(SCRIPT):null;
 const P2=new URLSearchParams(location.search).get('p2')==='1';let P2ready=false;
 // The real objects (P0): a clean table with the platter, the tray and the hands as separate layers, so the platter
 // turns under Theo's hand and the tray slides with its own shadow. If they fail to load, the region warp stays.
@@ -42,13 +44,15 @@ function burst(f1,f2,len,gain,type='bandpass'){if(!ac||!soundOn)return;const s=a
 function knock(){if(!ac||!soundOn)return;[0,.32,.62].forEach(d=>{const o=ac.createOscillator(),g=ac.createGain(),t=ac.currentTime+d;o.frequency.setValueAtTime(110,t);o.frequency.exponentialRampToValueAtTime(55,t+.12);g.gain.setValueAtTime(.5,t);g.gain.exponentialRampToValueAtTime(.001,t+.18);o.connect(g);g.connect(master);o.start(t);o.stop(t+.2);burst(900,600,.05,.25)})}
 function play(k,gain=1){if(!ac||!soundOn||!buf[k])return;const s=ac.createBufferSource(),g=ac.createGain();s.buffer=buf[k];g.gain.value=gain;s.connect(g);g.connect(master);s.start()}
 async function startSound(){ac=new (window.AudioContext||window.webkitAudioContext)();master=ac.createGain();master.gain.value=soundOn?1:0;master.connect(ac.destination);if(paused)ac.suspend().catch(()=>{});ambience();
- const V=['qm-01','qm-02','qm-03','qm-04','qm-05','qm-r1','qm-r2','qm-r3','qm-s1','qm-s2','qm-s3','qm-s4'];
- await Promise.all([...V.map(async v=>{buf[v]=await loadBuf('voices/'+v+'.mp3')}),...[['fold','fold.mp3'],['rustle','rustle.mp3'],['tap','tap.mp3'],['pencil','pencil.mp3']].map(async([k,f])=>{buf[k]=await loadBuf('../unfolded/sound/'+f)})])}
+ // Scripted lines use their own takes (voices/v2); the old scratch takes belong to the old words and never play over new ones.
+ let man={};if(SCRIPT){try{const r=await fetch('voices/v2/manifest.json');if(r.ok)man=(await r.json()).standup||{}}catch{}}
+ const V=SCRIPT?[]:['qm-01','qm-02','qm-03','qm-04','qm-05','qm-r1','qm-r2','qm-r3','qm-s1','qm-s2','qm-s3','qm-s4'];
+ await Promise.all([...Object.entries(man).map(async([k,f])=>{buf['v2:'+k]=await loadBuf('voices/v2/'+f)}),...V.map(async v=>{buf[v]=await loadBuf('voices/'+v+'.mp3')}),...[['fold','fold.mp3'],['rustle','rustle.mp3'],['tap','tap.mp3'],['pencil','pencil.mp3']].map(async([k,f])=>{buf[k]=await loadBuf('../unfolded/sound/'+f)})])}
 
 /* ---- captions: only what is spoken, and the film's few narrated facts ---- */
 let capUntil=0;const live=t=>{$('live').textContent=t};
-function say(who,text,voice){const c=$('cap');c.classList.toggle('narr',!who);c.querySelector('.who').textContent=who||'';c.querySelector('.line').textContent=text;c.style.visibility=$('cc').getAttribute('aria-pressed')==='true'?'visible':'hidden';
- capUntil=T+Math.max(2.4,(voice&&buf[voice]?buf[voice].duration:text.length*.06)+1);live((who?who+': ':'')+text);if(voice)play(voice)}
+function say(who,text,voice,hold){const c=$('cap');c.classList.toggle('narr',!who);c.querySelector('.who').textContent=who||'';c.querySelector('.line').textContent=text;c.style.visibility=$('cc').getAttribute('aria-pressed')==='true'?'visible':'hidden';
+ capUntil=T+Math.max(2.4,(voice&&buf[voice]?buf[voice].duration:text.length*.06)+1,hold?hold-.15:0);live((who?who+': ':'')+text);if(voice)play(voice)}
 
 /* ---- the objects your hands can reach (positions in plate fractions) ---- */
 const OBJ={platter:{x:.401,y:.528,rx:.232,ry:.283},tray:{x0:.703,y0:.478,x1:.931,y1:.744},routeMaster:{x:.844,y:.611,rx:.06,ry:.07},routeDecision:{x:.83,y:.375,rx:.07,ry:.08}};
@@ -68,6 +72,7 @@ function begin(){$('thought').hidden=true;phase='master';stage.show('master');S.
  handles([['theoHand',.664,.639,.075],['theoHead',.523,.12,.07],['niaHead',.117,.24,.07],['niaMap',.125,.56,.09],['ellisHead',.875,.13,.07],['ellisPencil',.836,.472,.05],['ellisPaper',.844,.611,.06],['renHead',.211,.62,.09]]);
  for(const n of ['theoHead','niaHead','ellisHead','renHead'])H[n].breathe=1;
  tw(S,'dim',0,2.6);
+ if(SCRIPT){runLines(SCRIPT.setup,1.4,toDecision);return}
  at(1.4,()=>{say('Theo','Main gate, courtyard, then the harbour. Everyone happy?','qm-01');move('theoHand',.006,-.004,1.6);move('theoHead',0,-.002,1)});
  at(6.0,()=>{say('Nia','The courtyard gate closes—','qm-02');move('niaHead',.003,-.004,.6);move('niaMap',0,-.006,.7)});
  at(7.8,()=>{say('Theo','We’ll be through by then.','qm-03');move('niaHead',0,.002,.5);move('niaMap',0,.001,.8);move('theoHand',.008,-.005,.6)});
@@ -76,9 +81,16 @@ function begin(){$('thought').hidden=true;phase='master';stage.show('master');S.
  at(12.6,()=>{move('ellisPencil',-.002,.009,1.6);move('ellisHead',-.001,.003,1.4);tw(S,'cam',[-.5,-.15],3);tw(S,'focus',.62,2);tw(S,'dof',.005,2);play('pencil',.5);$('route').hidden=false;placeR('routeMaster');live('Ellis lowers a pencil. Another route stays folded.')});
  at(15.8,()=>{say('You','We haven’t heard the whole route yet.','qm-05');tw(S,'cam',[0,0],2.5)});
  at(18.6,toDecision)}
+const ACT={theoSell:()=>{move('theoHand',.006,-.004,1.6);move('theoHead',0,-.002,1)},niaLean:()=>{move('niaHead',.003,-.004,.6);move('niaMap',0,-.006,.7)},
+ theoOver:()=>{move('niaHead',0,.002,.5);move('niaMap',0,.001,.8);move('theoHand',.008,-.005,.6)},niaFirm:()=>move('niaHead',.002,-.003,.6),theoHand:()=>move('theoHand',.004,-.003,.8),
+ ellisPencil:()=>{move('ellisPencil',-.002,.009,1.6);move('ellisHead',-.001,.003,1.4);tw(S,'cam',[-.5,-.15],3);tw(S,'focus',.62,2);tw(S,'dof',.005,2);play('pencil',.5);$('route').hidden=false;placeR('routeMaster')},
+ camBack:()=>tw(S,'cam',[0,0],2.5),niaHand:()=>move('niaHand',.004,.002,1.2),theoWait:()=>move('theoHead',0,.003,1),ellisHand:()=>{move('ellisHand',-.006,.002,2);move('ellisHead',-.002,.002,1)},
+ theoNod:()=>move('theoHead',0,.002,.8),knock:()=>knock(),ellisSlip:()=>{play('fold',.5);move('ellisSlip',0,-.004,.8)}};
+function runLines(list,t,done){for(const b of list){const v=buf['v2:'+b.id],d=v?v.duration+(b.speaker?.75:1.1):StoryUI.readTime(b.line,!b.speaker);
+  at(t,()=>{ACT[b.act]?.();if(b.line)say(b.speaker,b.line,v?'v2:'+b.id:null,d)});t+=d}at(t,done)}
 function placeR(k){const r=OBJ[k];placeEl($('route'),r.x-r.rx,r.y-r.ry,r.x+r.rx,r.y+r.ry)}
 function toDecision(){if(phase!=='master')return;phase='turning';hover(null);stage.toward('decision');tw(S,'mix',1,reduced?.2:2);tw(S,'dof',0,1.5);tw(S,'focus',.7,2);
- at(reduced?.25:2.05,()=>{stage.settle();phase='decision';
+ at(reduced?.25:2.05,()=>{stage.settle();phase='decision';UI&&UI.decide(true);
   handles([['niaHead',.094,.08,.07],['theoHead',.53,.06,.07],['ellisHead',.875,.07,.07],['ellisPaper',.83,.375,.06],['handL',.234,.833,.09],['handR',.633,.847,.09],['token',.39,.867,.035]]);
   for(const n of ['niaHead','theoHead','ellisHead','handL','handR'])H[n].breathe=1;
   const p=OBJ.platter,t=OBJ.tray;S.disc=[p.x,p.y,p.rx,p.ry];S.slide=[t.x0-.01,t.y0-.01,t.x1+.01,t.y1+.01];
@@ -140,13 +152,14 @@ function lookClose(){looking=true;const from=stage.current,inMaster=phase==='mas
     looking=false;th.classList.remove('close');objs.forEach(id=>{if(phase==='decision')$(id).hidden=false});live(phase==='decision'?'Back at the table. The model is within reach, and so is the tray of blank slips.':'Back at the table.')})})})}
 
 /* ---- the choice, then the film's consequence ---- */
-function commit(id){if(phase!=='decision')return;$('thought').hidden=true;phase='consequence';choice=id;drag=null;hover(null);$('platter').hidden=$('tray').hidden=$('route').hidden=true;
+function commit(id){if(phase!=='decision')return;UI&&UI.decide(false);$('thought').hidden=true;phase='consequence';choice=id;drag=null;hover(null);$('platter').hidden=$('tray').hidden=$('route').hidden=true;
  if(id==='round'){tw(S,'ang',S.ang<-.05?-.32:.32,reduced?.1:.9);play('tap',.5);burst(260,420,.6,.08)}else{tw(S,'so',[-.045,-.01],reduced?.1:.8);play('rustle',.7);burst(1800,700,.5,.05,'lowpass')}
  follow(1);live(id==='round'?'You turn the table.':'You slide the tray of slips into the middle of the table.');
  at(reduced?.2:1.1,()=>{stage.toward(id);tw(S,'mix',1,reduced?.2:2.2);tw(S,'focus',.6,2)});
  at(reduced?.5:3.4,()=>{stage.settle();S.disc=null;S.slide=null;S.ang=0;S.so=[0,0];
   if(id==='round'){handles([['niaHead',.19,.24,.07],['niaHand',.375,.597,.06],['theoHead',.508,.12,.07],['ellisHead',.859,.27,.07],['ellisHand',.656,.597,.06]]);
    for(const n of ['niaHead','theoHead','ellisHead'])H[n].breathe=1;
+   if(SCRIPT){runLines(SCRIPT.branches.round,0,ending);return}
    say('You','One concern each. No replies until we’ve gone around.','qm-r1');
    at(5,()=>{say('Nia','The gate will be shut. We need to reach the courtyard first.','qm-r2');move('niaHand',.004,0,1.4)});
    at(9.6,()=>{say('','Theo starts to answer, then leaves the speaking token with Nia.');move('theoHead',0,.003,1)});
@@ -155,6 +168,7 @@ function commit(id){if(phase!=='decision')return;$('thought').hidden=true;phase=
    at(25,ending)}
   else{handles([['niaHead',.25,.27,.07],['niaHand',.461,.639,.05],['theoHead',.523,.12,.07],['ellisHead',.867,.2,.07],['ellisSlip',.883,.389,.04]]);
    for(const n of ['niaHead','theoHead','ellisHead'])H[n].breathe=1;
+   if(SCRIPT){runLines(SCRIPT.branches.slips,0,ending);return}
    say('You','Put down the concern you haven’t said. Then we’ll sort them together.','qm-s1');
    at(5,()=>{play('fold',.5);say('','Gate closure. Crowding. A different start. Theo adds a sketch too.');move('ellisSlip',0,-.004,.8)});
    at(9.6,()=>say('You','Then we leave the courtyard out?','qm-s2'));
@@ -164,9 +178,9 @@ function commit(id){if(phase!=='decision')return;$('thought').hidden=true;phase=
    at(25,ending)}})}
 const Q=new URLSearchParams(location.search),SESSION=Q.get('session')||'standalone',EMBED=parent!==window;let reported=false;
 function notify(type,outcome){if(EMBED)parent.postMessage({channel:'asterwind.episode.v1',episodeId:'standup',session:SESSION,type,...(outcome?{outcome}:{})},'*')}
-function ending(){phase='end';$('end').hidden=false;$('again').focus({preventScroll:true});live('The Quiet Minute. Again, or the other way.');if(!reported){reported=true;notify('completed',choice)}}
-$('again').onclick=()=>{$('end').hidden=true;cues.length=0;tweens.length=0;peeked=false;T=0;$('cap').querySelector('.line').textContent='';begin()};
-$('other').onclick=()=>{$('end').hidden=true;cues.length=0;tweens.length=0;const other=choice==='round'?'slips':'round';S.mix=0;toDecisionInstant(other)};
+function ending(){phase='end';if(UI&&UI.reflect(choice,$('end'))){const r=SCRIPT.reflections[choice];live('The Quiet Minute. '+r.title+' What it kept: '+r.kept+' What it cost: '+r.cost+' '+SCRIPT.lesson)}else{$('end').hidden=false;$('again').focus({preventScroll:true});live('The Quiet Minute. Again, or the other way.')}if(!reported){reported=true;notify('completed',choice)}}
+$('again').onclick=()=>{$('end').hidden=true;UI&&UI.hideReflection();cues.length=0;tweens.length=0;peeked=false;T=0;$('cap').querySelector('.line').textContent='';begin()};
+$('other').onclick=()=>{$('end').hidden=true;UI&&UI.hideReflection();cues.length=0;tweens.length=0;const other=choice==='round'?'slips':'round';S.mix=0;toDecisionInstant(other)};
 function toDecisionInstant(other){phase='master';stage.show('master');toDecision();at(reduced?.4:2.4,()=>commit(other))}
 
 /* ---- the frame: camera breath, pointer parallax, lamp flicker, breathing ---- */
@@ -184,9 +198,9 @@ function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;
  S.time=t;stage.draw();S.cam=keep;
  if(T>capUntil&&$('cap').querySelector('.line').textContent){$('cap').querySelector('.line').textContent='';$('cap').querySelector('.who').textContent=''}
  requestAnimationFrame(frame)}
-requestAnimationFrame(frame);stage.show('master');S.dim=.82;S.lamp=[.18,.06,.34,.55];S.rain=.9;stage.draw();
+requestAnimationFrame(frame);stage.show('master');S.dim=UI?.25:.82;S.lamp=[.18,.06,.34,.55];S.rain=.9;stage.draw();
 
-$('start').onclick=async()=>{const start=$('start');if(start.disabled)return;start.disabled=true;start.hidden=true;await PlayedSupport.audio(startSound);begin()};
+$('start').onclick=async()=>{const start=$('start');if(start.disabled)return;start.disabled=true;start.hidden=true;UI&&UI.begin();await PlayedSupport.audio(startSound);begin()};
 notify('ready');
 PlayedSupport.ready('Sit down');
 $('snd').onclick=()=>{soundOn=!soundOn;$('snd').setAttribute('aria-pressed',String(soundOn));if(master)master.gain.value=soundOn?1:0};

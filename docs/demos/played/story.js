@@ -1,0 +1,46 @@
+/* Story moments for every played scene, from scripts/<ep>.json:
+   - before: a short, readable introduction (where, who you are, what's at stake) and who's who, tagged on the picture;
+   - at the decision: the question, in words;
+   - after: a reflection. What the choice kept, what it cost, one lesson that holds for either choice, and a question.
+     Again and The other way live inside it, so the road not taken is one tap away. Nothing is scored or recorded. */
+(function(root){
+'use strict';
+const $=id=>document.getElementById(id),el=(tag,cls,text)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)e.textContent=text;return e};
+async function load(ep){try{const r=await fetch('scripts/'+ep+'.json');return r.ok?await r.json():null}catch{return null}}
+// Durations when a line has no recorded voice yet: long enough to read the caption comfortably.
+const readTime=(line,narr)=>!line?1.1:Math.max(narr?3:2.6,line.length*(narr?.062:.058)+(narr?1.6:1.3));
+function create(script){
+ const screen=$('screen')||document.body,frame=$('frame'),start=$('start'),seen=new Set();
+ let introBox=null,tags=null,ask=null,card=null;
+ if(script.intro){
+  introBox=el('section','story-intro');introBox.id='intro';introBox.setAttribute('aria-labelledby','intro-title');
+  introBox.append(el('p','kicker',script.intro.kicker||''));const h=el('h1',null,script.title);h.id='intro-title';introBox.append(h);
+  const t=el('p','text',script.intro.text);t.id='intro-text';introBox.append(t);
+  if(script.cast?.length){const ul=el('ul','cast');for(const c of script.cast){const li=el('li');li.append(el('b',null,c.name),el('span',null,c.role));ul.append(li)}introBox.append(ul)}
+  if(script.note)introBox.append(el('p','note',script.note));
+  screen.append(introBox);
+  if(start){introBox.append(start);start.setAttribute('aria-describedby','intro-text');start.querySelector('small')?.remove()}
+  tags=el('div','cast-tags');tags.setAttribute('aria-hidden','true');
+  for(const c of script.cast||[]){if(!c.at||c.name==='You')continue;const g=el('div','tag');g.style.left=c.at[0]*100+'%';g.style.top=c.at[1]*100+'%';g.append(el('b',null,c.name),el('span',null,c.role));tags.append(g)}
+  frame.append(tags);document.body.classList.add('has-intro');
+ }
+ ask=el('p','story-ask',script.prompt||'');ask.id='story-ask';ask.hidden=true;frame.append(ask);
+ card=el('section','story-reflect');card.id='reflect';card.hidden=true;card.tabIndex=-1;card.setAttribute('aria-labelledby','reflect-title');screen.append(card);
+ return{
+  script,
+  begin(){if(introBox)introBox.hidden=true;if(tags)tags.hidden=true;document.body.classList.remove('has-intro');card.hidden=true},
+  decide(on){ask.hidden=!on||!script.prompt},
+  reflect(choice,buttons){const r=script.reflections?.[choice];if(!r)return false;seen.add(choice);card.textContent='';
+   const both=seen.size>1;const h=el('h2',null,r.title);h.id='reflect-title';card.append(el('p','kicker',both?'Both ways seen':'What happened'),h);
+   const dl=el('dl');dl.append(el('dt',null,'What it kept'),el('dd',null,r.kept),el('dt',null,'What it cost'),el('dd',null,r.cost));card.append(dl);
+   if(script.lesson)card.append(el('p','lesson',script.lesson));
+   if(r.ask)card.append(el('p','ask',r.ask));
+   const other=Object.keys(script.reflections).find(k=>k!==choice);
+   card.append(el('p','hint',seen.has(other)?'You have seen both ways. Neither was the right answer; each kept something and spent something.':'There was another way. Try it, and compare what it keeps and what it costs.'));
+   if(buttons){buttons.hidden=false;card.append(buttons)}
+   card.hidden=false;setTimeout(()=>card.focus({preventScroll:true}),60);return true},
+  hideReflection(){card.hidden=true},
+  readTime};
+}
+root.StoryUI={load,create,readTime};
+})(typeof window==='object'?window:globalThis);
