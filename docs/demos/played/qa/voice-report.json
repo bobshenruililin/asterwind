@@ -1,0 +1,226 @@
+{
+ "standup": {
+  "qm2-01": {
+   "who": "Theo",
+   "voice": "ryan",
+   "direction": "proud and warm, a little too fast, selling an idea he loves. Speak naturally, like a real person in the room, not an announcer.",
+   "text": "Main gate, the courtyard, then down to the harbour just as the lights come on. That's the moment. That's what they'll remember.",
+   "heard": "Main gate, the courtyard, then down to the harbor, just as the lights come on. That's the moment. That's what they'll remember.",
+   "word_error": 0.045,
+   "flag": false,
+   "seconds": 8.4,
+   "render_s": 35.6
+  },
+  "qm2-02": {
+   "who": "Nia",
+   "voice": "serena",
+   "direction": "careful, trying to get a word in. Speak naturally, like a real person in the room, not an announcer.",
+   "text": "Theo, the courtyard gate...",
+   "heard": "Theo, the courtyard gate.",
+   "word_error": 0.0,
+   "flag": false,
+   "seconds": 2.48,
+   "render_s": 13.0
+  },
+  "qm2-03": {
+   "who": "Theo",
+   "voice": "ryan",
+   "direction": "cheerfully talking over her, not noticing. Speak naturally, like a real person in the room, not an announcer.",
+   "text": "Is a great photo stop, I know. Ten minutes there, tops.",
+   "heard": "What's a great photo stop, I know! Ten minutes there, tops!",
+   "word_error": 0.091,
+   "flag": false,
+   "seconds": 3.52,
+   "render_s": 19.3
+  },
+  "qm2-04": {
+   "who": "Nia",
+   "voice": "serena",
+   "direction": "quietly firm, slightly hurt at being talked over, trying to stay calm. Speak naturally, like a real person in the room, not an announcer.",
+   "text": "No, I mean it's locked. After six. I checked today.",
+   "heard": "No. I mean, it's locked. After six, I checked today.",
+   "word_error": 0.0,
+   "flag": false,
+   "seconds": 4.96,
+   "render_s": 25.2
+  },
+  "qm2-05": {
+   "who": "Theo",
+   "voice": "ryan",
+   "direction": "breezy, dismissive without meaning to be, hand staying on the model. Speak naturally, like a real person in the room, not an announcer.",
+   "text": "Security will open it if we ask. It'll be fine.",
+   "heard": "Security will open it if we ask. It'll be fine.",
+   "word_error": 0.0,
+   "flag": false,
+   "seconds": 3.04,
+   "render_s": 15.9
+  },
+  "qm2-06": {
+   "who": "Narrator",
+   "voice": "uncle_fu",
+   "direction": "A calm, warm storyteller, quiet and unhurried, setting the scene for a friend.",
+   "text": "Nia looks down at her map. Ellis has a folded sheet under one hand, and hasn't said a word all evening.",
+   "heard": "Naya looks down at her map. Ellis has a folded sheet under one hand and hasn't said a word all evening.",
+   "word_error": 0.048,
+   "flag": false,
+   "seconds": 8.72,
+   "render_s": 47.4
+  },
+  "qm2-07": {
+   "who": "You",
+   "voice": "eric",
+   "direction": "quiet, half to yourself, noticing. Speak naturally, like a real person in the room, not an announcer.",
+   "text": "Twenty minutes left, and I've only really heard one person.",
+   "heard": "20 minutes left and I've only really heard one person.",
+   "word_error": 0.1,
+   "flag": false,
+   "seconds": 4.88,
+   "render_s": 25.6
+  },
+  "qm2-r1": {
+   "who": "You",
+   "voice": "eric",
+   "direction": "calm, clear, gently firm. Speak naturally, like a real person in the room, not an announcer.",
+   "text": "Let's go round once. One concern each, and nobody replies until everyone's spoken. Nia, you first.",
+   "heard": "Let's go round once. One concern each, and nobody replies until everyone's spoken. Naya, you first.",
+   "word_error": 0.062,
+   "flag": false,
+   "seconds": 7.44,
+   "render_s": 39.2
+  },
+  "qm2-r2": {
+   "who": "Nia",
+   "voice": "serena",
+   "direction": "relieved to be heard, steadier and clearer now. Speak naturally, like a real person in the room, not an announcer.",
+   "text": "The courtyard gate locks at six. If we start there at half five, it's still open, and we're not stuck outside with two hundred people.",
+   "heard": "The courtyard gate locks at 6. If we start there at half-five, it's still open and we're not stuck outside with 200 people.",
+   "word_error": 0.12,
+   "flag": false,
+   "seconds": 9.2,
+   "render_s": 48.8
+  },
+  "qm2-r3": {
+   "who": "Narrator",
+   "voice": "uncle_fu",
+   "direction": "A calm, warm storyteller, quiet and unhurried, setting the scene for a friend.",
+   "text": "Theo opens his mouth, then remembers the rule. He waits.",
+   "heard": "Theo opens his mouth, then remembers the rule. He waits.",
+   "word_error": 0.0,
+   "flag": false,
+   "seconds": 4.56,
+   "render_s": 24.5
+  },
+  "qm2-r4": {
+   "who": "Ellis",
+   "voice": "aiden",
+   "direction": "hesitant, then braver; gentle with Theo. Speak naturally, like a real person in the room, not an announcer.",
+   "text": "That's where mine starts, actually. The courtyard. But it never reaches the harbour. I know that's the part you love, Theo.",
+   "heard": "That's where mine starts, actually. The courtyard. But it never reaches the harbor. I know that's the part you love, Theo.",
+   "word_error": 0.048,
+   "flag": false,
+   "seconds": 7.36,
+   "render_s": 45.2
+  },
+  "qm2-r5": {
+   "who": "Theo",
+   "voice": "ryan",
+   "direction": "a beat of disappointment, then honest and open. Speak naturally, like a real person in the room, not an announcer.",
+   "text": "It is. Show me your first stop.",
+   "heard": "It is. Show me your first stop.",
+   "word_error": 0.0,
+   "flag": false,
+   "seconds": 3.52,
+   "render_s": 32.3
+  },
+  "qm2-r6": {
+   "who": "Narrator",
+   "voice": "uncle_fu",
+   "direction": "A calm, warm storyteller, quiet and unhurried, setting the scene for a friend.",
+   "text": "Someone knocks: the next group needs the room. Everyone has spoken. The route isn't finished, and the harbour is off the table for now.",
+   "heard": "Someone knocks. The next group needs the room. Everyone has spoken. The route isn't finished, and the harbor is off the table for now.",
+   "word_error": 0.042,
+   "flag": false,
+   "seconds": 9.92,
+   "render_s": 50.9
+  },
+  "qm2-s1": {
+   "who": "You",
+   "voice": "eric",
+   "direction": "warm, practical. Speak naturally, like a real person in the room, not an announcer.",
+   "text": "Everyone, write down one thing that worries you about tomorrow. No names. Then we'll read them together.",
+   "heard": "Everyone write down one thing that worries you about tomorrow. No names, then we'll read them together",
+   "word_error": 0.0,
+   "flag": false,
+   "seconds": 6.32,
+   "render_s": 33.2
+  },
+  "qm2-s2": {
+   "who": "Narrator",
+   "voice": "uncle_fu",
+   "direction": "A calm, warm storyteller, quiet and unhurried, setting the scene for a friend.",
+   "text": "Pens scratch. Theo writes one too. The slips come back: gate locked after six. Too crowded at the harbour. A different start?",
+   "heard": "pen scratch. Theorites won too. The slips come back. Gate locked after six. Two crowded at the harbor. A different start?",
+   "word_error": 0.273,
+   "flag": true,
+   "seconds": 9.36,
+   "render_s": 47.3
+  },
+  "qm2-s3": {
+   "who": "You",
+   "voice": "eric",
+   "direction": "reading quickly, decisive, a little too fast. Speak naturally, like a real person in the room, not an announcer.",
+   "text": "So the courtyard's the problem. We drop it?",
+   "heard": "So the courtyard's the problem. We drop it?",
+   "word_error": 0.0,
+   "flag": false,
+   "seconds": 2.48,
+   "render_s": 12.7
+  },
+  "qm2-s4": {
+   "who": "Nia",
+   "voice": "serena",
+   "direction": "stung, then open and honest; it matters to her. Speak naturally, like a real person in the room, not an announcer.",
+   "text": "No, don't drop it. The courtyard's where I met my first friend here. I want them to see it. Just go there first.",
+   "heard": "No, don't drop it. The courtyard's where I met my first friend here. I want them to see it. Just go there first.",
+   "word_error": 0.0,
+   "flag": false,
+   "seconds": 8.08,
+   "render_s": 40.1
+  },
+  "qm2-s5": {
+   "who": "You",
+   "voice": "eric",
+   "direction": "owning it simply. Speak naturally, like a real person in the room, not an announcer.",
+   "text": "Sorry. I read that too fast. Courtyard first.",
+   "heard": "Sorry, I read that too fast. Courtyard first.",
+   "word_error": 0.0,
+   "flag": false,
+   "seconds": 3.68,
+   "render_s": 19.1
+  },
+  "qm2-s6": {
+   "who": "Narrator",
+   "voice": "uncle_fu",
+   "direction": "A calm, warm storyteller, quiet and unhurried, setting the scene for a friend.",
+   "text": "Ellis unfolds the sheet at last. The route almost fits. One slip still says too crowded, and you don't know who wrote it.",
+   "heard": "Ellis unfolds the sheet at last. The route almost fits. One slip still says too crowded, and you don't know who wrote it.",
+   "word_error": 0.0,
+   "flag": false,
+   "seconds": 8.96,
+   "render_s": 45.0
+  }
+ },
+ "slides": {
+  "setup-0": {
+   "who": "Narrator",
+   "voice": "uncle_fu",
+   "direction": "A calm, warm storyteller, quiet and unhurried, setting the scene for a friend.",
+   "text": "The opening slide fills the screen: a neighbourhood map, one route in red. No name beneath it.",
+   "heard": "The opening slide fills the screen. A neighborhood map, one route in red. No name beneath it.",
+   "word_error": 0.059,
+   "flag": false,
+   "seconds": 7.04,
+   "render_s": 35.1
+  }
+ }
+}

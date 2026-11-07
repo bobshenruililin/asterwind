@@ -1,5 +1,26 @@
 {
  "standup": {
-  "qm2-01": "standup/qm2-01.mp3"
+  "qm2-01": "standup/qm2-01.mp3",
+  "qm2-02": "standup/qm2-02.mp3",
+  "qm2-03": "standup/qm2-03.mp3",
+  "qm2-04": "standup/qm2-04.mp3",
+  "qm2-05": "standup/qm2-05.mp3",
+  "qm2-06": "standup/qm2-06.mp3",
+  "qm2-07": "standup/qm2-07.mp3",
+  "qm2-r1": "standup/qm2-r1.mp3",
+  "qm2-r2": "standup/qm2-r2.mp3",
+  "qm2-r3": "standup/qm2-r3.mp3",
+  "qm2-r4": "standup/qm2-r4.mp3",
+  "qm2-r5": "standup/qm2-r5.mp3",
+  "qm2-r6": "standup/qm2-r6.mp3",
+  "qm2-s1": "standup/qm2-s1.mp3",
+  "qm2-s2": "standup/qm2-s2.mp3",
+  "qm2-s3": "standup/qm2-s3.mp3",
+  "qm2-s4": "standup/qm2-s4.mp3",
+  "qm2-s5": "standup/qm2-s5.mp3",
+  "qm2-s6": "standup/qm2-s6.mp3"
+ },
+ "slides": {
+  "setup-0": "slides/setup-0.mp3"
  }
 }
