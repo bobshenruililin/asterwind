@@ -25,11 +25,11 @@ For Bob to send to teammates and friends with the link. Copy the box below as it
 
 ## The published build
 
-- **URL:** `https://bobshenruililin.github.io/asterwind/`, the root of `pages-runtime`.
-- **Built from:** commit `9c790fef6400` on `claude/awesome-hypatia-6bf97q`, by `python3 scripts/build-play.py` from a clean tree.
+- **URL:** `https://bobshenruililin.github.io/asterwind/`, the root of `pages-runtime` (commit `871f285`), verified live on 7 November.
+- **Built from:** commit `d0a012169c3a9037863f973d17bcd671ca106905` on `claude/awesome-hypatia-6bf97q`, by `python3 scripts/build-play.py` from a clean tree.
 - **Size:** 531 files, 36.1 MB.
 - **To check which build someone played:**
-  - the root page carries `<meta name="asterwind-build" content="9c790fef6400">`;
+  - the root page carries `<meta name="asterwind-build" content="d0a012169c3a">`;
   - `/build-manifest.json` gives the full commit and a hash of every file.
 - **Older links:** `/play/` now forwards to the root. The earlier snapshots stay where they were (`/play-a378e89/`, `/play-d4fca19/`, `/play-833b5f1/`), as do Robert's `/preview-stories-e4e6722/` and the nine-scenario `classic.html`.
 

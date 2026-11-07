@@ -1,72 +1,69 @@
 # Current handoff (keep this short and current)
 
-Updated 7 November 2026 by Opus. Branch `claude/awesome-hypatia-6bf97q`, checked at `5060122`.
+Updated 7 November 2026 by Opus, at the end of the final build sprint. Branch `claude/awesome-hypatia-6bf97q`. The published build is `d0a0121`.
 
 ## Play
 
-Serve the repository root with `python3 -m http.server 8000`, then open:
-
-| What | URL | State |
+| What | Where | State |
 | --- | --- | --- |
-| **The scenarios, reworked** | `/docs/demos/played/scene.html?ep=slides` (also `scope`, `pixel`, `ship`, `seam`) and `/docs/demos/played/` (The Quiet Minute) | **New:** intro and who's who, rewritten lines, the question at the decision, reflection, scratch voices. |
-| **The draft night** | `/docs/demos/unfolded/?v=2` | All six stories played inside the night. |
-| Voice review page | `/docs/demos/played/qa/voices.html` | Every take, its direction, what Whisper heard, plus old Kokoro lines for contrast. |
-| Published playtest (unchanged) | https://bobshenruililin.github.io/asterwind/play/ | Built from `a378e89`; doesn't include today's work. |
-| Integrated night | `/docs/demos/unfolded/` | Known good. |
+| **The game, published** | https://bobshenruililin.github.io/asterwind/ | Built from `d0a0121`; `pages-runtime` at `871f285`. Verified live. `/play/` forwards here. |
+| The draft night, from source | `/docs/demos/unfolded/?v=2` (serve the repo root) | The same thing, unbuilt. |
+| One story on its own | `/docs/demos/played/scene.html?ep=slides` (also `scope`, `pixel`, `ship`, `seam`), and `/docs/demos/played/` (The Quiet Minute) | |
+| Voice review page | `/docs/demos/played/qa/voices.html` | Every take, its direction, what Whisper heard. |
+| Playtest note to send | `docs/demos/unfolded/PLAYTEST.md` | The message, the build, the route, what to watch. |
+| Older snapshots | `/play-a378e89/`, `/play-d4fca19/`, `/play-833b5f1/`, `/preview-stories-e4e6722/`, `/classic.html` | Untouched. |
 
-## What changed on 7 November (Bob's playtest)
+## What a player gets (final sprint)
 
-- **Every played scene runs from a script:** `docs/demos/played/scripts/<ep>.json`. Each one has:
-  - an intro (where, who you are, what's at stake);
-  - who's who, listed and tagged on the picture;
-  - rewritten lines with acting directions, and the question at the decision;
-  - a reflection: what the choice kept, what it cost, one lesson for either choice, and a question.
+- **An opening card:**
+  - where you are and how to play: listen, then choose with your hands;
+  - that no choice is right, and that a story takes about three minutes;
+  - that The Empty Square awaits its lived-experience review.
 
-  *Again* and *The other way* sit in the reflection. Choice ids and outcomes are unchanged.
-- **Voices:** all six stories are voiced with directed scratch takes (`voices/v2/`): 122 takes and 11.7 minutes, including each story's lesson read by the narrator. They were rendered locally with Qwen3-TTS and checked with Whisper (`qa/voice-report.json`). `?voices=eleven` will switch a scene to Eleven v4 takes once they exist.
-- **Sound:** ready to drop in. CC0 picks are in `sound-shortlist.json`; `fetch-sounds.py` runs on a laptop, because Freesound refuses this cloud session.
-- **Ellis's corrected route (Robert):** the close look is on by default in The Quiet Minute.
-- **Earlier the same day:**
-  - real object layers at every decision;
-  - The Seam played;
-  - people turning toward your hand;
-  - Astra's integration merged.
+  *Begin* turns the sound on and wakes the machine. The corridor says to start with the lit drink.
+- **In every story:**
+  - **the intro:** who's who, tagged on the picture;
+  - **the setup:** voiced, with conversational timing. Lines overlap on interruptions and breathe after narration;
+  - **the question, with each object labelled** by what choosing it means. Portrait phones list both under the picture;
+  - **the consequence;**
+  - **a reflection:** what it kept, what it cost, and whether *this time you put the people in front of you first* or *the plan first*. Then one lesson, a question, and the other way.
+- **At dawn,** the notebook names the pattern across the stories you walked, e.g. "People first four times; the plan first twice." It adds that neither is the right habit, and that knowing your default is where leading starts.
+- **Kling-ready:**
+  - clip slots are wired for K1 (Ellis's route), K2 (the tower), K3 (the canopy), K4 (the needle) and K5 (the microphone);
+  - preview a take with `?clips=<ep>/<shot>:<ep>/<file>.mp4`;
+  - approve it in `docs/demos/played/clips/manifest.json`;
+  - the plan and exact frames are in `docs/KLING-BRIEFS-2026-11-06.md`.
+- **Robustness:** scenes keep pace with the voices down to 10 fps.
 
-Read `docs/SCENARIOS-2026-11-07.md` for the reasoning, the six lessons, the voice and sound findings, the visual recommendation (sculpted miniature, built as a kit) and Kling.
-
-## Checks
+## Checks (all passing on `d0a0121`, and the live site)
 
 - **Source:**
   - `node film/test-state.cjs`
-  - the anthology and hub tests
+  - `node anthology/test-anthology.cjs`, `node anthology/test-art.cjs`
   - `python3 hub/test-build.py`
   - `node scripts/verify-repo.cjs`
-  - Astra's `qa/played-*.cjs` and `qa/stage-recovery.cjs`
-  - `python3 scripts/test-play-build.py`
-  - `python3 scripts/play_assets.py`
-- **Browser** (repo served on 8731; run them one at a time, since software WebGL is slow):
-  - `node docs/demos/played/qa/story.cjs <out>`: intro, question, reflection and the other way, in all five generic scenes;
-  - `node docs/demos/played/qa/films.cjs http://127.0.0.1:8731/ <out> fast`: all five generic scenes played;
-  - `node docs/demos/played/qa/layers.cjs <out>`: object layers;
-  - `node docs/demos/played/qa/night-v2.cjs <out>`: the draft night, including *Begin again*;
-  - `node docs/demos/played/qa/keyboard.cjs <out>`;
-  - `node docs/demos/played/qa/story-phone.cjs <out>`: portrait phone;
-  - the integrated night's `qa/night.cjs`, `qa/keyboard.cjs` and `qa/audio-browser.cjs`.
+  - `node qa/played-controller.cjs`, `node qa/played-night-state.cjs`, `node qa/stage-recovery.cjs`, `node qa/state-tests.cjs`, `python3 qa/test_played_layout.py`
+  - `python3 scripts/test-play-build.py`, `python3 scripts/play_assets.py`
+- **Browser** (serve the repo on 8731; run one at a time, because software WebGL is slow):
+  - `node docs/demos/played/qa/story.cjs <out>`
+  - `node docs/demos/played/qa/films.cjs http://127.0.0.1:8731/ <out> fast`
+  - `node docs/demos/played/qa/layers.cjs <out>`
+  - `node docs/demos/played/qa/night-v2.cjs <out>` (now clicks *Begin* and checks the review notice)
+  - `node docs/demos/played/qa/keyboard.cjs <out>`
+  - `node docs/demos/played/qa/story-phone.cjs <out>`
+- **The built export** (`dist/play` served alone): `night-v2.cjs` and `films.cjs`, pointed at it.
+- **Live:** opening card → corridor → The Quiet Minute → reflection → morning → notebook, plus `/play/` forwarding. No errors and no failed requests.
 
-## Needs human review
+## Needs human eyes and ears
 
-1. **Listen.** I can't hear; I only measured. Play `qa/voices.html`, then the scenes, and judge whether the takes feel human. Compare them with Eleven v4 (about $2 of usage plus the $6 Starter plan) and with the team's own recordings.
-2. **The lessons and reflections:** do they match what the CCGL course teaches? Edit `scripts/<ep>.json` freely.
-3. **The Empty Square's lived-experience review** is still pending. The intro card says so in the game.
-4. **The sound picks:** download and audition them (`fetch-sounds.py`) before committing them.
-5. **Ellis's close look** is on by default in the draft. Approve it, or say `?p2=0` should stay the default.
+1. **Listen in context.** I can only measure: pitch range, pauses, and Whisper's word check. Play two or three stories with sound and note any line that's flat, rushed or wrong for its moment.
+2. **The lessons, the lean lines and the dawn pattern:** do they match what CCGL teaches? Does naming a habit feel insightful, or like a score? Edit `scripts/<ep>.json` and `LEAN` in `docs/demos/unfolded/index.html`.
+3. **The Empty Square's lived-experience review** is still pending. It's stated on the opening card and in the story's intro.
+4. **Sound:** run `fetch-sounds.py` on a laptop and audition the CC0 picks.
+5. **A real phone and a real screen reader:** so far only emulated phones and keyboard-only have been tested.
 
 ## Open decisions for Bob
 
-- **Voice route:**
-  - human recordings;
-  - Eleven v4 (the key goes through the session's secure credential form, never the repository);
-  - or the local Qwen takes as they are.
-- **Visual direction:** a sculpted-miniature pilot kit for The Quiet Minute (brief in `SCENARIOS-2026-11-07.md`) before any whole-game regeneration.
-- **Kling:** the 60 s budget stands. Kling 4.0's pricing isn't public yet. For Kling 3.0 with native audio at 1080p, 60 s is about 720 credits. Use generated audio for foley only, never dialogue.
-- **Republish `/play/`** with today's scenarios once you've played them.
+- **Kling:** the connector needs your authorisation in claude.ai connector settings, or Astra or Robert can run the plan. Budget: 100 s including rejects, Kling 4.0 at 1080p, with a Flash test first.
+- **Voices:** keep the local takes, audition Eleven v4 (about $2 of usage plus the $6 Starter plan), or record people.
+- **Visual direction:** the sculpted-miniature pilot kit for The Quiet Minute. Robert's empty set is at `c4ff45c`; the characters and props are still to come.
