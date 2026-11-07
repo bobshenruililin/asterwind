@@ -50,7 +50,7 @@ def build(root=ROOT):
         shutil.rmtree(OUT)
     OUT.mkdir(parents=True)
     tree(root / 'docs/demos/unfolded', OUT / 'docs/demos/unfolded')
-    tree(root / 'docs/demos/played', OUT / 'docs/demos/played')
+    tree(root / 'docs/demos/played', OUT / 'docs/demos/played', extra_skip=('art', 'raw'))  # art/ holds review sources; runtime plates are in plates/
     for f in ['seam-night-sketch.mp3', 'seam-dawn-sketch.mp3', 'PROVENANCE.md']:
         one(f'docs/demos/sound-board/music/{f}')
     tree(root / 'hub', OUT / 'hub')

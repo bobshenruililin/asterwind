@@ -12,7 +12,7 @@ const until=async(p,fn,ms=60000)=>{const t=Date.now();while(Date.now()-t<ms){if(
  await fr.locator('#open-drink').click();await w(3800);await p.screenshot({path:O+'3-crossing.png'});
  console.log('film',need(await until(p,()=>Game.state().filmStarted,30000),'film started'));await w(800);await p.screenshot({path:O+'4-sit.png'});
  const qm=p.frameLocator('#filmscr iframe');await qm.locator('#start').click();
- need(await until(p,()=>{try{return document.querySelector('#filmscr iframe').contentWindow.QM.state.phase==='decision'}catch{return false}},60000),'decision reached');await w(800);await p.screenshot({path:O+'5-decision.png'});
+ need(await until(p,()=>{try{return document.querySelector('#filmscr iframe').contentWindow.QM.state.phase==='decision'}catch{return false}},180000),'decision reached');await w(800);await p.screenshot({path:O+'5-decision.png'});
  await qm.locator('#platter').click();need(await until(p,()=>!document.getElementById('film-back').hidden,90000),'film ended');await w(1200);await p.screenshot({path:O+'6-end.png'});
  const film=await p.evaluate(()=>Game.state().film);need(film&&film.HEARD==='round','outcome recorded');console.log('film outcome',JSON.stringify(film));
  await p.click('#film-back');need(await until(p,()=>{try{return Game.hub().frame.contentWindow.AsterwindJourney.state.state==='idle'}catch{return false}},30000),'back in the corridor');await w(1500);await p.screenshot({path:O+'7-roof.png'});

@@ -6,7 +6,7 @@ import tempfile
 import unittest
 import zipfile
 
-from play_assets import ENTRYPOINTS, LAUNCH_TARGETS, PLAYED, PLAYED_EPISODES, verify_play
+from play_assets import ENTRYPOINTS, LAUNCH_TARGETS, PLAYED, PLAYED_EPISODES, PLAYED_FILMS, verify_play
 
 spec = importlib.util.spec_from_file_location('play_build', Path(__file__).with_name('build-play.py'))
 build = importlib.util.module_from_spec(spec)
@@ -34,12 +34,22 @@ class PlayBuildTests(unittest.TestCase):
         self.put(PLAYED + 'plates/quiet-master-depth.webp', 'quiet depth')
         self.put(PLAYED + 'voices/qm-01.mp3', 'quiet voice')
         self.put('docs/demos/unfolded/sound/tap.mp3', 'paper sound')
-        self.put(PLAYED + 'scene.js', "const OK=['slides','scope','pixel','ship'];")
-        for name in ('stage.js', 'support.js', 'pixel.js', 'responsive.css'):
+        self.put(PLAYED + 'scene.js', "const OK=['slides','scope','pixel','ship','seam'];")
+        for name in ('stage.js', 'support.js', 'pixel.js', 'responsive.css', 'story.js', 'story.css', 'clips.js'):
             self.put(PLAYED + name, '/* fixture */')
         for episode in PLAYED_EPISODES:
             self.put(f'anthology/episodes/{episode}/story.json', {'setup': [], 'branches': {}})
             self.put(f'anthology/episodes/{episode}/art-manifest.json', {'plates': {}})
+            for layer in ('clean', 'over'):
+                self.put(PLAYED + f'plates/{episode}/layers/{layer}.webp', 'layer')
+        # played scripts, voice/sound manifests, The Seam's film story and The Quiet Minute's object layers
+        for episode in (*PLAYED_EPISODES, *PLAYED_FILMS, 'standup'):
+            self.put(PLAYED + f'scripts/{episode}.json', {})
+        self.put(PLAYED + 'voices/v2/manifest.json', {})
+        self.put(PLAYED + 'sound/manifest.json', {'files': []})
+        self.put('film/story.json', {'setup': [], 'backup': [], 'repair': [], 'decision': {}})
+        for layer in ('clean', 'platter', 'tray', 'occluder'):
+            self.put(PLAYED + f'plates/qm-layers/{layer}.webp', 'layer')
 
     def tearDown(self):
         self.temp.cleanup()

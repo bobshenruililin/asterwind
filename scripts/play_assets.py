@@ -18,6 +18,7 @@ LAUNCH_TARGETS = {
 }
 PLAYED = 'docs/demos/played/'
 PLAYED_EPISODES = ('slides', 'scope', 'pixel', 'ship')
+PLAYED_FILMS = ('seam',)  # played from film/story.json rather than an anthology episode
 ENTRYPOINTS = (
     *LAUNCH_TARGETS,
     'docs/demos/unfolded/index.html', 'hub/index.html', 'film/index.html',
@@ -168,7 +169,7 @@ def verify_play(root):
     # Read the small literal declarations without executing JavaScript. Fail
     # clearly if that source contract changes rather than silently losing QA.
     played_sources = {}
-    for name in ('stage.js', 'support.js', 'responsive.css', 'quiet.js', 'pixel.js', 'scene.js'):
+    for name in ('stage.js', 'support.js', 'responsive.css', 'quiet.js', 'pixel.js', 'scene.js', 'story.js', 'story.css', 'clips.js'):
         owner = root / PLAYED / name
         require(root / PLAYED / 'index.html', name)
         if owner.is_file():
@@ -202,7 +203,7 @@ def verify_play(root):
     scene = root / PLAYED / 'scene.js'
     supported = re.search(r'\bOK\s*=\s*\[([^]]+)\]', played_sources.get('scene.js', ''))
     if (not supported or set(re.findall(r"['\"]([a-z-]+)['\"]", supported[1]))
-            != set(PLAYED_EPISODES)):
+            != set(PLAYED_EPISODES) | set(PLAYED_FILMS)):
         errors.append(f'{PLAYED}scene.js: supported episodes changed; update the asset contract')
     for episode in PLAYED_EPISODES:
         story, data = read(f'anthology/episodes/{episode}/story.json')
@@ -219,6 +220,34 @@ def verify_play(root):
                 # Match scene.js's split('/').pop().replace(/\.\w+$/, '').
                 stem = re.sub(r'\.\w+$', '', src.rsplit('/', 1)[-1])
                 require(scene, f'plates/{episode}/{stem}-depth.webp')
+
+    # The Seam, played: every plate its beats and pose frames use, and a depth map for each.
+    story, data = read('film/story.json')
+    used = {data.get('decision', {}).get('asset')}
+    for part in ('setup', 'backup', 'repair'):
+        for beat in data.get(part, []):
+            used.add(beat.get('asset')); used.update(f.get('asset') for f in beat.get('frames', []))
+    for asset in sorted(a for a in used if a and a != 'black'):
+        require(story, f'assets/{asset}.webp')
+        require(scene, f'plates/seam/{asset}-depth.webp')
+    # Played scripts, their voices and recorded sound: only manifest-listed files are requested at runtime.
+    for episode in (*PLAYED_EPISODES, *PLAYED_FILMS, 'standup'):
+        require(scene, f'scripts/{episode}.json')
+    for listing, folder in (('voices/v2/manifest.json', 'voices/v2'),):
+        owner, data = read(PLAYED + listing)
+        for files in data.values():
+            for filename in files.values():
+                require(owner, filename, root / PLAYED / folder)
+    owner, data = read(PLAYED + 'sound/manifest.json')
+    for name in data.get('files', []):
+        require(owner, name + '.mp3')
+    # Object layers for the decisions.
+    for name in ('clean', 'platter', 'tray', 'occluder'):
+        require(quiet, f'plates/qm-layers/{name}.webp')
+    for episode in PLAYED_EPISODES:
+        _, data = read(f'anthology/episodes/{episode}/story.json')
+        for action in [a.get('id') for a in data.get('choice', {}).get('actions', [])] + ['clean', 'over']:
+            require(scene, f'plates/{episode}/layers/{action}.webp')
 
     journey = root / 'docs/demos/unfolded/index.html'
     if journey.is_file():

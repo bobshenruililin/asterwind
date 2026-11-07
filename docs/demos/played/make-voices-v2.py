@@ -18,12 +18,13 @@ CAST = {  # one voice per person within a story; You and the narrator are the sa
  '*': {'You': 'eric', '': 'uncle_fu'},
  'standup': {'Theo': 'ryan', 'Nia': 'serena', 'Ellis': 'aiden'},
  'slides': {'Kit': 'ryan', 'Asha': 'sohee', 'Visitor': 'vivian'},
- 'scope': {'Inez': 'vivian', 'Sam': 'ono_anna', 'Bo': 'aiden'},
+ 'scope': {'Inez': 'serena', 'Sam': 'ono_anna', 'Bo': 'aiden'},
  'pixel': {'Jo': 'sohee', 'Remy': 'vivian'},
  'ship': {'Dev': 'ryan', 'Lio': 'serena', 'Visitor': 'ono_anna'},
  'seam': {'Mara': 'vivian', 'Julian': 'aiden'}}
 NARRATOR = 'A calm, warm storyteller, quiet and unhurried, setting the scene for a friend.'
 HUMAN = ' Speak naturally, like a real person in the room, not an announcer.'
+BATCH = int(next((a.split('=')[1] for a in sys.argv if a.startswith('--batch=')), 4))
 words = lambda s: re.sub(r"[^a-z0-9' ]", ' ', s.lower().replace('’', "'")).split()
 
 
@@ -54,31 +55,39 @@ def main(eps):
     for ep in eps:
         s = json.loads((ROOT / 'scripts' / f'{ep}.json').read_text()); (OUT / ep).mkdir(parents=True, exist_ok=True)
         man.setdefault(ep, {}); rep.setdefault(ep, {})
+        todo = []
         for key, b in lines(ep, s):
             text = (b.get('line') or '').strip()
             if not text or b.get('black'): continue
             if man[ep].get(key) and (OUT / ep / f'{key}.mp3').exists() and '--redo' not in sys.argv: continue  # keep existing takes
             who = b.get('speaker') or ''; voice = CAST.get(ep, {}).get(who) or CAST['*'].get(who) or 'aiden'
             ins = NARRATOR if not who else (b.get('direction') or 'natural, sincere').rstrip('.') + '.' + HUMAN
-            best = None
-            for attempt in range(2):
-                t = time.time(); w, sr = tts.generate_custom_voice(text=text, language='English', speaker=voice, instruct=ins)
-                y = librosa.resample(np.asarray(w[0], dtype=np.float32), orig_sr=sr, target_sr=16000)
-                heard = ' '.join(x.text.strip() for x in asr.transcribe(y, beam_size=5)[0]); e = wer(text, heard)
-                if best is None or e < best[0]: best = (e, w[0], sr, heard, time.time() - t)
-                if e <= .12: break
-            e, wav, sr, heard, secs = best
-            with tempfile.NamedTemporaryFile(suffix='.wav') as tmp:
-                sf.write(tmp.name, wav, sr)
-                # trim edge silence, gentle loudness match (-18 LUFS), mono 64 kbps
-                subprocess.run(['ffmpeg', '-loglevel', 'error', '-y', '-i', tmp.name, '-af',
-                                'silenceremove=start_periods=1:start_threshold=-50dB,areverse,silenceremove=start_periods=1:start_threshold=-50dB,areverse,loudnorm=I=-18:TP=-2:LRA=11',
-                                '-ac', '1', '-ar', '44100', '-b:a', '64k', str(OUT / ep / f'{key}.mp3')], check=True)
-            man[ep][key] = f'{ep}/{key}.mp3'
-            rep[ep][key] = {'who': who or 'Narrator', 'voice': voice, 'direction': ins, 'text': text, 'heard': heard, 'word_error': round(float(e), 3),
-                            'flag': bool(e > .12), 'seconds': round(len(wav) / sr, 2), 'render_s': round(secs, 1)}
-            print(ep, key, voice, f'wer={e:.2f}', round(len(wav) / sr, 1), 's', flush=True)
-            (OUT / 'manifest.json').write_text(json.dumps(man, indent=1)); REPORT.write_text(json.dumps(rep, indent=1))
+            todo.append((key, who, voice, ins, text))
+        # Lines render in batches: on a CPU the model is memory-bound, so several lines cost little more than one.
+        for i in range(0, len(todo), BATCH):
+            chunk = todo[i:i + BATCH]; t = time.time()
+            ws, sr = tts.generate_custom_voice(text=[c[4] for c in chunk], language=['English'] * len(chunk), speaker=[c[2] for c in chunk], instruct=[c[3] for c in chunk])
+            secs = (time.time() - t) / len(chunk)
+            for (key, who, voice, ins, text), w in zip(chunk, ws):
+                best = None
+                for attempt in range(2):
+                    if attempt: t = time.time(); w = tts.generate_custom_voice(text=text, language='English', speaker=voice, instruct=ins)[0][0]; secs = time.time() - t
+                    y = librosa.resample(np.asarray(w, dtype=np.float32), orig_sr=sr, target_sr=16000)
+                    heard = ' '.join(x.text.strip() for x in asr.transcribe(y, beam_size=5)[0]); e = wer(text, heard)
+                    if best is None or e < best[0]: best = (e, w, heard, secs)
+                    if e <= .12: break
+                e, wav, heard, secs = best
+                with tempfile.NamedTemporaryFile(suffix='.wav') as tmp:
+                    sf.write(tmp.name, wav, sr)
+                    # trim edge silence, gentle loudness match (-18 LUFS), mono 64 kbps
+                    subprocess.run(['ffmpeg', '-loglevel', 'error', '-y', '-i', tmp.name, '-af',
+                                    'silenceremove=start_periods=1:start_threshold=-50dB,areverse,silenceremove=start_periods=1:start_threshold=-50dB,areverse,loudnorm=I=-18:TP=-2:LRA=11',
+                                    '-ac', '1', '-ar', '44100', '-b:a', '64k', str(OUT / ep / f'{key}.mp3')], check=True)
+                man[ep][key] = f'{ep}/{key}.mp3'
+                rep[ep][key] = {'who': who or 'Narrator', 'voice': voice, 'direction': ins, 'text': text, 'heard': heard, 'word_error': round(float(e), 3),
+                                'flag': bool(e > .12), 'seconds': round(len(wav) / sr, 2), 'render_s': round(secs, 1)}
+                print(ep, key, voice, f'wer={e:.2f}', round(len(wav) / sr, 1), 's', flush=True)
+                (OUT / 'manifest.json').write_text(json.dumps(man, indent=1)); REPORT.write_text(json.dumps(rep, indent=1))
 
 
 if __name__ == '__main__':

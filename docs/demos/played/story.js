@@ -33,12 +33,14 @@ function create(script){
   reflect(choice,buttons){const r=script.reflections?.[choice];if(!r)return false;seen.add(choice);card.textContent='';
    const both=seen.size>1;const h=el('h2',null,r.title);h.id='reflect-title';card.append(el('p','kicker',both?'Both ways seen':'What happened'),h);
    const dl=el('dl');dl.append(el('dt',null,'What it kept'),el('dd',null,r.kept),el('dt',null,'What it cost'),el('dd',null,r.cost));card.append(dl);
+   const other0=Object.keys(script.reflections).find(k=>k!==choice),o=script.reflections[other0];
+   if(both&&o){const box=el('div','other');box.append(el('p','kicker','The other way: '+o.title.replace(/\.$/,'')));const odl=el('dl');odl.append(el('dt',null,'Kept'),el('dd',null,o.kept),el('dt',null,'Cost'),el('dd',null,o.cost));box.append(odl);card.append(box)}
    if(script.lesson)card.append(el('p','lesson',script.lesson));
    if(r.ask)card.append(el('p','ask',r.ask));
    const other=Object.keys(script.reflections).find(k=>k!==choice);
    card.append(el('p','hint',seen.has(other)?'You have seen both ways. Neither was the right answer; each kept something and spent something.':'There was another way. Try it, and compare what it keeps and what it costs.'));
    if(buttons){buttons.hidden=false;card.append(buttons)}
-   card.hidden=false;setTimeout(()=>card.focus({preventScroll:true}),60);return true},
+   card.hidden=false;card.focus({preventScroll:true});return true},
   hideReflection(){card.hidden=true},
   readTime};
 }

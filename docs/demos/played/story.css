@@ -28,6 +28,8 @@ body.has-intro #cap,body.has-intro #chrome{visibility:hidden}
 .story-reflect dl{margin:.2em 0 0;display:grid;gap:.25em}
 .story-reflect dt{font:600 clamp(10px,.95vw,12px)/1.3 system-ui;letter-spacing:.12em;text-transform:uppercase;color:#bfb29a;margin-top:.5em}
 .story-reflect dd{margin:0;font:clamp(14px,1.35vw,18px)/1.45 Georgia,serif}
+.story-reflect .other{margin-top:.3em;padding:.5em .8em;border:1px solid #ffffff1c;border-radius:3px;opacity:.88}
+.story-reflect .other dd{font-size:clamp(12.5px,1.15vw,15px)}
 .story-reflect .lesson{margin:.6em 0 0;padding:.65em .85em;border-left:3px solid #e9c27a;background:#e9c27a14;font:clamp(14px,1.4vw,19px)/1.45 Georgia,serif;color:#fff1d6}
 .story-reflect .ask{margin:.2em 0 0;font:italic clamp(13.5px,1.3vw,17px)/1.45 Georgia,serif;color:#e6dccb}
 .story-reflect .hint{margin:.2em 0 0;font:clamp(12px,1.1vw,14px)/1.4 system-ui;color:#b9ae9a}

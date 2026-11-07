@@ -15,7 +15,7 @@ const P2=new URLSearchParams(location.search).get('p2')!=='0';let P2ready=false;
 // The real objects (P0): a clean table with the platter, the tray and the hands as separate layers, so the platter
 // turns under Theo's hand and the tray slides with its own shadow. If they fail to load, the region warp stays.
 const LAYERS='plates/qm-layers/';let layered=false;
-stage.layer('decision',{clean:LAYERS+'clean.webp',disc:LAYERS+'platter.webp',slide:LAYERS+'tray.webp',over:LAYERS+'occluder.webp'}).then(()=>{layered=true}).catch(()=>{});
+if(stage.layer)stage.layer('decision',{clean:LAYERS+'clean.webp',disc:LAYERS+'platter.webp',slide:LAYERS+'tray.webp',over:LAYERS+'occluder.webp'}).then(()=>{layered=true}).catch(()=>{});
 if(P2)Promise.all([stage.add('routeClosed','plates/qm-route-closed.webp','plates/qm-route-closed-depth.webp'),stage.add('routeOpen','plates/qm-route-open.webp','plates/qm-route-open-depth.webp')]).then(()=>{P2ready=true}).catch(()=>{});
 
 /* ---- clock, tweens, cues: everything pauses together ---- */
@@ -149,7 +149,7 @@ function lookClose(){looking=true;const from=stage.current,inMaster=phase==='mas
    at(1.6,()=>{stage.settle();S.warps=[];opened()})}})||null;
   at(OPENED+HOLD,()=>{th.style.opacity=0;th.hidden=true;stage.toward(from);S.zoomB=keep.zoom;S.cenB=keep.cen;tw(S,'mix',1,1);
    at(1.05,()=>{stage.settle();window.Clips&&Clips.stop();Object.assign(S,{zoom:keep.zoom,cen:keep.cen,cam:keep.cam,focus:keep.focus,dof:keep.dof,dim:keep.dim,rain:keep.rain,lamp:keep.lamp,disc:keep.disc,slide:keep.slide});S.warps=keep.warps;
-    looking=false;th.classList.remove('close');objs.forEach(id=>{if(phase==='decision')$(id).hidden=false});live(phase==='decision'?'Back at the table. The model is within reach, and so is the tray of blank slips.':'Back at the table.')})})})}
+    looking=false;th.classList.remove('close');objs.forEach(id=>{if(phase==='decision')$(id).hidden=false});if(phase==='decision'&&objs.length)setTimeout(()=>$(objs[0]).focus({preventScroll:true}),30);/* keyboard players keep their place */live(phase==='decision'?'Back at the table. The model is within reach, and so is the tray of blank slips.':'Back at the table.')})})})}
 
 /* ---- the choice, then the film's consequence ---- */
 function commit(id){if(phase!=='decision')return;UI&&UI.decide(false);$('thought').hidden=true;phase='consequence';choice=id;drag=null;hover(null);$('platter').hidden=$('tray').hidden=$('route').hidden=true;

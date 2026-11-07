@@ -40,7 +40,7 @@ document.title=story.title+', played';$('frame').setAttribute('aria-label',story
 // Shared with the playtest: say plainly that this story is still waiting for its lived-experience review.
 // The played script (scripts/<ep>.json): who's who, context-rich lines, the question, and the reflections. The episode
 // still owns the choice ids and outcomes, so the completion contract is unchanged. Without a script, the film's own lines play.
-const SCRIPT=await StoryUI.load(EP),UI=SCRIPT?StoryUI.create(SCRIPT):null;
+const SCRIPT=window.StoryUI?await StoryUI.load(EP):null,UI=SCRIPT?StoryUI.create(SCRIPT):null;
 if(SCRIPT){story.setup=SCRIPT.setup;story.branches=Object.fromEntries(story.choice.actions.map(a=>[a.id,SCRIPT.branches[a.id]||story.branches[a.id]]));if(SCRIPT.prompt)story.choice.prompt=SCRIPT.prompt;
  if(SCRIPT.beats){Object.assign(art.beats,SCRIPT.beats);for(const b of Object.values(SCRIPT.beats))art.plates[b.plate]=art.plates[b.plate]||{src:'assets/'+b.plate+'.webp'}}
  for(const b of [...SCRIPT.setup,...Object.values(SCRIPT.branches).flat()])for(const [,a] of b.frames||[])art.plates[a]=art.plates[a]||{src:'assets/'+a+'.webp'}}
@@ -50,7 +50,7 @@ await Promise.all(Object.entries(art.plates).map(([k,p])=>stage.add(k,BASE+p.src
 // The real objects (P0): a clean plate and each object as its own layer, so what you move leaves the room behind it.
 // If they fail to load, the decision falls back to sliding an image region.
 const ACTS=story.choice.actions.map(a=>a.id),LY='plates/'+EP+'/layers/';let layered=false;
-if(!SEAM)stage.layer((art.beats.choice||{}).plate||'decision',{clean:LY+'clean.webp',disc:LY+ACTS[0]+'.webp',slide:LY+ACTS[1]+'.webp',over:LY+'over.webp'}).then(()=>{layered=true}).catch(()=>{});
+if(!SEAM&&stage.layer)stage.layer((art.beats.choice||{}).plate||'decision',{clean:LY+'clean.webp',disc:LY+ACTS[0]+'.webp',slide:LY+ACTS[1]+'.webp',over:LY+'over.webp'}).then(()=>{layered=true}).catch(()=>{});
 const offKey=id=>layered&&ACTS.indexOf(id)===0?'so0':'so';
 const notify=(type,outcome)=>{if(EMBED)parent.postMessage({channel:'asterwind.episode.v1',episodeId:EP,session:SESSION,type,...(outcome?{outcome}:{})},'*')};
 
@@ -148,4 +148,5 @@ $('cc').onclick=()=>{const on=$('cc').getAttribute('aria-pressed')!=='true';$('c
 $('pause').onclick=()=>{paused=!paused;$('pause').setAttribute('aria-pressed',String(paused));$('pause').textContent=paused?'Resume':'Pause';if(ac)paused?ac.suspend():ac.resume()};
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&!paused)$('pause').click()});
 window.FILMPLAY={get state(){return{phase,choice,T,ep:EP,layered}},commit,step};
-})().catch(error=>PlayedSupport.fail(error,'../../../anthology/episodes/'+(['slides','scope','pixel','ship'].includes(new URLSearchParams(location.search).get('ep'))?new URLSearchParams(location.search).get('ep'):'scope')+'/index.html').replace(/anthology\/episodes\/scope\/index\.html$/,new URLSearchParams(location.search).get('ep')==='seam'?'film/index.html':'anthology/episodes/scope/index.html'));
+})().catch(error=>{const ep=new URLSearchParams(location.search).get('ep');// if the scene can't load, offer its original film
+ PlayedSupport.fail(error,ep==='seam'?'../../../film/index.html':'../../../anthology/episodes/'+(['slides','scope','pixel','ship'].includes(ep)?ep:'scope')+'/index.html')});
