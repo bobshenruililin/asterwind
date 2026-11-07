@@ -71,8 +71,9 @@ async function sound(){ac=new (window.AudioContext||window.webkitAudioContext)()
  let snd=[];try{const r=await fetch('sound/manifest.json');if(r.ok)snd=(await r.json()).files||[]}catch{}
  await Promise.all([...SCENE_SOUND.amb,...Object.values(SCENE_SOUND.at)].filter(n=>snd.includes(n)).map(async n=>{buf['sfx:'+n]=await lb('sound/'+n+'.mp3')}));
  for(const n of SCENE_SOUND.amb)if(buf['sfx:'+n]){const a=ac.createBufferSource(),g=ac.createGain();a.buffer=buf['sfx:'+n];a.loop=true;g.gain.value=.55;a.connect(g);g.connect(master);a.start()}
- if(SCRIPT){let man={};try{const r=await fetch('voices/v2/manifest.json');if(r.ok)man=(await r.json())[EP]||{}}catch{}
-  await Promise.all(Object.entries(man).map(async([k,f])=>{buf['v2:'+k]=await lb('voices/v2/'+f)}));
+ if(SCRIPT){// ?voices=<set> picks a voice set (v2 by default; e.g. eleven, team) so the same scene can be heard both ways
+  const VS=(new URLSearchParams(location.search).get('voices')||'v2').replace(/[^a-z0-9_-]/gi,'');let man={};try{const r=await fetch('voices/'+VS+'/manifest.json');if(r.ok)man=(await r.json())[EP]||{}}catch{}
+  await Promise.all(Object.entries(man).map(async([k,f])=>{buf['v2:'+k]=await lb('voices/'+VS+'/'+f)}));
   await Promise.all([['tap','tap.mp3'],['fold','fold.mp3'],['paper','rustle.mp3']].map(async([k,f])=>{buf[k]=await lb('../unfolded/sound/'+f)}));return}
  if(SEAM){const ls=[...story.setup,...Object.values(story.branches).flat()].flatMap(b=>b.lines||[]);await Promise.all(ls.map(async l=>{buf[l.id]=await lb(BASE+'audio/'+l.id+'.mp3')}))}
  const ids=[];story.setup.forEach((b,i)=>b.speaker&&ids.push(cueId('setup',i)));for(const [k,v] of Object.entries(story.branches))v.forEach((b,i)=>b.speaker&&ids.push(cueId(k,i)));

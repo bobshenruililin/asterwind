@@ -45,9 +45,9 @@ function knock(){if(!ac||!soundOn)return;[0,.32,.62].forEach(d=>{const o=ac.crea
 function play(k,gain=1){if(!ac||!soundOn||!buf[k])return;const s=ac.createBufferSource(),g=ac.createGain();s.buffer=buf[k];g.gain.value=gain;s.connect(g);g.connect(master);s.start()}
 async function startSound(){ac=new (window.AudioContext||window.webkitAudioContext)();master=ac.createGain();master.gain.value=soundOn?1:0;master.connect(ac.destination);if(paused)ac.suspend().catch(()=>{});ambience();
  // Scripted lines use their own takes (voices/v2); the old scratch takes belong to the old words and never play over new ones.
- let man={};if(SCRIPT){try{const r=await fetch('voices/v2/manifest.json');if(r.ok)man=(await r.json()).standup||{}}catch{}}
+ const VS=(new URLSearchParams(location.search).get('voices')||'v2').replace(/[^a-z0-9_-]/gi,'');let man={};if(SCRIPT){try{const r=await fetch('voices/'+VS+'/manifest.json');if(r.ok)man=(await r.json()).standup||{}}catch{}}
  const V=SCRIPT?[]:['qm-01','qm-02','qm-03','qm-04','qm-05','qm-r1','qm-r2','qm-r3','qm-s1','qm-s2','qm-s3','qm-s4'];
- await Promise.all([...Object.entries(man).map(async([k,f])=>{buf['v2:'+k]=await loadBuf('voices/v2/'+f)}),...V.map(async v=>{buf[v]=await loadBuf('voices/'+v+'.mp3')}),...[['fold','fold.mp3'],['rustle','rustle.mp3'],['tap','tap.mp3'],['pencil','pencil.mp3']].map(async([k,f])=>{buf[k]=await loadBuf('../unfolded/sound/'+f)})])}
+ await Promise.all([...Object.entries(man).map(async([k,f])=>{buf['v2:'+k]=await loadBuf('voices/'+VS+'/'+f)}),...V.map(async v=>{buf[v]=await loadBuf('voices/'+v+'.mp3')}),...[['fold','fold.mp3'],['rustle','rustle.mp3'],['tap','tap.mp3'],['pencil','pencil.mp3']].map(async([k,f])=>{buf[k]=await loadBuf('../unfolded/sound/'+f)})])}
 
 /* ---- captions: only what is spoken, and the film's few narrated facts ---- */
 let capUntil=0;const live=t=>{$('live').textContent=t};

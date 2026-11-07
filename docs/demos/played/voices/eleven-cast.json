@@ -1,0 +1,10 @@
+{
+ "_note": "Fill with voice ids from `python3 make-voices-eleven.py --list-voices` (Bob's ElevenLabs account). One voice per person within a story; You and the Narrator are the same everywhere. Keep them consistent with the scripts' acting directions.",
+ "*": {"You": "", "Narrator": ""},
+ "standup": {"Theo": "", "Nia": "", "Ellis": ""},
+ "slides": {"Kit": "", "Asha": "", "Visitor": ""},
+ "scope": {"Inez": "", "Sam": "", "Bo": ""},
+ "pixel": {"Jo": "", "Remy": ""},
+ "ship": {"Dev": "", "Lio": "", "Visitor": ""},
+ "seam": {"Mara": "", "Julian": ""}
+}

@@ -1,53 +1,71 @@
 # Current handoff (keep this short and current)
 
-Updated 6 November 2026 by Opus. Branch `claude/awesome-hypatia-6bf97q`, tested at `a291d81`.
+Updated 7 November 2026 by Opus. Branch `claude/awesome-hypatia-6bf97q`.
 
 ## Play
 
-Serve the repository root with `python3 -m http.server 8000`, then open one of these:
+Serve the repository root with `python3 -m http.server 8000`, then open:
 
 | What | URL | State |
 | --- | --- | --- |
-| **Draft reimagined night** | `/docs/demos/unfolded/?v=2` | New direction. Corridor → bottle → played scene → roof → dawn notebook. |
-| Integrated night | `/docs/demos/unfolded/` | **Known good**; also tagged by commit `42b5d96` and later. |
-| The Quiet Minute, played (bespoke) | `/docs/demos/played/` | The audition winner |
-| Any film, played (generic) | `/docs/demos/played/scene.html?ep=slides` | Also `scope`, `pixel`, `ship` |
-| Pixel audition | `/docs/demos/played/pixel.html` | Comparison only |
-| Painterly audition (Astra) | branch `codex/last-light-prototype-20261106` | Comparison only |
+| **The scenarios, reworked** | `/docs/demos/played/scene.html?ep=slides` (also `scope`, `pixel`, `ship`, `seam`) and `/docs/demos/played/` (The Quiet Minute) | **New:** intro and who's who, rewritten lines, the question at the decision, reflection, scratch voices. |
+| **The draft night** | `/docs/demos/unfolded/?v=2` | All six stories played inside the night. |
+| Voice review page | `/docs/demos/played/qa/voices.html` | Every take, its direction, what Whisper heard, plus old Kokoro lines for contrast. |
+| Published playtest (unchanged) | https://bobshenruililin.github.io/asterwind/play/ | Built from `a378e89`; doesn't include today's work. |
+| Integrated night | `/docs/demos/unfolded/` | Known good. |
 
-**Shareable build:** `python3 scripts/build-play.py` writes `dist/play/` (static, 25 MB). Its root opens the draft night; the integrated night stays at `docs/demos/unfolded/`.
+## What changed on 7 November (Bob's playtest)
+
+- **Every played scene runs from a script:** `docs/demos/played/scripts/<ep>.json`. Each one has:
+  - an intro (where, who you are, what's at stake);
+  - who's who, listed and tagged on the picture;
+  - rewritten lines with acting directions, and the question at the decision;
+  - a reflection: what the choice kept, what it cost, one lesson for either choice, and a question.
+
+  *Again* and *The other way* sit in the reflection. Choice ids and outcomes are unchanged.
+- **Voices:** directed scratch takes (`voices/v2/`) for the new lines, rendered locally with Qwen3-TTS and checked with Whisper (`qa/voice-report.json`). The narrator reads each lesson as the reflection opens.
+- **Sound:** ready to drop in. CC0 picks are in `sound-shortlist.json`; `fetch-sounds.py` runs on a laptop, because Freesound refuses this cloud session.
+- **Ellis's corrected route (Robert):** the close look is on by default in The Quiet Minute.
+- **Earlier the same day:**
+  - real object layers at every decision;
+  - The Seam played;
+  - people turning toward your hand;
+  - Astra's integration merged.
+
+Read `docs/SCENARIOS-2026-11-07.md` for the reasoning, the six lessons, the voice and sound findings, the visual recommendation (sculpted miniature, built as a kit) and Kling.
 
 ## Checks
 
-- **Source checks (handoff list):** `node film/test-state.cjs`, the anthology and hub tests, `python3 hub/test-build.py`, `node scripts/verify-repo.cjs`.
-- **Astra's checks:** `node docs/demos/unfolded/qa/audio-lifecycle.cjs`, `qa/art-layers.cjs`, `python3 scripts/test-play-build.py`, `python3 scripts/play_assets.py`.
-- **Browser** (repo served on 8731):
-  - `node docs/demos/unfolded/qa/night.cjs <base> <out>`
-  - `qa/keyboard.cjs`
-  - `qa/audio-browser.cjs <base>`
-  - `node docs/demos/played/qa/films.cjs <base> <out> fast`
-  - `qa/keyboard.cjs` (played)
-  - `qa/night-v2.cjs` (played; exits non-zero on any failed step)
+- **Source:**
+  - `node film/test-state.cjs`
+  - the anthology and hub tests
+  - `python3 hub/test-build.py`
+  - `node scripts/verify-repo.cjs`
+  - Astra's `qa/played-*.cjs` and `qa/stage-recovery.cjs`
+  - `python3 scripts/test-play-build.py`
+  - `python3 scripts/play_assets.py`
+- **Browser** (repo served on 8731; run them one at a time, since software WebGL is slow):
+  - `node docs/demos/played/qa/story.cjs <out>`: intro, question, reflection and the other way, in all five generic scenes;
+  - `node docs/demos/played/qa/films.cjs http://127.0.0.1:8731/ <out> fast`: all five generic scenes played;
+  - `node docs/demos/played/qa/layers.cjs <out>`: object layers;
+  - `node docs/demos/played/qa/night-v2.cjs <out>`: the draft night, including *Begin again*;
+  - `node docs/demos/played/qa/keyboard.cjs <out>`;
+  - the integrated night's `qa/night.cjs`, `qa/keyboard.cjs` and `qa/audio-browser.cjs`.
 
-## Read
+## Needs human review
 
-- `docs/DIRECTION-2026-11-06.md`: what we cut, the audition, the recommendation.
-- `docs/ROBERT-PRODUCTION-BRIEF-2026-11-06.md`: P0 object layers and clean plates, P1 reactions, P2 looks, P3 dawn notebook.
-- `docs/KLING-PLAN-2026-11-06.md`: one limited experiment, nothing spent.
-- `docs/RELEASE-POLISH-REVIEW-2026-11-06.md` (Astra): its fixes are landed and browser-verified.
-
-## Next, in order
-
-1. Robert's P0 layers for The Quiet Minute, then give the stage real object layers (replacing region slides).
-2. Puppet handles (acting) for the four generic films.
-3. Convert The Seam: an adapter for `film/story.json`.
-4. One optional look per film (P2).
-5. Record our voices.
-6. Lived-experience review for The Empty Square.
-7. Playtest the draft night, then decide what `/play/` publishes.
+1. **Listen.** I can't hear; I only measured. Play `qa/voices.html`, then the scenes, and judge whether the takes feel human. Compare them with Eleven v4 (about $2 of usage plus the $6 Starter plan) and with the team's own recordings.
+2. **The lessons and reflections:** do they match what the CCGL course teaches? Edit `scripts/<ep>.json` freely.
+3. **The Empty Square's lived-experience review** is still pending. The intro card says so in the game.
+4. **The sound picks:** download and audition them (`fetch-sounds.py`) before committing them.
+5. **Ellis's close look** is on by default in the draft. Approve it, or say `?p2=0` should stay the default.
 
 ## Open decisions for Bob
 
-- **Publish `/play/`?** It would put `dist/play/` (built at `a291d81`; 335 files, 25.1 MB) on `pages-runtime` under `/play/`. The current Pages root stays unchanged. Details are in [the PR #1 summary](https://github.com/bobshenruililin/asterwind/pull/1#issuecomment-6685550805).
-- **The Empty Square in a shared build:** share it with a line in the playtest note, or hide that bottle until the lived-experience review.
-- **Kling experiment K1**: about 90 credits, after P2a and P2b exist.
+- **Voice route:**
+  - human recordings;
+  - Eleven v4 (the key goes through the session's secure credential form, never the repository);
+  - or the local Qwen takes as they are.
+- **Visual direction:** a sculpted-miniature pilot kit for The Quiet Minute (brief in `SCENARIOS-2026-11-07.md`) before any whole-game regeneration.
+- **Kling:** the 60 s budget stands. Kling 4.0's pricing isn't public yet. For Kling 3.0 with native audio at 1080p, 60 s is about 720 credits. Use generated audio for foley only, never dialogue.
+- **Republish `/play/`** with today's scenarios once you've played them.
