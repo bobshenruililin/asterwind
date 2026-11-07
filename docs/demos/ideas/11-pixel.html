@@ -1,0 +1,50 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pixel, on our own scenes · Asterwind ideas</title><link rel="stylesheet" href="lab.css">
+<style>
+.view{position:relative;width:100%;aspect-ratio:16/9;background:#000;border-radius:3px;overflow:hidden;touch-action:none;cursor:ew-resize}
+.view canvas{position:absolute;inset:0;width:100%;height:100%}
+.div{position:absolute;top:0;bottom:0;width:2px;background:var(--gold);pointer-events:none}
+.tag{position:absolute;top:10px;font:600 11px system-ui;letter-spacing:.18em;text-transform:uppercase;background:#0009;color:#fff;padding:.3em .6em;border-radius:3px;pointer-events:none}
+.ctl{display:flex;flex-wrap:wrap;gap:14px 22px;align-items:center;margin-top:12px;font:14px system-ui;color:var(--dim)}
+.ctl label{display:flex;gap:8px;align-items:center}.ctl select,.ctl input{accent-color:var(--gold)}
+.ctl select{background:#12121a;color:var(--ink);border:1px solid #ffffff33;border-radius:3px;padding:.35em .5em;min-height:36px}
+.presets{display:flex;gap:8px;flex-wrap:wrap}.presets button{background:#12121a;border:1px solid #ffffff22;border-radius:3px;padding:.4em .8em;min-height:36px;color:var(--ink);font:13px system-ui}
+</style></head><body>
+<div class="bar"><a href="./">← Ideas</a><b>11 · Pixel, on our own scenes</b><span class="sp"></span></div>
+<div class="wrap">
+<div class="view" id="view"><canvas id="out" width="1280" height="720"></canvas><div class="div" id="div"></div><span class="tag" style="left:10px">Now</span><span class="tag" style="right:10px">Pixel</span></div>
+<div class="ctl">
+ <label>Scene <select id="scene"></select></label>
+ <label>Pixel size <input id="px" type="range" min="1" max="16" value="6"><span id="pxv">6</span></label>
+ <label>Colours <select id="pal"><option value="0">Original</option><option value="48">48</option><option value="24" selected>24</option><option value="12">12</option></select></label>
+ <label><input id="dith" type="checkbox"> Dither</label>
+ <div class="presets"><button data-p="4,48,0">Fine</button><button data-p="6,24,0">Game</button><button data-p="10,12,1">Chunky</button></div>
+</div>
+<div class="why"><b>What this is, honestly.</b> A filter, not pixel art. It answers one narrow question fast: does our world still read, and still feel like itself, with fewer, bigger pixels? Drag across the picture to compare. Real pixel art is drawn, with every pixel chosen; see <a href="06-week.html">The week</a> for that. Filters like this are how teams test the direction before anyone repaints a whole game.</div>
+</div>
+<script src="lab.js"></script>
+<script>
+const A='../../../anthology/episodes/',F='../../../film/assets/';
+const SC=[['The Quiet Minute',A+'standup/assets/reference-v1/01-quiet-minute-master.webp'],['The Missing Name',A+'slides/assets/master.webp'],['One More Chair',A+'scope/assets/runtime/master.webp'],
+ ['Before the Doors Open',A+'ship/assets/master.webp'],['The 3:00 AM Seam',F+'performanceOffer.webp'],['Julian, close',F+'julian.webp']];
+const $=id=>document.getElementById(id),out=$('out'),o=out.getContext('2d');let img=null,split=.5,pixCanvas=null;
+SC.forEach(([n],i)=>{const op=document.createElement('option');op.value=i;op.textContent=n;$('scene').append(op)});
+const BAYER=[[0,8,2,10],[12,4,14,6],[3,11,1,9],[15,7,13,5]];
+function kmeans(data,k){const pts=[];for(let i=0;i<data.length;i+=4*Math.max(1,Math.floor(data.length/4/5000)))pts.push([data[i],data[i+1],data[i+2]]);
+ let c=[];for(let i=0;i<k;i++)c.push(pts[Math.floor(i*pts.length/k)].slice());
+ for(let it=0;it<10;it++){const sum=c.map(()=>[0,0,0,0]);for(const p of pts){let b=0,bd=1e9;for(let j=0;j<k;j++){const d=(p[0]-c[j][0])**2+(p[1]-c[j][1])**2+(p[2]-c[j][2])**2;if(d<bd){bd=d;b=j}}const s=sum[b];s[0]+=p[0];s[1]+=p[1];s[2]+=p[2];s[3]++}
+  c=c.map((cc,j)=>sum[j][3]?[sum[j][0]/sum[j][3],sum[j][1]/sum[j][3],sum[j][2]/sum[j][3]]:cc)}return c}
+function build(){if(!img)return;const px=+$('px').value,k=+$('pal').value,dith=$('dith').checked;$('pxv').textContent=px;
+ const w=Math.round(1280/px),h=Math.round(720/px),c=document.createElement('canvas');c.width=w;c.height=h;const g=c.getContext('2d');g.imageSmoothingQuality='high';g.drawImage(img,0,0,w,h);
+ if(k){const id=g.getImageData(0,0,w,h),d=id.data,pal=kmeans(d,k),spread=dith?48:0;
+  for(let y=0;y<h;y++)for(let x=0;x<w;x++){const i=(y*w+x)*4,off=spread?(BAYER[y%4][x%4]/16-.5)*spread:0;const r=d[i]+off,gg=d[i+1]+off,b=d[i+2]+off;let best=pal[0],bd=1e9;
+   for(const p of pal){const dd=(r-p[0])**2+(gg-p[1])**2+(b-p[2])**2;if(dd<bd){bd=dd;best=p}}d[i]=best[0];d[i+1]=best[1];d[i+2]=best[2]}g.putImageData(id,0,0)}
+ pixCanvas=c;paint()}
+function paint(){if(!img||!pixCanvas)return;o.imageSmoothingEnabled=true;o.drawImage(img,0,0,1280,720);o.save();o.beginPath();o.rect(1280*split,0,1280,720);o.clip();o.imageSmoothingEnabled=false;o.drawImage(pixCanvas,0,0,1280,720);o.restore();$('div').style.left=(split*100)+'%'}
+function load(i){const im=new Image();im.onload=()=>{img=im;build()};im.src=SC[i][1]}
+const V=$('view');const mv=e=>{const r=V.getBoundingClientRect();split=Math.min(1,Math.max(0,(e.clientX-r.left)/r.width));paint()};
+V.addEventListener('pointerdown',e=>{V.setPointerCapture(e.pointerId);mv(e)});V.addEventListener('pointermove',e=>{if(e.buttons)mv(e)});
+for(const id of ['px','pal','dith'])$(id).addEventListener('input',build);$('scene').addEventListener('change',()=>load(+$('scene').value));
+document.querySelectorAll('[data-p]').forEach(b=>b.onclick=()=>{const [p,k,d]=b.dataset.p.split(',');$('px').value=p;$('pal').value=k;$('dith').checked=d==='1';build()});
+load(0);window.IDEA={load,build,set(p,k,d){$('px').value=p;$('pal').value=k;$('dith').checked=!!d;build()},split(v){split=v;paint()}};
+</script></body></html>

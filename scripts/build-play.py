@@ -26,7 +26,7 @@ def tree(src, dst, extra_skip=()):
             continue
         q = dst / rel; q.parent.mkdir(parents=True, exist_ok=True); shutil.copy2(p, q)
 
-BUILT_FROM = ['docs/demos/unfolded', 'docs/demos/played', 'docs/demos/sound-board/music', 'hub', 'anthology', 'film', 'app/assets/fonts', 'scripts']
+BUILT_FROM = ['docs/demos/unfolded', 'docs/demos/played', 'docs/demos/ideas', 'docs/demos/sound-board/music', 'hub', 'anthology', 'film', 'app/assets/fonts', 'scripts']
 
 def source_commit(root):
     """The commit this build comes from, and whether any included path differs from it (None outside a checkout)."""
@@ -51,6 +51,8 @@ def build(root=ROOT):
     OUT.mkdir(parents=True)
     tree(root / 'docs/demos/unfolded', OUT / 'docs/demos/unfolded')
     tree(root / 'docs/demos/played', OUT / 'docs/demos/played', extra_skip=('art', 'raw'))  # art/ holds review sources; runtime plates are in plates/
+    if (root / 'docs/demos/ideas').exists():
+        tree(root / 'docs/demos/ideas', OUT / 'docs/demos/ideas')  # the ideas lab: playable sketches that reuse the game's own art and voices
     for f in ['seam-night-sketch.mp3', 'seam-dawn-sketch.mp3', 'PROVENANCE.md']:
         one(f'docs/demos/sound-board/music/{f}')
     tree(root / 'hub', OUT / 'hub')
