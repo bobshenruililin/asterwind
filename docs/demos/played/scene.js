@@ -20,6 +20,11 @@ const GLOW={rehearsal:[.79,.66,.10,.9]};
 // near, and look at what you chose. Attention is visible before anyone speaks. (One More Chair's frame crops its heads.)
 const HEADS={slides:[[.29,.12,.06],[.85,.10,.06]],pixel:[[.645,.12,.05],[.78,.33,.06]],ship:[[.245,.26,.06],[.645,.28,.05]],seam:[[.27,.30,.07],[.64,.30,.07]]}[EP]||[];
 let heads=[];function attend(cx,k){for(const h of heads){const s=Math.sign(cx-h.x)||0;tw(h,'bx',cx==null?0:s*.004*k,.6);tw(h,'by',cx==null?0:.0014*k,.6)}}
+// Recorded scene sound (sound/, CC0 via Openverse; see fetch-sounds.py): an ambience under the synthesised room, and
+// one-shots on the moments that need them. Only files listed in sound/manifest.json are requested.
+const SCENE_SOUND={slides:{amb:['audience-murmur'],at:{'ending-microphone':'polite-applause-small-audience'}},scope:{amb:['cafe-ambience','rain-window'],at:{'chair-action':'chair-scrape',teach:'hand-sewing-fabric',late:'clock-ticking'}},
+ pixel:{amb:['museum-ambience'],at:{works:'switch-click',plug:'switch-click','ending-lower':'toy-train'}},ship:{amb:['museum-ambience'],at:{repeat:'spring-mechanism',playback:'film-projector'}},
+ seam:{amb:['rain-window','clock-ticking'],at:{stable:'paper-crinkle'}}}[EP]||{amb:[],at:{}};
 const NONE='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR4nGNgYGBgAAAABQABpfZFQAAAAABJRU5ErkJggg==';
 const ENTER={slides:'Take your seat',scope:'Come in',pixel:'Step up',ship:'Walk in',seam:'Pull up a stool'}[EP];
 // The Seam's film keeps its own format: each beat has a plate, a camera push, pose frames and lines at given times.
@@ -63,6 +68,9 @@ function play(k,g=1){if(!ac||!soundOn||!buf[k])return;const s=ac.createBufferSou
 function room(){const b=ac.createBuffer(1,ac.sampleRate*4,ac.sampleRate),d=b.getChannelData(0);let l=0;for(let i=0;i<d.length;i++){const w=Math.random()*2-1;l=(l+.02*w)/1.02;d[i]=l*3}const s=ac.createBufferSource();s.buffer=b;s.loop=true;const f=ac.createBiquadFilter();f.type='lowpass';f.frequency.value=220;const g=ac.createGain();g.gain.value=.14;s.connect(f);f.connect(g);g.connect(master);s.start()}
 const cueId=(part,i)=>EP+'-'+part+'-'+i;
 async function sound(){ac=new (window.AudioContext||window.webkitAudioContext)();master=ac.createGain();master.gain.value=soundOn?1:0;master.connect(ac.destination);if(paused)ac.suspend().catch(()=>{});room();
+ let snd=[];try{const r=await fetch('sound/manifest.json');if(r.ok)snd=(await r.json()).files||[]}catch{}
+ await Promise.all([...SCENE_SOUND.amb,...Object.values(SCENE_SOUND.at)].filter(n=>snd.includes(n)).map(async n=>{buf['sfx:'+n]=await lb('sound/'+n+'.mp3')}));
+ for(const n of SCENE_SOUND.amb)if(buf['sfx:'+n]){const a=ac.createBufferSource(),g=ac.createGain();a.buffer=buf['sfx:'+n];a.loop=true;g.gain.value=.55;a.connect(g);g.connect(master);a.start()}
  if(SCRIPT){let man={};try{const r=await fetch('voices/v2/manifest.json');if(r.ok)man=(await r.json())[EP]||{}}catch{}
   await Promise.all(Object.entries(man).map(async([k,f])=>{buf['v2:'+k]=await lb('voices/v2/'+f)}));
   await Promise.all([['tap','tap.mp3'],['fold','fold.mp3'],['paper','rustle.mp3']].map(async([k,f])=>{buf[k]=await lb('../unfolded/sound/'+f)}));return}
@@ -90,7 +98,7 @@ function filmBeat(b,d){const c=camFor(b.stage),z=reduced?1:Math.min(1.35,c.zoom)
 function playBeats(list,part,then){let t=0;list.forEach((b,i)=>{
  if(b.black){const d=b.duration/1000;at(t,()=>{tw(S,'dim',.95,Math.min(.3,d/3));at(Math.max(.1,d-.3),()=>tw(S,'dim',0,.5))});t+=d;return}
  if(SCRIPT){const key='v2:'+part+'-'+i,v=buf[key],d=v?v.duration+(b.speaker?.75:1.1):StoryUI.readTime(b.line,!b.speaker);
-  at(t,()=>{shot(b.stage,d);(b.frames||[]).forEach(([ms,a])=>{if(ms>0)at(ms/1000,()=>pose(a))});if(b.line)say(b.speaker,b.line,v?key:null,d);if(/action/.test(b.stage))play('tap',.6)});t+=d;return}
+  at(t,()=>{shot(b.stage,d);(b.frames||[]).forEach(([ms,a])=>{if(ms>0)at(ms/1000,()=>pose(a))});if(b.line)say(b.speaker,b.line,v?key:null,d);if(SCENE_SOUND.at[b.stage])play('sfx:'+SCENE_SOUND.at[b.stage],.8);else if(/action/.test(b.stage))play('tap',.6)});t+=d;return}
  if(b.lines){const end=b.lines.reduce((m,l)=>Math.max(m,l.at/1000+(buf[l.id]?buf[l.id].duration+.7:(l.until-l.at)/1000)),0),d=Math.max(b.duration/1000,end);at(t,()=>filmBeat(b,d));t+=d;return}const d=Math.max(b.duration/1000,(b.speaker&&buf[cueId(part,i)]?buf[cueId(part,i)].duration+1.2:0));
  at(t,()=>{shot(b.stage,d);if(b.line)say(b.speaker,b.line,b.speaker?cueId(part,i):null);if(/action/.test(b.stage))play('tap',.6)});t+=d});at(t,then)}
 

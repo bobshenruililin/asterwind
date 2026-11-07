@@ -19,3 +19,4 @@ __pycache__/
 film/qa/*.png
 docs/demos/seam-light-test/renders/
 /dist/
+docs/demos/played/sound/raw/
