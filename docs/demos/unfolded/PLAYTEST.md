@@ -1,87 +1,82 @@
-# Playtest kit: Asterwind · After Hours (draft night)
+# Playtest kit: Asterwind · After Hours
 
 For Bob to send to teammates and friends with the link. Copy the box below as it is; the rest of this page is for us.
 
 ---
 
-> **Asterwind · After Hours** is a short night in a paper world. It's 03:14 in a corridor, and a vending machine holds six bottles. Each one opens into a small story about working with other people, and you play it. It runs in a browser, best on a laptop with sound. On a phone, turn it sideways.
+> **Asterwind** is a short night in a paper world. After hours in a design studio, a vending machine holds six drinks. Each one opens into a small story where someone on a team has to lead. You listen, and when the question comes, you choose with your hands. It runs in a browser, best on a laptop with sound. On a phone, sideways is best.
 >
-> **Open:** https://bobshenruililin.github.io/asterwind/play/
+> **Open:** https://bobshenruililin.github.io/asterwind/
 >
-> - **About 15 minutes for all six stories,** about two minutes each. You can call it a night after any story. It remembers where you were (in your browser only).
-> - **There's no score and no right answer.** Nothing you choose or write leaves your screen.
-> - **It's a draft.** The voices are temporary computer voices. One story, *The Empty Square*, follows Jo, a visiting student designer who uses a wheelchair. **It hasn't yet had a review by people with lived experience of disability.** If anything in it rings false, please tell me.
-> - The keyboard works throughout (Tab and Enter).
+> - **About three minutes a story,** about twenty minutes for all six. You can wait for morning after any story. It remembers where you were (in your browser only).
+> - **There's no score and no right answer.** Each choice keeps something and costs something, and after each story you can try the other way. Nothing you choose or write leaves your screen.
+> - **It's a draft.** The voices are computer voices directed line by line; we haven't recorded people yet. One story, *The Empty Square*, follows Jo, a visiting student designer who uses a wheelchair. **It hasn't yet had a review by people with lived experience of disability.** If anything in it rings false, please tell me.
+> - The keyboard works throughout (Tab and Enter), and captions are always on screen.
 >
 > **Afterwards, please tell me, in a sentence or two each:**
-> 1. Which moment stayed with you?
+> 1. Pick one story. Before you chose, who were the people, and what did each of them want?
 > 2. Was there a choice you hesitated over? What made it hard?
-> 3. Did you know what you could do without being told? Where weren't you sure?
+> 3. What did your choice keep, and what did it cost?
 > 4. Did anything feel like it was telling you the "right" answer?
 > 5. Where were you bored or confused?
-> 6. What did you write after *Leadership is…*, and why?
+> 6. At dawn, did the notebook's line about your habit ring true?
 
 ---
 
 ## The published build
 
-- **URL:** `https://bobshenruililin.github.io/asterwind/play/`, published on `pages-runtime` under `play/`.
-- **Built from:** commit `a378e892e98d0177577e25782479f7b1e33adfce` on `claude/awesome-hypatia-6bf97q`, by `python3 scripts/build-play.py` from a clean tree.
-- **Size:** 336 files, 25.1 MB.
+- **URL:** `https://bobshenruililin.github.io/asterwind/`, the root of `pages-runtime`.
+- **Built from:** commit `9c790fef6400` on `claude/awesome-hypatia-6bf97q`, by `python3 scripts/build-play.py` from a clean tree.
+- **Size:** 531 files, 36.1 MB.
 - **To check which build someone played:**
-  - the page `/play/` carries `<meta name="asterwind-build" content="a378e892e98d">`;
-  - `/play/build-manifest.json` gives the full commit and a hash of every file.
-- **Unchanged:**
-  - the existing Pages root (`/asterwind/`);
-  - the integrated night, the known-good build, which stays reachable at `/play/docs/demos/unfolded/` (without `?v=2`).
+  - the root page carries `<meta name="asterwind-build" content="9c790fef6400">`;
+  - `/build-manifest.json` gives the full commit and a hash of every file.
+- **Older links:** `/play/` now forwards to the root. The earlier snapshots stay where they were (`/play-a378e89/`, `/play-d4fca19/`, `/play-833b5f1/`), as do Robert's `/preview-stories-e4e6722/` and the nine-scenario `classic.html`.
 
 ## The route players will take
 
-1. **The corridor at 03:14, with no title.** Only Standup Seltzer is lit.
-2. **Catch it and open it.** The tag reads one word and *Drink when…*, and the label's picture grows into the scene.
-3. **Sit down, and *The Quiet Minute* plays at the table.**
-   - At the decision you turn the table (drag the platter round) or pass the slips (slide the tray across). Hovering lights the object; Tab and Enter do the same.
-   - The film's consequence follows, then *Again*, *The other way* or *Back into the night*.
-4. **Back in the corridor.** The empty goes up to the roof, the clock moves, and the other five bottles wake.
-5. **Four more stories play the same way:**
+1. **An opening card.** It says where you are, how to play, that no choice is right, roughly how long it takes, and that The Empty Square awaits its lived-experience review. *Begin* turns the sound on.
+2. **The corridor.** Only Standup Seltzer is lit ("Each drink holds one story. Start with the one that's lit."). Catch it and open it.
+3. **Every story plays the same way:**
+   - **intro:** a line along the bottom says where you are and what's at stake, and each person's name and what they want is tagged beside them;
+   - **setup:** the people talk it through, in voices directed line by line;
+   - **the question:** it appears above the scene, each object is labelled with what it means, and you drag, tap or Tab-and-Enter one;
+   - **the consequence:** it plays out;
+   - **the reflection:** what it kept, what it cost, whether this time you put the people or the plan first, one lesson, and a question to take away. *Again*, *The other way* and *Back into the night* sit there. After both ways, the card shows them side by side.
+4. **The stories:**
+   - *The Quiet Minute*: turn the table, or pass the slips;
    - *The Missing Name*: move the microphone, or show the notebook;
    - *One More Chair*: pull in the spare chair, or offer the return-slot box;
    - *The Empty Square*: lower the console, or connect the panel;
-   - *Before the Doors Open*: run it live, or play the rehearsal.
-
-   *The 3:00 AM Seam* still plays as its original film.
-6. **Morning.**
-   - You can press *Morning* after any story. After all six it comes by itself.
-   - The notebook opens on *Leadership*, with the words you walked and a pencil note of what you did. Then comes *Leadership is…* for your own word.
-   - *Begin again* at the very end clears the night and starts fresh.
-
-**Cut, compared with the integrated night:**
-- the word hunt as an opening gate;
-- the symbolic rooms;
-- the choice between staying with the night and watching the film;
-- the mirror screen after each story.
+   - *Before the Doors Open*: run it live, or play the rehearsal;
+   - *The 3:00 AM Seam*: fit the spare, or repair together.
+5. **Morning.**
+   - Press *Morning* after any story.
+   - The notebook opens on *Leadership*, with the words you walked and a pencil note of what each choice kept and cost.
+   - A line names your pattern, for example "People first twice; the plan first once." It adds that neither is the right habit, and that knowing your default is where leading starts.
+   - Then *Leadership is…* asks for your own word. *Begin again* at the very end clears the night.
 
 ## What we're watching for
 
-- **The first 30 seconds.** Does a new player find and catch the lit bottle without help?
-- **At each decision.** Do people find the objects by moving the pointer, or stall? For how long?
+- **Comprehension, first.** Can a player say who the people are, what they want, why the choice matters and what each outcome costs, without help? (Question 1 tests this.)
+- **The opening card.** Do people read it, or skip straight to *Begin*?
+- **At each decision.** Do the labels make the meaning of each object clear? Do people hover both before choosing?
 - **Hesitation** at the choice is good: it means both sides held.
-- ***The other way*:** is it used to reflect or to grade?
-- **Where people stop.** Do they press *Morning* early? Which story do they leave?
-- **The Seam:** does the switch to an older-style film feel like a break?
-- **The ending:** what do people write after *Leadership is…*?
+- ***The other way*:** is it used to reflect, or to look for the "right" answer?
+- **Voices:** where does a line sound flat, rushed or wrong for the moment? Note the story and the line.
+- **Where people stop,** and which story they leave.
+- **The dawn line:** does naming a habit feel insightful, or like a score?
 - **The Empty Square:**
   - write down reactions word for word, for the lived-experience review;
   - friends' feedback is not that review.
 
 ## Known placeholders
 
-- **Objects move as image regions.** On some plates you can see stretching at the edge. Robert's object layers and clean plates replace this.
-- **Acting:** only *The Quiet Minute* has small character acting (breathing, head turns, the pencil going down). In the other four stories people don't react yet.
-- **Optional looks:** only *The Quiet Minute* has an optional closer look (Ellis's folded route).
-- **Voices are scratch** (Kokoro-82M) until we record our own.
+- **Voices are synthetic:** Qwen3-TTS, directed per line and checked by speech recognition. Nobody on the team has listened to all of them in context yet.
+- **Sound:** ambience and one-shots come from the built-in set. The licensed CC0 picks in `docs/demos/played/sound-shortlist.json` still need fetching on a laptop (Freesound refuses our cloud session).
+- **Motion:** objects move as cut-out layers, and people have small acting (head turns, breathing). No generated video yet: the Kling shots are briefed in `docs/KLING-BRIEFS-2026-11-06.md`, and the slots are wired.
 - **Not yet tried:**
   - a real screen reader;
   - a real phone (only emulated phone sizes have been tested);
-  - a listening pass on the sound mix.
+  - a listening pass on the full mix.
 - **Progress** is kept in the browser's local storage (`asterwind.night2.v1`). *Begin again* at the end clears it, and so does clearing site data.
