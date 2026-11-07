@@ -136,7 +136,7 @@ $('other').onclick=()=>{$('end').hidden=true;UI&&UI.hideReflection();cues.length
 
 /* ---- the frame ---- */
 const pointer={x:.5,y:.5};$('frame').addEventListener('pointermove',e=>{const [x,y]=fp(e);pointer.x=x;pointer.y=y});
-function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;if(!paused&&phase!=='start')step(dt);
+function frame(now){const dt=Math.min(.1,(now-last)/1000);last=now;/* keep pace with the voices down to 10 fps */if(!paused&&phase!=='start')step(dt);
  for(const h of heads){h.dx=h.bx+Math.sin(T*1.3+h.i*2)*.0007;h.dy=h.by+Math.sin(T*.85+h.i*1.7)*.0011}// breathing, under the attention
  const lv=!reduced,look=lv?[(pointer.x-.5)*.6,(pointer.y-.5)*.35]:[0,0],br=lv?[Math.sin(T*.23)*.3,Math.sin(T*.17)*.15]:[0,0];S._c=S._c||[0,0];S._c[0]+=(look[0]+br[0]-S._c[0])*.06;S._c[1]+=(look[1]+br[1]-S._c[1])*.06;
  const keep=S.cam;S.cam=S._c;S.time=T;S.dof=lv?.004:0;stage.draw();S.cam=keep;

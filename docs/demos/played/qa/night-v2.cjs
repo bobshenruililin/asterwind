@@ -7,13 +7,15 @@ const until=async(p,fn,ms=60000)=>{const t=Date.now();while(Date.now()-t<ms){if(
 (async()=>{const b=await chromium.launch();const p=await b.newPage({viewport:{width:1280,height:720}});const errs=[],bad=[];
  p.on('console',m=>{if(m.type()==='error')errs.push(m.text())});p.on('pageerror',e=>errs.push('PAGE '+e.message));p.on('response',r=>{if(r.status()>=400)bad.push(r.status()+' '+r.url())});
  await p.goto(BASE+'docs/demos/unfolded/?v=2');await w(300);await p.evaluate(()=>{try{localStorage.clear()}catch{}});await p.reload();
- console.log('hub',need(await until(p,()=>Game.state().hubReady,20000),'hub ready'));await w(3000);await p.screenshot({path:O+'1-corridor.png'});
+ console.log('hub',need(await until(p,()=>Game.state().hubReady,20000),'hub ready'));await w(600);await p.screenshot({path:O+'0-title.png'});
+ need(await p.isVisible('#begin'),'opening card');need(/lived-experience review/.test(await p.textContent('#title')),'review notice on the card');await p.click('#begin');
+ need(await until(p,()=>Game.state().screen==='corridor',10000),'corridor after Begin');await w(3000);await p.screenshot({path:O+'1-corridor.png'});
  const fr=p.frameLocator('#hubframe');await fr.locator('.drink[data-id="standup"]').click();await w(4300);await p.screenshot({path:O+'2-held.png'});
  await fr.locator('#open-drink').click();await w(3800);await p.screenshot({path:O+'3-crossing.png'});
  console.log('film',need(await until(p,()=>Game.state().filmStarted,30000),'film started'));await w(800);await p.screenshot({path:O+'4-sit.png'});
  const qm=p.frameLocator('#filmscr iframe');await qm.locator('#start').click();
  need(await until(p,()=>{try{return document.querySelector('#filmscr iframe').contentWindow.QM.state.phase==='decision'}catch{return false}},180000),'decision reached');await w(800);await p.screenshot({path:O+'5-decision.png'});
- await qm.locator('#platter').click();need(await until(p,()=>!document.getElementById('film-back').hidden,90000),'film ended');await w(1200);await p.screenshot({path:O+'6-end.png'});
+ await qm.locator('#platter').click();need(await until(p,()=>!document.getElementById('film-back').hidden,180000),'film ended');await w(1200);await p.screenshot({path:O+'6-end.png'});
  const film=await p.evaluate(()=>Game.state().film);need(film&&film.HEARD==='round','outcome recorded');console.log('film outcome',JSON.stringify(film));
  await p.click('#film-back');need(await until(p,()=>{try{return Game.hub().frame.contentWindow.AsterwindJourney.state.state==='idle'}catch{return false}},30000),'back in the corridor');await w(1500);await p.screenshot({path:O+'7-roof.png'});
  const mv=await p.isVisible('#morning');need(mv,'morning offered');console.log('lit',JSON.stringify(await p.evaluate(()=>Game.state().found)),'morning visible',mv);

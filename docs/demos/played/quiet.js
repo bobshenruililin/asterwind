@@ -186,7 +186,7 @@ function toDecisionInstant(other){phase='master';stage.show('master');toDecision
 /* ---- the frame: camera breath, pointer parallax, lamp flicker, breathing ---- */
 $('frame').addEventListener('pointermove',e=>{const [x,y]=fr(e);pointer.x=x;pointer.y=y});
 const base={cam:[0,0]};
-function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;
+function frame(now){const dt=Math.min(.1,(now-last)/1000);last=now;/* keep pace with the voices down to 10 fps */
  if(!paused&&phase!=='start'){step(dt)}
  const t=T,live=!reduced;
  // the camera: scripted target + where you look + a slow breath

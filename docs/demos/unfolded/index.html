@@ -79,6 +79,11 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--gold);outline-o
 #title button{background:none;border:1px solid #e9c27a99;border-radius:2px;padding:.7em 1.6em;font:clamp(14px,1.5vw,18px) system-ui;color:var(--ink);min-height:44px}
 #title button#begin,#title button#resume{background:#e9c27a1a;border-color:var(--gold);color:#ffe2a0}
 #title .t-land{display:none}#frame.portrait #title .t-land{display:inline}
+#title.v2 .t-sub{text-wrap:balance;max-width:min(40em,88%);margin:1em auto 1.6em;font-size:clamp(14px,1.45vw,18px)}
+#title.v2 .t-how{display:block;margin-top:.8em;color:#e8dcc6}
+#title.v2 .t-note{display:block;margin-top:.8em;font:clamp(12px,1.1vw,14px)/1.5 system-ui;color:#a89f90}
+#title.leaving{opacity:0;transition:opacity .7s ease}
+@media(max-height:520px){#title.v2 .t-kicker{margin-bottom:.2em}#title.v2 h1{font-size:40px}#title.v2 .t-sub{margin:.4em auto .8em;font-size:13.5px;line-height:1.4}#title.v2 .t-how,#title.v2 .t-note{margin-top:.35em}#title.v2 .t-note{font-size:11.5px}}
 #title.cut{background:transparent;pointer-events:none}#title.cut>*:not(h1){opacity:0}#title.cut h1{color:#26232e}
 /* Corridor: the After Hours dispenser (hub/, journey mode) */
 #corridor{background:#0d0e1a}#corridor.offstage{visibility:hidden;pointer-events:none}
@@ -625,7 +630,7 @@ function showCorridor(focusWord){Snd.stopScene();G.screen='corridor';mountHub();
  const left=G.found.filter(w=>!G.walked.includes(w)),dark=TARGETS.length-G.found.length;
  $('morning').hidden=!G.walked.length||!!G.dawn;$('nb-open').textContent=G.dawn===2?'Open the notebook':'Back to the notebook';
  $('c-cap').textContent=G.dawn?'':!G.walked.length?'The words you found are lit. Choose a bottle.':left.length?'An empty on the roof. The night goes on.':dark?`${dark===1?'One bottle is':dark+' bottles are'} still dark. Their words are in the notebook.`:'';
- if(V2){$('c-cap').textContent='';$('nb-open').hidden=G.dawn!==2;$('morning').textContent='Morning';$('morning').setAttribute('aria-label','Wait for morning')}
+ if(V2){$('c-cap').textContent=G.dawn?'':!G.walked.length?'Each drink holds one story. Start with the one that’s lit.':'Another drink, or wait for morning.';$('nb-open').hidden=G.dawn!==2;$('morning').textContent='Morning';$('morning').setAttribute('aria-label','Wait for morning')}
  announce('The corridor. '+$('c-cap').textContent)}
 $('nb-open').onclick=()=>{if(G.dawn===2){beginEnding();return}backToNotebook()};
 $('morning').onclick=()=>dawn();
@@ -761,7 +766,7 @@ const Snd=(()=>{let c=null,on=false,paused=false,buf={},mus=null,musBuf={},vIdx=
  return{get on(){return on},async enable(v){on=v;if(!on){musicEpoch++;stopVoice();for(const s of [...sources])stop(s);mus=null}hub({type:'sound',on:v});
    if(on&&!c){c=new AudioContext();syncTransport();try{const m=await(await fetch('sound/manifest.json')).json();for(const [k,f] of Object.entries(m.cues))load('sound/'+f.file).then(b=>b&&(buf[k]={b,g:f.gain??1}));for(const [k,f] of Object.entries(m.music||{}))load('sound/'+f).then(b=>b&&(musBuf[k]=b))}catch{}
     try{vIdx=await(await fetch('voices/index.json')).json()}catch{vIdx=null}this.voiceUI()}
-   await syncTransport();$('voice').hidden=!on||!vIdx},
+   await syncTransport();$('voice').hidden=V2||!on||!vIdx},
   pause(v){paused=!!v;return syncTransport()},
   stopScene(){musicEpoch++;stopVoice();for(const s of [...sources])stop(s);mus=null;paused=false;syncTransport()},
   play(k){if(!on||paused||!c||!buf[k])return;syncTransport();const s=c.createBufferSource(),g=c.createGain();s.buffer=buf[k].b;g.gain.value=buf[k].g;s.connect(g);g.connect(c.destination);start(s)},
@@ -791,8 +796,15 @@ function wipe(){try{localStorage.removeItem(SAVE)}catch{}}
 buildTiles();setLayout();updateGo();only('title');G.screen='title';
 const saved=V2?null:loadSave();
 function restoreNight(d){G.film={};for(const w of TARGETS){const outcome=d?.film?.[w];if(OUTCOMES[DRINK[w]]?.includes(outcome))G.film[w]=outcome}G.walked=TARGETS.filter(w=>Array.isArray(d?.walked)&&d.walked.includes(w)&&completedFilm(w));G.found=G.walked.length?TARGETS.slice():['HEARD'];G.dawn=d?.dawn&&G.walked.length?2:0}
-if(V2){$('title').hidden=true;const d=loadSave();restoreNight(d);
- $('voice').hidden=true;$('nb-open').hidden=true;showCorridor('HEARD');if(G.dawn===2){hub({type:'morning'});$('nb-open').hidden=false;$('nb-open').textContent='Open the notebook'}}if(saved){$('resume').hidden=false;$('restart').hidden=false;$('begin').hidden=true}
+if(V2){const d=loadSave();restoreNight(d);$('voice').hidden=true;$('nb-open').hidden=true;mountHub();only('title');
+ // the opening card: what this is, how to play, and the review notice, before the machine lights up
+ const t=$('title');t.classList.add('v2');t.querySelector('.t-kicker').textContent='Asterwind · CCGL';
+ t.querySelector('.t-sub').innerHTML='After hours in a design studio, each drink in the machine holds one moment where someone has to lead.'
+  +'<br>Step inside and listen. When the question comes, choose with your hands. No choice is the right one: each keeps something and costs something.'
+  +'<span class="t-how">About three minutes a story. Walk as many as you like, then wait for morning.</span>'
+  +'<span class="t-note">Sound on if you can; captions are always there.<span class="t-land"> On a phone, sideways is best.</span><br>The Empty Square has not yet had its lived-experience review.</span>';
+ if(G.walked.length){$('begin').textContent='Continue the night';$('restart').hidden=false}
+ setTimeout(()=>$('begin').focus({preventScroll:true}),80)}if(saved){$('resume').hidden=false;$('restart').hidden=false;$('begin').hidden=true}
 if(!V2)setTimeout(()=>(saved?$('resume'):$('begin')).focus({preventScroll:true}),60);
 function demo(){// A first word, shown: the obvious one. Then the page lets you look for the rest.
  const DEMO='lead. The obvious one. It’s in there too, but keep looking.';
@@ -812,6 +824,9 @@ function openNotebook(after){Snd.enable(true);$('snd').setAttribute('aria-presse
  setTimeout(()=>{at('nb-word',{opacity:1});t.hidden=true;t.classList.remove('cut');h.removeAttribute('style');after()},reduced?0:1000)}
 $('begin').onclick=()=>openNotebook(()=>{G.screen='notebook';mountHub();only('notebook');G.lastFind=now();setTimeout(()=>at('nb-word',{opacity:.16}),reduced?0:500);demo();setTimeout(()=>$('tiles').querySelector('button')?.focus({preventScroll:true}),120)});
 $('restart').onclick=()=>{wipe();$('begin').onclick()};
+if(V2){$('restart').onclick=()=>{wipe();location.reload()};
+ $('begin').onclick=()=>{if($('snd').getAttribute('aria-pressed')!=='true')$('snd').click();const t=$('title');t.classList.add('leaving');
+  setTimeout(()=>{t.classList.remove('leaving');showCorridor('HEARD');if(G.dawn===2){hub({type:'morning'});$('nb-open').hidden=false;$('nb-open').textContent='Open the notebook'}},reduced?0:700)}}
 $('resume').onclick=()=>openNotebook(()=>{const d=saved;
  for(const w of d.found)if(TARGETS.includes(w)&&!G.found.includes(w)){G.found.push(w);$('boats').appendChild(makeBoat(w));at('pl-'+w,{opacity:.85})}
  G.done=d.done&&typeof d.done==='object'?d.done:{};G.film=d.film&&typeof d.film==='object'?d.film:{};G.walked=(d.walked||[]).filter(w=>G.found.includes(w));G.seenTip=1;

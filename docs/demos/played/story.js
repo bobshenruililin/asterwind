@@ -48,10 +48,12 @@ function create(script){
    if(buttons){buttons.hidden=false;card.append(buttons)}
    card.hidden=false;card.focus({preventScroll:true});return true},
   // The two actions at the decision, named where they are: what you'd do, not what will happen.
-  choices(items){frame.querySelector('.story-choices')?.remove();if(!items||!script.choices)return;const box=el('div','story-choices');box.setAttribute('aria-hidden','true');
-   for(const it of items){const c=script.choices[it.id];if(!c)continue;const g=el('div','choice');g.dataset.id=it.id;g.style.left=it.x*100+'%';g.style.top=it.y*100+'%';g.append(el('b',null,c.label),el('span',null,c.hint));box.append(g)}
-   frame.append(box)},
-  choiceOn(id){frame.querySelectorAll('.story-choices .choice').forEach(g=>g.classList.toggle('on',g.dataset.id===id))},
+  choices(items){frame.querySelector('.story-choices')?.remove();screen.querySelector('.story-key')?.remove();if(!items||!script.choices)return;const box=el('div','story-choices');box.setAttribute('aria-hidden','true');
+   const key=el('div','story-key');key.setAttribute('aria-hidden','true');/* on a portrait phone the hints sit under the picture */
+   for(const it of items){const c=script.choices[it.id];if(!c)continue;const g=el('div','choice');g.dataset.id=it.id;g.style.left=it.x*100+'%';g.style.top=it.y*100+'%';g.append(el('b',null,c.label),el('span',null,c.hint));box.append(g);
+    const k=el('div','choice');k.dataset.id=it.id;k.append(el('b',null,c.label),el('span',null,c.hint));key.append(k)}
+   frame.append(box);screen.append(key)},
+  choiceOn(id){screen.querySelectorAll('.story-choices .choice,.story-key .choice').forEach(g=>g.classList.toggle('on',g.dataset.id===id))},
   hideReflection(){card.hidden=true},
   readTime};
 }
