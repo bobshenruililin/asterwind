@@ -87,7 +87,8 @@
    {
     "speaker": "",
     "line": "The visitor waves. The tower springs up. Twice.",
-    "stage": "repeat"
+    "stage": "repeat",
+    "clip": "K2"
    },
    {
     "speaker": "Dev",

@@ -99,7 +99,9 @@ function filmBeat(b,d){const c=camFor(b.stage),z=reduced?1:Math.min(1.35,c.zoom)
 function playBeats(list,part,then){let t=0;list.forEach((b,i)=>{
  if(b.black){const d=b.duration/1000;at(t,()=>{tw(S,'dim',.95,Math.min(.3,d/3));at(Math.max(.1,d-.3),()=>tw(S,'dim',0,.5))});t+=d;return}
  if(SCRIPT){const key='v2:'+part+'-'+i,v=buf[key],d=v?Math.max(.6,v.duration+StoryUI.gap(b,list[i+1])):StoryUI.readTime(b.line,!b.speaker);
-  at(t,()=>{shot(b.stage,d);(b.frames||[]).forEach(([ms,a])=>{if(ms>0)at(ms/1000,()=>pose(a))});if(b.line)say(b.speaker,b.line,v?key:null,d);if(SCENE_SOUND.at[b.stage])play('sfx:'+SCENE_SOUND.at[b.stage],.8);else if(/action/.test(b.stage))play('tap',.6)});t+=d;return}
+  at(t,()=>{shot(b.stage,d);const fr=b.frames||[],run=()=>fr.forEach(([ms,a])=>{if(ms>0)at(ms/1000,()=>pose(a))});
+   /* a generated clip (docs/KLING-BRIEFS) plays over the beat only once approved in clips/manifest.json; otherwise the authored frames */
+   if(b.clip&&window.Clips&&Clips.has(EP+'/'+b.clip))Clips.play(EP+'/'+b.clip,{frame:$('frame'),onEnd:()=>{if(fr.length)pose(fr[fr.length-1][1])},fallback:run});else run();if(b.line)say(b.speaker,b.line,v?key:null,d);if(SCENE_SOUND.at[b.stage])play('sfx:'+SCENE_SOUND.at[b.stage],.8);else if(/action/.test(b.stage))play('tap',.6)});t+=d;return}
  if(b.lines){const end=b.lines.reduce((m,l)=>Math.max(m,l.at/1000+(buf[l.id]?buf[l.id].duration+.7:(l.until-l.at)/1000)),0),d=Math.max(b.duration/1000,end);at(t,()=>filmBeat(b,d));t+=d;return}const d=Math.max(b.duration/1000,(b.speaker&&buf[cueId(part,i)]?buf[cueId(part,i)].duration+1.2:0));
  at(t,()=>{shot(b.stage,d);if(b.line)say(b.speaker,b.line,b.speaker?cueId(part,i):null);if(/action/.test(b.stage))play('tap',.6)});t+=d});at(t,then)}
 
@@ -131,8 +133,8 @@ function commit(id){if(phase!=='decision')return;phase='consequence';UI&&(UI.dec
 function ending(){phase='end';if(UI&&UI.reflect(choice,$('end'))){if(buf['v2:lesson'])at(1.2,()=>play('v2:lesson',.9));live(story.title+'. '+SCRIPT.reflections[choice].title+' What it kept: '+SCRIPT.reflections[choice].kept+' What it cost: '+SCRIPT.reflections[choice].cost+' '+(SCRIPT.lesson||''))}else{$('end').hidden=false;$('again').focus({preventScroll:true});live(story.title+'. Again, or the other way.')}if(!ending.sent){ending.sent=1;notify('completed',choice)}}
 function begin(){phase='setup';S.warps=[];heads=[];$('cap').querySelector('.line').textContent='';stage.show(camFor('open').plate);S.mix=0;S.zoom=1;S.cen=[.5,.5];S.dim=1;S.so=[0,0];S.so0=[0,0];S.slide=null;tw(S,'dim',0,2.2);
  playBeats(story.setup,'setup',decision)}
-$('again').onclick=()=>{$('end').hidden=true;UI&&UI.hideReflection();cues.length=0;tws.length=0;begin()};
-$('other').onclick=()=>{$('end').hidden=true;UI&&UI.hideReflection();cues.length=0;tws.length=0;const o=story.choice.actions.find(a=>a.id!==choice).id;stage.show(camFor('choice').plate);S.dim=0;S.zoom=1;S.cen=[.5,.5];decision();at(reduced?.1:.8,()=>commit(o))};
+$('again').onclick=()=>{window.Clips&&Clips.stop();$('end').hidden=true;UI&&UI.hideReflection();cues.length=0;tws.length=0;begin()};
+$('other').onclick=()=>{window.Clips&&Clips.stop();$('end').hidden=true;UI&&UI.hideReflection();cues.length=0;tws.length=0;const o=story.choice.actions.find(a=>a.id!==choice).id;stage.show(camFor('choice').plate);S.dim=0;S.zoom=1;S.cen=[.5,.5];decision();at(reduced?.1:.8,()=>commit(o))};
 
 /* ---- the frame ---- */
 const pointer={x:.5,y:.5};$('frame').addEventListener('pointermove',e=>{const [x,y]=fp(e);pointer.x=x;pointer.y=y});
@@ -145,7 +147,7 @@ stage.show(camFor('open').plate);S.dim=UI?.25:.8;requestAnimationFrame(frame);//
 $('start').onclick=async()=>{const start=$('start');if(start.disabled)return;start.disabled=true;start.hidden=true;UI&&UI.begin();await PlayedSupport.audio(sound);begin()};PlayedSupport.ready(ENTER);notify('ready');
 $('snd').onclick=()=>{soundOn=!soundOn;$('snd').setAttribute('aria-pressed',String(soundOn));if(master)master.gain.value=soundOn?1:0};
 $('cc').onclick=()=>{const on=$('cc').getAttribute('aria-pressed')!=='true';$('cc').setAttribute('aria-pressed',String(on));$('cap').style.visibility=on?'visible':'hidden'};
-$('pause').onclick=()=>{paused=!paused;$('pause').setAttribute('aria-pressed',String(paused));$('pause').textContent=paused?'Resume':'Pause';if(ac)paused?ac.suspend():ac.resume()};
+$('pause').onclick=()=>{paused=!paused;window.Clips&&Clips.pause(paused);$('pause').setAttribute('aria-pressed',String(paused));$('pause').textContent=paused?'Resume':'Pause';if(ac)paused?ac.suspend():ac.resume()};
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&!paused)$('pause').click()});
 window.FILMPLAY={get state(){return{phase,choice,T,ep:EP,layered}},commit,step};
 })().catch(error=>{const ep=new URLSearchParams(location.search).get('ep');// if the scene can't load, offer its original film

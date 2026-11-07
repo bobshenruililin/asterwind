@@ -1,5 +1,60 @@
 # Kling shot briefs (for Astra and Robert)
 
+## 7 November update: the final sprint (read this first)
+
+**Budget, from Bob:**
+- up to **100 s of generation** from his 155 s balance, **including unsuccessful takes**;
+- **Kling 4.0 at 1080p** where it's offered;
+- test **Flash** on one small shot first, and use it if the quality holds;
+- before the first take, check on kling.ai the actual model, resolution and credit cost, and post them in PR #1.
+
+**Who generates:** the Kling connector wasn't authorised in Opus's session when this was written. Whoever has access (Astra, Robert, or Opus once Bob authorises it) runs the plan below without waiting for per-take approval. Log every take, including rejects, in the shot's `PROVENANCE.md`, with the seconds spent.
+
+**Order and seconds:**
+
+| # | Shot | Why motion matters here | Takes × length | Running total |
+| --- | --- | --- | --- | --- |
+| 0 | **Flash test on K3** | Is Flash good enough? | 1 × 5 s | 5 s |
+| 1 | **K3: the canopy buckles** (The Seam, first image) | The story opens on a failure; today it's three stills. | 2 × 5 s | 15 s |
+| 2 | **K2: the tower counts twice** (Before the Doors Open) | The risk of *run it live* made physical. | 2 × 5 s | 25 s |
+| 3 | **K1: Ellis unfolds the route** (The Quiet Minute) | The emotional core: a quiet person decides to show something. | 2 × 5 s | 35 s |
+| 4 | **K5: Asha takes the microphone** (The Missing Name) | The answer to the player's act: she takes the floor. | 2 × 5 s | 45 s |
+| 5 | **K4: the needle through the bag** (One More Chair) | Craft passed hand to hand. Needs Robert's two close-up stills first. | 2 × 4 s | 53 s |
+| — | **Reserve** | Retakes of near-misses only, after fixing their reference frames | ≤ 47 s | ≤ 100 s |
+
+- **Use Flash for the rest** only if its K3 take passes all five acceptance checks below at 1280×720 *and* on a phone crop. Otherwise use Kling 4.0 Standard/Pro at 1080p.
+- **Stop rule, unchanged:** if K3's best take isn't clearly better than the three stills *inside the scene*, stop and report. Don't spend the reserve chasing it.
+- **Audio:** off. Our voices and sound are separate, and an audio track can't be used. If Kling 4.0 charges more for native audio, turn it off.
+
+**Exact reference frames** (all 1672×941; upscale or letterbox to 16:9 as Kling requires, and keep the crop identical for start and end):
+
+| Shot | Start frame | End frame | Script beat it plays on |
+| --- | --- | --- | --- |
+| K3 | `film/assets/performanceStable.webp` | `film/assets/performanceBuckle.webp` (midpoint ref: `performanceSlip.webp`) | `seam.json` setup 0: "The canopy opens. A rib bends…" |
+| K2 | `anthology/episodes/ship/assets/performance-ready.webp` | `anthology/episodes/ship/assets/performance-double.webp` | `ship.json` live 2: "The visitor waves. The tower springs up. Twice." |
+| K1 | `docs/demos/played/plates/qm-route-closed.webp` | `docs/demos/played/plates/qm-route-open.webp` (Robert's corrected P2b) | The Quiet Minute's close look at the folded route |
+| K5 | `anthology/episodes/slides/assets/performance-microphone-offer.webp` | `anthology/episodes/slides/assets/microphone.webp` | `slides.json` microphone 2: "You slide the microphone across…" |
+| K4 | Robert's close-up (a): needle at the hole | Robert's close-up (b): thread drawn taut | `scope.json` extend 2: Bo's "back through the same hole" |
+
+**Drop-in, no code needed:**
+- **Save takes as** `docs/demos/played/clips/<ep>/<shot>-take<n>.mp4`, where `<ep>` is `seam`, `ship`, `standup`, `slides` or `scope`. Format: H.264, 24 fps, no audio, 16:9.
+- **Preview a take in its scene** before anyone approves it:
+  - `scene.html?ep=seam&clips=seam/K3:seam/K3-take1.mp4`
+  - `docs/demos/played/?clips=standup/K1:standup/K1-take1.mp4` for The Quiet Minute
+  - `?clips=` works the same for K2, K4 and K5.
+- **The slots are wired** (`clips.js`, plus a `clip` field on each beat above). A take plays over its beat, then dissolves into the authored end still. Reduced motion, a failed load or a missing file falls back to the stills.
+- **Only Bob approves a take for the default build:** add it to `docs/demos/played/clips/manifest.json` as `{"seam/K3": {"src": "seam/K3-take1.mp4"}}`.
+
+**Prompt skeleton** (adapt per shot; the motion, continuity and reject lists below still apply):
+
+> Locked camera on a static tripod. A photographed paper-craft miniature set: matte card, visible paper fibre, soft practical lamp light, shallow depth of field. [ONE physical action, in 2–3 short clauses.] Everything else stays still except slight natural settling. Hold the final pose for the last second.
+>
+> **Negative:** morphing, melting, extra fingers, new folds, new creases, text, letters, camera shake, zoom, flicker, new people, new props, lip movement.
+
+---
+
+## Earlier plan (6 November; its rules and shot details still apply)
+
 6 November 2026, Opus. This supersedes the shot list in `docs/KLING-PLAN-2026-11-06.md`; its rules still apply.
 
 ## Budget and order

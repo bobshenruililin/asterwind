@@ -93,7 +93,8 @@
    {
     "speaker": "",
     "line": "You slide the microphone across. Asha hesitates, then takes it.",
-    "stage": "offer"
+    "stage": "offer",
+    "clip": "K5"
    },
    {
     "speaker": "Asha",
