@@ -8,38 +8,157 @@
   "text": "Your team is about to present its plan for safer walking routes. The map on your opening slide is Asha's: she walked the neighbourhood for three weeks to draw it. Her name isn't on it."
  },
  "cast": [
-  {"name": "You", "role": "lead the team; you made the slides", "at": [0.24, 0.12]},
-  {"name": "Kit", "role": "built the scale model; has waited all term to reveal it", "at": [0.42, 0.13]},
-  {"name": "Asha", "role": "walked and drew the map; doesn't love the spotlight", "at": [0.79, 0.12]}
+  {
+   "name": "You",
+   "role": "lead the team; you made the slides",
+   "at": [
+    0.24,
+    0.12
+   ]
+  },
+  {
+   "name": "Kit",
+   "role": "built the scale model; has waited all term to reveal it",
+   "at": [
+    0.42,
+    0.13
+   ]
+  },
+  {
+   "name": "Asha",
+   "role": "walked and drew the map; doesn't love the spotlight",
+   "at": [
+    0.79,
+    0.12
+   ]
+  }
  ],
  "prompt": "Five minutes. How will you put Asha's work back where it belongs?",
  "setup": [
-  {"speaker": "", "line": "The opening slide fills the screen: a neighbourhood map, one route in red. No name beneath it.", "stage": "open"},
-  {"speaker": "Kit", "line": "Five minutes. Map first, then the big reveal. Wait till they see the model open.", "stage": "kit", "direction": "excited, quick, rubbing his hands together; this reveal is his moment"},
-  {"speaker": "Asha", "line": "That's my map. Three weeks of walking those streets. And it looks like we made it up in the studio.", "stage": "asha", "direction": "quiet and controlled, hurt underneath; not angry, just stung"},
-  {"speaker": "You", "line": "Asha, I left your name off. That's on me. Let's fix it before we go on.", "stage": "repair", "direction": "genuinely sorry, direct, no excuses"},
-  {"speaker": "Asha", "line": "I don't want a fuss. I can talk about the walks, I know those. I just don't want the whole pitch.", "stage": "limit", "direction": "torn; relieved to be heard but shy of the stage"},
-  {"speaker": "Kit", "line": "If Asha opens with the walks, there won't be time for the model. It's one or the other.", "stage": "tradeoff", "direction": "worried, honest, trying not to sound selfish"},
-  {"speaker": "Asha", "line": "You could hold up my notebook and say it's mine. Or I'll open with the map myself. Either's okay. Really.", "stage": "asha", "direction": "warm, sincere, meaning it; offering both"}
+  {
+   "speaker": "",
+   "line": "The opening slide fills the screen: a neighbourhood map, one route in red. No name beneath it.",
+   "stage": "open"
+  },
+  {
+   "speaker": "Kit",
+   "line": "Five minutes. Map first, then the big reveal. Wait till they see the model open.",
+   "stage": "kit",
+   "direction": "excited, quick, rubbing his hands together; this reveal is his moment"
+  },
+  {
+   "speaker": "Asha",
+   "line": "That's my map. Three weeks of walking those streets. And it looks like we made it up in the studio.",
+   "stage": "asha",
+   "direction": "quiet and controlled, hurt underneath; not angry, just stung"
+  },
+  {
+   "speaker": "You",
+   "line": "Asha, I left your name off. That's on me. Let's fix it before we go on.",
+   "stage": "repair",
+   "direction": "genuinely sorry, direct, no excuses"
+  },
+  {
+   "speaker": "Asha",
+   "line": "I don't want a fuss. I can talk about the walks, I know those. I just don't want the whole pitch.",
+   "stage": "limit",
+   "direction": "torn; relieved to be heard but shy of the stage"
+  },
+  {
+   "speaker": "Kit",
+   "line": "If Asha opens with the walks, there won't be time for the model. It's one or the other.",
+   "stage": "tradeoff",
+   "direction": "worried, honest, trying not to sound selfish"
+  },
+  {
+   "speaker": "Asha",
+   "line": "You could hold up my notebook and say it's mine. Or I'll open with the map myself. Either's okay. Really.",
+   "stage": "asha",
+   "direction": "warm, sincere, meaning it; offering both"
+  }
  ],
  "branches": {
   "microphone": [
-   {"speaker": "", "line": "", "stage": "microphone-action"},
-   {"speaker": "You", "line": "Before we show you anything we built, Asha is going to tell you where this map came from.", "stage": "introduce", "direction": "clear, proud of her, handing over"},
-   {"speaker": "", "line": "You slide the microphone across. Asha hesitates, then takes it.", "stage": "offer"},
-   {"speaker": "Asha", "line": "This corner looked like a shortcut. Then I walked it with a man pushing a shopping trolley, and the kerb stopped him dead.", "stage": "authorship", "direction": "nervous at first, then finding her footing as she remembers"},
-   {"speaker": "Asha", "line": "So we widened the turn. Forty-one people walked these streets with me. This map is really theirs.", "stage": "context", "direction": "steady now, quietly proud"},
-   {"speaker": "Kit", "line": "And that's exactly why the model...", "stage": "follow", "direction": "generous, eager, cut off mid-thought"},
-   {"speaker": "", "line": "Time is called. The audience heard why the route bends. Kit's model stays shut in its box.", "stage": "ending-microphone"}
+   {
+    "speaker": "",
+    "line": "",
+    "stage": "microphone-action"
+   },
+   {
+    "speaker": "You",
+    "line": "Before we show you anything we built, Asha is going to tell you where this map came from.",
+    "stage": "introduce",
+    "direction": "clear, proud of her, handing over"
+   },
+   {
+    "speaker": "",
+    "line": "You slide the microphone across. Asha hesitates, then takes it.",
+    "stage": "offer"
+   },
+   {
+    "speaker": "Asha",
+    "line": "This corner looked like a shortcut. Then I walked it with a man pushing a shopping trolley, and the kerb stopped him dead.",
+    "stage": "authorship",
+    "direction": "nervous at first, then finding her footing as she remembers"
+   },
+   {
+    "speaker": "Asha",
+    "line": "So we widened the turn. Forty-one people walked these streets with me. This map is really theirs.",
+    "stage": "context",
+    "direction": "steady now, quietly proud"
+   },
+   {
+    "speaker": "Kit",
+    "line": "And that's exactly why the model...",
+    "stage": "follow",
+    "direction": "generous, eager, cut off mid-thought"
+   },
+   {
+    "speaker": "",
+    "line": "Time is called. The audience heard why the route bends. Kit's model stays shut in its box.",
+    "stage": "ending-microphone"
+   }
   ],
   "notebook": [
-   {"speaker": "", "line": "", "stage": "notebook-action"},
-   {"speaker": "You", "line": "This is Asha's notebook. Every line on our map started here. She walked it for three weeks.", "stage": "credit", "direction": "firm, clear, making sure the room hears the name"},
-   {"speaker": "", "line": "Kit opens the model. The audience leans in.", "stage": "reveal"},
-   {"speaker": "Visitor", "line": "Why is that corner crossed out on the map?", "stage": "question", "direction": "curious, friendly"},
-   {"speaker": "Kit", "line": "Asha, that one's yours.", "stage": "invite", "direction": "glad to pass it over"},
-   {"speaker": "Asha", "line": "A trolley got stuck there. On the third walk we...", "stage": "accept", "direction": "pleased, quick, cut off mid-sentence"},
-   {"speaker": "", "line": "Time is called mid-sentence. The model was seen and her name was said. Her reason wasn't heard.", "stage": "ending-notebook"}
+   {
+    "speaker": "",
+    "line": "",
+    "stage": "notebook-action"
+   },
+   {
+    "speaker": "You",
+    "line": "This is Asha's notebook. Every line on our map started here. She walked it for three weeks.",
+    "stage": "credit",
+    "direction": "firm, clear, making sure the room hears the name"
+   },
+   {
+    "speaker": "",
+    "line": "Kit opens the model. The audience leans in.",
+    "stage": "reveal"
+   },
+   {
+    "speaker": "Visitor",
+    "line": "Why is that corner crossed out on the map?",
+    "stage": "question",
+    "direction": "curious, friendly"
+   },
+   {
+    "speaker": "Kit",
+    "line": "Asha, that one's yours.",
+    "stage": "invite",
+    "direction": "glad to pass it over"
+   },
+   {
+    "speaker": "Asha",
+    "line": "A trolley got stuck there. On the third walk we...",
+    "stage": "accept",
+    "direction": "pleased, quick, cut off mid-sentence"
+   },
+   {
+    "speaker": "",
+    "line": "Time is called mid-sentence. The model was seen and her name was said. Her reason wasn't heard.",
+    "stage": "ending-notebook"
+   }
   ]
  },
  "lesson": "Credit isn't only a name on a slide. It's whose voice explains the work, and the time to agree that is before the day.",
@@ -48,13 +167,25 @@
    "title": "You handed Asha the floor.",
    "kept": "Her work, in her own words. The audience heard why the map bends where it does.",
    "cost": "Kit's model reveal, the moment he'd waited all term for.",
-   "ask": "How could Kit's work have been protected too?"
+   "ask": "How could Kit's work have been protected too?",
+   "lean": "people"
   },
   "notebook": {
    "title": "You credited Asha inside the plan.",
    "kept": "The pitch as rehearsed: her name said clearly, and the model revealed.",
    "cost": "Her reasoning. You spoke for her work, and her own explanation was cut off.",
-   "ask": "What would make Asha want the microphone next time?"
+   "ask": "What would make Asha want the microphone next time?",
+   "lean": "plan"
+  }
+ },
+ "choices": {
+  "microphone": {
+   "label": "Move the microphone",
+   "hint": "Asha opens, in her own words."
+  },
+  "notebook": {
+   "label": "Show the notebook",
+   "hint": "You credit her; Kit keeps his reveal."
   }
  }
 }

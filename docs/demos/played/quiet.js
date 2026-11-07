@@ -62,10 +62,10 @@ function showWord(text,x,y){const w=$('word');w.textContent=text;w.style.left=x*
 let phase='start',choice=null,hoverTarget=null,peeked=false,looking=false;
 const pointer={x:.5,y:.5};
 function hover(which){if(looking||(which&&!(phase==='decision'||(which==='route'&&phase==='master'))))which=null;hoverTarget=which;const p=OBJ.platter,t=OBJ.tray;
- if(which==='platter'){S.hov=[p.x,p.y,p.rx*1.02,p.ry*1.02,0];tw(S,'hovA',1,.25);showWord('turn',.27,.9)}
- else if(which==='tray'){S.hov=[(t.x0+t.x1)/2,(t.y0+t.y1)/2,(t.x1-t.x0)/2+.01,(t.y1-t.y0)/2+.01,1];tw(S,'hovA',1,.25);showWord('pass',.68,.9)}
+ if(which==='platter'){S.hov=[p.x,p.y,p.rx*1.02,p.ry*1.02,0];tw(S,'hovA',1,.25);if(UI){UI.choiceOn('round');showWord('',0,0)}else showWord('turn',.27,.9)}
+ else if(which==='tray'){S.hov=[(t.x0+t.x1)/2,(t.y0+t.y1)/2,(t.x1-t.x0)/2+.01,(t.y1-t.y0)/2+.01,1];tw(S,'hovA',1,.25);if(UI){UI.choiceOn('slips');showWord('',0,0)}else showWord('pass',.68,.9)}
  else if(which==='route'){const r=phase==='master'?OBJ.routeMaster:OBJ.routeDecision;S.hov=[r.x,r.y,r.rx,r.ry,0];tw(S,'hovA',.8,.25);showWord('look',r.x-.02,r.y-r.ry-.05)}
- else{tw(S,'hovA',0,.3);showWord('',0,0)}}
+ else{tw(S,'hovA',0,.3);showWord('',0,0);UI&&UI.choiceOn(null)}}
 
 /* ---- the scene ---- */
 function begin(){$('thought').hidden=true;phase='master';stage.show('master');S.dim=1;S.rain=.9;S.lamp=[.18,.06,.34,.55];S.focus=.55;S.str=.02;S.dof=0;S.ang=0;S.so=[0,0];S.disc=null;S.slide=null;S.hov=null;S.hovA=0;
@@ -86,11 +86,11 @@ const ACT={theoSell:()=>{move('theoHand',.006,-.004,1.6);move('theoHead',0,-.002
  ellisPencil:()=>{move('ellisPencil',-.002,.009,1.6);move('ellisHead',-.001,.003,1.4);tw(S,'cam',[-.5,-.15],3);tw(S,'focus',.62,2);tw(S,'dof',.005,2);play('pencil',.5);$('route').hidden=false;placeR('routeMaster')},
  camBack:()=>tw(S,'cam',[0,0],2.5),niaHand:()=>move('niaHand',.004,.002,1.2),theoWait:()=>move('theoHead',0,.003,1),ellisHand:()=>{move('ellisHand',-.006,.002,2);move('ellisHead',-.002,.002,1)},
  theoNod:()=>move('theoHead',0,.002,.8),knock:()=>knock(),ellisSlip:()=>{play('fold',.5);move('ellisSlip',0,-.004,.8)}};
-function runLines(list,t,done){for(const b of list){const v=buf['v2:'+b.id],d=v?v.duration+(b.speaker?.75:1.1):StoryUI.readTime(b.line,!b.speaker);
-  at(t,()=>{ACT[b.act]?.();if(b.line)say(b.speaker,b.line,v?'v2:'+b.id:null,d)});t+=d}at(t,done)}
+function runLines(list,t,done){list.forEach((b,i)=>{const v=buf['v2:'+b.id],d=v?Math.max(.6,v.duration+StoryUI.gap(b,list[i+1])):StoryUI.readTime(b.line,!b.speaker);
+  at(t,()=>{ACT[b.act]?.();if(b.line)say(b.speaker,b.line,v?'v2:'+b.id:null,d)});t+=d});at(t,done)}
 function placeR(k){const r=OBJ[k];placeEl($('route'),r.x-r.rx,r.y-r.ry,r.x+r.rx,r.y+r.ry)}
 function toDecision(){if(phase!=='master')return;phase='turning';hover(null);stage.toward('decision');tw(S,'mix',1,reduced?.2:2);tw(S,'dof',0,1.5);tw(S,'focus',.7,2);
- at(reduced?.25:2.05,()=>{stage.settle();phase='decision';UI&&UI.decide(true);
+ at(reduced?.25:2.05,()=>{stage.settle();phase='decision';if(UI){UI.decide(true);UI.choices([{id:'round',x:.40,y:.845},{id:'slips',x:.817,y:.765}])}
   handles([['niaHead',.094,.08,.07],['theoHead',.53,.06,.07],['ellisHead',.875,.07,.07],['ellisPaper',.83,.375,.06],['handL',.234,.833,.09],['handR',.633,.847,.09],['token',.39,.867,.035]]);
   for(const n of ['niaHead','theoHead','ellisHead','handL','handR'])H[n].breathe=1;
   const p=OBJ.platter,t=OBJ.tray;S.disc=[p.x,p.y,p.rx,p.ry];S.slide=[t.x0-.01,t.y0-.01,t.x1+.01,t.y1+.01];
@@ -152,7 +152,7 @@ function lookClose(){looking=true;const from=stage.current,inMaster=phase==='mas
     looking=false;th.classList.remove('close');objs.forEach(id=>{if(phase==='decision')$(id).hidden=false});if(phase==='decision'&&objs.length)setTimeout(()=>$(objs[0]).focus({preventScroll:true}),30);/* keyboard players keep their place */live(phase==='decision'?'Back at the table. The model is within reach, and so is the tray of blank slips.':'Back at the table.')})})})}
 
 /* ---- the choice, then the film's consequence ---- */
-function commit(id){if(phase!=='decision')return;UI&&UI.decide(false);$('thought').hidden=true;phase='consequence';choice=id;drag=null;hover(null);$('platter').hidden=$('tray').hidden=$('route').hidden=true;
+function commit(id){if(phase!=='decision')return;UI&&(UI.decide(false),UI.choices(null));$('thought').hidden=true;phase='consequence';choice=id;drag=null;hover(null);$('platter').hidden=$('tray').hidden=$('route').hidden=true;
  if(id==='round'){tw(S,'ang',S.ang<-.05?-.32:.32,reduced?.1:.9);play('tap',.5);burst(260,420,.6,.08)}else{tw(S,'so',[-.045,-.01],reduced?.1:.8);play('rustle',.7);burst(1800,700,.5,.05,'lowpass')}
  follow(1);live(id==='round'?'You turn the table.':'You slide the tray of slips into the middle of the table.');
  at(reduced?.2:1.1,()=>{stage.toward(id);tw(S,'mix',1,reduced?.2:2.2);tw(S,'focus',.6,2)});

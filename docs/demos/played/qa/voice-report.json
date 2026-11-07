@@ -129,8 +129,9 @@
    "heard": "It is. Show me your first stop.",
    "word_error": 0.0,
    "flag": false,
-   "seconds": 3.52,
-   "render_s": 32.3
+   "seconds": 2.81,
+   "render_s": 32.3,
+   "tempo": 1.2
   },
   "qm2-r6": {
    "who": "Narrator",
@@ -285,8 +286,9 @@
    "heard": "If Asha opens with the walks, there won't be time for the model. It's one or the other.",
    "word_error": 0.0,
    "flag": false,
-   "seconds": 9.76,
-   "render_s": 22.1
+   "seconds": 8.05,
+   "render_s": 22.1,
+   "tempo": 1.2
   },
   "setup-6": {
    "who": "Asha",
@@ -318,8 +320,9 @@
    "heard": "You slide the microphone across. Asha hesitates, then takes it.",
    "word_error": 0.0,
    "flag": false,
-   "seconds": 6.08,
-   "render_s": 22.1
+   "seconds": 5.18,
+   "render_s": 22.1,
+   "tempo": 1.15
   },
   "microphone-3": {
    "who": "Asha",
@@ -384,8 +387,9 @@
    "heard": "Kit opens the model. The audience leans in.",
    "word_error": 0.0,
    "flag": false,
-   "seconds": 4.72,
-   "render_s": 13.4
+   "seconds": 4.02,
+   "render_s": 13.4,
+   "tempo": 1.15
   },
   "notebook-3": {
    "who": "Visitor",
@@ -551,8 +555,9 @@
    "heard": "58. Sam's bag holds. The umbrella still has one open seam, and its owner is standing at the door.",
    "word_error": 0.05,
    "flag": false,
-   "seconds": 12.64,
-   "render_s": 62.9
+   "seconds": 10.9,
+   "render_s": 62.9,
+   "tempo": 1.15
   },
   "extend-4": {
    "who": "You",
@@ -606,8 +611,9 @@
    "heard": "Okay, yeah, I was hoping to leave with it fixed, but okay, half five.",
    "word_error": 0.0,
    "flag": false,
-   "seconds": 7.28,
-   "render_s": 28.5
+   "seconds": 6.0,
+   "render_s": 28.5,
+   "tempo": 1.176
   },
   "return-4": {
    "who": "Narrator",
@@ -740,8 +746,9 @@
    "heard": "Oh! I can feel the switch click. What's this?",
    "word_error": 0.111,
    "flag": false,
-   "seconds": 4.8,
-   "render_s": 22.0
+   "seconds": 3.9,
+   "render_s": 22.0,
+   "tempo": 1.2
   },
   "lower-3": {
    "who": "Narrator",
@@ -841,8 +848,9 @@
    "heard": "Twice. Again. One hand, two triggers. I swear I fixed this last night.",
    "word_error": 0.0,
    "flag": false,
-   "seconds": 7.44,
-   "render_s": 24.7
+   "seconds": 6.1,
+   "render_s": 24.7,
+   "tempo": 1.2
   },
   "setup-2": {
    "who": "Lio",
@@ -863,8 +871,9 @@
    "heard": "I can stand by the reset all afternoon, but it might double again. Please don't tell them it's fixed.",
    "word_error": 0.0,
    "flag": false,
-   "seconds": 10.56,
-   "render_s": 24.7
+   "seconds": 8.78,
+   "render_s": 24.7,
+   "tempo": 1.193
   },
   "setup-4": {
    "who": "You",
@@ -929,8 +938,9 @@
    "heard": "Sorry, that's the bug.",
    "word_error": 0.0,
    "flag": false,
-   "seconds": 2.64,
-   "render_s": 25.1
+   "seconds": 2.11,
+   "render_s": 25.1,
+   "tempo": 1.2
   },
   "live-4": {
    "who": "You",
@@ -951,8 +961,9 @@
    "heard": "The visitor helps reset. Second try. The tower rises once. They grin. Behind them, the queue has grown.",
    "word_error": 0.0,
    "flag": false,
-   "seconds": 10.64,
-   "render_s": 25.1
+   "seconds": 9.22,
+   "render_s": 25.1,
+   "tempo": 1.15
   },
   "rehearsal-0": {
    "who": "You",
@@ -984,8 +995,9 @@
    "heard": "Oh, I wanted to try it myself.",
    "word_error": 0.0,
    "flag": false,
-   "seconds": 4.0,
-   "render_s": 16.7
+   "seconds": 3.18,
+   "render_s": 16.7,
+   "tempo": 1.2
   },
   "rehearsal-3": {
    "who": "Dev",
@@ -1151,8 +1163,9 @@
    "heard": "Yeah, okay, just keep my drawing out, please.",
    "word_error": 0.0,
    "flag": false,
-   "seconds": 5.2,
-   "render_s": 7.7
+   "seconds": 4.27,
+   "render_s": 7.7,
+   "tempo": 1.2
   },
   "backup-3": {
    "who": "Narrator",
@@ -1195,8 +1208,9 @@
    "heard": "On Mara's Reeb, yours is still on the table.",
    "word_error": 0.111,
    "flag": false,
-   "seconds": 4.64,
-   "render_s": 17.4
+   "seconds": 3.81,
+   "render_s": 17.4,
+   "tempo": 1.2
   },
   "backup-8": {
    "who": "Julian",
@@ -1250,8 +1264,9 @@
    "heard": "Let's splint his. Together. Julian, show me where it gives.",
    "word_error": 0.0,
    "flag": false,
-   "seconds": 6.72,
-   "render_s": 15.5
+   "seconds": 5.55,
+   "render_s": 15.5,
+   "tempo": 1.2
   },
   "repair-2": {
    "who": "Mara",
@@ -1305,8 +1320,9 @@
    "heard": "Half of it. The other half still sticks.",
    "word_error": 0.0,
    "flag": false,
-   "seconds": 4.64,
-   "render_s": 10.6
+   "seconds": 3.83,
+   "render_s": 10.6,
+   "tempo": 1.2
   },
   "repair-8": {
    "who": "You",

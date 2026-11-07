@@ -8,6 +8,11 @@
 const $=id=>document.getElementById(id),el=(tag,cls,text)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)e.textContent=text;return e};
 async function load(ep){try{const r=await fetch('scripts/'+ep+'.json');return r.ok?await r.json():null}catch{return null}}
 // Durations when a line has no recorded voice yet: long enough to read the caption comfortably.
+// The pause after a line, from the next line's acting: someone talking over cuts in before it ends, a line that
+// trails off (…) is answered at once, ordinary dialogue leaves about half a second, narration a little more.
+const gap=(b,next)=>{const d=(next&&next.direction||'').toLowerCase(),l=(b.line||'').trim();
+ if(next&&next.line&&/talking over|interrupt|cuts? in|cutting in/.test(d))return -.35;if(/(\.\.\.|…)$/.test(l))return .05;
+ if(!b.speaker)return .7;if(next&&!next.speaker)return .6;return .42};
 const readTime=(line,narr)=>!line?1.1:Math.max(narr?3:2.6,line.length*(narr?.062:.058)+(narr?1.6:1.3));
 function create(script){
  const screen=$('screen')||document.body,frame=$('frame'),start=$('start'),seen=new Set();
@@ -35,14 +40,20 @@ function create(script){
    const dl=el('dl');dl.append(el('dt',null,'What it kept'),el('dd',null,r.kept),el('dt',null,'What it cost'),el('dd',null,r.cost));card.append(dl);
    const other0=Object.keys(script.reflections).find(k=>k!==choice),o=script.reflections[other0];
    if(both&&o){const box=el('div','other');box.append(el('p','kicker','The other way: '+o.title.replace(/\.$/,'')));const odl=el('dl');odl.append(el('dt',null,'Kept'),el('dd',null,o.kept),el('dt',null,'Cost'),el('dd',null,o.cost));box.append(odl);card.append(box)}
+   if(r.lean)card.append(el('p','lean',r.lean==='people'?'This time you put the people in front of you first.':'This time you put the plan first: the structure, the promise, the clock.'));
    if(script.lesson)card.append(el('p','lesson',script.lesson));
    if(r.ask)card.append(el('p','ask',r.ask));
    const other=Object.keys(script.reflections).find(k=>k!==choice);
    card.append(el('p','hint',seen.has(other)?'You have seen both ways. Neither was the right answer; each kept something and spent something.':'There was another way. Try it, and compare what it keeps and what it costs.'));
    if(buttons){buttons.hidden=false;card.append(buttons)}
    card.hidden=false;card.focus({preventScroll:true});return true},
+  // The two actions at the decision, named where they are: what you'd do, not what will happen.
+  choices(items){frame.querySelector('.story-choices')?.remove();if(!items||!script.choices)return;const box=el('div','story-choices');box.setAttribute('aria-hidden','true');
+   for(const it of items){const c=script.choices[it.id];if(!c)continue;const g=el('div','choice');g.dataset.id=it.id;g.style.left=it.x*100+'%';g.style.top=it.y*100+'%';g.append(el('b',null,c.label),el('span',null,c.hint));box.append(g)}
+   frame.append(box)},
+  choiceOn(id){frame.querySelectorAll('.story-choices .choice').forEach(g=>g.classList.toggle('on',g.dataset.id===id))},
   hideReflection(){card.hidden=true},
   readTime};
 }
-root.StoryUI={load,create,readTime};
+root.StoryUI={load,create,readTime,gap};
 })(typeof window==='object'?window:globalThis);

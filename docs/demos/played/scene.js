@@ -98,7 +98,7 @@ function filmBeat(b,d){const c=camFor(b.stage),z=reduced?1:Math.min(1.35,c.zoom)
  b.frames.forEach(fr=>at(fr.at/1000,()=>pose(fr.asset)));b.lines.forEach(l=>at(l.at/1000,()=>say(l.who,l.text,l.id)))}
 function playBeats(list,part,then){let t=0;list.forEach((b,i)=>{
  if(b.black){const d=b.duration/1000;at(t,()=>{tw(S,'dim',.95,Math.min(.3,d/3));at(Math.max(.1,d-.3),()=>tw(S,'dim',0,.5))});t+=d;return}
- if(SCRIPT){const key='v2:'+part+'-'+i,v=buf[key],d=v?v.duration+(b.speaker?.75:1.1):StoryUI.readTime(b.line,!b.speaker);
+ if(SCRIPT){const key='v2:'+part+'-'+i,v=buf[key],d=v?Math.max(.6,v.duration+StoryUI.gap(b,list[i+1])):StoryUI.readTime(b.line,!b.speaker);
   at(t,()=>{shot(b.stage,d);(b.frames||[]).forEach(([ms,a])=>{if(ms>0)at(ms/1000,()=>pose(a))});if(b.line)say(b.speaker,b.line,v?key:null,d);if(SCENE_SOUND.at[b.stage])play('sfx:'+SCENE_SOUND.at[b.stage],.8);else if(/action/.test(b.stage))play('tap',.6)});t+=d;return}
  if(b.lines){const end=b.lines.reduce((m,l)=>Math.max(m,l.at/1000+(buf[l.id]?buf[l.id].duration+.7:(l.until-l.at)/1000)),0),d=Math.max(b.duration/1000,end);at(t,()=>filmBeat(b,d));t+=d;return}const d=Math.max(b.duration/1000,(b.speaker&&buf[cueId(part,i)]?buf[cueId(part,i)].duration+1.2:0));
  at(t,()=>{shot(b.stage,d);if(b.line)say(b.speaker,b.line,b.speaker?cueId(part,i):null);if(/action/.test(b.stage))play('tap',.6)});t+=d});at(t,then)}
@@ -107,10 +107,10 @@ function playBeats(list,part,then){let t=0;list.forEach((b,i)=>{
 let phase='start',choice=null,drag=null,hovered=null;
 const verb=a=>a.label.split(' ')[0].toLowerCase();
 function region(id){const r=REG[id];return{cx:r.x+r.w/2,cy:r.y+r.h/2,...r}}
-function hover(id){if(phase!=='decision')id=null;hovered=id;const w=$('word');if(!id){tw(S,'hovA',0,.25);w.style.opacity=0;if(phase==='decision')attend(null,0);return}
- attend(region(id).cx,1);
+function hover(id){if(phase!=='decision')id=null;hovered=id;const w=$('word');if(!id){tw(S,'hovA',0,.25);w.style.opacity=0;if(phase==='decision')attend(null,0);UI&&UI.choiceOn(null);return}
+ attend(region(id).cx,1);if(UI&&SCRIPT.choices){UI.choiceOn(id);w.style.opacity=0;tw(S,'hovA',1,.2);S.hov=[region(id).cx,region(id).cy,region(id).w/2+.008,region(id).h/2+.008,1];return}
  const r=region(id),a=story.choice.actions.find(a=>a.id===id);S.hov=[r.cx,r.cy,r.w/2+.008,r.h/2+.008,1];tw(S,'hovA',1,.2);w.textContent=verb(a);w.style.left=r.cx*100+'%';w.style.top=Math.min(.95,r.y+r.h+.04)*100+'%';w.style.opacity=1}
-function decision(){phase='decision';UI&&at(1.15,()=>{if(phase==='decision')UI.decide(true)});shot('choice',2);S.zoom=1;S.cen=[.5,.5];S.so=[0,0];S.so0=[0,0];
+function decision(){phase='decision';UI&&at(1.15,()=>{if(phase!=='decision')return;UI.decide(true);UI.choices(ACTS.map(id=>{const r=region(id),below=r.y+r.h+.015;return{id,x:Math.min(.86,Math.max(.14,r.cx)),y:below<.8?below:r.y-.14>.1?r.y-.14:r.y+r.h-.15}}))});shot('choice',2);S.zoom=1;S.cen=[.5,.5];S.so=[0,0];S.so0=[0,0];
  at(1.25,()=>{if(phase!=='decision'||reduced)return;heads=HEADS.map(([x,y,r],i)=>({x,y,r,dx:0,dy:0,bx:0,by:0,i}));S.warps=heads});
  for(const a of story.choice.actions){const b=document.createElement('button'),r=REG[a.id];b.className='obj rect';b.id='obj-'+a.id;b.setAttribute('aria-label',a.label+': '+a.description);
   Object.assign(b.style,{left:r.x*100+'%',top:r.y*100+'%',width:r.w*100+'%',height:r.h*100+'%'});$('objs').appendChild(b);
@@ -122,7 +122,7 @@ function decision(){phase='decision';UI&&at(1.15,()=>{if(phase==='decision')UI.d
   PlayedSupport.bindActivation(b,()=>commit(a.id),()=>{if(drag&&drag.id===a.id){drag=null;tw(S,offKey(a.id),[0,0],.3)}})}
  live('The decision is in front of you: '+story.choice.actions.map(a=>a.label).join(', or ')+'. Take your time.');setTimeout(()=>$('objs').querySelector('button')?.focus({preventScroll:true}),60)}
 const fp=e=>{const r=$('frame').getBoundingClientRect();return[(e.clientX-r.left)/r.width,(e.clientY-r.top)/r.height]};
-function commit(id){if(phase!=='decision')return;phase='consequence';UI&&UI.decide(false);choice=id;drag=null;hover(null);$('objs').innerHTML='';const r=region(id);
+function commit(id){if(phase!=='decision')return;phase='consequence';UI&&(UI.decide(false),UI.choices(null));choice=id;drag=null;hover(null);$('objs').innerHTML='';const r=region(id);
  attend(r.cx,1.5);// everyone looks at what you did
  if(layered){tw(S,offKey(id),MOVE[id]||[0,0],reduced?.1:.8);play('paper',.6)}if(GLOW[id]){S.lamp=[GLOW[id][0],GLOW[id][1],.001,0];tw(S,'lamp',GLOW[id],reduced?.1:.6)}// the object goes where you sent it, and stays while the consequence dissolves in
  else{if(!S.slide)S.slide=[r.x-.012,r.y-.012,r.x+r.w+.012,r.y+r.h+.012];tw(S,'so',[(.5-r.cx)*.06,(.5-r.cy)*.06],reduced?.1:.7)}play('tap',.7);

@@ -8,67 +8,351 @@
   "text": "Your team's paper pavilion has to open on camera in five hours: a canopy that spreads like a fan. One of its ribs keeps cracking. The glue needs from half past four to set, so there's one more try."
  },
  "cast": [
-  {"name": "Mara", "role": "cut a spare rib at midnight; her fellowship footage is due at noon", "at": [0.30, 0.10]},
-  {"name": "Julian", "role": "designed the pavilion; it's his rib that keeps failing", "at": [0.67, 0.12]}
+  {
+   "name": "Mara",
+   "role": "cut a spare rib at midnight; her fellowship footage is due at noon",
+   "at": [
+    0.3,
+    0.1
+   ]
+  },
+  {
+   "name": "Julian",
+   "role": "designed the pavilion; it's his rib that keeps failing",
+   "at": [
+    0.67,
+    0.12
+   ]
+  }
  ],
  "beats": {
-  "stable": {"plate": "performanceStable", "zoom": 1, "x": 50, "y": 50},
-  "buckle": {"plate": "performanceBuckle", "zoom": 1.08, "x": 62, "y": 52},
-  "table": {"plate": "performanceOffer", "zoom": 1, "x": 50, "y": 50},
-  "mara": {"plate": "offer", "zoom": 1, "x": 50, "y": 50},
-  "julian": {"plate": "julian", "zoom": 1, "x": 50, "y": 50},
-  "fatigue": {"plate": "fatigue", "zoom": 1, "x": 50, "y": 50},
-  "ren": {"plate": "left", "zoom": 1, "x": 50, "y": 50},
-  "brush": {"plate": "brush", "zoom": 1, "x": 50, "y": 50},
-  "grasp": {"plate": "performanceGraspSpare", "zoom": 1, "x": 50, "y": 50},
-  "rest": {"plate": "restOffer", "zoom": 1, "x": 50, "y": 50},
-  "workA": {"plate": "workA", "zoom": 1, "x": 50, "y": 50},
-  "morningA": {"plate": "morningA", "zoom": 1, "x": 50, "y": 50},
-  "payoffA": {"plate": "payoffA", "zoom": 1, "x": 50, "y": 50},
-  "brace": {"plate": "performanceBraceOriginal", "zoom": 1, "x": 50, "y": 50},
-  "offer": {"plate": "offer", "zoom": 1, "x": 50, "y": 50},
-  "workB": {"plate": "workB", "zoom": 1, "x": 50, "y": 50},
-  "morningB": {"plate": "morningB", "zoom": 1, "x": 50, "y": 50},
-  "payoffB": {"plate": "payoffB", "zoom": 1, "x": 50, "y": 50}
+  "stable": {
+   "plate": "performanceStable",
+   "zoom": 1,
+   "x": 50,
+   "y": 50
+  },
+  "buckle": {
+   "plate": "performanceBuckle",
+   "zoom": 1.08,
+   "x": 62,
+   "y": 52
+  },
+  "table": {
+   "plate": "performanceOffer",
+   "zoom": 1,
+   "x": 50,
+   "y": 50
+  },
+  "mara": {
+   "plate": "offer",
+   "zoom": 1,
+   "x": 50,
+   "y": 50
+  },
+  "julian": {
+   "plate": "julian",
+   "zoom": 1,
+   "x": 50,
+   "y": 50
+  },
+  "fatigue": {
+   "plate": "fatigue",
+   "zoom": 1,
+   "x": 50,
+   "y": 50
+  },
+  "ren": {
+   "plate": "left",
+   "zoom": 1,
+   "x": 50,
+   "y": 50
+  },
+  "brush": {
+   "plate": "brush",
+   "zoom": 1,
+   "x": 50,
+   "y": 50
+  },
+  "grasp": {
+   "plate": "performanceGraspSpare",
+   "zoom": 1,
+   "x": 50,
+   "y": 50
+  },
+  "rest": {
+   "plate": "restOffer",
+   "zoom": 1,
+   "x": 50,
+   "y": 50
+  },
+  "workA": {
+   "plate": "workA",
+   "zoom": 1,
+   "x": 50,
+   "y": 50
+  },
+  "morningA": {
+   "plate": "morningA",
+   "zoom": 1,
+   "x": 50,
+   "y": 50
+  },
+  "payoffA": {
+   "plate": "payoffA",
+   "zoom": 1,
+   "x": 50,
+   "y": 50
+  },
+  "brace": {
+   "plate": "performanceBraceOriginal",
+   "zoom": 1,
+   "x": 50,
+   "y": 50
+  },
+  "offer": {
+   "plate": "offer",
+   "zoom": 1,
+   "x": 50,
+   "y": 50
+  },
+  "workB": {
+   "plate": "workB",
+   "zoom": 1,
+   "x": 50,
+   "y": 50
+  },
+  "morningB": {
+   "plate": "morningB",
+   "zoom": 1,
+   "x": 50,
+   "y": 50
+  },
+  "payoffB": {
+   "plate": "payoffB",
+   "zoom": 1,
+   "x": 50,
+   "y": 50
+  }
  },
  "prompt": "One try left before the glue sets. Which rib gets it?",
  "setup": [
-  {"speaker": "", "line": "The canopy opens. A rib bends, the paper louvres catch, and the whole thing folds in on itself.", "stage": "stable", "frames": [[0, "performanceStable"], [1600, "performanceSlip"], [2400, "performanceBuckle"]]},
-  {"speaker": "Julian", "line": "Again. That's three times.", "stage": "buckle", "direction": "exhausted, flat, close to giving up"},
-  {"speaker": "Mara", "line": "The louvres catch every time that rib bends. It isn't going to hold, Julian.", "stage": "table", "direction": "steady, tired, gentle but honest"},
-  {"speaker": "Mara", "line": "I cut a spare at midnight, just in case. It'll fit in forty minutes.", "stage": "mara", "direction": "practical, a little guarded"},
-  {"speaker": "Mara", "line": "And I'll be straight with you. My fellowship application closes at noon. This test is my footage.", "stage": "mara", "direction": "honest about her own stake, slightly uncomfortable saying it"},
-  {"speaker": "Julian", "line": "I know. I just wanted to be here when my design moved. Not a copy of it.", "stage": "julian", "direction": "quiet, raw, almost a whisper"},
-  {"speaker": "", "line": "Julian rubs his eyes. He hasn't slept. He keeps hold of his pencil.", "stage": "fatigue"},
-  {"speaker": "Mara", "line": "Ren, you're leading this. I need your call.", "stage": "table", "direction": "direct, turning to you, waiting"},
-  {"speaker": "You", "line": "One try before the glue sets. Mara's spare, or we fix Julian's.", "stage": "ren", "direction": "quiet, weighing it, thinking aloud"}
+  {
+   "speaker": "",
+   "line": "The canopy opens. A rib bends, the paper louvres catch, and the whole thing folds in on itself.",
+   "stage": "stable",
+   "frames": [
+    [
+     0,
+     "performanceStable"
+    ],
+    [
+     1600,
+     "performanceSlip"
+    ],
+    [
+     2400,
+     "performanceBuckle"
+    ]
+   ]
+  },
+  {
+   "speaker": "Julian",
+   "line": "Again. That's three times.",
+   "stage": "buckle",
+   "direction": "exhausted, flat, close to giving up"
+  },
+  {
+   "speaker": "Mara",
+   "line": "The louvres catch every time that rib bends. It isn't going to hold, Julian.",
+   "stage": "table",
+   "direction": "steady, tired, gentle but honest"
+  },
+  {
+   "speaker": "Mara",
+   "line": "I cut a spare at midnight, just in case. It'll fit in forty minutes.",
+   "stage": "mara",
+   "direction": "practical, a little guarded"
+  },
+  {
+   "speaker": "Mara",
+   "line": "And I'll be straight with you. My fellowship application closes at noon. This test is my footage.",
+   "stage": "mara",
+   "direction": "honest about her own stake, slightly uncomfortable saying it"
+  },
+  {
+   "speaker": "Julian",
+   "line": "I know. I just wanted to be here when my design moved. Not a copy of it.",
+   "stage": "julian",
+   "direction": "quiet, raw, almost a whisper"
+  },
+  {
+   "speaker": "",
+   "line": "Julian rubs his eyes. He hasn't slept. He keeps hold of his pencil.",
+   "stage": "fatigue"
+  },
+  {
+   "speaker": "Mara",
+   "line": "Ren, you're leading this. I need your call.",
+   "stage": "table",
+   "direction": "direct, turning to you, waiting"
+  },
+  {
+   "speaker": "You",
+   "line": "One try before the glue sets. Mara's spare, or we fix Julian's.",
+   "stage": "ren",
+   "direction": "quiet, weighing it, thinking aloud"
+  }
  ],
  "branches": {
   "backup": [
-   {"speaker": "", "line": "You pick up Mara's spare.", "stage": "grasp", "frames": [[0, "performanceReachSpare"], [500, "performanceGraspSpare"]]},
-   {"speaker": "You", "line": "We'll use the spare. Julian, take a break. You've been up all night.", "stage": "rest", "direction": "gentle, caring, firm"},
-   {"speaker": "Julian", "line": "Yeah. Okay. Just keep my drawing out. Please.", "stage": "rest", "direction": "hurt but too tired to argue"},
-   {"speaker": "", "line": "Mara fits the clean rib while you hold it steady. Julian's cracked one lies on the table.", "stage": "workA"},
-   {"black": true, "duration": 900},
-   {"speaker": "Mara", "line": "There. It's moving.", "stage": "morningA", "direction": "relieved, almost laughing"},
-   {"speaker": "Julian", "line": "It moved.", "stage": "morningA", "direction": "small, mixed feelings"},
-   {"speaker": "You", "line": "On Mara's rib. Yours is still on the table.", "stage": "morningA", "direction": "honest, not hiding it"},
-   {"speaker": "Julian", "line": "I wanted to see mine move.", "stage": "morningA", "direction": "the hurt underneath, quietly"},
-   {"speaker": "You", "line": "Then that's our next test. Yours. Before we record, show me your drawing.", "stage": "payoffA", "direction": "warm, a real promise"},
-   {"speaker": "Mara", "line": "Start with the rib. Show us where it cracks.", "stage": "payoffA", "direction": "kind, leaning in"}
+   {
+    "speaker": "",
+    "line": "You pick up Mara's spare.",
+    "stage": "grasp",
+    "frames": [
+     [
+      0,
+      "performanceReachSpare"
+     ],
+     [
+      500,
+      "performanceGraspSpare"
+     ]
+    ]
+   },
+   {
+    "speaker": "You",
+    "line": "We'll use the spare. Julian, take a break. You've been up all night.",
+    "stage": "rest",
+    "direction": "gentle, caring, firm"
+   },
+   {
+    "speaker": "Julian",
+    "line": "Yeah. Okay. Just keep my drawing out. Please.",
+    "stage": "rest",
+    "direction": "hurt but too tired to argue"
+   },
+   {
+    "speaker": "",
+    "line": "Mara fits the clean rib while you hold it steady. Julian's cracked one lies on the table.",
+    "stage": "workA"
+   },
+   {
+    "black": true,
+    "duration": 900
+   },
+   {
+    "speaker": "Mara",
+    "line": "There. It's moving.",
+    "stage": "morningA",
+    "direction": "relieved, almost laughing"
+   },
+   {
+    "speaker": "Julian",
+    "line": "It moved.",
+    "stage": "morningA",
+    "direction": "small, mixed feelings"
+   },
+   {
+    "speaker": "You",
+    "line": "On Mara's rib. Yours is still on the table.",
+    "stage": "morningA",
+    "direction": "honest, not hiding it"
+   },
+   {
+    "speaker": "Julian",
+    "line": "I wanted to see mine move.",
+    "stage": "morningA",
+    "direction": "the hurt underneath, quietly"
+   },
+   {
+    "speaker": "You",
+    "line": "Then that's our next test. Yours. Before we record, show me your drawing.",
+    "stage": "payoffA",
+    "direction": "warm, a real promise"
+   },
+   {
+    "speaker": "Mara",
+    "line": "Start with the rib. Show us where it cracks.",
+    "stage": "payoffA",
+    "direction": "kind, leaning in"
+   }
   ],
   "repair": [
-   {"speaker": "", "line": "You reach for Julian's cracked rib and hold it steady.", "stage": "brace", "frames": [[0, "performanceReachOriginal"], [500, "performanceBraceOriginal"]]},
-   {"speaker": "You", "line": "Let's splint his. Together. Julian, show me where it gives.", "stage": "offer", "direction": "decisive, warm, inviting him in"},
-   {"speaker": "Mara", "line": "Then I need both of you on the canopy with me. Now.", "stage": "offer", "direction": "tense, swallowing her worry, getting on with it"},
-   {"speaker": "Julian", "line": "Hold it there. Don't let it twist.", "stage": "workB", "direction": "focused, suddenly awake and alive"},
-   {"speaker": "Mara", "line": "I've got it.", "stage": "workB", "direction": "concentrating"},
-   {"black": true, "duration": 900},
-   {"speaker": "Julian", "line": "It held.", "stage": "morningB", "direction": "wonder, disbelief"},
-   {"speaker": "Mara", "line": "Half of it. The other half still sticks.", "stage": "morningB", "direction": "dry, tired, honest"},
-   {"speaker": "You", "line": "That was my call. We'll show the jam on camera, and say what worked.", "stage": "payoffB", "direction": "owning it, steady"},
-   {"speaker": "Mara", "line": "Not the footage I wanted. But it's honest.", "stage": "payoffB", "direction": "disappointed, then generous"},
-   {"speaker": "Julian", "line": "I'll show them the seam.", "stage": "morningB", "direction": "quietly proud"}
+   {
+    "speaker": "",
+    "line": "You reach for Julian's cracked rib and hold it steady.",
+    "stage": "brace",
+    "frames": [
+     [
+      0,
+      "performanceReachOriginal"
+     ],
+     [
+      500,
+      "performanceBraceOriginal"
+     ]
+    ]
+   },
+   {
+    "speaker": "You",
+    "line": "Let's splint his. Together. Julian, show me where it gives.",
+    "stage": "offer",
+    "direction": "decisive, warm, inviting him in"
+   },
+   {
+    "speaker": "Mara",
+    "line": "Then I need both of you on the canopy with me. Now.",
+    "stage": "offer",
+    "direction": "tense, swallowing her worry, getting on with it"
+   },
+   {
+    "speaker": "Julian",
+    "line": "Hold it there. Don't let it twist.",
+    "stage": "workB",
+    "direction": "focused, suddenly awake and alive"
+   },
+   {
+    "speaker": "Mara",
+    "line": "I've got it.",
+    "stage": "workB",
+    "direction": "concentrating"
+   },
+   {
+    "black": true,
+    "duration": 900
+   },
+   {
+    "speaker": "Julian",
+    "line": "It held.",
+    "stage": "morningB",
+    "direction": "wonder, disbelief"
+   },
+   {
+    "speaker": "Mara",
+    "line": "Half of it. The other half still sticks.",
+    "stage": "morningB",
+    "direction": "dry, tired, honest"
+   },
+   {
+    "speaker": "You",
+    "line": "That was my call. We'll show the jam on camera, and say what worked.",
+    "stage": "payoffB",
+    "direction": "owning it, steady"
+   },
+   {
+    "speaker": "Mara",
+    "line": "Not the footage I wanted. But it's honest.",
+    "stage": "payoffB",
+    "direction": "disappointed, then generous"
+   },
+   {
+    "speaker": "Julian",
+    "line": "I'll show them the seam.",
+    "stage": "morningB",
+    "direction": "quietly proud"
+   }
   ]
  },
  "lesson": "Deadlines and ownership pull against each other. Whichever you choose, say out loud whose work you're putting first, and why.",
@@ -77,13 +361,25 @@
    "title": "You chose the spare.",
    "kept": "The deadline. The canopy moved on camera, and Mara has her footage.",
    "cost": "Julian's own design stayed on the table, and he wasn't the one who saw it move.",
-   "ask": "How will you make sure Julian's rib gets its test?"
+   "ask": "How will you make sure Julian's rib gets its test?",
+   "lean": "plan"
   },
   "repair": {
    "title": "You fixed his original, together.",
    "kept": "Julian's design, and what the team learned by fixing it.",
    "cost": "A canopy that only half works on camera, and Mara's best footage.",
-   "ask": "What do you owe Mara now?"
+   "ask": "What do you owe Mara now?",
+   "lean": "people"
+  }
+ },
+ "choices": {
+  "backup": {
+   "label": "Fit the spare",
+   "hint": "Mara’s clean rib, fitted in forty minutes."
+  },
+  "repair": {
+   "label": "Repair together",
+   "hint": "Splint Julian’s own cracked rib."
   }
  }
 }

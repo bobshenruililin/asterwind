@@ -8,35 +8,139 @@
   "text": "A paper city where a wave of your hand over a sensor makes a tower rise. It worked in rehearsal. Just now, it fired twice. A queue is already waiting outside."
  },
  "cast": [
-  {"name": "Dev", "role": "built the sensor; mortified it's glitching", "at": [0.27, 0.15]},
-  {"name": "Lio", "role": "promised visitors they could try it; has a perfect rehearsal recording", "at": [0.71, 0.16]},
-  {"name": "You", "role": "lead the team", "at": [0.09, 0.45]}
+  {
+   "name": "Dev",
+   "role": "built the sensor; mortified it's glitching",
+   "at": [
+    0.27,
+    0.15
+   ]
+  },
+  {
+   "name": "Lio",
+   "role": "promised visitors they could try it; has a perfect rehearsal recording",
+   "at": [
+    0.71,
+    0.16
+   ]
+  },
+  {
+   "name": "You",
+   "role": "lead the team",
+   "at": [
+    0.09,
+    0.45
+   ]
+  }
  ],
  "prompt": "The doors are opening. The real thing, or the reliable thing?",
  "setup": [
-  {"speaker": "", "line": "One minute to opening. A hand passes over the sensor. The tower should rise once.", "stage": "open"},
-  {"speaker": "Dev", "line": "Twice. Again. One hand, two triggers. I swear I fixed this last night.", "stage": "fault", "direction": "frustrated and embarrassed, almost laughing at himself"},
-  {"speaker": "Lio", "line": "There's a queue outside. I told them they could try it. We've got the rehearsal recording, though. It's perfect.", "stage": "reel", "direction": "anxious, talking fast, offering a way out"},
-  {"speaker": "Dev", "line": "I can stand by the reset all afternoon. But it might double again. Please don't tell them it's fixed.", "stage": "dev", "direction": "low, honest, a little ashamed"},
-  {"speaker": "You", "line": "I won't. Whatever we do, we tell them the truth about it.", "stage": "disclose", "direction": "calm, decisive"},
-  {"speaker": "", "line": "The door handle turns.", "stage": "choice"}
+  {
+   "speaker": "",
+   "line": "One minute to opening. A hand passes over the sensor. The tower should rise once.",
+   "stage": "open"
+  },
+  {
+   "speaker": "Dev",
+   "line": "Twice. Again. One hand, two triggers. I swear I fixed this last night.",
+   "stage": "fault",
+   "direction": "frustrated and embarrassed, almost laughing at himself"
+  },
+  {
+   "speaker": "Lio",
+   "line": "There's a queue outside. I told them they could try it. We've got the rehearsal recording, though. It's perfect.",
+   "stage": "reel",
+   "direction": "anxious, talking fast, offering a way out"
+  },
+  {
+   "speaker": "Dev",
+   "line": "I can stand by the reset all afternoon. But it might double again. Please don't tell them it's fixed.",
+   "stage": "dev",
+   "direction": "low, honest, a little ashamed"
+  },
+  {
+   "speaker": "You",
+   "line": "I won't. Whatever we do, we tell them the truth about it.",
+   "stage": "disclose",
+   "direction": "calm, decisive"
+  },
+  {
+   "speaker": "",
+   "line": "The door handle turns.",
+   "stage": "choice"
+  }
  ],
  "branches": {
   "live": [
-   {"speaker": "You", "line": "Dev, stay on the reset. Lio, one visitor at a time. I'll explain.", "stage": "live", "direction": "quick, clear instructions, steady"},
-   {"speaker": "You", "line": "This is a working prototype. Sometimes it counts twice and we have to reset. Still want a go?", "stage": "visitor-disclosure", "direction": "friendly, honest, inviting"},
-   {"speaker": "", "line": "The visitor waves. The tower springs up. Twice.", "stage": "repeat"},
-   {"speaker": "Dev", "line": "Sorry. That's the bug.", "stage": "repeat", "direction": "wincing, apologetic"},
-   {"speaker": "You", "line": "That's the one we're chasing. Want to reset it with Dev and go again?", "stage": "invite", "direction": "light, turning it into an invitation"},
-   {"speaker": "", "line": "", "stage": "reset-reach"},
-   {"speaker": "", "line": "The visitor helps reset. Second try: the tower rises once. They grin. Behind them, the queue has grown.", "stage": "ending-live"}
+   {
+    "speaker": "You",
+    "line": "Dev, stay on the reset. Lio, one visitor at a time. I'll explain.",
+    "stage": "live",
+    "direction": "quick, clear instructions, steady"
+   },
+   {
+    "speaker": "You",
+    "line": "This is a working prototype. Sometimes it counts twice and we have to reset. Still want a go?",
+    "stage": "visitor-disclosure",
+    "direction": "friendly, honest, inviting"
+   },
+   {
+    "speaker": "",
+    "line": "The visitor waves. The tower springs up. Twice.",
+    "stage": "repeat"
+   },
+   {
+    "speaker": "Dev",
+    "line": "Sorry. That's the bug.",
+    "stage": "repeat",
+    "direction": "wincing, apologetic"
+   },
+   {
+    "speaker": "You",
+    "line": "That's the one we're chasing. Want to reset it with Dev and go again?",
+    "stage": "invite",
+    "direction": "light, turning it into an invitation"
+   },
+   {
+    "speaker": "",
+    "line": "",
+    "stage": "reset-reach"
+   },
+   {
+    "speaker": "",
+    "line": "The visitor helps reset. Second try: the tower rises once. They grin. Behind them, the queue has grown.",
+    "stage": "ending-live"
+   }
   ],
   "rehearsal": [
-   {"speaker": "You", "line": "We're showing a recording from rehearsal. The live sensor isn't ready yet, and we'll tell you why.", "stage": "rehearsal", "direction": "clear, honest, a little apologetic"},
-   {"speaker": "", "line": "On the screen, the city rises perfectly. On the table, the real one stays still.", "stage": "playback"},
-   {"speaker": "Visitor", "line": "Oh. I wanted to try it myself.", "stage": "request", "direction": "disappointed, polite"},
-   {"speaker": "Dev", "line": "I'm sorry. I can show you how it works inside. It's just not ready for hands yet.", "stage": "limit", "direction": "sincere, eager to share the mechanism"},
-   {"speaker": "", "line": "The visitor leans in to look. The recording loops again.", "stage": "ending-rehearsal"}
+   {
+    "speaker": "You",
+    "line": "We're showing a recording from rehearsal. The live sensor isn't ready yet, and we'll tell you why.",
+    "stage": "rehearsal",
+    "direction": "clear, honest, a little apologetic"
+   },
+   {
+    "speaker": "",
+    "line": "On the screen, the city rises perfectly. On the table, the real one stays still.",
+    "stage": "playback"
+   },
+   {
+    "speaker": "Visitor",
+    "line": "Oh. I wanted to try it myself.",
+    "stage": "request",
+    "direction": "disappointed, polite"
+   },
+   {
+    "speaker": "Dev",
+    "line": "I'm sorry. I can show you how it works inside. It's just not ready for hands yet.",
+    "stage": "limit",
+    "direction": "sincere, eager to share the mechanism"
+   },
+   {
+    "speaker": "",
+    "line": "The visitor leans in to look. The recording loops again.",
+    "stage": "ending-rehearsal"
+   }
   ]
  },
  "lesson": "Telling the truth is non-negotiable either way. The real choice is which risk your team can carry: a failure in public, or a promise you can't keep today.",
@@ -45,13 +149,25 @@
    "title": "You opened the real thing.",
    "kept": "Participation and honesty: visitors touched the actual work, flaws and all.",
    "cost": "A glitch in public, a growing queue, and Dev on the spot all afternoon.",
-   "ask": "When would you stop the live demo, and who gets to call it?"
+   "ask": "When would you stop the live demo, and who gets to call it?",
+   "lean": "people"
   },
   "rehearsal": {
    "title": "You opened the reliable thing.",
    "kept": "A clean first showing, honestly labelled, and the team's nerve.",
    "cost": "The hands-on moment people came for. Lio's promise couldn't be kept today.",
-   "ask": "What will you promise about the live version, and how will you keep it?"
+   "ask": "What will you promise about the live version, and how will you keep it?",
+   "lean": "plan"
+  }
+ },
+ "choices": {
+  "live": {
+   "label": "Run it live",
+   "hint": "Visitors try the real one, glitch and all."
+  },
+  "rehearsal": {
+   "label": "Play the rehearsal",
+   "hint": "The perfect recording, labelled as one."
   }
  }
 }

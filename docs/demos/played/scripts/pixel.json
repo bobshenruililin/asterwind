@@ -9,32 +9,122 @@
   "text": "Your team built a paper city with a little train that visitors drive from a console. You mounted the console at standing height. Jo, a visiting design student who uses a wheelchair, has come to drive it herself."
  },
  "cast": [
-  {"name": "You", "role": "run the exhibit with Remy", "at": [0.10, 0.18]},
-  {"name": "Remy", "role": "built the console with you", "at": [0.62, 0.05]},
-  {"name": "Jo", "role": "visiting design student; came to try the exhibit, not to be helped", "at": [0.76, 0.22]}
+  {
+   "name": "You",
+   "role": "run the exhibit with Remy",
+   "at": [
+    0.1,
+    0.18
+   ]
+  },
+  {
+   "name": "Remy",
+   "role": "built the console with you",
+   "at": [
+    0.62,
+    0.05
+   ]
+  },
+  {
+   "name": "Jo",
+   "role": "visiting design student; came to try the exhibit, not to be helped",
+   "at": [
+    0.76,
+    0.22
+   ]
+  }
  ],
  "prompt": "Which controls will you put within Jo's reach?",
  "setup": [
-  {"speaker": "", "line": "The paper city hums. A little train waits at the station. The console that runs it sits at standing height.", "stage": "open"},
-  {"speaker": "Jo", "line": "Can I drive it? I want to send the train through the tunnel myself.", "stage": "jo", "direction": "keen, direct, friendly; a designer curious how it works"},
-  {"speaker": "Remy", "line": "Yes, of course. Sorry, we mounted it for people standing. That's on us.", "stage": "cost", "direction": "a little flustered, realising the flaw, owning it"},
-  {"speaker": "Remy", "line": "We can lower the console, but the train has to stop while we do it. Or I plug this small panel in beside you right now. Its switches are tiny, though.", "stage": "options", "direction": "practical, laying out both honestly"},
-  {"speaker": "Jo", "line": "Either's fine to try. Just let me do the driving, and I'll tell you if something doesn't work.", "stage": "agency", "direction": "clear and good-humoured, firm about who drives"},
-  {"speaker": "", "line": "Behind Jo, a few other visitors are waiting for their turn.", "stage": "difference"}
+  {
+   "speaker": "",
+   "line": "The paper city hums. A little train waits at the station. The console that runs it sits at standing height.",
+   "stage": "open"
+  },
+  {
+   "speaker": "Jo",
+   "line": "Can I drive it? I want to send the train through the tunnel myself.",
+   "stage": "jo",
+   "direction": "keen, direct, friendly; a designer curious how it works"
+  },
+  {
+   "speaker": "Remy",
+   "line": "Yes, of course. Sorry, we mounted it for people standing. That's on us.",
+   "stage": "cost",
+   "direction": "a little flustered, realising the flaw, owning it"
+  },
+  {
+   "speaker": "Remy",
+   "line": "We can lower the console, but the train has to stop while we do it. Or I plug this small panel in beside you right now. Its switches are tiny, though.",
+   "stage": "options",
+   "direction": "practical, laying out both honestly"
+  },
+  {
+   "speaker": "Jo",
+   "line": "Either's fine to try. Just let me do the driving, and I'll tell you if something doesn't work.",
+   "stage": "agency",
+   "direction": "clear and good-humoured, firm about who drives"
+  },
+  {
+   "speaker": "",
+   "line": "Behind Jo, a few other visitors are waiting for their turn.",
+   "stage": "difference"
+  }
  ],
  "branches": {
   "lower": [
-   {"speaker": "", "line": "You and Remy release the catches. The train stops mid-track, and the city goes quiet.", "stage": "pause"},
-   {"speaker": "Jo", "line": "Bit lower. There. That's it.", "stage": "height", "direction": "guiding, precise, relaxed"},
-   {"speaker": "Jo", "line": "Oh, I can feel the switch click. Watch this.", "stage": "works", "direction": "delighted, absorbed"},
-   {"speaker": "", "line": "The train swings back through the tunnel. Two visitors drifted away during the pause. Three more stay to watch Jo drive.", "stage": "ending-lower"}
+   {
+    "speaker": "",
+    "line": "You and Remy release the catches. The train stops mid-track, and the city goes quiet.",
+    "stage": "pause"
+   },
+   {
+    "speaker": "Jo",
+    "line": "Bit lower. There. That's it.",
+    "stage": "height",
+    "direction": "guiding, precise, relaxed"
+   },
+   {
+    "speaker": "Jo",
+    "line": "Oh, I can feel the switch click. Watch this.",
+    "stage": "works",
+    "direction": "delighted, absorbed"
+   },
+   {
+    "speaker": "",
+    "line": "The train swings back through the tunnel. Two visitors drifted away during the pause. Three more stay to watch Jo drive.",
+    "stage": "ending-lower"
+   }
   ],
   "connect": [
-   {"speaker": "", "line": "Remy plugs the small panel in beside Jo. The train answers straight away.", "stage": "plug"},
-   {"speaker": "Jo", "line": "It works. These little switches are fiddly, though. I can't feel when they've clicked.", "stage": "feedback", "direction": "pleased, then matter-of-fact about the problem"},
-   {"speaker": "You", "line": "That's really useful. Would you come back and test a better panel with us?", "stage": "request", "direction": "eager, well-meaning"},
-   {"speaker": "Jo", "line": "Ask me another time. Today I just came to see the show.", "stage": "boundary", "direction": "kind but firm; a clear boundary, not upset"},
-   {"speaker": "", "line": "Jo keeps driving. The show never stopped. The switches still don't click.", "stage": "ending-connect"}
+   {
+    "speaker": "",
+    "line": "Remy plugs the small panel in beside Jo. The train answers straight away.",
+    "stage": "plug"
+   },
+   {
+    "speaker": "Jo",
+    "line": "It works. These little switches are fiddly, though. I can't feel when they've clicked.",
+    "stage": "feedback",
+    "direction": "pleased, then matter-of-fact about the problem"
+   },
+   {
+    "speaker": "You",
+    "line": "That's really useful. Would you come back and test a better panel with us?",
+    "stage": "request",
+    "direction": "eager, well-meaning"
+   },
+   {
+    "speaker": "Jo",
+    "line": "Ask me another time. Today I just came to see the show.",
+    "stage": "boundary",
+    "direction": "kind but firm; a clear boundary, not upset"
+   },
+   {
+    "speaker": "",
+    "line": "Jo keeps driving. The show never stopped. The switches still don't click.",
+    "stage": "ending-connect"
+   }
   ]
  },
  "lesson": "Access works best when the person it's for decides how, and when it's built in from the start rather than fixed on the day.",
@@ -43,13 +133,25 @@
    "title": "You changed the main console.",
    "kept": "The same big controls everyone else uses, at the height Jo chose.",
    "cost": "The show stopped for a while, and some visitors left.",
-   "ask": "What would you mount differently before the next exhibition?"
+   "ask": "What would you mount differently before the next exhibition?",
+   "lean": "people"
   },
   "connect": {
    "title": "You added a second way in.",
    "kept": "No waiting: Jo drove straight away, and the show kept running.",
    "cost": "A fiddlier version of the exhibit. And asking her to test put work on a guest.",
-   "ask": "How can you ask for feedback without making someone your unpaid tester?"
+   "ask": "How can you ask for feedback without making someone your unpaid tester?",
+   "lean": "plan"
+  }
+ },
+ "choices": {
+  "lower": {
+   "label": "Lower the console",
+   "hint": "The big controls, at Jo’s height. The show stops."
+  },
+  "connect": {
+   "label": "Connect the panel",
+   "hint": "Small switches beside Jo, right now."
   }
  }
 }
