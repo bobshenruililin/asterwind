@@ -1,0 +1,195 @@
+{
+ "id": "standup",
+ "title": "The Quiet Minute",
+ "revision": "opus-2026-11-07",
+ "credit": "Built on Robert's preview rewrite (preview-stories-e4e6722). Lines and reflections revised for a first-time player.",
+ "intro": {
+  "kicker": "Student union · 9:40 pm · the room is booked until ten",
+  "text": "You chair the committee planning tomorrow's welcome walk for two hundred new students. Tonight the route has to be agreed. Theo has already decided what it is."
+ },
+ "cast": [
+  {
+   "name": "Nia",
+   "role": "walked the route today and found a problem",
+   "at": [
+    0.15,
+    0.06
+   ]
+  },
+  {
+   "name": "Theo",
+   "role": "designed the route and built the model; proud of it",
+   "at": [
+    0.5,
+    0.03
+   ]
+  },
+  {
+   "name": "Ellis",
+   "role": "has drawn another route; hasn't shown anyone",
+   "at": [
+    0.86,
+    0.05
+   ]
+  }
+ ],
+ "prompt": "Twenty minutes of room left. How will you make room for what you haven't heard?",
+ "setup": [
+  {
+   "id": "qm2-01",
+   "speaker": "Theo",
+   "line": "Main gate, the courtyard, then down to the harbour just as the lights come on. That's the moment. That's what they'll remember.",
+   "act": "theoSell",
+   "direction": "proud and warm, a little too fast, selling an idea he loves"
+  },
+  {
+   "id": "qm2-02",
+   "speaker": "Nia",
+   "line": "Theo, the courtyard gate...",
+   "act": "niaLean",
+   "direction": "careful, trying to get a word in"
+  },
+  {
+   "id": "qm2-03",
+   "speaker": "Theo",
+   "line": "Is a great photo stop, I know. Ten minutes there, tops.",
+   "act": "theoOver",
+   "direction": "cheerfully talking over her, not noticing"
+  },
+  {
+   "id": "qm2-04",
+   "speaker": "Nia",
+   "line": "No, I mean it's locked. After six. I checked today.",
+   "act": "niaFirm",
+   "direction": "quietly firm, slightly hurt at being talked over, trying to stay calm"
+  },
+  {
+   "id": "qm2-05",
+   "speaker": "Theo",
+   "line": "Security will open it if we ask. It'll be fine.",
+   "act": "theoHand",
+   "direction": "breezy, dismissive without meaning to be, hand staying on the model"
+  },
+  {
+   "id": "qm2-06",
+   "speaker": "",
+   "line": "Nia looks down at her map. Ellis has a folded sheet under one hand, and hasn't said a word all evening.",
+   "act": "ellisPencil"
+  },
+  {
+   "id": "qm2-07",
+   "speaker": "You",
+   "line": "Twenty minutes left, and I've only really heard one person.",
+   "act": "camBack",
+   "direction": "quiet, half to yourself, noticing"
+  }
+ ],
+ "branches": {
+  "round": [
+   {
+    "id": "qm2-r1",
+    "speaker": "You",
+    "line": "Let's go round once. One concern each, and nobody replies until everyone's spoken. Nia, you first.",
+    "direction": "calm, clear, gently firm"
+   },
+   {
+    "id": "qm2-r2",
+    "speaker": "Nia",
+    "line": "The courtyard gate locks at six. If we start there at half five, it's still open, and we're not stuck outside with two hundred people.",
+    "act": "niaHand",
+    "direction": "relieved to be heard, steadier and clearer now"
+   },
+   {
+    "id": "qm2-r3",
+    "speaker": "",
+    "line": "Theo opens his mouth, then remembers the rule. He waits.",
+    "act": "theoWait"
+   },
+   {
+    "id": "qm2-r4",
+    "speaker": "Ellis",
+    "line": "That's where mine starts, actually. The courtyard. But it never reaches the harbour. I know that's the part you love, Theo.",
+    "act": "ellisHand",
+    "direction": "hesitant, then braver; gentle with Theo"
+   },
+   {
+    "id": "qm2-r5",
+    "speaker": "Theo",
+    "line": "It is. Show me your first stop.",
+    "act": "theoNod",
+    "direction": "a beat of disappointment, then honest and open"
+   },
+   {
+    "id": "qm2-r6",
+    "speaker": "",
+    "line": "Someone knocks: the next group needs the room. Everyone has spoken. The route isn't finished, and the harbour is off the table for now.",
+    "act": "knock"
+   }
+  ],
+  "slips": [
+   {
+    "id": "qm2-s1",
+    "speaker": "You",
+    "line": "Everyone, write down one thing that worries you about tomorrow. No names. Then we'll read them together.",
+    "direction": "warm, practical"
+   },
+   {
+    "id": "qm2-s2",
+    "speaker": "",
+    "line": "Pens scratch. Theo writes one too. The slips come back: gate locked after six. Too crowded at the harbour. A different start?",
+    "act": "ellisSlip"
+   },
+   {
+    "id": "qm2-s3",
+    "speaker": "You",
+    "line": "So the courtyard's the problem. We drop it?",
+    "direction": "reading quickly, decisive, a little too fast"
+   },
+   {
+    "id": "qm2-s4",
+    "speaker": "Nia",
+    "line": "No, don't drop it. The courtyard's where I met my first friend here. I want them to see it. Just go there first.",
+    "act": "niaHand",
+    "direction": "stung, then open and honest; it matters to her"
+   },
+   {
+    "id": "qm2-s5",
+    "speaker": "You",
+    "line": "Sorry. I read that too fast. Courtyard first.",
+    "direction": "owning it simply"
+   },
+   {
+    "id": "qm2-s6",
+    "speaker": "",
+    "line": "Ellis unfolds the sheet at last. The route almost fits. One slip still says too crowded, and you don't know who wrote it."
+   }
+  ]
+ },
+ "lesson": "Fix the room, not just the person: the format you choose decides who gets heard.",
+ "reflections": {
+  "round": {
+   "title": "You gave every voice a turn.",
+   "kept": "Nia finished her point, and Ellis spoke for the first time all evening.",
+   "cost": "Time. The room ran out before a plan, and Theo's harbour finale is gone for now.",
+   "ask": "Who might still stay quiet, even in a round?",
+   "lean": "people"
+  },
+  "slips": {
+   "title": "You let people write before they spoke.",
+   "kept": "Everyone had a say without fighting for the floor, Theo included.",
+   "cost": "Writing loses tone. You misread Nia's note, and one worry has no owner.",
+   "ask": "How would you find whoever wrote 'too crowded'?",
+   "lean": "plan"
+  }
+ },
+ "choices": {
+  "round": {
+   "label": "Turn the table",
+   "hint": "Everyone speaks once, in turn. No replies yet."
+  },
+  "slips": {
+   "label": "Pass the slips",
+   "hint": "Everyone writes one worry first. Then you talk."
+  }
+ }
+}

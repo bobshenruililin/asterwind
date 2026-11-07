@@ -1,0 +1,21 @@
+/* Keep the full film composition; portrait uses the surrounding space for words and controls. */
+#screen{position:fixed;inset:0;margin:auto;width:min(100vw,177.78vh);height:min(100vh,56.25vw)}
+#frame{position:absolute;inset:0;margin:0;width:100%;height:100%}
+#chrome button,#end button{min-width:44px;min-height:44px;height:auto}
+.obj{min-width:44px;min-height:44px}
+#start:disabled{cursor:wait}
+#load-error{position:absolute;inset:12%;z-index:10;background:#151921f5;padding:24px;display:flex;flex-wrap:wrap;gap:16px;align-content:center;justify-content:center;text-align:center;font:18px/1.5 system-ui}
+#load-error p{width:100%;margin:0}
+#load-error button,#load-error a{font:inherit;color:#f3e7cf;border:1px solid #e9c27a;padding:10px 16px;min-height:44px;background:#263039;border-radius:6px}
+#load-error :focus-visible{outline:3px solid #ffdc8b;outline-offset:3px}
+@media(max-aspect-ratio:1/1){
+ html,body{overflow:auto;min-height:100%;height:auto}
+ #screen{position:relative;inset:auto;display:flex;flex-direction:column;width:100%;height:auto;min-height:100svh;margin:0;padding:64px 0 24px}
+ #frame{order:1;position:relative;inset:auto;flex:none;width:100%;height:56.25vw}
+ #chrome{position:absolute;inset:8px 12px auto auto;opacity:1}
+ #cap,#thought,#end{position:relative;inset:auto;transform:none;margin:18px auto 0;width:calc(100% - 32px);max-width:640px}
+ #cap{order:2;font-size:17px;line-height:1.4;min-height:0;text-shadow:none}
+ #thought{order:3;font-size:18px;line-height:1.4;text-align:center;text-shadow:none}
+ #end{order:4;justify-content:center;flex-wrap:wrap}
+ #load-error{position:relative;inset:auto;order:5;min-height:220px;margin:12px}
+}

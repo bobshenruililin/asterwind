@@ -1,0 +1,182 @@
+{
+ "id": "scope",
+ "title": "One More Chair",
+ "revision": "opus-2026-11-07",
+ "credit": "Built on Robert's preview rewrite (preview-stories-e4e6722). Lines and reflections revised for a first-time player.",
+ "intro": {
+  "kicker": "The student repair café · 5:30, Thursday, raining",
+  "text": "You're Ren, running tonight's session. The hall locks at six, sharp. Three repairs are booked and promised, including an umbrella its owner is collecting at 5:50. Then someone walks in off the street."
+ },
+ "cast": [
+  {
+   "name": "Inez",
+   "role": "finishing the last booked repair, a lamp",
+   "at": [
+    0.35,
+    0.19
+   ]
+  },
+  {
+   "name": "Bo",
+   "role": "mending an umbrella promised for 5:50",
+   "at": [
+    0.56,
+    0.17
+   ]
+  },
+  {
+   "name": "Sam",
+   "role": "soaked, bag split open; starts a work placement tomorrow at eight",
+   "at": [
+    0.88,
+    0.09
+   ]
+  }
+ ],
+ "prompt": "Thirty minutes, three promises, one torn bag. Do you make room for one more?",
+ "setup": [
+  {
+   "speaker": "",
+   "line": "Rain on the windows. Three booked repairs, thirty minutes left, then the caretaker locks the hall.",
+   "stage": "open"
+  },
+  {
+   "speaker": "Inez",
+   "line": "Lamp's nearly done. Umbrella's due at ten to six. We're tight, but we'll make it.",
+   "stage": "booked",
+   "direction": "busy, practical, a little breathless, eyes on the work"
+  },
+  {
+   "speaker": "Sam",
+   "line": "Sorry, are you still open? My bag split on the bus. I start my placement tomorrow at eight. I can't turn up holding everything in my arms.",
+   "stage": "arrival",
+   "direction": "embarrassed, out of breath, apologising for existing; anxious about tomorrow"
+  },
+  {
+   "speaker": "Bo",
+   "line": "I could sew that. But I promised this umbrella back at ten to six, and she's already on her way.",
+   "stage": "capacity",
+   "direction": "kind, torn, glancing at the clock"
+  },
+  {
+   "speaker": "Inez",
+   "line": "The library across the square lends bags until eight. I've never checked what they've got. And we could give Sam our first slot tomorrow, half five.",
+   "stage": "booked",
+   "direction": "helpful, thinking aloud, not sure it will work"
+  },
+  {
+   "speaker": "Sam",
+   "line": "I finish at five tomorrow. I could come back. I just... tonight would have been really good.",
+   "stage": "capacity",
+   "direction": "trying to be okay about it; small, disappointed"
+  },
+  {
+   "speaker": "You",
+   "line": "If we take the bag now, somebody else's promise slips. If we don't, Sam walks back out into the rain.",
+   "stage": "capacity",
+   "direction": "quiet, thinking aloud, feeling the weight of both"
+  }
+ ],
+ "branches": {
+  "extend": [
+   {
+    "speaker": "",
+    "line": "",
+    "stage": "chair-action"
+   },
+   {
+    "speaker": "You",
+    "line": "Sam, sit down, take this chair. Bo, you do the bag, you're faster. I'll finish the umbrella.",
+    "stage": "extend",
+    "direction": "decisive, warm, moving people"
+   },
+   {
+    "speaker": "Bo",
+    "line": "Here, quickly: back through the same hole. Slowly. Pull it tight, like this.",
+    "stage": "teach",
+    "direction": "patient but hurried, teaching while the clock runs",
+    "clip": "K4"
+   },
+   {
+    "speaker": "",
+    "line": "5:58. Sam's bag holds. The umbrella still has one open seam, and its owner is standing at the door.",
+    "stage": "late"
+   },
+   {
+    "speaker": "You",
+    "line": "I'm so sorry. That's my fault, not Bo's. Can I bring it to you tomorrow, finished?",
+    "stage": "own",
+    "direction": "owning it fully, apologetic, no excuses"
+   },
+   {
+    "speaker": "Sam",
+    "line": "Thank you. Really. I'll be okay tomorrow now.",
+    "stage": "ending-extend",
+    "direction": "quietly grateful, a little guilty"
+   }
+  ],
+  "return": [
+   {
+    "speaker": "",
+    "line": "",
+    "stage": "card-action"
+   },
+   {
+    "speaker": "You",
+    "line": "Sam, I can't promise you a repair that holds before six. Can we get you a library bag for tomorrow, and fix this properly on Friday at half five?",
+    "stage": "return",
+    "direction": "honest, kind, steady; not brushing Sam off"
+   },
+   {
+    "speaker": "Inez",
+    "line": "Here's the address. I'll ring them now and check they've got one.",
+    "stage": "offer",
+    "direction": "practical, already dialling"
+   },
+   {
+    "speaker": "Sam",
+    "line": "Okay. Yeah. I was hoping to leave with it fixed. But okay. Half five.",
+    "stage": "accepted",
+    "direction": "disappointed, then brave about it"
+   },
+   {
+    "speaker": "",
+    "line": "The umbrella is ready at ten to six. Every booked repair is done on time. Sam steps out into the rain, holding the bag shut with one hand.",
+    "stage": "time"
+   },
+   {
+    "speaker": "Bo",
+    "line": "I hope they've got a bag.",
+    "stage": "ending-return",
+    "direction": "soft, watching Sam go"
+   }
+  ]
+ },
+ "lesson": "Every yes to the person in front of you is paid for by someone, often someone who isn't in the room. Name who pays before you choose.",
+ "reflections": {
+  "extend": {
+   "title": "You made room for Sam.",
+   "kept": "Sam's first day. The bag is mended for tomorrow morning.",
+   "cost": "A promise to someone who wasn't there: the umbrella's owner left without it.",
+   "ask": "Who should you have asked before giving the umbrella's time away?",
+   "lean": "people"
+  },
+  "return": {
+   "title": "You kept the promises already made.",
+   "kept": "Three bookings, on time. The people who planned ahead got what they were told.",
+   "cost": "Sam went back into the rain with a torn bag, and a loan nobody has confirmed yet.",
+   "ask": "How would you make sure Sam's next step actually works tonight?",
+   "lean": "plan"
+  }
+ },
+ "choices": {
+  "extend": {
+   "label": "Pull in the spare chair",
+   "hint": "Take Sam’s bag now and shuffle the work."
+  },
+  "return": {
+   "label": "Offer the return-slot box",
+   "hint": "A library bag tonight; tomorrow’s first repair slot."
+  }
+ }
+}
