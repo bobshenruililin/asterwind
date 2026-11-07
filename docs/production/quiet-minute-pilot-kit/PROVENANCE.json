@@ -1,0 +1,70 @@
+{
+  "status": "pilot-candidate-empty-set-only",
+  "created": "2026-11-07",
+  "generator": "built-in image generation",
+  "model_identifier": "not exposed by the tool",
+  "repository": "bobshenruililin/asterwind",
+  "publication_base_commit": "1a4eaa3b6469875a470c779cdaa95d1af34284eb",
+  "brief": {
+    "path": "docs/SCENARIOS-2026-11-07.md",
+    "commit": "1a4eaa3b6469875a470c779cdaa95d1af34284eb",
+    "component": "Image 1: empty set"
+  },
+  "reference": {
+    "path": "docs/production/quiet-minute-style-auditions/02-quiet-minute-sculpted-miniature.png",
+    "branch": "collab/quiet-minute-style-auditions-20261106",
+    "commit": "d10d9eb955678ce09ceaf9367c7e380f15674b69",
+    "blob_sha": "c7988f85f39c8bd9a1b83613aa59e9fab7317896",
+    "sha256": "8584d8130b674c08234be50a78526afb93cbd71856592b2192df759fd59a71e5",
+    "role": "exact camera, room, material and light reference"
+  },
+  "generation_history": [
+    {
+      "take": 1,
+      "sha256": "c5625c811dbc56fc3e6392dfba3451823270ca7af017e3dc00fa83c3ad4c9364",
+      "selected": false,
+      "finding": "People and props removed; foreground chair rail omitted."
+    },
+    {
+      "take": 2,
+      "selected": true,
+      "finding": "One targeted correction restores the small foreground chair rail; no further postprocessing."
+    }
+  ],
+  "files": [
+    {
+      "path": "01-empty-set-v2.png",
+      "width": 1672,
+      "height": 941,
+      "mode": "RGB",
+      "bytes": 2549943,
+      "sha256": "5beadf3cdc968111b0389a84aa163a2b3a82b53e0719b9d92e34c66c6739f18b"
+    }
+  ],
+  "validated": [
+    "Selected PNG decodes",
+    "Canvas matches 1672 x 941 source",
+    "File size and SHA-256 recorded",
+    "Native composition visually inspected",
+    "All four people and movable story props absent",
+    "Three rear seats and partial foreground seat present",
+    "Relative documentation links and git diff whitespace checked"
+  ],
+  "registration": "Reference-guided generation, not pixel registered. Hidden surfaces reconstructed; grain, rain and small boundaries differ.",
+  "not_validated": [
+    "Character identity across expressions",
+    "Transparent layer edges",
+    "Hand/prop overlap in composite",
+    "Mouth animation or lip sync",
+    "Runtime hitboxes or rendered scene",
+    "Phone-size and portrait rendering",
+    "First-time-player clarity and emotion review",
+    "Whole-game build or browser regression"
+  ],
+  "browser_check": "Attempted, not run: bundled browser missing; system Chromium could not launch in the available local environment.",
+  "runtime_changed": false,
+  "existing_art_overwritten": false,
+  "merged": false,
+  "deployed": false,
+  "external_paid_generation_started": false
+}
