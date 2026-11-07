@@ -16,6 +16,10 @@ const REG={slides:{microphone:{x:.08,y:.53,w:.27,h:.30},notebook:{x:.60,y:.36,w:
 const MOVE={microphone:[.045,-.03],notebook:[-.02,.035],extend:[.07,.05],return:[-.02,-.04],lower:[0,.05],connect:[-.03,-.04],live:[.012,-.012],rehearsal:[0,0]};
 // Lio's hand rests on the projector, so it doesn't slide: playing the rehearsal lights its lens instead.
 const GLOW={rehearsal:[.79,.66,.10,.9]};
+// People at the decision (head x, y, radius on the choice plate): they breathe, turn towards whatever your hand is
+// near, and look at what you chose. Attention is visible before anyone speaks. (One More Chair's frame crops its heads.)
+const HEADS={slides:[[.29,.12,.06],[.85,.10,.06]],pixel:[[.645,.12,.05],[.78,.33,.06]],ship:[[.245,.26,.06],[.645,.28,.05]],seam:[[.27,.30,.07],[.64,.30,.07]]}[EP]||[];
+let heads=[];function attend(cx,k){for(const h of heads){const s=Math.sign(cx-h.x)||0;tw(h,'bx',cx==null?0:s*.004*k,.6);tw(h,'by',cx==null?0:.0014*k,.6)}}
 const NONE='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR4nGNgYGBgAAAABQABpfZFQAAAAABJRU5ErkJggg==';
 const ENTER={slides:'Take your seat',scope:'Come in',pixel:'Step up',ship:'Walk in',seam:'Pull up a stool'}[EP];
 // The Seam's film keeps its own format: each beat has a plate, a camera push, pose frames and lines at given times.
@@ -65,12 +69,12 @@ function say(who,text,voice){const c=$('cap');c.classList.toggle('narr',!who);c.
 /* ---- the film's camera, made physical: plate changes dissolve by depth, same-plate cuts become slow pushes ---- */
 function camFor(stageName){const b=art.beats[stageName]||art.beats.open||{};return{plate:b.plate||'master',zoom:b.zoom||1,cen:[(b.x??b.focus??50)/100,(b.y??50)/100]}}
 function shot(stageName,dur){const c=camFor(stageName),z=reduced?1:Math.min(1.35,c.zoom);
- if(stage.current!==c.plate){stage.toward(c.plate);S.zoomB=z;S.cenB=c.cen;tw(S,'mix',1,reduced?.2:1.1);at(reduced?.25:1.15,()=>{stage.settle();S.zoom=S.zoomB;S.cen=S.cenB.slice()})}
+ if(stage.current!==c.plate){stage.toward(c.plate);S.zoomB=z;S.cenB=c.cen;tw(S,'mix',1,reduced?.2:1.1);at(reduced?.25:1.15,()=>{stage.settle();S.zoom=S.zoomB;S.cen=S.cenB.slice();S.warps=[];heads=[]})}
  else{tw(S,'zoom',z,Math.min(2.2,dur*.7));tw(S,'cen',c.cen,Math.min(2.2,dur*.7))}}
 // The Seam's own beats: a plate (or a quick stop-motion run of pose frames), a slow camera push, lines at their times.
 function pose(a){if(stage.current===a)return;stage.toward(a);S.zoomB=S.zoom;S.cenB=S.cen.slice();S.mix=0;tw(S,'mix',1,reduced?.05:.16);at(reduced?.06:.18,()=>stage.settle())}
 function filmBeat(b,d){const c=camFor(b.stage),z=reduced?1:Math.min(1.35,c.zoom),fast=b.frames.length?.22:1.1;
- if(stage.current!==c.plate){stage.toward(c.plate);S.zoomB=z;S.cenB=c.cen;S.mix=0;tw(S,'mix',1,reduced?.2:fast);at((reduced?.2:fast)+.05,()=>{stage.settle();S.zoom=S.zoomB;S.cen=S.cenB.slice()})}
+ if(stage.current!==c.plate){stage.toward(c.plate);S.zoomB=z;S.cenB=c.cen;S.mix=0;tw(S,'mix',1,reduced?.2:fast);at((reduced?.2:fast)+.05,()=>{stage.settle();S.zoom=S.zoomB;S.cen=S.cenB.slice();S.warps=[];heads=[]})}
  else{tw(S,'zoom',z,.8);tw(S,'cen',c.cen,.8)}
  if(b.cam1&&!reduced&&(b.cam1[0]!==c.zoom||b.cam1[1]/100!==c.cen[0]||b.cam1[2]/100!==c.cen[1]))at(fast+.1,()=>{tw(S,'zoom',Math.min(1.35,b.cam1[0]),Math.max(.6,d-fast-.1));tw(S,'cen',[b.cam1[1]/100,b.cam1[2]/100],Math.max(.6,d-fast-.1))});
  b.frames.forEach(fr=>at(fr.at/1000,()=>pose(fr.asset)));b.lines.forEach(l=>at(l.at/1000,()=>say(l.who,l.text,l.id)))}
@@ -83,9 +87,11 @@ function playBeats(list,part,then){let t=0;list.forEach((b,i)=>{
 let phase='start',choice=null,drag=null,hovered=null;
 const verb=a=>a.label.split(' ')[0].toLowerCase();
 function region(id){const r=REG[id];return{cx:r.x+r.w/2,cy:r.y+r.h/2,...r}}
-function hover(id){if(phase!=='decision')id=null;hovered=id;const w=$('word');if(!id){tw(S,'hovA',0,.25);w.style.opacity=0;return}
+function hover(id){if(phase!=='decision')id=null;hovered=id;const w=$('word');if(!id){tw(S,'hovA',0,.25);w.style.opacity=0;if(phase==='decision')attend(null,0);return}
+ attend(region(id).cx,1);
  const r=region(id),a=story.choice.actions.find(a=>a.id===id);S.hov=[r.cx,r.cy,r.w/2+.008,r.h/2+.008,1];tw(S,'hovA',1,.2);w.textContent=verb(a);w.style.left=r.cx*100+'%';w.style.top=Math.min(.95,r.y+r.h+.04)*100+'%';w.style.opacity=1}
 function decision(){phase='decision';shot('choice',2);S.zoom=1;S.cen=[.5,.5];S.so=[0,0];S.so0=[0,0];
+ at(1.25,()=>{if(phase!=='decision'||reduced)return;heads=HEADS.map(([x,y,r],i)=>({x,y,r,dx:0,dy:0,bx:0,by:0,i}));S.warps=heads});
  for(const a of story.choice.actions){const b=document.createElement('button'),r=REG[a.id];b.className='obj rect';b.id='obj-'+a.id;b.setAttribute('aria-label',a.label+': '+a.description);
   Object.assign(b.style,{left:r.x*100+'%',top:r.y*100+'%',width:r.w*100+'%',height:r.h*100+'%'});$('objs').appendChild(b);
   b.addEventListener('pointerenter',()=>hover(a.id));b.addEventListener('pointerleave',()=>{if(!drag)hover(null)});b.addEventListener('focus',()=>hover(a.id));b.addEventListener('blur',()=>{if(!drag)hover(null)});
@@ -97,12 +103,13 @@ function decision(){phase='decision';shot('choice',2);S.zoom=1;S.cen=[.5,.5];S.s
  live('The decision is in front of you: '+story.choice.actions.map(a=>a.label).join(', or ')+'. Take your time.');setTimeout(()=>$('objs').querySelector('button')?.focus({preventScroll:true}),60)}
 const fp=e=>{const r=$('frame').getBoundingClientRect();return[(e.clientX-r.left)/r.width,(e.clientY-r.top)/r.height]};
 function commit(id){if(phase!=='decision')return;phase='consequence';choice=id;drag=null;hover(null);$('objs').innerHTML='';const r=region(id);
+ attend(r.cx,1.5);// everyone looks at what you did
  if(layered){tw(S,offKey(id),MOVE[id]||[0,0],reduced?.1:.8);play('paper',.6)}if(GLOW[id]){S.lamp=[GLOW[id][0],GLOW[id][1],.001,0];tw(S,'lamp',GLOW[id],reduced?.1:.6)}// the object goes where you sent it, and stays while the consequence dissolves in
  else{if(!S.slide)S.slide=[r.x-.012,r.y-.012,r.x+r.w+.012,r.y+r.h+.012];tw(S,'so',[(.5-r.cx)*.06,(.5-r.cy)*.06],reduced?.1:.7)}play('tap',.7);
  live('You '+story.choice.actions.find(a=>a.id===id).label.toLowerCase()+'.');
  at(reduced?.2:.9,()=>{if(!layered){S.slide=null;S.so=[0,0]}playBeats(story.branches[id],id,ending)})}
 function ending(){phase='end';$('end').hidden=false;$('again').focus({preventScroll:true});live(story.title+'. Again, or the other way.');if(!ending.sent){ending.sent=1;notify('completed',choice)}}
-function begin(){phase='setup';$('cap').querySelector('.line').textContent='';stage.show(camFor('open').plate);S.mix=0;S.zoom=1;S.cen=[.5,.5];S.dim=1;S.so=[0,0];S.so0=[0,0];S.slide=null;tw(S,'dim',0,2.2);
+function begin(){phase='setup';S.warps=[];heads=[];$('cap').querySelector('.line').textContent='';stage.show(camFor('open').plate);S.mix=0;S.zoom=1;S.cen=[.5,.5];S.dim=1;S.so=[0,0];S.so0=[0,0];S.slide=null;tw(S,'dim',0,2.2);
  playBeats(story.setup,'setup',decision)}
 $('again').onclick=()=>{$('end').hidden=true;cues.length=0;tws.length=0;begin()};
 $('other').onclick=()=>{$('end').hidden=true;cues.length=0;tws.length=0;const o=story.choice.actions.find(a=>a.id!==choice).id;stage.show(camFor('choice').plate);S.dim=0;S.zoom=1;S.cen=[.5,.5];decision();at(reduced?.1:.8,()=>commit(o))};
@@ -110,6 +117,7 @@ $('other').onclick=()=>{$('end').hidden=true;cues.length=0;tws.length=0;const o=
 /* ---- the frame ---- */
 const pointer={x:.5,y:.5};$('frame').addEventListener('pointermove',e=>{const [x,y]=fp(e);pointer.x=x;pointer.y=y});
 function frame(now){const dt=Math.min(.05,(now-last)/1000);last=now;if(!paused&&phase!=='start')step(dt);
+ for(const h of heads){h.dx=h.bx+Math.sin(T*1.3+h.i*2)*.0007;h.dy=h.by+Math.sin(T*.85+h.i*1.7)*.0011}// breathing, under the attention
  const lv=!reduced,look=lv?[(pointer.x-.5)*.6,(pointer.y-.5)*.35]:[0,0],br=lv?[Math.sin(T*.23)*.3,Math.sin(T*.17)*.15]:[0,0];S._c=S._c||[0,0];S._c[0]+=(look[0]+br[0]-S._c[0])*.06;S._c[1]+=(look[1]+br[1]-S._c[1])*.06;
  const keep=S.cam;S.cam=S._c;S.time=T;S.dof=lv?.004:0;stage.draw();S.cam=keep;
  if(T>capUntil&&$('cap').querySelector('.line').textContent){$('cap').querySelector('.line').textContent='';$('cap').querySelector('.who').textContent=''}requestAnimationFrame(frame)}
