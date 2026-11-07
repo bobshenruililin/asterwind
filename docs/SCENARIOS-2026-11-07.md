@@ -28,6 +28,20 @@
 
 The scripts are `docs/demos/played/scripts/<ep>.json`, one per story. The episode still owns the choice ids and outcomes, so completion, saves and the registry are unchanged. Without a script, a scene falls back to the film's own lines.
 
+### What I kept from Robert's preview, and what I changed
+
+**Kept:**
+- his briefing-card idea;
+- the clearer stakes in every setup;
+- his careful, two-sided reflections. None of them reads as a quiz.
+
+**Changed:**
+- **Briefings** became an intro plus who's who, tagged on the picture, because names alone didn't let a newcomer map voices to faces.
+- **Dialogue** moved from explaining the options ("The panel works straight away, but its switches are smaller") towards people wanting something. The options are still said, but by someone who cares.
+- **Reflections** went from five paragraphs (about 120 words) to four short parts (kept, cost, lesson, question), so they're read rather than skipped.
+- **The lesson** is the same for both choices, so neither looks like the answer.
+- **A narrator voice** reads the lesson.
+
 ### The lessons, one per story
 
 | Story | Lesson |
