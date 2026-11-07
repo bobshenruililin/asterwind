@@ -127,7 +127,7 @@ function commit(id){if(phase!=='decision')return;phase='consequence';UI&&UI.deci
  else{if(!S.slide)S.slide=[r.x-.012,r.y-.012,r.x+r.w+.012,r.y+r.h+.012];tw(S,'so',[(.5-r.cx)*.06,(.5-r.cy)*.06],reduced?.1:.7)}play('tap',.7);
  live('You '+story.choice.actions.find(a=>a.id===id).label.toLowerCase()+'.');
  at(reduced?.2:.9,()=>{if(!layered){S.slide=null;S.so=[0,0]}playBeats(story.branches[id],id,ending)})}
-function ending(){phase='end';if(UI&&UI.reflect(choice,$('end'))){live(story.title+'. '+SCRIPT.reflections[choice].title+' What it kept: '+SCRIPT.reflections[choice].kept+' What it cost: '+SCRIPT.reflections[choice].cost+' '+(SCRIPT.lesson||''))}else{$('end').hidden=false;$('again').focus({preventScroll:true});live(story.title+'. Again, or the other way.')}if(!ending.sent){ending.sent=1;notify('completed',choice)}}
+function ending(){phase='end';if(UI&&UI.reflect(choice,$('end'))){if(buf['v2:lesson'])at(1.2,()=>play('v2:lesson',.9));live(story.title+'. '+SCRIPT.reflections[choice].title+' What it kept: '+SCRIPT.reflections[choice].kept+' What it cost: '+SCRIPT.reflections[choice].cost+' '+(SCRIPT.lesson||''))}else{$('end').hidden=false;$('again').focus({preventScroll:true});live(story.title+'. Again, or the other way.')}if(!ending.sent){ending.sent=1;notify('completed',choice)}}
 function begin(){phase='setup';S.warps=[];heads=[];$('cap').querySelector('.line').textContent='';stage.show(camFor('open').plate);S.mix=0;S.zoom=1;S.cen=[.5,.5];S.dim=1;S.so=[0,0];S.so0=[0,0];S.slide=null;tw(S,'dim',0,2.2);
  playBeats(story.setup,'setup',decision)}
 $('again').onclick=()=>{$('end').hidden=true;UI&&UI.hideReflection();cues.length=0;tws.length=0;begin()};

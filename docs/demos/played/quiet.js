@@ -11,7 +11,7 @@ await Promise.all(Object.entries(PLATES).map(([k,f])=>stage.add(k,PL+f+'.webp','
 // Ellis's route close-ups (Robert's P2a/P2b) are review candidates until Bob approves them: ?p2=1 turns them on.
 // The played script (scripts/standup.json): who's who, the lines with their acting, the question and the reflections.
 const SCRIPT=window.StoryUI?await StoryUI.load('standup'):null,UI=SCRIPT?StoryUI.create(SCRIPT):null;
-const P2=new URLSearchParams(location.search).get('p2')==='1';let P2ready=false;
+const P2=new URLSearchParams(location.search).get('p2')!=='0';let P2ready=false;// Robert's corrected route (courtyard to open ground) is on by default; ?p2=0 turns the close look off.
 // The real objects (P0): a clean table with the platter, the tray and the hands as separate layers, so the platter
 // turns under Theo's hand and the tray slides with its own shadow. If they fail to load, the region warp stays.
 const LAYERS='plates/qm-layers/';let layered=false;
@@ -178,7 +178,7 @@ function commit(id){if(phase!=='decision')return;UI&&UI.decide(false);$('thought
    at(25,ending)}})}
 const Q=new URLSearchParams(location.search),SESSION=Q.get('session')||'standalone',EMBED=parent!==window;let reported=false;
 function notify(type,outcome){if(EMBED)parent.postMessage({channel:'asterwind.episode.v1',episodeId:'standup',session:SESSION,type,...(outcome?{outcome}:{})},'*')}
-function ending(){phase='end';if(UI&&UI.reflect(choice,$('end'))){const r=SCRIPT.reflections[choice];live('The Quiet Minute. '+r.title+' What it kept: '+r.kept+' What it cost: '+r.cost+' '+SCRIPT.lesson)}else{$('end').hidden=false;$('again').focus({preventScroll:true});live('The Quiet Minute. Again, or the other way.')}if(!reported){reported=true;notify('completed',choice)}}
+function ending(){phase='end';if(UI&&UI.reflect(choice,$('end'))){if(buf['v2:lesson'])at(1.2,()=>play('v2:lesson',.9));const r=SCRIPT.reflections[choice];live('The Quiet Minute. '+r.title+' What it kept: '+r.kept+' What it cost: '+r.cost+' '+SCRIPT.lesson)}else{$('end').hidden=false;$('again').focus({preventScroll:true});live('The Quiet Minute. Again, or the other way.')}if(!reported){reported=true;notify('completed',choice)}}
 $('again').onclick=()=>{$('end').hidden=true;UI&&UI.hideReflection();cues.length=0;tweens.length=0;peeked=false;T=0;$('cap').querySelector('.line').textContent='';begin()};
 $('other').onclick=()=>{$('end').hidden=true;UI&&UI.hideReflection();cues.length=0;tweens.length=0;const other=choice==='round'?'slips':'round';S.mix=0;toDecisionInstant(other)};
 function toDecisionInstant(other){phase='master';stage.show('master');toDecision();at(reduced?.4:2.4,()=>commit(other))}

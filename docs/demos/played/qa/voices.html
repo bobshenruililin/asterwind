@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Voice takes</title>
+<!-- Review page (not shipped): every scripted line's take, its acting direction, and what Whisper heard. -->
+<style>
+:root{--ink:#f3e7cf;--dim:#b9ae9a;--gold:#e9c27a;--bg:#0b0b10;--line:#ffffff1a}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,sans-serif}
+main{max-width:980px;margin:0 auto;padding:24px 16px 64px}h1{font:28px Georgia,serif;margin:.2em 0}h2{font:22px Georgia,serif;margin:1.6em 0 .4em;color:var(--gold)}
+p.lead{color:var(--dim);max-width:62em}
+.row{display:grid;grid-template-columns:7.5em 1fr 220px;gap:12px;align-items:center;padding:10px 0;border-top:1px solid var(--line)}
+.who{font-weight:600}.who small{display:block;font-weight:400;color:var(--dim)}
+.text{font:16px/1.45 Georgia,serif}.dir{display:block;color:var(--dim);font:italic 13px/1.4 system-ui;margin-top:3px}
+.heard{display:block;color:#9fb7a0;font-size:12.5px;margin-top:3px}.flag{color:#f0a070}
+audio{width:100%}
+@media(max-width:700px){.row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<main>
+<h1>Voice takes for the played scripts</h1>
+<p class="lead">These are scratch performances, rendered locally with Qwen3-TTS 1.7B CustomVoice (Apache-2.0) from each line's acting direction. Whisper checked each take's words; a flag means it drifted. They're meant to be heard against the old scratch voices below, then against Eleven v4 and our own recordings. Play them in the scene too: <a href="../scene.html?ep=slides" style="color:var(--gold)">the scenes</a> use these takes automatically.</p>
+<div id="old"></div>
+<div id="list">Loading…</div>
+</main>
+<script>
+(async function(){
+ const [man,rep,scripts]=await Promise.all([fetch('../voices/v2/manifest.json').then(r=>r.json()),fetch('voice-report.json').then(r=>r.ok?r.json():{}).catch(()=>({})),
+  Promise.all(['standup','slides','scope','pixel','ship','seam'].map(ep=>fetch('../scripts/'+ep+'.json').then(r=>r.json())))]);
+ const el=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e};
+ const row=(who,voice,text,dir,src,heard,flag)=>{const r=el('div','row');const w=el('div','who',who);if(voice)w.append(el('small',null,voice));
+  const t=el('div','text',text);if(dir)t.append(el('span','dir',dir));if(heard!=null){const h=el('span','heard'+(flag?' flag':''),(flag?'Check: ':'Heard: ')+heard);t.append(h)}
+  const a=src?Object.assign(el('audio'),{controls:true,preload:'none',src}):el('span','dir','not rendered yet');r.append(w,t,a);return r};
+ const old=document.getElementById('old');old.append(el('h2',null,'Before: the old scratch voices (Kokoro)'));
+ for(const [who,text,f] of [['Theo','Main gate, courtyard, then the harbour. Everyone happy?','qm-01'],['Nia','The courtyard gate closes—','qm-02'],['Nia','We arrive after it closes.','qm-04'],['Asha','They won’t know where the map came from.','slides-setup-3']])
+  old.append(row(who,'kokoro',text,null,'../voices/'+f+'.mp3'));
+ const list=document.getElementById('list');list.textContent='';
+ for(const s of scripts){const ep=s.id,m=man[ep]||{},rp=rep[ep]||{};list.append(el('h2',null,s.title));
+  const lines=s.id==='standup'?[...s.setup,...Object.values(s.branches).flat()].map(b=>[b.id,b]):[...s.setup.map((b,i)=>['setup-'+i,b]),...Object.entries(s.branches).flatMap(([k,v])=>v.map((b,i)=>[k+'-'+i,b]))];
+  if(s.lesson)lines.push(['lesson',{speaker:'',line:s.lesson,direction:'the lesson, read as the reflection opens'}]);
+  for(const [key,b] of lines){if(!b.line)continue;const r=rp[key];list.append(row(b.speaker||'Narrator',r?r.voice:'',b.line,b.direction,m[key]?'../voices/v2/'+m[key]:null,r?r.heard:null,r&&r.flag))}}
+})();
+</script>
+</body>
+</html>

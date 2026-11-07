@@ -42,6 +42,7 @@ def lines(ep, s):
     else:
         for part in ['setup', *s['branches']]:
             for i, b in enumerate(s['setup'] if part == 'setup' else s['branches'][part]): yield f'{part}-{i}', b
+    if s.get('lesson'): yield 'lesson', {'speaker': '', 'line': s['lesson']}  # the narrator reads it as the reflection opens
 
 
 def main(eps):
@@ -56,6 +57,7 @@ def main(eps):
         for key, b in lines(ep, s):
             text = (b.get('line') or '').strip()
             if not text or b.get('black'): continue
+            if man[ep].get(key) and (OUT / ep / f'{key}.mp3').exists() and '--redo' not in sys.argv: continue  # keep existing takes
             who = b.get('speaker') or ''; voice = CAST.get(ep, {}).get(who) or CAST['*'].get(who) or 'aiden'
             ins = NARRATOR if not who else (b.get('direction') or 'natural, sincere').rstrip('.') + '.' + HUMAN
             best = None
@@ -80,4 +82,4 @@ def main(eps):
 
 
 if __name__ == '__main__':
-    main(sys.argv[1:] or ['standup', 'slides', 'scope', 'pixel', 'ship', 'seam'])
+    main([a for a in sys.argv[1:] if not a.startswith('--')] or ['standup', 'slides', 'scope', 'pixel', 'ship', 'seam'])
