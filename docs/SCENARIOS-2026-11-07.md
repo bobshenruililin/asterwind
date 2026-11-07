@@ -67,6 +67,10 @@ The scripts are `docs/demos/played/scripts/<ep>.json`, one per story. The episod
   - a calm storyteller for narration.
 - **Checked every take:** a speech recogniser (Whisper small.en) must hear the scripted words. A take that drifts is re-rendered once, then flagged.
 - **Report:** `docs/demos/played/qa/voice-report.json` lists every line with its voice, direction, what was heard, and word error.
+- **Result:** 122 takes and 11.7 minutes, all six stories plus the narrated lessons.
+  - Three slipped consonants were re-rendered.
+  - Inez is recast to the clearer voice.
+  - The remaining flags are recogniser artefacts (too/two, wanna), still worth one human listen.
 
 **What I can and can't say:**
 - **I can't listen.** I can only measure.

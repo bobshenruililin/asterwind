@@ -1,6 +1,6 @@
 # Current handoff (keep this short and current)
 
-Updated 7 November 2026 by Opus. Branch `claude/awesome-hypatia-6bf97q`.
+Updated 7 November 2026 by Opus. Branch `claude/awesome-hypatia-6bf97q`, checked at `5060122`.
 
 ## Play
 
@@ -23,7 +23,7 @@ Serve the repository root with `python3 -m http.server 8000`, then open:
   - a reflection: what the choice kept, what it cost, one lesson for either choice, and a question.
 
   *Again* and *The other way* sit in the reflection. Choice ids and outcomes are unchanged.
-- **Voices:** directed scratch takes (`voices/v2/`) for the new lines, rendered locally with Qwen3-TTS and checked with Whisper (`qa/voice-report.json`). The narrator reads each lesson as the reflection opens.
+- **Voices:** all six stories are voiced with directed scratch takes (`voices/v2/`): 122 takes and 11.7 minutes, including each story's lesson read by the narrator. They were rendered locally with Qwen3-TTS and checked with Whisper (`qa/voice-report.json`). `?voices=eleven` will switch a scene to Eleven v4 takes once they exist.
 - **Sound:** ready to drop in. CC0 picks are in `sound-shortlist.json`; `fetch-sounds.py` runs on a laptop, because Freesound refuses this cloud session.
 - **Ellis's corrected route (Robert):** the close look is on by default in The Quiet Minute.
 - **Earlier the same day:**
@@ -50,6 +50,7 @@ Read `docs/SCENARIOS-2026-11-07.md` for the reasoning, the six lessons, the voic
   - `node docs/demos/played/qa/layers.cjs <out>`: object layers;
   - `node docs/demos/played/qa/night-v2.cjs <out>`: the draft night, including *Begin again*;
   - `node docs/demos/played/qa/keyboard.cjs <out>`;
+  - `node docs/demos/played/qa/story-phone.cjs <out>`: portrait phone;
   - the integrated night's `qa/night.cjs`, `qa/keyboard.cjs` and `qa/audio-browser.cjs`.
 
 ## Needs human review
