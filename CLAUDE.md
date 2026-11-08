@@ -1,5 +1,9 @@
 # Asterwind: Claude project entrypoint
 
+## Current production direction — 8 November 2026
+
+For the Pear-quality production pass, read [the ambition and release handoff](docs/AMBITION-HANDOFF-2026-11-08.md) and [the current project state](docs/HANDOFF-CURRENT.md) before using historical implementation notes. This is the current creative target; the older layout-only scope below is historical for that pass. Preserve the durable technical, editorial, and access constraints. Verify actual skill availability, current source, and the release process.
+
 Read [AGENTS.md](AGENTS.md) first. It is the canonical film-first design guidance; do not replace it with a generic web-app aesthetic.
 
 For Opus frontend work, read [the current handoff](docs/OPUS-HANDOFF.md). It distinguishes the six-story anthology from the preserved nine-scenario source app and corrects older single-film descriptions.
