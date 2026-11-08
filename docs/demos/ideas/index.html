@@ -1,0 +1,78 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Asterwind ideas lab</title><link rel="stylesheet" href="lab.css">
+<style>
+.hero{max-width:820px;margin:28px auto 0;padding:0 4px}
+.hero h1{margin:.1em 0 .3em;font:400 clamp(34px,5vw,58px) Georgia,serif}
+.hero p{color:#d8ccb5;font-size:17px}
+.verbs{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 4px}.verbs span{font:13px system-ui;border:1px solid #e9c27a55;border-radius:999px;padding:.25em .7em;color:#ffe2a0}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(360px,100%),1fr));gap:18px;margin-top:26px}
+.idea{background:#101017;border:1px solid #ffffff1a;border-radius:6px;overflow:hidden;display:flex;flex-direction:column}
+.idea a.pic{display:block;position:relative}.idea img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover}
+.idea .num{position:absolute;left:10px;top:10px;font:700 12px system-ui;background:#000a;color:var(--gold);padding:.3em .6em;border-radius:3px;letter-spacing:.1em}
+.idea .body{padding:14px 16px 16px;display:flex;flex-direction:column;gap:6px;flex:1}
+.idea h2{margin:0;font:400 23px Georgia,serif}.idea h2 a{color:var(--ink);text-decoration:none}
+.idea .verb{font:600 11px system-ui;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
+.idea p{margin:0;color:#cfc4ae;font-size:15px}
+.idea .v{margin-top:auto;padding-top:8px;border-top:1px solid #ffffff14;color:var(--dim);font-size:14px}
+.idea .v b{color:#9fd3a8;font:600 12px system-ui;letter-spacing:.1em;text-transform:uppercase}
+.idea .v b.mid{color:#e9c27a}
+.idea .play{align-self:flex-start;margin-top:6px;font:14px system-ui;color:#ffe2a0;text-decoration:none;border:1px solid #e9c27a88;border-radius:3px;padding:.45em 1em}
+section.more{max-width:820px;margin:40px auto 0;padding:0 4px}
+section.more h2{font:400 28px Georgia,serif;margin:.2em 0 .4em}
+section.more li{margin:.45em 0;color:#cfc4ae}section.more li b{color:var(--ink)}
+.rec{background:#e9c27a12;border-left:3px solid var(--gold);padding:14px 18px;margin-top:10px}
+footer{max-width:820px;margin:40px auto 0;padding:0 4px 40px;color:#8d8577;font:13px system-ui}
+</style></head><body>
+<div class="bar"><a href="../../../">← The game</a><b>Ideas lab</b><span class="sp"></span><span>8 November 2026 · Opus</span></div>
+<div class="wrap">
+<div class="hero">
+ <p class="k2">Step back</p>
+ <h1>What if leading were the controls?</h1>
+ <p>The game today asks one question six times: here are two objects, which one? It teaches that every choice keeps something and costs something, and that’s worth keeping. But the more we added around that one question (corridor, bottles, intros, labels, reflections, notebook), the more it became a labyrinth around a single verb.</p>
+ <p>Real leading is made of smaller verbs, and each one can be a control a player feels in their hands. These are ten attempts, each built tonight as a short playable sketch with our own art, voices and stories. Each makes one verb the whole interaction, so you learn it by doing it, not by being told.</p>
+ <div class="verbs"><span>listen</span><span>ask</span><span>say it</span><span>hand over</span><span>see from their chair</span><span>keep at it</span><span>hold to your word</span><span>argue the other side</span><span>make room</span><span>hear back</span></div>
+</div>
+<div class="grid" id="grid"></div>
+<section class="more">
+ <h2>If I folded three of these into the game</h2>
+ <div class="rec">
+ <p><b>One verb per story.</b> Keep the six stories and the night, but give each story its own control instead of the same two-object choice:</p>
+ <ul>
+  <li>listening in <i>The Quiet Minute</i>;</li>
+  <li>asking in <i>One More Chair</i>;</li>
+  <li>holding the room in <i>The Missing Name</i>;</li>
+  <li>saying it in <i>The 3:00 AM Seam</i>.</li>
+ </ul>
+ <p>The decision still lands, but each story teaches a different skill, and the night stops feeling like the same puzzle six times.</p>
+ <p><b>End on notes, not a summary.</b> At dawn, the people you led leave notes (idea 10), next to your rule card if you wrote one at the start (idea 7).</p>
+ <p><b>A seminar mode.</b> “Two players, one call” (idea 8) for CCGL classes. It needs no new art.</p>
+ </div>
+ <h2 style="margin-top:28px">Not built tonight</h2>
+ <ul>
+  <li><b>The ripple.</b> One cast across the night, so your choices come back. Sam turns up at the exhibit; Mara remembers the 3 am call when Asha needs a slot.</li>
+  <li><b>The empty chair.</b> Every scene has a seat for the person who isn’t there (Mrs Okafor, the queue outside), and you can sit in it.</li>
+  <li><b>Rewind, remembered.</b> You can go back and choose again, but the characters remember that you did.</li>
+  <li><b>Say it aloud.</b> Speak your sentence to Julian with the microphone instead of picking strips. It’s powerful, but accuracy and privacy need care first.</li>
+ </ul>
+</section>
+<footer>Every sketch runs offline from the repository’s own files: no frameworks, no network. The art and voices are the game’s. The Empty Square is left out of these sketches until its lived-experience review.</footer>
+</div>
+<script src="lab.js"></script>
+<script>
+const I=[
+ ['01-listen','Who you listen to','listen','Everyone talks at once; you hear only the person you look at. Ellis speaks only while someone is listening. The ending shows what you heard, and what you missed.','strong','The most original of the ten, and the one that most changes how the Quiet Minute feels. It needs overlapping voice takes and is best with headphones.'],
+ ['02-ask','Ask before you act','ask','Three questions’ worth of time before you decide. The best options only appear if you asked the right person, and the ending lists exactly what you didn’t know.','strong','Cheap and very teachable. Finding a third option feels like discovery, not a quiz. Mostly text so far; voiced answers would lift it.'],
+ ['03-say','Say it','say it','The decision is the easy part. You build what you say to Julian or Mara from paper strips, and they react to how you said it: “I’m choosing” lands differently from “we have to”.','strong','Sharp and classroom-ready. The weaker strips are deliberately plausible, so it doesn’t read as a right-answer quiz.'],
+ ['04-pen','Hand over the pen','hand over','One good marker, four parts of a poster, a minute on the clock. You’re decent at everything, which is exactly why it’s hard to let go.','mid','The metaphor lands and the poster is fun to watch fill up. Once you see the best strategy it’s solved, so it’s better as a one-minute warm-up than a story.'],
+ ['05-chair','Sit in their chair','see from their chair','The same voiced minute, replayed from Ellis’s, Nia’s and Theo’s seats, with what each of them is thinking but not saying.','strong','Moving, and almost free: it reuses the voiced minute we already have. A natural replacement for “the other way” after a story.'],
+ ['06-week','The week (pixel)','keep at it','A tiny pixel studio. Four working days, four people with needs you can’t see, three small moves a day. Friday shows which of your habits suited whom.','mid','The most “game” of the ten and the most replayable, with full control over every pixel. It’s a different game from ours, though; it would mean a new art direction and a lot of balancing.'],
+ ['07-rule','Your rule','hold to your word','Before the night, write the team’s rule. Six moments from our stories test it, and the card collects stamps, including where you broke it.','strong','A good frame for a course on values. It could wrap the whole night: choose a rule at the start, see the stamps at dawn.'],
+ ['08-two','Two players, one call','argue the other side','For a seminar: two people decide in secret on one device, reveal, then either argue for the other’s choice or find the cost they both skipped.','strong','Needs zero new art and uses the stories’ scripts as they are. The learning is the conversation; the game just sets it up.'],
+ ['09-pause','Hold the room','make room','One button. Kit is on a roll; Asha is trying to speak. Hold the room on her breath, not before and not too long.','strong','Novel, and works with one thumb on a phone. Real voices with audible breaths would make it sing; the timing needs tuning.'],
+ ['10-notes','Notes from the team','hear back','The morning after, the people you led pin notes to a board: thanks and complaints side by side. Uses your real choices if you’ve played the game in this browser.','strong','The most emotional ending we have. Cheap to fold into dawn. Jo’s note waits for the lived-experience review.'],
+ ['11-pixel','Pixel, on our own scenes','(style test)','A live filter over our paper scenes: pixel size, palette and dither, split against the original. Drag across to compare.','mid','The world still reads at “Fine” and “Game”. But the paper texture, which is our identity, is the first thing to go. Real pixel art has to be drawn, not filtered.']];
+const G=document.getElementById('grid');
+for(const [id,title,verb,what,v,verdict] of I){const n=id.slice(0,2);const c=Lab.el('article','idea');
+ c.innerHTML=`<a class="pic" href="${id}.html"><img src="thumbs/${id}.webp" alt="" loading="lazy"><span class="num">${n}</span></a><div class="body"><span class="verb">${verb}</span><h2><a href="${id}.html">${title}</a></h2><p>${what}</p>
+ <a class="play" href="${id}.html">Try it</a><p class="v"><b class="${v==='strong'?'':'mid'}">${v==='strong'?'Worth building':'Worth knowing'}</b> · ${verdict}</p></div>`;G.append(c)}
+</script></body></html>

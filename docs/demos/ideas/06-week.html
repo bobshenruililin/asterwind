@@ -1,0 +1,102 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The week · Asterwind ideas</title><link rel="stylesheet" href="lab.css">
+<style>
+.px{position:relative;width:100%;aspect-ratio:16/9;background:#000;border-radius:3px;overflow:hidden}
+.px canvas{position:absolute;inset:0;width:100%;height:100%;image-rendering:pixelated;image-rendering:crisp-edges;cursor:pointer}
+.hud{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:12px;font:14px system-ui;color:var(--dim)}
+.hud b{color:var(--ink);font:600 17px Georgia,serif}
+.moves,.people{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.mv,.pp{background:#12121a;border:1px solid #ffffff22;border-radius:4px;padding:.5em .8em;color:var(--ink);min-height:44px;text-align:left}
+.mv small,.pp small{display:block;font:12px system-ui;color:var(--dim)}
+.mv.on,.pp.on{border-color:var(--gold);box-shadow:0 0 0 2px #e9c27a44}.mv:disabled,.pp:disabled{opacity:.4}
+.log{margin-top:10px;min-height:3em;font:15px/1.5 Georgia,serif;color:var(--ink)}
+.log p{margin:.2em 0}
+</style></head><body>
+<div class="bar"><a href="./">← Ideas</a><b>6 · The week (pixel)</b><span class="sp"></span><button id="restart">Restart</button></div>
+<div class="wrap">
+<div class="px" id="px"><canvas id="cv" width="240" height="135"></canvas><div class="panel" id="panel"><div class="box"></div></div></div>
+<div class="hud"><b id="day">Monday</b><span id="left"></span><span class="sp" style="flex:1"></span><button class="mv" id="next" hidden>End the day</button></div>
+<div class="moves" id="moves"></div><div class="people" id="people"></div><div class="log" id="log" aria-live="polite"></div>
+<div class="why"><b>The idea.</b> Leadership as twelve small moves instead of one big choice, in a tiny pixel studio. Everyone has a need you can’t see: the same thank-you that lifts Kit drains Asha. Nothing tells you which move is right. You find out on Friday, and the ending says which of your habits suited which person. It’s also the honest pixel-art test: hand-placed pixels, every frame under our control.</div>
+</div>
+<script src="lab.js"></script>
+<script>
+const C={wall:'#2b2442',wall2:'#352c52',trim:'#1d1830',floor:'#5a3e35',floor2:'#4b332c',desk:'#7c4f34',deskT:'#a46d48',win:'#16223f',winL:'#2c3f6a',gold:'#e9c27a',cream:'#efe4cc',ink:'#1a1420',
+ skin:'#e6b08a',skin2:'#b97c56',red:'#c0533a',green:'#8fd19a',teal:'#3f7f7a',rust:'#b5543a',olive:'#6f6d3a',blue:'#4a6fa5',dark:'#2a1f1f',brown:'#5b3a29',grey:'#8b8697',leaf:'#4f8a4c'};
+/* 12x14 sprites: h hair, s skin, e eye, c shirt, g glasses, k skin shade */
+const BASE=['............','............','...ssssss...','..ssssssss..','..sesssses..','..ssssssss..','...skkkks...','....ssss....','..cccccccc..','.cccccccccc.','.cccccccccc.','.sccccccccs.','.s........s.','............'];
+const HAIR={asha:['...hhhhhh...','..hhhhhhhh..','.hhhhhhhhhh.','.hh......hh.','.hh......hh.','.hh......hh.'],
+ kit:['..h.hh.hh...','.hhhhhhhhhh.','.hhhhhhhhhh.','.h........h.','..gggggggg..'],dev:['.h.h.h.h.h..','.hhhhhhhhhh.','.hhhhhhhhhh.','.hh......hh.'],
+ inez:['....hhhh....','...hhhhhh...','..hhhhhhhh..','..hh....hh..']};
+const P=[{id:'asha',name:'Asha',part:'the map',shirt:C.teal,hair:C.dark,x:40},{id:'kit',name:'Kit',part:'the model',shirt:C.rust,hair:C.brown,x:92},
+ {id:'dev',name:'Dev',part:'the sensor',shirt:C.olive,hair:C.dark,x:144},{id:'inez',name:'Inez',part:'the logistics',shirt:C.blue,hair:C.brown,x:196}];
+const MOVES=[{id:'check',name:'Check in, one to one',sub:'ask how it’s really going'},{id:'thank',name:'Thank them privately',sub:'a quiet word'},{id:'praise',name:'Praise them at stand-up',sub:'in front of everyone'},
+ {id:'shield',name:'Shield their afternoon',sub:'no meetings, no interruptions'},{id:'take',name:'Take a task off them',sub:'you do it instead'}];
+const DAYS=['Monday','Tuesday','Wednesday','Thursday','Friday'];
+const cv=document.getElementById('cv'),g=cv.getContext('2d'),$=id=>document.getElementById(id);let S,pick=null,fx=[];
+function reset(){S={day:0,left:3,on:false,today:[],p:Object.fromEntries(P.map(p=>[p.id,{en:4,tr:3,pr:0,load:0,checks:0,stuck:false,hist:[]}])),log:[]};pick=null;fx=[];ui();
+ panel(`<p class="k2">A studio · the week before the showcase</p><h2>Four people, four working days, three moves a day.</h2><p>Asha draws the map, Kit builds the model, Dev wires the sensor, Inez holds the logistics together. Monday to Thursday, pick a move, then a person. On Friday the showcase opens, and the week is over.</p><p style="color:var(--dim)">Watch their energy. Their needs aren’t written anywhere.</p><button class="go" id="go">Monday morning</button>`);$('go').onclick=()=>{panel(null);S.on=true;ui();say('Monday. Everyone’s at their desk.')}}
+function panel(html){$('panel').hidden=!html;if(html)$('panel').querySelector('.box').innerHTML=html}
+function say(t){S.log.unshift(t);$('log').innerHTML=S.log.slice(0,3).map((x,i)=>`<p style="opacity:${1-i*.3}">${x}</p>`).join('')}
+function ui(){$('day').textContent=DAYS[S.day];$('left').textContent=S.on?`${S.left} move${S.left===1?'':'s'} left today`:'';
+ $('moves').innerHTML='';for(const m of MOVES){const b=Lab.el('button','mv'+(pick===m.id?' on':''));b.append(document.createTextNode(m.name),Lab.el('small',null,m.sub));b.disabled=!S.on||!S.left;b.onclick=()=>{pick=pick===m.id?null:m.id;ui()};$('moves').append(b)}
+ $('people').innerHTML='';for(const p of P){const b=Lab.el('button','pp');b.append(document.createTextNode(p.name),Lab.el('small',null,p.part));b.disabled=!S.on||!S.left||!pick;b.onclick=()=>act(pick,p.id);$('people').append(b)}
+ $('next').hidden=!S.on||S.left>0;$('next').textContent=S.day===3?'Thursday night':'End the day'}
+const nm=id=>P.find(p=>p.id===id).name,cl=v=>Math.max(0,Math.min(5,v));
+function bump(id,k,v){const q=S.p[id];q[k]=k==='pr'?Math.min(100,q[k]+v):cl(q[k]+v);if(v){const p=P.find(x=>x.id===id);fx.push({x:p.x,y:52,t:0,txt:(v>0?'+':'')+(k==='pr'?Math.round(v):v),c:k==='en'?C.green:k==='tr'?C.gold:C.cream})}}
+/* the hidden needs: Asha recharges alone, Kit runs on recognition, Dev freezes when stuck, Inez says yes to everything */
+function act(m,id){if(!m||!S.left)return;const q=S.p[id],d=S.day;q.hist.push(m);S.today.push(m+':'+id);let t='';
+ if(m==='check'){q.checks++;if(id==='kit'&&q.checks>1){bump(id,'en',-1);t='Kit: “You’ve asked twice today. Is something wrong?”'}else if(id==='dev'&&q.stuck){bump(id,'en',2);bump(id,'tr',1);q.stuck=false;q.unstuck=d;t='Dev admits the sensor fires twice. Talking it through unsticks him.'}
+  else if(id==='inez'){bump(id,'tr',1);t=`Inez lists what she’s carrying: ${q.load+2} things. She hadn’t said.`;q.seen=1}else{bump(id,'tr',1);bump(id,'en',id==='asha'?1:0);t=`${nm(id)} tells you how it’s really going.`}}
+ if(m==='thank'){bump(id,'tr',id==='asha'?2:1);bump(id,'en',id==='kit'?0:1);t=`${nm(id)} looks up. “Thanks. That helps.”`}
+ if(m==='praise'){if(id==='kit'){bump(id,'en',2);bump(id,'tr',1);t='Kit glows. He works through lunch.'}else if(id==='asha'){if(d===3){bump(id,'tr',2);t='You say the map is Asha’s, in front of everyone. She goes red, but she needed it said.'}else{bump(id,'en',-1);bump(id,'tr',0);t='Asha smiles, and spends the next hour with her headphones on.'}}else{bump(id,'tr',1);t=`${nm(id)} nods.`}}
+ if(m==='shield'){q.shield=1;bump(id,'en',1);t=`${nm(id)} gets a clear afternoon.`;if(id==='inez'){q.load=Math.max(0,q.load-2);t='You take Inez off two requests. She sits down for the first time in days.'}}
+ if(m==='take'){bump(id,'pr',12);if(id==='inez'){bump(id,'en',1);q.load=Math.max(0,q.load-1);t='You take a booking off Inez. She looks relieved.'}else{bump(id,'tr',-1);t=`You finish part of ${P.find(p=>p.id===id).part} yourself. ${nm(id)} goes quiet.`}}
+ S.left--;pick=null;say(t);Lab.tone(500+S.left*90,.07,.03);ui()}
+function endDay(){const d=S.day;const lines=[];
+ for(const p of P){const q=S.p[p.id];let gain=q.en*7+(q.shield?12:0);if(q.stuck)gain=Math.min(gain,4);if(p.id==='inez')gain=q.en*8-q.load*3;bump(p.id,'pr',Math.max(0,gain));bump(p.id,'en',-1);if(p.id==='inez'&&q.load>2)bump(p.id,'en',-1);q.shield=0;q.checks=0}
+ // what happens overnight
+ if(d===0){S.p.inez.load+=2;lines.push('Overnight: Inez agreed to two more requests from other teams.')}
+ if(d===1){S.p.dev.stuck=true;lines.push('Wednesday will start badly: Dev’s sensor fires twice, and he’s stopped asking for help.')}
+ if(d===2){if(S.p.dev.stuck){bump('dev','en',-1);lines.push('Dev spent Wednesday stuck and said nothing.')}lines.push('Thursday: Asha’s map has gone up on the slides without her name.')}
+ if(d===3){if(!S.today.includes('praise:asha')){bump('asha','tr',-2);lines.push('Nobody said the map was Asha’s. She noticed.')}}
+ S.day++;S.left=3;S.today=[];if(S.day===4)return friday();say(lines.join(' ')||DAYS[S.day]+'.');ui()}
+function friday(){S.on=false;ui();const part=q=>q.pr>=100?'finished':q.pr>=70?'rough but there':'missing';const tr=P.reduce((a,p)=>a+S.p[p.id].tr,0)/4;
+ const note={asha:q=>q.hist.filter(h=>h==='praise').length>1?'You praised her in public more than once. She recharges alone, so each time cost her energy.':q.hist.includes('thank')?'Your quiet thanks landed. She recharges alone; private works.':'She works best left alone, and wants credit when it counts.',
+  kit:q=>q.hist.filter(h=>h==='check').length>2?'Kit felt watched: repeated check-ins read as doubt.':q.hist.includes('praise')?'Kit runs on recognition. Public praise was rocket fuel.':'Kit runs on recognition, and didn’t get much.',
+  dev:q=>q.unstuck!=null?`Dev freezes when he’s stuck and won’t ask. Your one-to-one on ${DAYS[q.unstuck]} unstuck him.`:q.stuck&&q.hist.includes('check')?'You checked in with Dev, but not once he was stuck. He finished the week stuck, and said nothing.':'Dev freezes when he’s stuck and won’t ask. Nobody asked.',
+  inez:q=>q.seen?'Inez says yes to everything. You only saw it because you asked.':'Inez says yes to everything. Her load was invisible unless you asked or took some away.'};
+ panel(`<p class="k2">Friday · the showcase opens</p><h2>${P.every(p=>S.p[p.id].pr>=100)?(tr<2?'Everything is ready. Nobody wants to do this again.':'Everything is ready, and so is the team.'):tr<2?'The doors open. The team is running on empty.':'The doors open.'}</h2>
+ ${P.map(p=>{const q=S.p[p.id];return `<p><b>${p.name}</b>: ${p.part} is ${part(q)} · energy ${q.en}/5 · trust ${q.tr}/5<br><span style="color:var(--dim)">${note[p.id](q)}</span></p>`}).join('')}
+ <p class="lesson">There was no single decision this week. The same move landed differently on different people, and the only way to know was to ask, watch and adjust.</p><button class="go" id="again">Run the week again</button>`);$('again').onclick=reset}
+$('next').onclick=endDay;
+cv.addEventListener('click',e=>{if(!S.on||!pick)return;const r=cv.getBoundingClientRect(),x=(e.clientX-r.left)/r.width*240;const p=P.reduce((a,b)=>Math.abs(b.x-x)<Math.abs(a.x-x)?b:a);act(pick,p.id)});
+/* ---------- drawing, all in hand-placed pixels ---------- */
+const R=(x,y,w,h,c)=>{g.fillStyle=c;g.fillRect(x|0,y|0,w,h)};
+const FONT={'0':'111101101101111','1':'010110010010111','2':'111001111100111','3':'111001111001111','4':'101101111001001','5':'111100111001111','6':'111100111101111','7':'111001001001001','8':'111101111101111','9':'111101111001111','+':'000010111010000','-':'000000111000000'};
+function txt(s,x,y,c){for(const ch of s){const f=FONT[ch];if(f)for(let i=0;i<15;i++)if(f[i]==='1')R(x+i%3,y+(i/3|0),1,1,c);x+=4}}
+const drops=Array.from({length:30},()=>({x:Math.random()*80,y:Math.random()*48,v:40+Math.random()*30}));
+function sprite(p,x,y,t){const map={s:C.skin,k:C.skin2,e:C.ink,c:p.shirt,g:C.grey,h:p.hair};const rows=BASE.slice();HAIR[p.id].forEach((r,i)=>{rows[i]=r.split('').map((ch,j)=>ch==='.'?rows[i][j]:ch).join('')});
+ rows.forEach((r,j)=>{for(let i=0;i<12;i++){let ch=r[i];if(ch==='.')continue;if(ch==='e'&&Math.floor(t*.7+p.x)%9===0)ch='s';R(x+i,y+j,1,1,map[ch])}})}
+function draw(t){R(0,0,240,135,C.wall);for(let y=0;y<78;y+=6)R(0,y,240,3,C.wall2);R(0,78,240,2,C.trim);R(0,80,240,55,C.floor);for(let y=86;y<135;y+=8)R(0,y,240,1,C.floor2);
+ // window with rain
+ R(5,6,84,52,C.trim);R(7,8,80,48,C.win);for(const d of drops){d.y=(d.y+d.v/60)%48;R(7+(d.x%80),8+d.y,1,2,C.winL)}R(46,8,2,48,C.trim);R(7,31,80,2,C.trim);
+ // wall: the map pinned up, a clock with the day, a plant
+ R(100,10,36,26,C.cream);for(let i=0;i<5;i++)R(103+i*6,15+(i%3)*6,4,1,C.red);R(117,8,3,3,C.red);
+ R(146,10,16,16,C.cream);R(153,13,1,6,C.ink);R(153,18,4,1,C.ink);R(170,12,24,11,C.trim);txt(String(S.day+1),179,15,C.gold);
+ R(222,50,8,28,C.brown);R(218,40,16,12,C.leaf);R(216,44,4,6,C.leaf);R(232,42,4,6,C.leaf);
+ for(const p of P){const q=S.p[p.id],x=p.x-6,bob=Math.round(Math.sin(t*2+p.x)*.6),y=72+bob;
+  g.globalAlpha=.1+q.en*.025;R(x-9,82,30,26,C.gold);g.globalAlpha=1;
+  sprite(p,x,y,t);
+  R(x-11,85,34,3,C.deskT);R(x-11,88,34,12,C.desk);R(x-9,100,3,16,C.desk);R(x+18,100,3,16,C.desk);
+  if(p.id==='asha'){R(x-5,82,13,4,C.cream);R(x-3,83,8,1,C.red)}if(p.id==='kit'){R(x+10,78,6,7,C.cream);R(x+11,76,4,2,C.cream)}
+  if(p.id==='dev'){R(x+10,81,8,4,C.brown);R(x+16,82,1,1,(q.stuck&&Math.floor(t*3)%2)?C.red:C.green)}if(p.id==='inez'){R(x+9,79,6,7,C.cream);for(let i=0;i<Math.min(6,q.load+1);i++)R(x+10,80+i,4,1,C.ink)}
+  if(q.en>1&&Math.floor(t*4+p.x)%2)R(x+1,84,2,1,C.skin);
+  for(let i=0;i<5;i++)R(x-2+i*4,60,3,3,i<q.en?C.green:C.trim);for(let i=0;i<5;i++)R(x-2+i*4,65,3,2,i<q.tr?C.gold:C.trim);
+  if(q.stuck){R(x+14,52,2,5,C.red);R(x+14,58,2,2,C.red)}
+  R(x-7,94,26,3,C.trim);R(x-7,94,Math.round(26*q.pr/100),3,q.pr>=100?C.green:C.gold)}
+ for(const f of fx){f.t+=1/60;txt(f.txt,f.x-4,f.y-f.t*12,f.c)}fx=fx.filter(f=>f.t<1.2)}
+$('restart').onclick=reset;reset();
+let t0=performance.now();(function loop(now){draw((now-t0)/1000);requestAnimationFrame(loop)})(t0);
+window.IDEA={get state(){return S},act,endDay,start(){$('go').click()}};
+</script></body></html>

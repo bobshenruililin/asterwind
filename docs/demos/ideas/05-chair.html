@@ -1,0 +1,55 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sit in their chair · Asterwind ideas</title><link rel="stylesheet" href="lab.css">
+<style>
+.vig{position:absolute;inset:0;pointer-events:none;transition:background .8s}
+.thought{position:absolute;max-width:30%;font:clamp(14px,1.7vw,21px)/1.3 Kalam,cursive;color:var(--paper-ink);background:var(--paper);padding:.5em .8em;border-radius:2px;
+ box-shadow:0 6px 18px #0009;transform:rotate(-1.5deg) translateY(8px);opacity:0;transition:opacity .4s,transform .4s;pointer-events:none}
+.thought.on{opacity:1;transform:rotate(-1.5deg)}
+.seats{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:12px}
+.seat{background:#12121a;border:1px solid #ffffff22;border-radius:4px;padding:.6em 1em;color:var(--ink);min-height:48px}
+.seat.done{border-color:#9fd3a8}.seat.cur{border-color:var(--gold)}
+.seat small{display:block;font:12px system-ui;color:var(--dim)}
+</style></head><body>
+<div class="bar"><a href="./">← Ideas</a><b>5 · Sit in their chair</b><span class="sp"></span><button id="restart">Restart</button></div>
+<div class="wrap">
+<div class="stage" id="stage">
+ <img class="plate" id="plate" src="../../../anthology/episodes/standup/assets/reference-v1/01-quiet-minute-master.webp" alt="Nia, Theo and Ellis around the table with the route model.">
+ <div class="vig" id="vig"></div><div class="thought" id="th"></div>
+ <p class="cap" id="cap" aria-live="polite"></p>
+ <div class="panel" id="end" hidden><div class="box"></div></div>
+</div>
+<div class="seats" id="seats"></div>
+<div class="why"><b>The idea.</b> The same voiced minute, replayed from a different chair. The words don’t change; what you know does. A quiz can ask “how might Ellis feel?” This makes you sit through Theo’s certainty as Ellis, with the folded sheet under your hand, and then as Theo, who honestly thinks the meeting is going well.</div>
+</div>
+<script src="lab.js"></script>
+<script>
+const LINES=[['Theo','Main gate, the courtyard, then down to the harbour just as the lights come on. That’s the moment. That’s what they’ll remember.','qm2-01'],
+ ['Nia','Theo, the courtyard gate…','qm2-02'],['Theo','Is a great photo stop, I know. Ten minutes there, tops.','qm2-03'],
+ ['Nia','No, I mean it’s locked. After six. I checked today.','qm2-04'],['Theo','Security will open it if we ask. It’ll be fine.','qm2-05'],
+ ['','Nia looks down at her map. Ellis has a folded sheet under one hand, and hasn’t said a word all evening.','qm2-06'],['You','Twenty minutes left, and I’ve only really heard one person.','qm2-07']];
+const SEATS={
+ you:{name:'Your chair',sub:'as you played it',x:50,y:50,z:1,th:[]},
+ ellis:{name:'Ellis’s chair',sub:'the folded sheet',x:86,y:32,z:1.55,pos:['4%','14%'],th:['He’s said “the harbour” four times today.','Go on, Nia. Say it.','He didn’t let her finish.','Locked after six. Mine starts there before six.','It won’t be fine. Say something.','If I unfold it now, it looks like I’m attacking his route.','…Is that an opening? Or is everyone about to look at me?']},
+ nia:{name:'Nia’s chair',sub:'the walk in the rain',x:17,y:34,z:1.55,pos:['60%','14%'],th:['He hasn’t asked anyone. Not once.','Here goes.','That’s not what I was going to say.','I walked it this afternoon. In the rain. It was locked.','He always says that.','Fine. I’ll stand at the locked gate with two hundred people tomorrow.','Finally.']},
+ theo:{name:'Theo’s chair',sub:'the model he built',x:50,y:22,z:1.45,pos:['62%','56%'],th:['They’re going to love this. I’ve timed it twice.','She’s going to make it about the gate.','Keep it moving. We’re short on time.','Locked? I didn’t check that.','I’ll sort it. Don’t stall the room.','Why is everyone so quiet? They must agree.','…Was that about me?']}};
+const ORDER=['you','ellis','nia','theo'],$=id=>document.getElementById(id);let cur=null,run=0,seen=new Set();
+function seats(){$('seats').innerHTML='';for(const k of ORDER){const s=SEATS[k],b=Lab.el('button','seat'+(seen.has(k)?' done':'')+(cur===k?' cur':''));b.append(document.createTextNode(s.name),Lab.el('small',null,s.sub));b.onclick=()=>sit(k);$('seats').append(b)}}
+async function sit(k){const my=++run;cur=k;seats();$('end').hidden=true;Lab.stopVoices();const s=SEATS[k],img=$('plate');
+ img.style.transformOrigin=s.x+'% '+s.y+'%';img.style.transform=`scale(${s.z})`;
+ $('vig').style.background=k==='you'?'none':`radial-gradient(circle at ${s.x}% ${s.y+10}%, transparent 0 22%, #000b 60%)`;
+ const th=$('th');th.classList.remove('on');if(s.pos){th.style.left=s.pos[0];th.style.top=s.pos[1]}
+ await Lab.sleep(Lab.reduced?50:900);
+ for(let i=0;i<LINES.length;i++){if(my!==run)return;const [who,line,id]=LINES[i];Lab.caption($('cap'),who,line);const a=Lab.voice('standup',id);
+  const t0=performance.now(),floor=700+line.length*45;await Promise.race([a.done,Lab.sleep(12000)]);const spent=performance.now()-t0;if(spent<floor)await Lab.sleep(floor-spent);if(my!==run)return;
+  if(s.th[i]){th.textContent=s.th[i];th.classList.add('on');Lab.tone(880,.05,.015);await Lab.sleep(Lab.reduced?1200:2400);th.classList.remove('on');await Lab.sleep(250)}else await Lab.sleep(350)}
+ if(my!==run)return;seen.add(k);seats();Lab.caption($('cap'),'','');end()}
+function end(){const left=ORDER.filter(k=>!seen.has(k));const box=$('end').querySelector('.box');
+ box.innerHTML=left.length?`<p class="k2">${seen.size} of 4 chairs</p><h2>${cur==='you'?'That was the meeting as you ran it.':'That was the same minute, from '+SEATS[cur].name.replace('’s chair','’s')+' side.'}</h2>
+  <p>Now sit somewhere else: ${left.map(k=>'<b>'+SEATS[k].name+'</b>').join(', ')}.</p><button class="go" id="next">Sit in ${SEATS[left[0]].name}</button>`
+ :`<p class="k2">Every chair</p><h2>Four people were in four different meetings.</h2><p>Theo thought it was going well. Nia had already given up on being heard. Ellis was waiting for an opening that only you could make.</p>
+  <p class="lesson">Before you decide how to run the room, guess what the meeting feels like from the other chairs. The person who looks fine is often the one you most need to ask.</p><button class="go" id="next">Start again</button>`;
+ $('end').hidden=false;$('next').onclick=()=>left.length?sit(left[0]):(seen.clear(),sit('you'))}
+$('restart').onclick=()=>{seen.clear();sit('you')};seats();
+const intro=$('end');intro.querySelector('.box').innerHTML=`<p class="k2">Student union · 9:40 pm</p><h2>The same minute, four times.</h2><p>First hear the meeting from your own chair. Then sit where Ellis, Nia and Theo sit, and hear what they don’t say.</p><button class="go" id="go">Sit down</button>`;intro.hidden=false;$('go').onclick=()=>sit('you');
+window.IDEA={sit,get seen(){return[...seen]},end};
+</script></body></html>

@@ -1,0 +1,83 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Say it · Asterwind ideas</title><link rel="stylesheet" href="lab.css">
+<style>
+.compose{margin-top:12px;display:grid;gap:10px}
+.row{display:grid;grid-template-columns:7em 1fr;gap:10px;align-items:start}
+.row .lab{font:600 11px system-ui;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);padding-top:.9em}
+.strips{display:flex;flex-wrap:wrap;gap:8px}
+.strip{font:17px/1.3 Kalam,cursive;color:var(--paper-ink);background:var(--paper);border:0;border-radius:2px;padding:.45em .8em;box-shadow:0 3px 8px #0007;transform:rotate(var(--r,0deg));min-height:44px;text-align:left}
+.strip.on{outline:3px solid var(--gold);outline-offset:2px}.strip.skip{background:#cfc6b3;font-style:italic}
+.said{margin:14px 0 0;font:20px/1.45 Kalam,cursive;color:var(--paper-ink);background:var(--paper);padding:.7em 1em;border-radius:2px;min-height:2.4em}
+.landed{display:flex;gap:10px;flex-wrap:wrap;margin:.6em 0}.landed span{font:13px system-ui;padding:.25em .6em;border-radius:999px;border:1px solid #ffffff33;color:var(--dim)}
+.landed span.y{border-color:#9fd3a8;color:#cfeed4}
+.pick{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:12px}
+</style></head><body>
+<div class="bar"><a href="./">← Ideas</a><b>3 · Say it</b><span class="sp"></span><button id="restart">Restart</button></div>
+<div class="wrap">
+<div class="stage">
+ <img class="plate" id="plate" src="../../../film/assets/performanceOffer.webp" alt="Mara and Julian at the studio table at 3 am, the cracked rib between them.">
+ <p class="cap" id="cap" aria-live="polite"></p>
+ <div class="panel" id="start"><div class="box" style="text-align:center">
+  <p class="k2">Design studio · 3:00 am · the test is filmed at eight</p>
+  <h2>One try before the glue sets. You’ve already decided. Now you have to tell them.</h2>
+  <p>Mara cut a spare rib; her fellowship footage is due at noon. Julian’s own rib keeps cracking, and he hasn’t slept.</p>
+  <div class="pick"><button class="go" data-c="spare">Fit Mara’s spare</button><button class="go" data-c="repair">Repair Julian’s rib</button></div></div></div>
+</div>
+<div id="work" hidden>
+ <p class="intro" id="who" style="margin-top:14px"></p>
+ <div class="compose" id="compose"></div>
+ <p class="said" id="said" aria-live="polite"></p>
+ <div style="text-align:center"><button class="go" id="speak" disabled>Say it</button></div>
+ <div id="after"></div>
+</div>
+<div class="why"><b>The idea.</b> In the game the choice ends at the decision. In a real team, half of leading is the sentence that follows it. Here the decision is the easy part: you assemble what you say from paper strips, and the person who loses most reacts to <i>how</i> you said it. Same decision, different team the next morning.</div>
+</div>
+<script src="lab.js"></script>
+<script>
+const SETS={
+ spare:{to:'Julian',plate:'../../../film/assets/julian.webp',rows:[
+  ['Open',[['Julian, I can see how much this rib means to you.','ack'],['Okay, listen.',''],['Don’t take this the wrong way, but…','defend']]],
+  ['Decide',[['I’m choosing Mara’s spare for the test.','own'],['We have to use the spare.','passive'],['Mara’s rib is just better.','compare']]],
+  ['Why',[['The glue sets at half four; this is our only try.','why'],['The camera won’t wait.','whylite'],['(say nothing)','skip']]],
+  ['Next',[['Your rib gets its own test on Monday, and I’ll be there.','next'],['We’ll look at yours some time.','vague'],['Go and get some sleep.','care']]]],
+  react(t){if(t.has('compare'))return['Better. Right.','He looks at his cracked rib and doesn’t look up again.'];
+   if(t.has('passive'))return['Who’s “we”? You decided. Just say you decided.','Mara looks at the floor.'];
+   if(t.has('defend'))return['There isn’t a right way to take it.','He pushes his drawing to the edge of the table.'];
+   if(t.has('ack')&&t.has('own')&&t.has('next'))return['Monday. Okay.… Thanks for saying it straight.','He slides his drawing across so it stays in view.'];
+   if(t.has('next'))return['Monday. If you mean it.','He keeps hold of his pencil.'];
+   if(t.has('care'))return['I’m not tired. I’m… fine. Sure.','He goes, and leaves the drawing behind.'];
+   return['Right. And mine just stays on the table.','He keeps hold of his pencil.']}},
+ repair:{to:'Mara',plate:'../../../film/assets/performanceOffer.webp',zoom:'scale(1.45) translate(18%,4%)',rows:[
+  ['Open',[['Mara, I know this was your footage.','ack'],['Right, change of plan.',''],['Don’t be upset, but…','defend']]],
+  ['Decide',[['I’m choosing to repair Julian’s rib.','own'],['We’ve decided to fix his.','passive'],['It’s his design, so it’s only fair.','compare']]],
+  ['Why',[['If it holds, we’ll know why it kept cracking.','why'],['It matters to him.','whylite'],['(say nothing)','skip']]],
+  ['Next',[['If it jams on camera, I’ll say it was my call, and help you re-shoot by Friday.','next'],['It’ll probably be fine.','vague'],['You can use last week’s footage.','care']]]],
+  react(t){if(t.has('compare'))return['Fair. So my deadline isn’t.','She starts packing the spare away, carefully.'];
+   if(t.has('passive'))return['“We”? I wasn’t asked.','Julian looks between you, unsure if he’s won anything.'];
+   if(t.has('defend'))return['I’m not upset. I’m out of time.','She checks the clock again.'];
+   if(t.has('ack')&&t.has('own')&&t.has('next'))return['Friday. Okay. Then I’m on the canopy with you. Now.','She’s already reaching for the clamp.'];
+   if(t.has('next'))return['If it jams, you’re saying that on camera.','She picks up the clamp.'];
+   if(t.has('care'))return['Last week’s footage doesn’t open.','She turns to the window.'];
+   return['And if it jams?','Nobody answers. The glue is setting.']}}};
+const NAMES={ack:'Acknowledged what it costs them',own:'Owned the decision (“I”, not “we have to”)',why:'Gave the real reason',next:'Named what happens next'};
+const $=id=>document.getElementById(id);let C,sel;
+function choose(c){C=SETS[c];sel=[null,null,null,null];$('start').hidden=true;$('work').hidden=false;$('after').innerHTML='';$('speak').disabled=true;$('said').textContent='';
+ $('plate').src=C.plate;$('plate').style.transform=C.zoom||'';Lab.caption($('cap'),C.to,C.to==='Julian'?'(waiting)':'(waiting)');
+ $('who').innerHTML=`What do you say to <b style="color:var(--ink)">${C.to}</b>? Pick one strip from each row.`;
+ $('compose').innerHTML='';C.rows.forEach(([lab,strips],ri)=>{const row=Lab.el('div','row');row.append(Lab.el('div','lab',lab));const box=Lab.el('div','strips');
+  strips.forEach(([txt,tag],si)=>{const b=Lab.el('button','strip'+(tag==='skip'?' skip':''),txt);b.style.setProperty('--r',((si*37+ri*13)%5-2)*.6+'deg');
+   b.onclick=()=>{sel[ri]=si;box.querySelectorAll('.strip').forEach((x,k)=>x.classList.toggle('on',k===si));Lab.tone(700+ri*60,.06,.03);compose()};box.append(b)});
+  row.append(box);$('compose').append(row)})}
+function compose(){$('said').textContent=sel.map((s,i)=>s==null?'':C.rows[i][1][s][1]==='skip'?'':C.rows[i][1][s][0]).filter(Boolean).join(' ');$('speak').disabled=sel.some(s=>s==null)}
+function speak(){const tags=new Set(sel.map((s,i)=>C.rows[i][1][s][1]));const [line,beat]=C.react(tags);Lab.caption($('cap'),C.to,line);Lab.tone(440,.15,.04);
+ const got=['ack','own','why','next'];const own=tags.has('own');
+ $('after').innerHTML=`<div class="panel" style="position:static;background:none;padding:14px 0 0"><div class="box"><p class="k2">${C.to}</p><h2>“${line}”</h2><p style="color:var(--dim)">${beat}</p>
+ <div class="landed">${got.map(g=>`<span class="${tags.has(g)?'y':''}">${tags.has(g)?'✓':'·'} ${NAMES[g]}</span>`).join('')}</div>
+ <p class="lesson">The decision was the same for everyone who picked it. What ${C.to} carries into the morning depends on the sentence: whether you named their cost, said “I” instead of “we have to”, and gave them something real to hold on to.</p>
+ <button class="go" id="again">Say it differently</button> <button class="go" id="other">Make the other decision</button></div></div>`;
+ $('again').onclick=()=>{sel=[null,null,null,null];document.querySelectorAll('.strip').forEach(x=>x.classList.remove('on'));compose();$('after').innerHTML='';Lab.caption($('cap'),C.to,'(waiting)')};
+ $('other').onclick=()=>choose(C===SETS.spare?'repair':'spare');$('after').scrollIntoView({behavior:Lab.reduced?'auto':'smooth',block:'nearest'})}
+document.querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>choose(b.dataset.c));$('speak').onclick=speak;
+$('restart').onclick=()=>{$('start').hidden=false;$('work').hidden=true;$('plate').src='../../../film/assets/performanceOffer.webp';$('plate').style.transform='';Lab.caption($('cap'),'','')};
+window.IDEA={choose,pick(r,s){sel[r]=s;compose()},speak,get sel(){return sel}};
+</script></body></html>

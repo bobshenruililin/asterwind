@@ -1,0 +1,80 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Who you listen to · Asterwind ideas</title><link rel="stylesheet" href="lab.css">
+<style>
+.spot{position:absolute;inset:0;pointer-events:none;transition:background .35s}
+.zone{position:absolute;top:0;bottom:0;background:none;border:0;padding:0}
+.zone:focus-visible{outline:2px solid var(--gold);outline-offset:-4px}
+.bub{position:absolute;transform:translate(-50%,-100%);font:700 22px Georgia,serif;color:#fff8;letter-spacing:.15em;pointer-events:none;opacity:0;transition:opacity .2s;text-shadow:0 2px 6px #000}
+.bub.on{opacity:1;animation:bob 1s ease-in-out infinite}@keyframes bob{50%{transform:translate(-50%,-112%)}}
+.name{position:absolute;transform:translateX(-50%);font:600 12px system-ui;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);text-shadow:0 1px 4px #000;pointer-events:none;opacity:.75}
+.clock{position:absolute;right:2%;top:3%;font:600 14px system-ui;color:#fff;background:#0009;padding:.3em .7em;border-radius:3px;letter-spacing:.06em}
+.meter{display:flex;gap:10px;margin:.6em 0}.meter div{flex:1}.meter i{display:block;height:8px;background:var(--gold);border-radius:4px;margin-top:4px}
+.facts li{margin:.3em 0}.facts .miss{color:#8d8577}.facts .miss b{color:#8d8577}
+</style></head><body>
+<div class="bar"><a href="./">← Ideas</a><b>1 · Who you listen to</b><span class="sp"></span><button id="restart">Restart</button></div>
+<div class="wrap">
+<div class="stage" id="stage">
+ <img class="plate" src="../../../anthology/episodes/standup/assets/reference-v1/01-quiet-minute-master.webp" alt="Nia, Theo and Ellis around the table with the route model.">
+ <div class="spot" id="spot"></div>
+ <p class="cap" id="cap" aria-live="polite"></p>
+ <div class="clock" id="clock">9:40</div>
+ <div class="panel" id="start"><div class="box" style="text-align:center">
+  <p class="k2">Student union · 9:40 pm · twenty minutes of room left</p>
+  <h2>You chair tonight. Everyone talks at once.</h2>
+  <p>You can only really hear the person you look at. Move the pointer (or tap, or press 1, 2, 3) to give someone your attention.</p>
+  <p style="color:var(--dim)">Sound on. About a minute.</p>
+  <button class="go" id="go">Sit down</button></div></div>
+ <div class="panel" id="end" hidden><div class="box"></div></div>
+</div>
+<div class="why"><b>The idea.</b> Attention is the first thing a leader spends. A film can tell you Ellis was quiet; here you find out whether <i>you</i> noticed. The verb is not choosing between two objects. It's where you look, moment by moment, and the result is what you knew when the room ran out.</div>
+</div>
+<script src="lab.js"></script>
+<script>
+const P=[{n:'Nia',x:.17,y:.32,f:290},{n:'Theo',x:.5,y:.2,f:220},{n:'Ellis',x:.86,y:.3,f:360}];
+/* who says what, when (seconds). Theo talks whether or not you listen; Nia interjects on her own clock; Ellis speaks only while you attend to him. */
+const THEO=[[1,'Main gate, the courtyard, then down to the harbour just as the lights come on. That’s the moment.','qm2-01',8],[11,'Two hundred students, one photo at the water.',null,4],
+ [17,'Is a great photo stop, I know. Ten minutes there, tops.','qm2-03',5],[25,'I’ve timed it twice. Forty minutes, door to harbour.',null,4.5],[32,'Security will open it if we ask. It’ll be fine.','qm2-05',4],
+ [40,'The model’s done. We just need to agree it tonight.',null,4.5],[48,'Honestly, the harbour is the whole point.',null,4],[56,'Anyone? No? Good.',null,3]];
+const NIA=[[9,'Theo, the courtyard gate…','qm2-02',2.5,null],[21,'No, I mean it’s locked. After six. I checked today.','qm2-04',4,'gate'],
+ [36,'The courtyard gate locks at six. If we start there at half five, it’s still open, and we’re not stuck outside with two hundred people.','qm2-r2',8,'gate'],
+ [47,'The courtyard’s where I met my first friend here. I want them to see it.',null,5,'friend']];
+const ELLIS=[['I drew another one. A different route.',null,3.5,'other'],['That’s where mine starts, actually. The courtyard. But it never reaches the harbour.',null,6,'start'],
+ ['It ends on the open ground. You can see the whole campus from there, before six.',null,5.5,'end']];
+const END=62,$=id=>document.getElementById(id),stage=$('stage'),cap=$('cap');
+const zones=P.map((p,i)=>{const z=Lab.el('button','zone');z.style.left=(i===0?0:i===1?33.3:66.6)+'%';z.style.width='33.4%';z.setAttribute('aria-label','Listen to '+p.n);
+ const b=Lab.el('div','bub','…');b.style.left=p.x*100+'%';b.style.top=(p.y*100-4)+'%';const nm=Lab.el('div','name',p.n);nm.style.left=p.x*100+'%';nm.style.top=(p.y*100+4)+'%';
+ stage.append(z,b,nm);p.bub=b;return z});
+let S;function reset(){S={t:0,att:-1,attT:[0,0,0],heard:new Set(),said:{},live:[null,null,null],ellis:{i:0,prog:0,warm:0,cut:0},on:false,mm:[]};cap.textContent='';$('clock').textContent='9:40';$('end').hidden=true;spot()}
+function spot(){const p=P[S.att];$('spot').style.background=p?`radial-gradient(circle at ${p.x*100}% ${p.y*100+18}%, transparent 0 15%, #000c 33%)`:'#0004';
+ P.forEach((q,i)=>{if(S.mm[i])S.mm[i].gain(S.live[i]?(i===S.att?0:.05):0)})}
+function attend(i){if(!S.on||S.att===i)return;S.att=i;spot();showCap();for(let k=0;k<3;k++){const a=S.live[k]&&S.live[k].audio;if(a)a.volume=k===i?1:.1}}
+zones.forEach((z,i)=>{z.addEventListener('pointerenter',()=>attend(i));z.addEventListener('pointerdown',()=>attend(i));z.addEventListener('focus',()=>attend(i))});
+addEventListener('keydown',e=>{if(['1','2','3'].includes(e.key))attend(+e.key-1)});
+function say(i,line,id,dur,fact){const L={line,until:S.t+dur,fact};if(id){L.audio=Lab.voice('standup',id,{volume:i===S.att?1:.1})}S.live[i]=L;spot();showCap()}
+function showCap(){const L=S.live[S.att];Lab.caption(cap,L?P[S.att].n:'',L?L.line:(S.att===2?'(Ellis is looking at his folded sheet.)':''))}
+function tick(dt){if(!S.on)return;S.t+=dt;if(S.att>=0)S.attT[S.att]+=dt;const t=S.t;
+ for(const [at,line,id,dur] of THEO)if(t>=at&&!S.said['T'+at]){S.said['T'+at]=1;say(1,line,id,dur)}
+ for(const [at,line,id,dur,fact] of NIA)if(t>=at&&!S.said['N'+at]){S.said['N'+at]=1;say(0,line,id,dur,fact)}
+ // Ellis: warms up only while you look at him; his line runs only while you keep looking
+ const E=S.ellis,cur=ELLIS[E.i];if(cur){if(S.att===2){E.warm+=dt;if(E.warm>1.6&&!S.live[2]){say(2,cur[0],cur[1],cur[2]);E.prog=0}if(S.live[2]){E.prog+=dt;if(E.prog>=cur[2]){S.heard.add(cur[3]);S.live[2]=null;E.i++;E.warm=.6;showCap()}}}
+  else{if(S.live[2]){S.live[2]=null;E.cut++;E.warm=0;}E.warm=Math.max(0,E.warm-dt*.5)}}
+ for(let i=0;i<2;i++){const L=S.live[i];if(L){if(i===S.att&&L.fact&&t>L.until-1.2)S.heard.add(L.fact);if(t>=L.until){S.live[i]=null;if(i===S.att)showCap();spot()}}}
+ P.forEach((p,i)=>p.bub.classList.toggle('on',!!S.live[i]&&i!==S.att));
+ const m=Math.min(19,Math.floor(t/END*20));$('clock').textContent='9:'+(40+m);
+ if(t>=END)finish()}
+function finish(){S.on=false;$('clock').textContent='10:00';Lab.stopVoices();S.mm.forEach(m=>m.stop());cap.textContent='';const tot=S.attT.reduce((a,b)=>a+b,0)||1,H=S.heard;
+ const fact=(k,txt)=>`<li class="${H.has(k)?'':'miss'}"><b>${H.has(k)?'Heard':'Missed'}:</b> ${txt}</li>`;
+ const caught=['gate','friend','other','start','end'].filter(k=>H.has(k)).length;
+ $('end').querySelector('.box').innerHTML=`<p class="k2">10:00 · the room is needed</p><h2>${caught>=4?'You heard the room.':caught>=2?'You heard some of it.':'You heard Theo.'}</h2>
+ <p>Everyone heard Theo’s plan: the harbour at sunset. What else was said tonight:</p><ul class="facts">
+ ${fact('gate','the courtyard gate locks at six (Nia checked today)')}${fact('friend','why the courtyard matters to Nia: she met her first friend there')}
+ ${fact('other','Ellis has drawn a different route')}${fact('start','it starts at the courtyard, before the gate locks')}${fact('end','it ends on open ground with a view of the whole campus')}</ul>
+ <div class="meter">${P.map((p,i)=>`<div><span class="k2">${p.n}</span> ${Math.round(S.attT[i]/tot*100)}%<i style="width:${S.attT[i]/tot*100}%"></i></div>`).join('')}</div>
+ ${S.ellis.cut?`<p style="color:var(--dim)">Ellis started ${S.ellis.cut===1?'once':S.ellis.cut+' times'} and stopped when you looked away.</p>`:''}
+ <p class="lesson">You can only act on what you heard. The loudest voice fills the room by default; the quietest one speaks only while someone is listening.</p>
+ <button class="go" id="again">Try again, and listen differently</button>`;$('end').hidden=false;$('again').onclick=begin}
+let last=0,raf=0;function loop(now){const dt=Math.min(.1,(now-last)/1000);last=now;if(S.on){tick(dt);raf=requestAnimationFrame(loop)}}
+function begin(){Lab.stopVoices();if(S)S.mm.forEach(m=>m.stop());reset();$('start').hidden=true;Lab.ctx();S.mm=P.map(p=>Lab.murmur(p.f));S.on=true;S.att=-1;attend(1);last=performance.now();cancelAnimationFrame(raf);raf=requestAnimationFrame(loop)}
+$('go').onclick=begin;$('restart').onclick=begin;reset();
+window.IDEA={get state(){return S},step(n=1){for(let i=0;i<n;i++)tick(1/10)},attend};
+</script></body></html>

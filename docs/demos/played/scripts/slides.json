@@ -188,5 +188,27 @@
    "label": "Show the notebook",
    "hint": "You credit her; Kit keeps his reveal."
   }
+ },
+ "notes": {
+  "microphone": [
+   {
+    "from": "Asha",
+    "text": "My hands were shaking. I’m glad it was my voice that said it."
+   },
+   {
+    "from": "Kit",
+    "text": "I carried the model home still in its box. Next time, plan the minutes with me?"
+   }
+  ],
+  "notebook": [
+   {
+    "from": "Kit",
+    "text": "Thank you for keeping the reveal. Their faces when it opened!"
+   },
+   {
+    "from": "Asha",
+    "text": "You said my name. I wish they’d heard about the trolley."
+   }
+  ]
  }
 }

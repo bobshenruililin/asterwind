@@ -1,0 +1,36 @@
+/* Asterwind ideas lab: shared look. Same night, same paper, same gold as the game. */
+@font-face{font-family:Kalam;src:url(../../../app/assets/fonts/Kalam-Regular.ttf)}
+@font-face{font-family:Kalam;font-weight:700;src:url(../../../app/assets/fonts/Kalam-Bold.ttf)}
+:root{--bg:#08080d;--ink:#efe5cf;--dim:#b3a891;--gold:#e9c27a;--paper:#efe4cc;--paper-ink:#2b2730;--line:#ffffff1c}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 Georgia,serif}
+a{color:var(--gold)}
+button{font:inherit;color:inherit;cursor:pointer}
+.bar{display:flex;align-items:center;gap:14px;padding:10px 16px;font:14px system-ui;color:var(--dim)}
+.bar a{text-decoration:none}.bar b{color:var(--ink);font:600 15px Georgia,serif}.bar .sp{flex:1}
+.bar button{background:none;border:1px solid #e9c27a66;border-radius:3px;padding:.35em .9em;min-height:36px}
+.wrap{max-width:1280px;margin:0 auto;padding:0 16px 40px}
+.stage{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;background:#000;border-radius:3px;user-select:none;-webkit-user-select:none;touch-action:manipulation}
+.stage>img.plate{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:filter .5s,transform 1.2s cubic-bezier(.3,.7,.2,1)}
+.cap{position:absolute;left:50%;bottom:5%;transform:translateX(-50%);width:min(860px,86%);margin:0;text-align:center;pointer-events:none;
+ font:clamp(15px,1.9vw,24px)/1.35 Georgia,serif;text-shadow:0 2px 8px #000,0 0 3px #000}
+.cap .who{display:block;font:600 clamp(10px,.95vw,12px) system-ui;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:.25em}
+.intro{max-width:760px;margin:18px auto 0;text-align:center;color:var(--dim)}
+.intro h1{margin:.1em 0;font:400 clamp(26px,3.4vw,40px) Georgia,serif;color:var(--ink)}
+.intro .k{font:12px system-ui;letter-spacing:.3em;text-transform:uppercase;color:var(--gold)}
+.go{display:inline-block;margin-top:14px;background:#e9c27a1a;border:1px solid var(--gold);color:#ffe2a0;border-radius:3px;padding:.65em 1.6em;min-height:44px;font:16px system-ui}
+.panel{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:#07070cd9;padding:4%;z-index:5}
+.panel[hidden]{display:none}
+.panel .box{max-width:760px;width:100%;max-height:100%;overflow:auto}
+.panel h2{margin:0 0 .3em;font:400 clamp(20px,2.6vw,32px) Georgia,serif}
+.panel p{margin:.35em 0}
+.k2{font:600 11px system-ui;letter-spacing:.22em;text-transform:uppercase;color:var(--gold)}
+.lesson{margin:.7em 0;padding:.6em .9em;border-left:3px solid var(--gold);background:#e9c27a14;color:#fff1d6}
+.note{font-family:Kalam,cursive;color:var(--paper-ink);background:var(--paper);padding:.8em 1em;border-radius:2px;box-shadow:0 6px 18px #0008}
+.why{max-width:760px;margin:18px auto 0;color:var(--dim);font-size:15px}
+.why b{color:var(--ink)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+@media(max-width:640px){.bar{flex-wrap:wrap}.intro{padding:0 4px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+/* on phones the 16:9 picture is too small to hold a card: start and end cards become full-screen overlays */
+@media(max-width:760px),(max-height:520px){.stage>.panel,.poster>.panel,.px>.panel{position:fixed;inset:0;z-index:50;background:#07070cf2;align-items:flex-start;overflow:auto;padding:28px 16px}}

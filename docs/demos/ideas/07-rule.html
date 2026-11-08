@@ -1,0 +1,60 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Your rule · Asterwind ideas</title><link rel="stylesheet" href="lab.css">
+<style>
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:16px}
+.card{font:20px/1.35 Kalam,cursive;color:var(--paper-ink);background:var(--paper);border:0;border-radius:3px;padding:1em 1.1em;min-height:120px;text-align:left;box-shadow:0 8px 20px #0008;transform:rotate(var(--r));transition:transform .2s}
+.card:hover,.card:focus-visible{transform:rotate(0) translateY(-4px);outline:2px solid var(--gold)}
+.pinned{display:flex;gap:16px;align-items:center;margin:14px 0}
+.pinned .card{min-height:0;font-size:18px;flex:1;transform:rotate(-1deg);cursor:default;position:relative}
+.stamps{position:absolute;right:10px;bottom:-14px;display:flex;gap:6px}
+.stamp{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font:700 16px system-ui;border:2px solid;transform:rotate(-12deg);background:var(--paper)}
+.stamp.k{color:#2f7a45;border-color:#2f7a45}.stamp.b{color:#a3342a;border-color:#a3342a}
+.dil{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:18px;align-items:center}
+.dil img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:3px}
+.dil h2{margin:.1em 0 .4em;font:400 clamp(20px,2.4vw,28px) Georgia,serif}
+.ch{display:grid;gap:8px}.ch button{text-align:left;background:#12121a;border:1px solid #e9c27a55;border-radius:4px;padding:.7em .9em;color:var(--ink);min-height:48px;font:17px Georgia,serif}
+.ch button:hover{border-color:var(--gold)}
+.prog{font:13px system-ui;color:var(--dim)}
+.sum li{margin:.35em 0}
+@media(max-width:700px){.dil{grid-template-columns:1fr}}
+</style></head><body>
+<div class="bar"><a href="./">← Ideas</a><b>7 · Your rule</b><span class="sp"></span><button id="restart">Restart</button></div>
+<div class="wrap" id="app"></div>
+<div class="wrap"><div class="why"><b>The idea.</b> Before anything happens, you write the team’s rule. Then six fast moments from our stories test it, and the card collects stamps. It turns a lesson into a promise you made yourself, and shows the gap between the value you chose calmly and the one you followed under pressure. Breaking it isn’t failure; not saying so is.</div></div>
+<script src="lab.js"></script>
+<script>
+const A='../../../anthology/episodes/',F='../../../film/assets/';
+const RULES={heard:'Everyone is heard before we decide.',promise:'We keep the promises we’ve made.',credit:'Credit goes to whoever did the work.',real:'We show the real thing, flaws and all.'};
+const D=[{img:A+'standup/assets/reference-v1/02-turn-or-pass-decision.webp',k:'Student union, 9:50',t:'Ten minutes of room left. Theo’s route is ready. Ellis hasn’t spoken all evening.',
+  c:[['Agree Theo’s route now',{heard:-1,promise:1},'you agreed the route without Ellis'],['Go round the table first',{heard:1,promise:-1},'the route wasn’t agreed tonight']]},
+ {img:A+'scope/assets/runtime/decision.webp',k:'The repair café, 5:30',t:'Sam’s bag split; they start a placement tomorrow. The umbrella is promised at 5:50.',
+  c:[['Take Sam’s bag now',{promise:-1},'Mrs Okafor’s umbrella wasn’t ready'],['Keep the bookings',{promise:1},'Sam went out into the rain']]},
+ {img:A+'slides/assets/decision.webp',k:'The showcase, five minutes out',t:'Asha’s map is on your first slide without her name. Kit was promised the model reveal.',
+  c:[['Asha opens, in her own words',{credit:1,promise:-1},'Kit’s model stayed in its box'],['You credit her; Kit reveals',{credit:-1,promise:1},'Asha’s name was said, her reasons weren’t heard']]},
+ {img:A+'ship/assets/decision.webp',k:'The exhibit, one minute to opening',t:'The sensor sometimes fires twice. Lio told the queue they could try it.',
+  c:[['Run it live, glitch and all',{real:1,promise:1},'a glitch in public, all afternoon'],['Play the perfect recording',{real:-1,promise:-1},'nobody touched the real thing']]},
+ {img:F+'performanceOffer.webp',k:'The studio, 3 am',t:'One try before the glue sets: Mara’s clean spare, or Julian’s own cracked rib.',
+  c:[['Fit Mara’s spare',{promise:1,credit:-1},'Julian’s design stayed on the table'],['Repair Julian’s rib',{credit:1,promise:-1,real:1},'half a canopy on camera']]},
+ {img:F+'fatigue.webp',k:'11 pm, the night before',t:'The team votes three to one to keep working. Asha, the one, hasn’t said why.',
+  c:[['Go with the vote',{heard:-1},'nobody knows why Asha said no'],['Ask Asha why, first',{heard:1},'ten more minutes, at 11 pm']]}];
+const app=document.getElementById('app');let S;
+function start(){S={rule:null,i:0,res:[]};app.innerHTML=`<div class="intro"><p class="k">Before the night begins</p><h1>Write your team’s rule.</h1><p>Pick the one you’d put on the wall. It will be tested.</p></div><div class="cards"></div>`;
+ Object.entries(RULES).forEach(([k,v],i)=>{const b=Lab.el('button','card',v);b.style.setProperty('--r',((i%2?1:-1)*(1+i*.4))+'deg');b.onclick=()=>{S.rule=k;Lab.tone(520,.1,.04);next()};app.querySelector('.cards').append(b)})}
+function pinned(){return `<div class="pinned"><div class="card">${RULES[S.rule]}<div class="stamps">${S.res.filter(r=>r.tags[S.rule]).map(r=>`<span class="stamp ${r.tags[S.rule]>0?'k':'b'}">${r.tags[S.rule]>0?'✓':'✗'}</span>`).join('')}</div></div></div>`}
+function next(){if(S.i>=D.length)return end();const d=D[S.i];
+ app.innerHTML=pinned()+`<p class="prog">${S.i+1} of ${D.length}</p><div class="dil"><img src="${d.img}" alt=""><div><p class="k2">${d.k}</p><h2>${d.t}</h2><div class="ch"></div></div></div>`;
+ d.c.forEach(([label,tags,cost],ci)=>{const b=Lab.el('button',null,label);b.onclick=()=>{S.res.push({d:S.i,ci,label,tags,cost});const t=tags[S.rule];if(t)Lab.tone(t>0?660:240,.14,.05);S.i++;next()};app.querySelector('.ch').append(b)});
+ app.querySelector('.ch button').focus({preventScroll:true})}
+function end(){const tested=S.res.filter(r=>r.tags[S.rule]),kept=tested.filter(r=>r.tags[S.rule]>0),broke=tested.filter(r=>r.tags[S.rule]<0);
+ const score=k=>{const t=S.res.filter(r=>r.tags[k]);return t.length?t.filter(r=>r.tags[k]>0).length/t.length:-1};
+ const best=Object.keys(RULES).filter(k=>k!==S.rule).sort((a,b)=>score(b)-score(a))[0];
+ app.innerHTML=pinned()+`<div class="panel" style="position:static;background:none;padding:0"><div class="box"><p class="k2">Your rule, after six moments</p>
+ <h2>${!broke.length?'You kept it every time it was tested.':kept.length?`You kept it ${kept.length===1?'once':kept.length+' times'} and broke it ${broke.length===1?'once':broke.length+' times'}.`:'You broke it every time it was tested.'}</h2>
+ <ul class="sum">${tested.map(r=>`<li><b>${r.tags[S.rule]>0?'Kept':'Broke'}</b>: ${r.label.toLowerCase()} <span style="color:var(--dim)">(cost: ${r.cost})</span></li>`).join('')}</ul>
+ ${score(best)>score(S.rule)?`<p>Without writing it down, you followed <b>“${RULES[best]}”</b> more consistently than your own rule.</p>`:''}
+ ${kept.length?`<p style="color:var(--dim)">Keeping it wasn’t free: ${kept.map(r=>r.cost).join('; ')}.</p>`:''}
+ <p class="lesson">A value only shows when it costs you something. The useful question isn’t whether you kept your rule every time. It’s whether, when you broke it, the team knew, and knew why.</p>
+ <button class="go" id="again">Choose a different rule</button></div></div>`;document.getElementById('again').onclick=start}
+document.getElementById('restart').onclick=start;start();
+window.IDEA={get state(){return S},rule(k){S.rule=k;next()},pick(ci){const d=D[S.i];const [label,tags,cost]=d.c[ci];S.res.push({d:S.i,ci,label,tags,cost});S.i++;next()}};
+</script></body></html>

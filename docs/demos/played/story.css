@@ -54,3 +54,49 @@ body.has-intro #cap,body.has-intro #chrome{visibility:hidden}
  .story-key .choice b{display:block;font:600 16px/1.3 Georgia,serif;color:#ffe7b3}
  .story-key .choice.on{border-color:#e9c27a}}
 .story-reflect .lean{margin:.4em 0 0;font:600 clamp(11.5px,1.1vw,14px)/1.4 system-ui;letter-spacing:.02em;color:#cdb98f}
+
+/* ---- 8 November: the listening episode's language, carried through every played story ----
+   Local type (fonts/PROVENANCE.md): Newsreader for what people say and read, Plex Mono for the few labels.
+   The intro becomes a title over the picture; tags name people quietly; the choices are one line each, no boxes;
+   the ending is the notes the people affected leave you, with the lesson as one line. */
+@font-face{font-family:Newsreader;src:url('fonts/Newsreader-opsz.woff2') format('woff2');font-weight:200 800;font-style:normal;font-display:swap}
+@font-face{font-family:Newsreader;src:url('fonts/Newsreader-opsz-italic.woff2') format('woff2');font-weight:200 800;font-style:italic;font-display:swap}
+@font-face{font-family:Plex;src:url('fonts/IBMPlexMono-500.woff2') format('woff2');font-weight:500;font-display:swap}
+.story-intro{background:linear-gradient(0deg,#07070cf2 0%,#07070cd0 52%,#07070c00 100%);padding-top:clamp(40px,8vh,90px)}
+.story-intro .kicker,.story-reflect .kicker{font:500 clamp(10px,.85vw,11px)/1.4 Plex,ui-monospace,monospace;letter-spacing:.24em}
+.story-intro h1{font:300 clamp(36px,5.2vw,84px)/.95 Newsreader,Georgia,serif;letter-spacing:-.02em;font-variation-settings:'opsz' 72;color:#fbf2e2}
+.story-intro .text{font:italic 300 clamp(15px,1.45vw,20px)/1.45 Newsreader,Georgia,serif;color:#e4d8c2}
+.story-intro .cast li{font:clamp(12.5px,1.1vw,15px)/1.35 Newsreader,Georgia,serif}
+.story-intro .cast b{font:500 clamp(10px,.85vw,11px)/1.9 Plex,ui-monospace,monospace;letter-spacing:.2em;text-transform:uppercase;color:#e9c27a}
+.story-intro #start span{font:500 11px Plex,ui-monospace,monospace;letter-spacing:.22em;text-transform:uppercase;padding:1.1em 1.6em;border:1px solid #f5ead655;background:#0b0a0dcc;border-radius:3px}
+.story-intro #start:focus-visible span{outline:2px solid #e9c27a;outline-offset:3px}
+.cast-tags .tag b{font:500 clamp(9.5px,.85vw,11px)/1.6 Plex,ui-monospace,monospace;letter-spacing:.26em;text-transform:uppercase;color:#e9c27a}
+.cast-tags .tag span{font:italic 300 clamp(12px,1.05vw,15px)/1.25 Newsreader,Georgia,serif}
+#cap{font-family:Newsreader,Georgia,serif}#cap .who{font:500 10.5px Plex,ui-monospace,monospace;letter-spacing:.26em}
+.story-ask{font:300 clamp(18px,2.1vw,30px)/1.25 Newsreader,Georgia,serif;top:5%}
+.story-choices .choice{background:radial-gradient(closest-side,#0009,transparent);border:0;padding:.4em 1em .6em;text-shadow:0 2px 10px #000,0 0 3px #000}
+.story-choices .choice b{font:400 clamp(16px,1.7vw,26px)/1.1 Newsreader,Georgia,serif;color:#fbf2e2}
+.story-choices .choice span{font:italic 400 clamp(12.5px,1.1vw,16px)/1.3 Newsreader,Georgia,serif;color:#efe4cf}
+.story-choices .choice.on{background:radial-gradient(closest-side,#000b,transparent)}.story-choices .choice.on b{color:#e9c27a}
+#chrome button{font:500 10px Plex,ui-monospace,monospace;letter-spacing:.16em;text-transform:uppercase}
+/* the notes ending */
+.story-reflect.notes-end{left:0;right:0;width:auto;justify-content:flex-start;gap:0;padding:clamp(22px,4vh,46px) clamp(16px,3.2vw,44px);
+ background:linear-gradient(0deg,#07070cf0 0%,#07070cb8 45%,#07070c66 100%)}
+.story-reflect.notes-end h2{margin:.3em 0 0;font:300 clamp(28px,3.6vw,56px)/1.02 Newsreader,Georgia,serif;letter-spacing:-.015em;max-width:16em;text-wrap:balance}
+.story-reflect.notes-end .notes{flex:1;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:clamp(16px,3vw,48px);padding:clamp(14px,3vh,30px) 0}
+.story-reflect .note{position:relative;width:clamp(220px,24vw,330px);margin:0;padding:20px 22px 16px;background:#efe4cf;color:#2f2a33;font:clamp(16px,1.35vw,21px)/1.32 Kalam,cursive;
+ box-shadow:0 18px 40px #0009,0 2px 6px #0005;transform:rotate(var(--r,0deg));animation:note-in 1s var(--d,0s) both cubic-bezier(.2,.8,.2,1)}
+.story-reflect .note::before{content:'';position:absolute;left:50%;top:-9px;width:64px;height:20px;margin-left:-32px;background:#f3e6c4b8;transform:rotate(-2deg)}
+.story-reflect .note p{margin:0}.story-reflect .note .from{display:block;margin-top:10px;text-align:right;font-size:.9em;color:#5a5260}
+@keyframes note-in{from{opacity:0;transform:rotate(var(--r,0deg)) translateY(24px)}}
+.story-reflect.notes-end .foot{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:18px}
+.story-reflect.notes-end .words{max-width:36em}
+.story-reflect.notes-end .lesson{margin:0;padding:0;border:0;background:none;font:300 clamp(18px,1.9vw,28px)/1.3 Newsreader,Georgia,serif;color:#fbf2e2}
+.story-reflect.notes-end .ask{margin:.5em 0 0;font:italic 300 clamp(14px,1.25vw,18px)/1.4 Newsreader,Georgia,serif;color:#d9ccb4}
+.story-reflect.notes-end .hint{margin:.5em 0 0;font:italic 300 clamp(13px,1.1vw,16px)/1.4 Newsreader,Georgia,serif;color:#b9ae9a}
+.story-reflect.notes-end #end{margin:0}
+.story-reflect #end button{font:500 11px Plex,ui-monospace,monospace;letter-spacing:.2em;text-transform:uppercase;background:#0b0a0dcc;border-color:#f5ead655;border-radius:3px;padding:0 1.4em;min-height:46px}
+.story-reflect #end button:focus-visible{outline:2px solid #e9c27a;outline-offset:3px}
+@media(max-aspect-ratio:1/1){.story-reflect.notes-end{margin:14px 16px 0;padding:18px 16px;background:#0b0b10}.story-reflect .note{width:auto}.story-reflect.notes-end .notes{flex-direction:column;align-items:stretch}}
+@media (prefers-reduced-motion:reduce){.story-reflect .note{animation:none}}
+.cast-tags .tag span{display:none}/* names on the picture; roles live in the intro's list */

@@ -1,0 +1,89 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Hand over the pen · Asterwind ideas</title><link rel="stylesheet" href="lab.css">
+<style>
+.poster{position:relative;width:100%;aspect-ratio:16/9;background:#e9dfc6 radial-gradient(120% 90% at 30% 20%,#f4ecd8,#ddd0b2);border-radius:3px;overflow:hidden;box-shadow:inset 0 0 40px #0003}
+.poster canvas{position:absolute;inset:0;width:100%;height:100%}
+.region{position:absolute;border:2px dashed #2b273033;border-radius:3px;background:none;padding:0;cursor:pointer}
+.region:hover,.region:focus-visible{border-color:#2b2730aa;outline:none}
+.region span{position:absolute;left:8px;top:6px;font:700 12px system-ui;letter-spacing:.2em;color:#2b273088}
+.clock{position:absolute;right:1.5%;top:2.5%;font:600 14px system-ui;color:#2b2730;background:#fff8;padding:.25em .6em;border-radius:3px}
+.team{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:12px}
+.mate{display:flex;gap:10px;align-items:center;background:#12121a;border:1px solid #ffffff22;border-radius:6px;padding:8px;text-align:left;color:var(--ink);min-height:64px}
+.mate.hold{border-color:var(--gold);box-shadow:0 0 0 2px #e9c27a55}
+.face{flex:none;width:52px;height:52px;border-radius:50%;background-repeat:no-repeat;border:2px solid #0006;position:relative}
+.face.you{background:#2a2a3a;display:grid;place-items:center;font:700 14px system-ui;color:var(--gold)}
+.mate b{display:block;font:600 15px Georgia,serif}.mate small{display:block;color:var(--dim);font:12px system-ui}
+.en{height:5px;background:#ffffff1a;border-radius:3px;margin-top:5px;overflow:hidden}.en i{display:block;height:100%;background:#9fd3a8;transition:width .3s}
+.pen{position:absolute;right:-6px;bottom:-6px;font-size:22px;display:none;transform:rotate(-30deg)}.mate.hold .pen{display:block}
+.sigh{position:absolute;left:-4px;top:-10px;font:700 18px Georgia,serif;color:#fff;opacity:0;transition:opacity .3s}.mate.sigh .sigh{opacity:1}
+@media(max-width:700px){.team{grid-template-columns:repeat(2,1fr)}}
+</style></head><body>
+<div class="bar"><a href="./">← Ideas</a><b>4 · Hand over the pen</b><span class="sp"></span><button id="restart">Restart</button></div>
+<div class="wrap">
+<div class="poster" id="poster"><canvas id="cv" width="1280" height="720"></canvas><div class="clock" id="clock">60 s</div>
+ <div class="panel" id="start"><div class="box" style="text-align:center">
+  <p class="k2">The showcase poster · due when the bell goes</p>
+  <h2>There is one good marker, and it’s in your hand.</h2>
+  <p>Four parts to finish in a minute. Click a part of the poster to work on it yourself, or click a teammate to hand them the marker. Everyone is fastest at their own thing.</p>
+  <button class="go" id="go">Uncap the marker</button></div></div>
+ <div class="panel" id="end" hidden><div class="box"></div></div>
+</div>
+<div class="team" id="team"></div>
+<div class="why"><b>The idea.</b> Control as a physical object. The marker starts in your hand, and you’re decent at everything, so holding on feels productive. The game measures what holding on costs: the parts only someone else can do quickly, the people who stop leaning in while you do their bit, and the trust lost each time you take it back.</div>
+</div>
+<script src="lab.js"></script>
+<script>
+const SL='../../../anthology/episodes/slides/assets/master.webp',SH='../../../anthology/episodes/ship/assets/master.webp';
+const R=[{id:'map',name:'Map',x:.04,y:.06,w:.5,h:.56},{id:'model',name:'Model',x:.58,y:.06,w:.38,h:.42},{id:'title',name:'Title',x:.58,y:.52,w:.38,h:.42},{id:'quotes',name:'Walkers’ words',x:.04,y:.66,w:.5,h:.28}];
+const M=[{id:'you',name:'You',skill:{map:1.2,model:1.2,title:1.2,quotes:1.2},does:'decent at everything'},
+ {id:'asha',name:'Asha',img:SL,fx:.785,fy:.27,skill:{map:3,quotes:2.2,model:.8,title:.8},does:'maps, people’s words'},
+ {id:'kit',name:'Kit',img:SL,fx:.4,fy:.22,skill:{model:3,title:1.4,map:.8,quotes:.8},does:'models, drawings'},
+ {id:'dev',name:'Dev',img:SH,fx:.24,fy:.27,skill:{title:3,model:1.4,map:.8,quotes:.8},does:'lettering, sensors'}];
+const $=id=>document.getElementById(id),cv=$('cv'),g=cv.getContext('2d'),DUR=60;let S;
+/* each part fills legibly: the route draws itself, buildings rise in a row, the title and quotes are written left to right */
+const ROUTE=[[.06,.8],[.18,.62],[.3,.7],[.42,.42],[.55,.5],[.66,.24],[.8,.32],[.93,.14]];
+function spline(pts,n=200){const out=[];for(let i=0;i<pts.length-1;i++){const p0=pts[Math.max(0,i-1)],p1=pts[i],p2=pts[i+1],p3=pts[Math.min(pts.length-1,i+2)];
+ for(let k=0;k<n/pts.length;k++){const t=k/(n/pts.length),t2=t*t,t3=t2*t;out.push([0,1].map(j=>.5*((2*p1[j])+(-p0[j]+p2[j])*t+(2*p0[j]-5*p1[j]+4*p2[j]-p3[j])*t2+(-p0[j]+3*p1[j]-3*p2[j]+p3[j])*t3)))}}out.push(pts[pts.length-1]);return out}
+const PATH=spline(ROUTE),BLD=[[.05,.5],[.18,.72],[.31,.42],[.44,.8],[.57,.55],[.7,.66],[.83,.46]];
+const QUOTES=['“The kerb stopped him dead.”','“I’d never been in that courtyard.”','“Forty-one of us walked it.”'];
+function reset(){S={t:0,on:false,hold:'you',where:'map',p:{map:0,model:0,title:0,quotes:0},en:{asha:.8,kit:.8,dev:.8},since:0,snatch:0,youT:0,sighs:{}};$('end').hidden=true;draw();team()}
+function team(){const T=$('team');if(!T.children.length){for(const m of M){const b=Lab.el('button','mate');b.dataset.id=m.id;const f=Lab.el('div','face'+(m.id==='you'?' you':''));
+  if(m.img){f.style.backgroundImage=`url(${m.img})`;const bw=430;f.style.backgroundSize=bw+'px auto';f.style.backgroundPosition=`${-(m.fx*bw-26)}px ${-(m.fy*bw*941/1672-26)}px`}else f.textContent='You';
+  f.append(Lab.el('span','pen','🖊'),Lab.el('span','sigh','…'));const tx=Lab.el('div');tx.append(Lab.el('b',null,m.name),Lab.el('small',null,m.does));if(m.id!=='you'){const e=Lab.el('div','en');e.append(Lab.el('i'));tx.append(e)}
+  b.append(f,tx);b.onclick=()=>give(m.id);b.setAttribute('aria-label',m.id==='you'?'Keep the marker':'Hand the marker to '+m.name);T.append(b)}}
+ for(const b of T.children){const id=b.dataset.id;b.classList.toggle('hold',S.hold===id);b.classList.toggle('sigh',!!S.sighs[id]);const e=b.querySelector('.en i');if(e)e.style.width=(S.en[id]*100)+'%'}}
+R.forEach(r=>{const b=Lab.el('button','region');Object.assign(b.style,{left:r.x*100+'%',top:r.y*100+'%',width:r.w*100+'%',height:r.h*100+'%'});b.append(Lab.el('span',null,r.name.toUpperCase()));
+ b.setAttribute('aria-label','Work on the '+r.name+' yourself');b.onclick=()=>{if(!S.on)return;take(r.id)};$('poster').insertBefore(b,$('clock'))});
+function take(where){if(S.hold!=='you'){if(S.since<4){S.en[S.hold]=Math.max(0,S.en[S.hold]-.25);S.snatch++;flag(S.hold)}}S.hold='you';S.where=where;S.since=0;Lab.tone(500,.08,.04);team()}
+function give(id){if(!S.on)return;if(id==='you'){take(S.where);return}if(S.hold===id)return;if(S.hold!=='you'&&S.since<4){S.en[S.hold]=Math.max(0,S.en[S.hold]-.25);S.snatch++;flag(S.hold)}
+ S.hold=id;S.since=0;const m=M.find(x=>x.id===id);S.where=best(m);Lab.tone(760,.08,.04);team()}
+function flag(id){S.sighs[id]=1;setTimeout(()=>{S.sighs[id]=0;team()},1600)}
+function best(m){return R.map(r=>r.id).filter(k=>S.p[k]<1).sort((a,b)=>m.skill[b]-m.skill[a])[0]||'map'}
+function tick(dt){if(!S.on)return;S.t+=dt;S.since+=dt;const m=M.find(x=>x.id===S.hold);if(S.p[S.where]>=1){if(S.hold==='you'){const n=R.map(r=>r.id).find(k=>S.p[k]<1);if(n)S.where=n}else S.where=best(m)}
+ const k=S.where,en=S.hold==='you'?1:(.35+S.en[S.hold]*.8);if(S.p[k]<1)S.p[k]=Math.min(1,S.p[k]+m.skill[k]*en*.021*dt);if(S.hold==='you')S.youT+=dt;
+ for(const id in S.en){if(id===S.hold)S.en[id]=Math.min(1,S.en[id]+.05*dt);else S.en[id]=Math.max(0,S.en[id]-(S.hold==='you'?.011:.005)*dt)}
+ $('clock').textContent=Math.max(0,Math.ceil(DUR-S.t))+' s';if(S.t>=DUR||Object.values(S.p).every(v=>v>=1))finish()}
+function draw(){g.clearRect(0,0,1280,720);g.lineCap='round';g.lineJoin='round';const X=(r,v)=>(r.x+v*r.w)*1280,Y=(r,v)=>(r.y+v*r.h)*720;
+ for(const r of R){const pr=S.p[r.id];g.save();
+  if(r.id==='map'){g.strokeStyle='#2c4a6b33';g.lineWidth=1.5;const grid=Math.min(1,pr*3);for(let i=1;i<9;i++){g.beginPath();g.moveTo(X(r,.04),Y(r,i/9));g.lineTo(X(r,.04+.92*grid),Y(r,i/9));g.stroke();g.beginPath();g.moveTo(X(r,i/9),Y(r,.06));g.lineTo(X(r,i/9),Y(r,.06+.88*grid));g.stroke()}
+   const n=Math.floor(Math.max(0,pr-.15)/.85*PATH.length);g.strokeStyle='#b0322a';g.lineWidth=6;g.beginPath();PATH.slice(0,n).forEach((q,i)=>i?g.lineTo(X(r,q[0]),Y(r,q[1])):g.moveTo(X(r,q[0]),Y(r,q[1])));g.stroke();
+   g.fillStyle='#2c4a6b';ROUTE.forEach((q,i)=>{if(pr>.2+i*.1){g.beginPath();g.arc(X(r,q[0]),Y(r,q[1]),9,0,7);g.fill()}})}
+  else if(r.id==='model'){g.strokeStyle='#2b2730';g.lineWidth=3;g.beginPath();g.moveTo(X(r,.03),Y(r,.88));g.lineTo(X(r,.03+.94*Math.min(1,pr*4)),Y(r,.88));g.stroke();
+   BLD.forEach(([x,h],i)=>{const q=Math.min(1,Math.max(0,(pr-.1-i*.12)/.15));if(!q)return;const w=.1,top=.88-h*.75*q;g.strokeRect(X(r,x),Y(r,top),w*r.w*1280,Y(r,.88)-Y(r,top));
+    if(q>=1){g.beginPath();g.moveTo(X(r,x),Y(r,top));g.lineTo(X(r,x+w/2),Y(r,top-.08));g.lineTo(X(r,x+w),Y(r,top));g.stroke();g.fillStyle='#e9b85a';for(let k=0;k<3;k++)g.fillRect(X(r,x+.035),Y(r,top+.08+k*.14),10,12)}})}
+  else{g.beginPath();g.rect(r.x*1280,r.y*720,r.w*1280*pr,r.h*720);g.clip();g.fillStyle=r.id==='title'?'#7a2f22':'#2b2730';
+   if(r.id==='title'){g.font='700 64px Kalam, cursive';g.fillText('WALK IT',X(r,.06),Y(r,.45));g.fillText('WITH US',X(r,.06),Y(r,.85))}
+   else{g.font='26px Kalam, cursive';QUOTES.forEach((t,i)=>g.fillText(t,X(r,.04),Y(r,.32+i*.27)))}}
+  g.restore();g.fillStyle='#2b273099';g.font='600 22px system-ui';g.fillText(Math.round(pr*100)+'%',(r.x+r.w)*1280-70,(r.y+r.h)*720-14)}
+ const r=R.find(x=>x.id===S.where);if(S&&S.on&&r){g.font='34px serif';g.fillText('🖊',(r.x+r.w*Math.min(.9,Math.max(.1,S.p[r.id])))*1280,(r.y+r.h/2)*720+Math.cos(S.t*7)*16)}}
+function finish(){S.on=false;draw();team();const done=Object.values(S.p).reduce((a,b)=>a+b,0)/4,en=(S.en.asha+S.en.kit+S.en.dev)/3,yp=S.youT/Math.max(1,S.t);
+ $('end').querySelector('.box').innerHTML=`<p class="k2">The bell</p><h2>${done>.97?'The poster is finished.':`The poster is ${Math.round(done*100)}% done.`}</h2>
+ <p>You held the marker <b>${Math.round(yp*100)}%</b> of the time. The team’s energy is <b>${Math.round(en*100)}%</b>.${S.snatch?` You took it back ${S.snatch===1?'once':S.snatch+' times'} before anyone had really started.`:''}</p>
+ <p style="color:var(--dim)">${yp>.5?'Holding on felt productive: you were working the whole time. But you were the slowest way to finish anyone else’s part, and the people watching you do it stopped leaning in.':yp>.2?'You shared it, and kept a good share for yourself.':'You were hardly holding it at all. Your job became choosing who should have it next.'}</p>
+ <p class="lesson">Being able to do everything is exactly what makes it hard to hand over. Handing the marker over is faster, and it’s how people get better. Taking it back costs more than it saves.</p>
+ <button class="go" id="again">Try again</button>`;$('end').hidden=false;$('again').onclick=begin}
+let last=0;function loop(now){const dt=Math.min(.1,(now-last)/1000);last=now;if(S.on){tick(dt);draw();if(Math.random()<.2)team();requestAnimationFrame(loop)}}
+function begin(){reset();$('start').hidden=true;S.on=true;Lab.ctx();last=performance.now();requestAnimationFrame(loop)}
+$('go').onclick=begin;$('restart').onclick=begin;reset();
+window.IDEA={get state(){return S},step(n=1){for(let i=0;i<n;i++)tick(.1);draw();team()},give,take};
+</script></body></html>

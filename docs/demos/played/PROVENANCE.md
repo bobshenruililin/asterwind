@@ -15,6 +15,7 @@ The decisions move real objects over clean plates. Every visible pixel outside t
 - **The Quiet Minute** (`plates/qm-layers/`, built by `make-layers.py`):
   - **Platter and tray:** Robert's registered source layers (`anthology/episodes/standup/assets/source-layers-v1/`): exact source RGB, traced alpha.
   - **Clean wood:** clean-plate candidate take 3 (`docs/art/quiet-clean-20261106/`), used only under the objects through a feathered mask.
+  - **Morning table** (`morning.webp`, 8 Nov, for the listening episode's morning): `clean.webp` with the platter's footprint ring removed locally: a thin band around the fitted ellipse is refilled with the same plate's wood from just inside and outside it, along the same angle, so the concentric grain carries through. Hands, Theo's fingers and the token are masked out. No generative model; `art/quiet-minute/morning/make-morning.py` rebuilds it.
   - **Hands and token** (the occluder): exact source pixels from the occlusion mask.
   - **Reconstruction:** where hands hid the platter's rim, the gap (1,669 pixels) is filled from the rim's own pixels at the same radius, a few degrees round. This is the only reconstructed area, and it's for Bob's review.
 - **The Missing Name, One More Chair, The Empty Square, Before the Doors Open** (`plates/<ep>/layers/`, built by `make-film-layers.py`):

@@ -178,5 +178,27 @@
    "label": "Offer the return-slot box",
    "hint": "A library bag tonight; tomorrow’s first repair slot."
   }
+ },
+ "notes": {
+  "extend": [
+   {
+    "from": "Sam",
+    "text": "I wore the bag to my first day. It held. Thank you."
+   },
+   {
+    "from": "Bo",
+    "text": "You could have asked me before you gave the umbrella’s time away. I’d have said yes."
+   }
+  ],
+  "return": [
+   {
+    "from": "Sam",
+    "text": "The library had one bag left. I got lucky. I might not have."
+   },
+   {
+    "from": "Inez",
+    "text": "Every booking on time. It still felt bad watching Sam walk out into the rain."
+   }
+  ]
  }
 }

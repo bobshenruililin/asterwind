@@ -1,0 +1,53 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Notes from the team · Asterwind ideas</title><link rel="stylesheet" href="lab.css">
+<style>
+.board{position:relative;margin-top:14px;border-radius:4px;padding:28px 22px 40px;min-height:420px;
+ background:#6b4a32 radial-gradient(#7a5539 1px,transparent 1.5px) 0 0/7px 7px;box-shadow:inset 0 0 0 10px #3d2a1d,inset 0 0 60px #0007;display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:26px 22px;align-content:start}
+.n{position:relative;font:19px/1.35 Kalam,cursive;color:var(--paper-ink);background:var(--paper);padding:1.1em 1em .9em;box-shadow:0 8px 16px #0008;transform:rotate(var(--r));animation:pin .45s ease-out both}
+.n::before{content:'';position:absolute;left:50%;top:-7px;width:14px;height:14px;margin-left:-7px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#f07a6a,#a3342a);box-shadow:0 2px 3px #0008}
+.n .from{display:block;margin-top:.5em;font:700 14px Kalam,cursive;color:#6a5b4f;text-align:right}
+.n.wait{background:#d8cfbd;color:#5c5348;font-size:16px}
+@keyframes pin{from{opacity:0;transform:rotate(var(--r)) translateY(-14px)}}
+.pick{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:8px;margin-top:12px}
+.row{display:flex;gap:6px;align-items:center;background:#12121a;border:1px solid #ffffff1c;border-radius:4px;padding:.4em .6em;font-size:14px}
+.row b{flex:1;font:600 14px Georgia,serif}.row button{background:none;border:1px solid #ffffff33;border-radius:3px;padding:.3em .6em;font:13px system-ui;min-height:36px;color:var(--dim)}
+.row button.on{border-color:var(--gold);color:#ffe2a0;background:#e9c27a1a}
+.src{font:13px system-ui;color:var(--dim);margin-top:8px}
+</style></head><body>
+<div class="bar"><a href="./">← Ideas</a><b>10 · Notes from the team</b><span class="sp"></span><button id="restart">Clear</button></div>
+<div class="wrap">
+<div class="intro"><p class="k">The morning after</p><h1>The people you led leave you notes.</h1><p>Not a score. What it was like on the other end of your choices.</p></div>
+<p class="src" id="src"></p>
+<div class="pick" id="pick"></div>
+<div class="board" id="board"></div>
+<div class="why"><b>The idea.</b> The game ends with what <i>you</i> thought: your word after <i>Leadership is…</i>. Leadership is mostly reviewed by the people you led, in notes they’ll never send. Here they write them: a thank-you and a complaint can sit side by side on the same board, from the same night. If you’ve played the game in this browser, your real choices are used.</div>
+</div>
+<script src="lab.js"></script>
+<script>
+const EPS=[['standup','HEARD','The Quiet Minute',['round','Turned the table'],['slips','Passed the slips']],['slides','LEAD','The Missing Name',['microphone','Moved the microphone'],['notebook','Showed the notebook']],
+ ['scope','SHIP','One More Chair',['extend','Pulled in the chair'],['return','Offered the box']],['ship','SHIELD','Before the Doors Open',['live','Ran it live'],['rehearsal','Played the rehearsal']],
+ ['seam','SHARED','The 3:00 AM Seam',['backup','Fitted the spare'],['repair','Repaired together']],['pixel','HELP','The Empty Square',['lower','Lowered the console'],['connect','Connected the panel']]];
+const NOTES={round:[['You asked me. Nobody does. I’m bringing the whole sheet tomorrow.','Ellis'],['We lost the harbour. I think I needed to lose it. Don’t tell anyone I said that.','Theo']],
+ slips:[['You read my slip too fast. Thank you for stopping when I said so.','Nia'],['I wrote “a different start?”. I don’t think you knew it was me.','Ellis']],
+ microphone:[['My hands were shaking. I’m glad it was my voice that said it.','Asha'],['I carried the model home still in its box. Next time, plan the minutes with me?','Kit']],
+ notebook:[['Thank you for keeping the reveal. Their faces when it opened!','Kit'],['You said my name. I wish they’d heard about the trolley.','Asha']],
+ extend:[['I wore the bag to my first day. It held. Thank you.','Sam'],['You could have asked me before you gave the umbrella’s time away. I’d have said yes.','Bo']],
+ return:[['The library had one bag left. I got lucky. I might not have.','Sam'],['Every booking on time. It still felt bad watching Sam walk out into the rain.','Inez']],
+ live:[['My arm aches from that reset. I’m proud of it anyway.','Dev'],['One kid came back three times. Nobody minded the glitch once you’d explained it.','Lio']],
+ rehearsal:[['I had to tell the queue they couldn’t try it. That was the hardest bit of my day.','Lio'],['Thank you for not making me fix it in front of everyone.','Dev']],
+ backup:[['It moved. I wanted it to be mine. Thank you for saying Monday, and meaning it.','Julian'],['I got my footage. I know who paid for it.','Mara']],
+ repair:[['It jammed on camera, and you said it was your call. That mattered more than the footage.','Mara'],['I’m going to fix that seam properly. Because you let me try.','Julian']]};
+const $=id=>document.getElementById(id);let picks={},fromSave=false;
+function readSave(){try{const d=JSON.parse(localStorage.getItem('asterwind.night2.v1')||'null');if(d&&d.film){const out={};for(const [ep,w,,a,b] of EPS){const o=d.film[w];if(typeof o==='string'&&(o===a[0]||o===b[0])&&NOTES[o])out[ep]=o}return out}}catch{}return null}
+function render(){$('pick').innerHTML='';for(const [ep,,title,a,b] of EPS){const r=Lab.el('div','row');r.append(Lab.el('b',null,title));for(const [id,lab] of [a,b]){const btn=Lab.el('button',picks[ep]===id?'on':'',lab);
+  btn.onclick=()=>{picks[ep]=picks[ep]===id?undefined:id;fromSave=false;Lab.tone(picks[ep]?620:380,.06,.03);render()};r.append(btn)}$('pick').append(r)}
+ $('src').textContent=fromSave?'Using the choices saved from your night in the game. Change any of them below.':'Pick what you did in each story (or play the game in this browser first).';
+ const B=$('board');B.innerHTML='';let i=0;
+ for(const [ep,,title] of EPS){const c=picks[ep];if(!c||(ep!=='pixel'&&!NOTES[c]))continue;
+  if(ep==='pixel'){const n=Lab.el('div','n wait');n.style.setProperty('--r','1deg');n.append(document.createTextNode('Jo’s note waits for The Empty Square’s lived-experience review. We won’t write Jo’s words before people with that experience have read the story.'));B.append(n);continue}
+  for(const [txt,who] of NOTES[c]){const n=Lab.el('div','n');n.style.setProperty('--r',(((i*37)%7)-3)*.8+'deg');n.style.animationDelay=(i*.08)+'s';n.append(document.createTextNode(txt),Lab.el('span','from','— '+who));B.append(n);i++}}
+ if(!B.children.length)B.append(Lab.el('p',null,''))}
+$('restart').onclick=()=>{picks={};fromSave=false;render()};
+const saved=readSave();if(saved&&Object.keys(saved).length){picks=saved;fromSave=true}render();
+window.IDEA={set(ep,id){picks[ep]=id;render()},get picks(){return picks}};
+</script></body></html>

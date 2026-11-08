@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<title>The Quiet Minute</title>
+<!-- The Quiet Minute, listened (8 November 2026). Who you turn to gets the floor; then one untimed choice about the
+     last twelve minutes; then the morning's notes. The film's own plates and voices, no network, no dependencies.
+     Script and rules: scripts/listen.json. Design: docs/QUIET-MINUTE-LISTEN-2026-11-08.md. -->
+<link rel="stylesheet" href="listen.css">
+</head>
+<body>
+<main id="film" aria-label="The Quiet Minute. A committee table at night in the student union: Nia, Theo and Ellis, a paper model of the campus, rain on the window.">
+ <canvas id="cv" aria-hidden="true"></canvas>
+ <div id="marks" aria-hidden="true"><i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i></div>
+ <div id="clock" aria-hidden="true"><i class="rule"></i><i class="fill"></i><span class="now">9:40</span><span class="end">10:00</span></div>
+ <div id="people" role="group" aria-label="Who you turn to. The person you face gets the floor." hidden></div>
+ <div id="frags" aria-hidden="true"></div>
+ <p id="ask" aria-hidden="true"></p>
+ <p class="kicker" id="when" aria-hidden="true"></p>
+ <p id="hint" aria-hidden="true"></p>
+ <div id="objs" role="group" tabindex="-1" aria-label="Twelve minutes left. How you run them: turn the table, or pass the slips." hidden></div>
+ <div id="slipcards" aria-hidden="true"></div>
+ <section id="notes" aria-label="The next morning: notes left on the table" hidden></section>
+ <div id="scrim" aria-hidden="true"></div>
+ <section id="title">
+  <p class="kicker" id="kicker">Student union · 9:40 pm</p>
+  <h1>The Quiet Minute</h1>
+  <p class="premise" id="premise"></p>
+  <button class="pill" id="start" disabled><span>Loading the room</span><i class="arr" aria-hidden="true">→</i></button>
+ </section>
+ <p id="cap" aria-hidden="true"><span class="who"></span><span class="line"></span></p>
+ <p id="pausehint" hidden><b>Paused</b><span>Take your time. You can still turn to someone.</span></p>
+ <div id="end" hidden><p class="lesson" id="lesson"></p><div class="ways">
+  <button class="pill quiet" id="missed" hidden><span>What you didn't hear</span><i class="arr" aria-hidden="true">↺</i></button>
+  <button class="pill quiet" id="again"><span>Again</span><i class="arr" aria-hidden="true">↺</i></button>
+  <button class="pill" id="other"><span>The other way</span><i class="arr" aria-hidden="true">→</i></button>
+ </div></div>
+ <nav id="chrome" aria-label="Playback">
+  <button id="snd" aria-pressed="true" aria-label="Sound">Sound</button>
+  <button id="cc" aria-pressed="true">Captions</button>
+  <button id="pause" aria-pressed="false" aria-keyshortcuts="P">Pause</button>
+ </nav>
+</main>
+<p class="sr" id="live" aria-live="polite"></p>
+<p class="sr" id="alert" aria-live="assertive"></p>
+<script src="support.js"></script>
+<script src="stage.js"></script>
+<script src="listen.js"></script>
+</body>
+</html>

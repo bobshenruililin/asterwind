@@ -1,8 +1,8 @@
 /* Story moments for every played scene, from scripts/<ep>.json:
    - before: a short, readable introduction (where, who you are, what's at stake) and who's who, tagged on the picture;
    - at the decision: the question, in words;
-   - after: a reflection. What the choice kept, what it cost, one lesson that holds for either choice, and a question.
-     Again and The other way live inside it, so the road not taken is one tap away. Nothing is scored or recorded. */
+   - after: the notes the people affected leave you (what the choice kept and cost, in their words), one lesson that
+     holds for either choice, and a question. Again and The other way live inside it. Nothing is scored or recorded. */
 (function(root){
 'use strict';
 const $=id=>document.getElementById(id),el=(tag,cls,text)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)e.textContent=text;return e};
@@ -36,11 +36,20 @@ function create(script){
   begin(){if(introBox)introBox.hidden=true;if(tags)tags.hidden=true;document.body.classList.remove('has-intro');card.hidden=true},
   decide(on){ask.hidden=!on||!script.prompt},
   reflect(choice,buttons){const r=script.reflections?.[choice];if(!r)return false;seen.add(choice);card.textContent='';
+   // The people affected answer back (8 Nov): their notes carry what the choice kept and what it cost, side by side.
+   // A story without authored notes (The Empty Square, pending its lived-experience review) keeps the kept/cost card.
+   const notes=script.notes?.[choice];card.classList.toggle('notes-end',!!notes);
+   if(notes){const both=seen.size>1;const h=el('h2',null,r.title);h.id='reflect-title';card.append(el('p','kicker',both?'Both ways seen':'Afterwards'),h);
+    const row=el('div','notes');notes.forEach((n,i)=>{const d=el('article','note');d.style.setProperty('--r',((i*5)%7-3)*.8+'deg');d.style.setProperty('--d',(.25+i*.5)+'s');
+     d.append(el('p',null,n.text),el('span','from','— '+n.from));d.setAttribute('aria-label','A note from '+n.from+': '+n.text);row.append(d)});card.append(row);
+    const foot=el('div','foot');const words=el('div','words');if(script.lesson)words.append(el('p','lesson',script.lesson));if(r.ask)words.append(el('p','ask',r.ask));
+    const other0=Object.keys(script.reflections).find(k=>k!==choice);if(both&&script.reflections[other0])words.append(el('p','hint','The other way: '+script.reflections[other0].title.replace(/\.$/,'')+' Neither was the right answer.'));
+    foot.append(words);if(buttons){buttons.hidden=false;foot.append(buttons)}card.append(foot);
+    card.hidden=false;card.focus({preventScroll:true});return true}
    const both=seen.size>1;const h=el('h2',null,r.title);h.id='reflect-title';card.append(el('p','kicker',both?'Both ways seen':'What happened'),h);
    const dl=el('dl');dl.append(el('dt',null,'What it kept'),el('dd',null,r.kept),el('dt',null,'What it cost'),el('dd',null,r.cost));card.append(dl);
    const other0=Object.keys(script.reflections).find(k=>k!==choice),o=script.reflections[other0];
    if(both&&o){const box=el('div','other');box.append(el('p','kicker','The other way: '+o.title.replace(/\.$/,'')));const odl=el('dl');odl.append(el('dt',null,'Kept'),el('dd',null,o.kept),el('dt',null,'Cost'),el('dd',null,o.cost));box.append(odl);card.append(box)}
-   if(r.lean)card.append(el('p','lean',r.lean==='people'?'This time you put the people in front of you first.':'This time you put the plan first: the structure, the promise, the clock.'));
    if(script.lesson)card.append(el('p','lesson',script.lesson));
    if(r.ask)card.append(el('p','ask',r.ask));
    const other=Object.keys(script.reflections).find(k=>k!==choice);
