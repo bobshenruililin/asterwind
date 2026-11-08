@@ -52,8 +52,8 @@ function rainLevel(v){if(amb){amb.g.gain.setTargetAtTime(.045*v,ac.currentTime,.
 function chan(who){if(!CH[who]){const lp=ac.createBiquadFilter();lp.type='lowpass';lp.frequency.value=18000;lp.Q.value=.4;const g=ac.createGain();g.gain.value=1;lp.connect(g);g.connect(master);CH[who]={lp,g}}return CH[who]}
 function track(src){playing.add(src);src.onended=()=>playing.delete(src)}
 const LOG=[];
-function sfx(k,gain=.6){LOG.push({T,sfx:k,gain});if(!ac||!buf[k])return;const s=ac.createBufferSource(),g=ac.createGain();s.buffer=buf[k];g.gain.value=gain;s.connect(g);g.connect(master);track(s);s.start()}
-function knock(){LOG.push({T,sfx:'knock',gain:1});if(!ac)return;[0,.32,.62].forEach(d=>{const o=ac.createOscillator(),g=ac.createGain(),t=ac.currentTime+d;o.frequency.setValueAtTime(110,t);o.frequency.exponentialRampToValueAtTime(55,t+.12);
+function sfx(k,gain=.6){LOG.push({T,w:performance.now(),sfx:k,gain});if(!ac||!buf[k])return;const s=ac.createBufferSource(),g=ac.createGain();s.buffer=buf[k];g.gain.value=gain;s.connect(g);g.connect(master);track(s);s.start()}
+function knock(){LOG.push({T,w:performance.now(),sfx:'knock',gain:1});if(!ac)return;[0,.32,.62].forEach(d=>{const o=ac.createOscillator(),g=ac.createGain(),t=ac.currentTime+d;o.frequency.setValueAtTime(110,t);o.frequency.exponentialRampToValueAtTime(55,t+.12);
  g.gain.setValueAtTime(.5,t);g.gain.exponentialRampToValueAtTime(.001,t+.18);o.connect(g);g.connect(master);track(o);o.start(t);o.stop(t+.2)})}
 function stopAll(){for(const s of [...playing]){try{s.stop()}catch{}playing.delete(s)}}
 async function startSound(){ac=new (window.AudioContext||window.webkitAudioContext)();master=ac.createGain();master.gain.value=soundOn?1:0;master.connect(ac.destination);
@@ -110,7 +110,7 @@ function speak(id,o={}){const d=LN[id];if(!d)return null;const who=d.speaker||''
  const dur=b?b.duration:Math.max(1.6,d.line.length*.062+.5);const rec={id,who,line:d.line,t0:T,dur,att:0,src:null,g:null,cut:false,o};
  if(SPK[who])cutLine(SPK[who],.12);
  if(ac&&b){const s=ac.createBufferSource(),g=ac.createGain();s.buffer=b;g.gain.value=o.gain??1;s.connect(g);g.connect(o.dry?master:chan(who).lp);track(s);s.start();rec.src=s;rec.g=g}
- SPK[who]=rec;LOG.push({T,id,who,muffled:phase==='listen'&&!o.dry&&who!=='You'&&who!==(L&&L.att),gain:o.gain??1});if(phase!=='listen'||who===(L&&L.att)||o.dry){say((who?who+': ':'')+d.line)}
+ SPK[who]=rec;LOG.push({T,w:performance.now(),id,who,muffled:phase==='listen'&&!o.dry&&who!=='You'&&who!==(L&&L.att),gain:o.gain??1});if(phase!=='listen'||who===(L&&L.att)||o.dry){say((who?who+': ':'')+d.line)}
  return rec}
 function cutLine(rec,fade=.18){if(!rec||rec.cut)return;rec.cut=true;if(rec.g&&ac){rec.g.gain.setTargetAtTime(0,ac.currentTime,fade/3);try{rec.src.stop(ac.currentTime+fade+.05)}catch{}}endLine(rec,true)}
 const heard=new Set();
