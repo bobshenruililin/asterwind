@@ -13,7 +13,9 @@ const S=p=>p.evaluate(()=>LISTEN.state);const notes=p=>p.evaluate(()=>[...docume
 (async()=>{const b=await chromium.launch({args:ARGS});
  // 1. The episode contract, embedded as the night embeds it: ready, then exactly one 'completed' with a registry outcome.
  {const ctx=await b.newContext({viewport:{width:1280,height:720}});const p=await ctx.newPage();const errs=[];p.on('pageerror',e=>errs.push(e.message));
-  await p.goto(BASE.replace(/listen\.html$/,'qa/fixtures/listen-host.html'));const F=()=>p.frames().find(f=>/listen\.html/.test(f.url()));
+  // the fixture is served from the test itself, so this runs against a built export too (qa/ is not exported)
+  const HOST=BASE.replace(/listen\.html$/,'qa/fixtures/listen-host.html');await p.route(HOST,r=>r.fulfill({contentType:'text/html',body:require('fs').readFileSync(__dirname+'/fixtures/listen-host.html','utf8')}));
+  await p.goto(HOST);const F=()=>p.frames().find(f=>/listen\.html/.test(f.url()));
   await p.waitForFunction(()=>MSGS.some(m=>m.type==='ready'),null,{timeout:60000});const f=F();await f.waitForFunction(()=>window.LISTEN&&!document.getElementById('start').disabled,null,{timeout:60000});
   await f.click('#start');await f.waitForFunction(()=>LISTEN.state.phase==='listen',null,{timeout:20000});
   need(!(await p.evaluate(()=>MSGS.some(m=>m.type==='completed'))),'contract: listening never completes the film');

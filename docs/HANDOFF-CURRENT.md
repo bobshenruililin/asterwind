@@ -1,6 +1,6 @@
 # Current handoff (keep this short and current)
 
-Updated 8 November 2026 by Opus, after the ambition pass ([brief](AMBITION-HANDOFF-2026-11-08.md)). Branch `claude/blissful-noether-ryccjs` (continues `claude/awesome-hypatia-6bf97q` from `78f03ca`). Published build: still `d0a0121` until this pass is released (see **Release**).
+Updated 8 November 2026 by Opus, after the ambition pass ([brief](AMBITION-HANDOFF-2026-11-08.md)). Branch `claude/blissful-noether-ryccjs` (continues `claude/awesome-hypatia-6bf97q` from `78f03ca`). Published build: `a8e4955` (`pages-runtime` at `85d677f`), verified live.
 
 ## What changed in this pass
 
@@ -37,7 +37,7 @@ The reviewer's harness is now `qa/ideas-lab-state-review.cjs`, and it passes.
 
 | What | Where | State |
 | --- | --- | --- |
-| **The game, published** | https://bobshenruililin.github.io/asterwind/ | Still `d0a0121` (`pages-runtime` at `871f285`). This pass is committed and tested on the branch; its release is in progress. |
+| **The game, published** | https://bobshenruililin.github.io/asterwind/ | Built from `a8e4955` (clean tree, 587 files, 38.0 MB); `pages-runtime` at `85d677f` (was `871f285`). Live 40 s after the push; verified in a signed-out browser (below). `/play/` forwards here. |
 | The pilot on its own | `/docs/demos/played/listen.html` (live and from source) | |
 | The draft night, from source | `/docs/demos/unfolded/?v=2` (serve the repo root) | |
 | Ideas lab | `/docs/demos/ideas/` | Repaired sketches; exploratory, not the game |
@@ -65,9 +65,38 @@ Build first, in this order: `python3 film/build.py`, `python3 anthology/build-al
 - `node docs/demos/played/qa/night-v2.cjs <out>`: the night end to end with the new episode.
 - `EPS=slides,seam node docs/demos/played/qa/story.cjs <out>`, plus the existing `films.cjs`, `layers.cjs`, `keyboard.cjs`, `story-phone.cjs` (these cover the 7 Nov version).
 
-**Live:** see Release.
+**The built export** (`dist/play` served alone on 8751): `listen.cjs` (49 ok), `night-v2.cjs`, `dawn-notes.cjs` and `story.cjs` for all five other stories, all passing.
 
-**Independent review:** running against the brief and the playable result; findings and fixes will be recorded here.
+**Live** (https://bobshenruililin.github.io/asterwind/, fresh signed-out Chromium):
+- The root's build stamp is `a8e4955a866f`, and `/play/` forwards to `../`.
+- `night-v2.cjs` passes: opening card, corridor, the Standup Seltzer, the listening episode (turn to Nia, then turn the table), the outcome recorded, back, all lit, morning, notebook, Begin again. No errors and no failed requests.
+- `listen.cjs` passes all 49 checks live: the contract, pause and hidden tab, both outcomes, the notes changing with what was heard, again, the other way, the replay, keyboard only, and an emulated iPhone 13.
+- `dawn-notes.cjs` passes with two and six stories. `story.cjs` passes for slides, scope, ship, seam and pixel.
+- Sound files load (no failed requests), but nobody has listened to the live mix.
+
+**Before and after:** a contact sheet of the published 7 Nov build against this one, and a 3 min 20 s recording of one route with its soundtrack (rebuilt from the page's own line timings; software rendering ran slower than real time, so the pacing is approximate). Both were delivered in the session, not committed.
+
+**Independent review** (a separate Claude agent, read-only, against the brief and the playable result at `c66cc94`; model critique, not players). Findings, all reproduced, and what was done:
+- **Fixed in `a8e4955`:**
+  - The dawn notebook text collided once two stories were walked (a blocker).
+  - A line could start during "are we agreed?" and run into the choice.
+  - The first Tab after *Take the chair* landed on Sound.
+  - The night's "Back into the night" covered *The other way*.
+  - The choice opened with *Turn the table* lit and focused.
+  - Rotating a phone mis-placed the notes and the camera.
+  - Phone landscape clipped the choice.
+  - Screen readers heard nothing when you turned to someone mid-line.
+  - Smaller items: pause on the title, the other way's clickable auto-commit, the stale alert, contrast, 34 px playback buttons.
+- **Acted on from its critique:**
+  - Every fact could be heard in one run, which made *What you didn't hear* read like a completeness score; the room now runs out at 50 s, and the check is in `listen.cjs`.
+  - The choice didn't say what each action risks; each line now does.
+  - Nia's attempt was the least visible beat; it now has more light on her face, her words beside her, and an alert that says to press 1 or P.
+  - The morning's ghost ring from the removed model is retouched out (`make-morning.py`, local and non-generative).
+- **Not addressed:**
+  - On a portrait phone the choice shows the plate between black bands.
+  - The decision's question still sits over Theo's face.
+  - The faint grain change where the model stood.
+- **Needs people:** the mix, the voice takes, first-time comprehension, real screen readers and real phones.
 
 ## Needs human eyes and ears
 
@@ -82,7 +111,7 @@ Build first, in this order: `python3 film/build.py`, `python3 anthology/build-al
 - **The other five stories still have the old verb.** They now look and end like the pilot, but you still watch, then pick one of two objects. The pilot proves the listening verb; the next step is one verb per story (the lab's recommendation): *Say it* in The Seam, *Ask* in One More Chair, *Hold the room* in The Missing Name, with untimed alternatives.
 - **The plates don't act.** The four Quiet Minute plates are 4 November reference stills; acting is camera, light, focus and small warps. A few authored poses would lift the listening most, especially Nia turning to you and Ellis unfolding his sheet. The Kling connector still needs authorisation.
 - **Real time with a pause.** Nia's attempts give 4–5 s to respond. Pause makes the scene untimed, but a player has to know that. Consider an explicit "take your time" pace.
-- **Mobile is emulated only.** On a phone the camera holds one face at a time and the names become a row of buttons; that has not been tried on a real device.
+- **Mobile is emulated only.** On a phone the camera holds one face at a time and the names become a row of buttons; that has not been tried on a real device. On a portrait phone the third morning note starts under the bottom panel and needs a scroll.
 
 ## Open decisions for Bob
 
