@@ -51,8 +51,9 @@ function ambience(){if(amb)return;const n=ac.createBufferSource();n.buffer=noise
 function rainLevel(v){if(amb){amb.g.gain.setTargetAtTime(.045*v,ac.currentTime,.8);amb.g2.gain.setTargetAtTime(.1*Math.max(.35,v),ac.currentTime,.8)}}
 function chan(who){if(!CH[who]){const lp=ac.createBiquadFilter();lp.type='lowpass';lp.frequency.value=18000;lp.Q.value=.4;const g=ac.createGain();g.gain.value=1;lp.connect(g);g.connect(master);CH[who]={lp,g}}return CH[who]}
 function track(src){playing.add(src);src.onended=()=>playing.delete(src)}
-function sfx(k,gain=.6){if(!ac||!buf[k])return;const s=ac.createBufferSource(),g=ac.createGain();s.buffer=buf[k];g.gain.value=gain;s.connect(g);g.connect(master);track(s);s.start()}
-function knock(){if(!ac)return;[0,.32,.62].forEach(d=>{const o=ac.createOscillator(),g=ac.createGain(),t=ac.currentTime+d;o.frequency.setValueAtTime(110,t);o.frequency.exponentialRampToValueAtTime(55,t+.12);
+const LOG=[];
+function sfx(k,gain=.6){LOG.push({T,sfx:k,gain});if(!ac||!buf[k])return;const s=ac.createBufferSource(),g=ac.createGain();s.buffer=buf[k];g.gain.value=gain;s.connect(g);g.connect(master);track(s);s.start()}
+function knock(){LOG.push({T,sfx:'knock',gain:1});if(!ac)return;[0,.32,.62].forEach(d=>{const o=ac.createOscillator(),g=ac.createGain(),t=ac.currentTime+d;o.frequency.setValueAtTime(110,t);o.frequency.exponentialRampToValueAtTime(55,t+.12);
  g.gain.setValueAtTime(.5,t);g.gain.exponentialRampToValueAtTime(.001,t+.18);o.connect(g);g.connect(master);track(o);o.start(t);o.stop(t+.2)})}
 function stopAll(){for(const s of [...playing]){try{s.stop()}catch{}playing.delete(s)}}
 async function startSound(){ac=new (window.AudioContext||window.webkitAudioContext)();master=ac.createGain();master.gain.value=soundOn?1:0;master.connect(ac.destination);
@@ -109,7 +110,7 @@ function speak(id,o={}){const d=LN[id];if(!d)return null;const who=d.speaker||''
  const dur=b?b.duration:Math.max(1.6,d.line.length*.062+.5);const rec={id,who,line:d.line,t0:T,dur,att:0,src:null,g:null,cut:false,o};
  if(SPK[who])cutLine(SPK[who],.12);
  if(ac&&b){const s=ac.createBufferSource(),g=ac.createGain();s.buffer=b;g.gain.value=o.gain??1;s.connect(g);g.connect(o.dry?master:chan(who).lp);track(s);s.start();rec.src=s;rec.g=g}
- SPK[who]=rec;if(phase!=='listen'||who===(L&&L.att)||o.dry){say((who?who+': ':'')+d.line)}
+ SPK[who]=rec;LOG.push({T,id,who,muffled:phase==='listen'&&!o.dry&&who!=='You'&&who!==(L&&L.att),gain:o.gain??1});if(phase!=='listen'||who===(L&&L.att)||o.dry){say((who?who+': ':'')+d.line)}
  return rec}
 function cutLine(rec,fade=.18){if(!rec||rec.cut)return;rec.cut=true;if(rec.g&&ac){rec.g.gain.setTargetAtTime(0,ac.currentTime,fade/3);try{rec.src.stop(ac.currentTime+fade+.05)}catch{}}endLine(rec,true)}
 const heard=new Set();
@@ -122,7 +123,7 @@ const has=f=>f==='ellis.any'?[...heard].some(x=>x.startsWith('ellis.')):heard.ha
 let phase='title',L=null,choice=null,other=false;
 function newListen(){return{t0:T,att:null,ever:false,theoQ:LS.theo.slice(),theoGap:0,said:new Set(),
  nia:{attempt:0,live:null,gave:false,queue:[],warm:0},ellis:{i:0,warm:0,trails:0,need:LS.ellis.warm},nudged:false,closing:false,yielded:0}}
-function attend(who){if(!L||!(phase==='listen'||phase==='establish'))return;if(L.att===who)return;const prev=L.att;L.att=who;if(who!=='Theo'&&who)L.ever=true;
+function attend(who){if(!L||!(phase==='listen'||phase==='establish'))return;if(who!=='Theo'||L.att)$('hint').classList.remove('on');if(L.att===who)return;const prev=L.att;L.att=who;if(who!=='Theo'&&who)L.ever=true;
  for(const w of WHO)btn[w].setAttribute('aria-pressed',String(w===who));
  // turning away from Ellis mid-thought: he stops. Nia, who has been trying all evening, finishes hers.
  if(prev==='Ellis'&&SPK.Ellis&&!SPK.Ellis.o.dry){const r=SPK.Ellis;if(T-r.t0<r.dur*.85){cutLine(r);L.ellis.trails++;speak(LS.ellis.trail,{gain:.8});move('ellisHead',0,.004,.8);move('ellisPaper',0,0,.8)}}
@@ -179,7 +180,7 @@ function listenTick(dt){const att=L.att,t=T-L.t0;
 function busyBut(who){return Object.keys(SPK).some(w=>w&&w!==who&&w!=='You'&&!(w==='Theo'&&SPK.Theo&&T-SPK.Theo.t0>SPK.Theo.dur-.25))}
 // After Nia's point about the gate, Theo answers it breezily, whether or not you are listening to him.
 function afterNia(id,early){if(early)return;if((id==='qm2-r2'||id==='L-n2')&&!L.said.has('qm2-05')){L.theoQ.unshift('qm2-05');L.reply=true;L.theoGap=.5;L.nia.warm=-.8}}
-function closeListening(){L.closing=true;btn.Nia.classList.remove('trying');L.nia.live=null;
+function closeListening(){L.closing=true;$('hint').classList.remove('on');btn.Nia.classList.remove('trying');L.nia.live=null;
  for(const w of WHO)btn[w].setAttribute('aria-pressed','false');const prevAtt=L.att;L.att=null;mixVoices();aimAt(null,1.6);
  $('clock').querySelector('.now').textContent='9:48';$('clock').querySelector('.fill').style.width='40%';
  at(.9,()=>{line(LS.close,{dry:true,onEnd:()=>at(.6,toDecision)});move('theoHead',0,-.002,.8)});
@@ -276,10 +277,10 @@ function replayMissed(){if(phase!=='end')return;phase='missed';$('end').classLis
    at(reduced?.25:1.7,()=>{stage.settle();S.zoom=S.zoomB;S.cen=S.cenB.slice();S.warps=[];caption('','');$('when').textContent='The next morning';$('notes').hidden=false;ending()})}))})}
 
 /* ===================== the frame ===================== */
-let last=performance.now(),raf=0;
+let last=performance.now(),raf=0,manual=false;// manual: a test or a demo render drives the clock with LISTEN.step
 function frame(now){raf=requestAnimationFrame(frame);try{tick(now)}catch(error){console.error(error)}}
 function tick(now){const dt=Math.min(.1,(now-last)/1000);last=now;fit();
- if(!paused&&phase!=='title'){stepClock(dt);if(phase==='listen'&&L)listenTick(dt)}
+ if(!paused&&!manual&&phase!=='title'){stepClock(dt);if(phase==='listen'&&L)listenTick(dt)}
  const t=T,move_=!reduced;for(const k in H){const h=H[k];const b=move_&&h.breathe?Math.sin(t*1.7+k.length)*.0012:0;
   const talk=phase==='listen'&&move_&&((k==='theoHead'&&SPK.Theo)||(k==='niaHead'&&SPK.Nia)||(k==='ellisHead'&&SPK.Ellis))?Math.sin(t*7.3)*.0009:0;h.dx=h.bx;h.dy=h.by+b+talk}
  S.lift=phase==='listen'&&L&&L.nia.live&&L.att!=='Nia'?[.15,.3,.16,(reduced?.7:.55+.45*Math.sin(t*3.4))]:null;
@@ -300,9 +301,9 @@ function drawCaptions(){const att=L.att,own=att&&SPK[att],n=L.nia,e=L.ellis;
    else{let [x,y]=toScreen(...FRAGAT[who]);if(x<.12){x=.03;f.classList.add('edge-l')}else if(x>.88){x=.97;f.classList.add('edge-r')}f.style.left=x*100+'%';f.style.top=Math.max(.14,y)*100+'%';f.style.transform=''}}}}
 
 /* ===================== begin, again, the other way ===================== */
-function reset(){run++;cues.length=0;tweens.length=0;stopAll();for(const k of Object.keys(SPK))delete SPK[k];heard.clear();L=null;
+function reset(){run++;cues.length=0;LOG.length=0;tweens.length=0;stopAll();for(const k of Object.keys(SPK))delete SPK[k];heard.clear();L=null;
  $('notes').innerHTML='';$('notes').hidden=true;$('slipcards').innerHTML='';$('end').classList.remove('on');$('end').hidden=true;$('objs').hidden=true;$('ask').classList.remove('on');caption('','');$('when').classList.remove('on');
- for(const w of WHO){btn[w].setAttribute('aria-pressed','false');btn[w].classList.remove('trying');$('f-'+w).classList.remove('on')}
+ for(const w of WHO){btn[w].setAttribute('aria-pressed','false');btn[w].classList.remove('trying');$('f-'+w).classList.remove('on')}$('hint').classList.remove('on');
  stage.show('master');Object.assign(S,{mix:0,dawn:0,rain:.9,dim:0,str:.016,focus:.55,dof:0,ang:0,so:[0,0],disc:null,slide:null,hov:null,hovA:0,spot:null,lamp:[.18,.06,.34,.55],cam:[0,0]});
  handles(MASTER_H);if(ac){rainLevel(1);mixVoices()}}
 function establish(){reset();phase='establish';other=false;choice=null;contain=false;L=newListen();
@@ -312,7 +313,10 @@ function establish(){reset();phase='establish';other=false;choice=null;contain=f
  $('people').hidden=false;$('frags').hidden=false;
  at(reduced?.4:3.4,()=>{$('people').classList.add('named');$('clock').classList.add('on')});
  at(reduced?.6:4.9,()=>{phase='listen';L.t0=T;if(!L.att){L.att='Theo';btn.Theo.setAttribute('aria-pressed','true')}aimAt(L.att,1.6);mixVoices();
-  say('Nia, Theo and Ellis are at the table. Theo has the floor. Turn to someone to give them the floor: the three people are buttons, or press 1, 2 or 3.')})}
+  say('Nia, Theo and Ellis are at the table. Theo has the floor. Turn to someone to give them the floor: the three people are buttons, or press 1, 2 or 3.');
+  // one line, once: the people are the controls. It goes when you first turn to someone, or after a while.
+  const h=$('hint');h.textContent=portrait?'Tap a name to turn to them. Whoever you face has the floor. Pause any time.':'Whoever you turn to has the floor.';if(!portrait){const k=document.createElement('b');k.textContent='click · 1 2 3 · P pauses';h.append(k)}
+  h.classList.add('on');at(11,()=>h.classList.remove('on'))})}
 function again(){if(!(phase==='end'))return;establish()}
 function otherWay(){if(phase!=='end')return;const keep=new Set(heard),was=choice;run++;cues.length=0;tweens.length=0;stopAll();for(const k of Object.keys(SPK))delete SPK[k];
  $('notes').innerHTML='';$('notes').hidden=true;$('end').classList.remove('on');$('end').hidden=true;$('slipcards').innerHTML='';$('when').classList.remove('on');
@@ -336,5 +340,5 @@ raf=requestAnimationFrame(frame);$('marks').classList.add('on');
 notify('ready');PlayedSupport.ready('Take the chair');
 window.LISTEN={get state(){return{phase,choice,T,att:L&&L.att,heard:[...heard],said:L?[...L.said]:[],speaking:Object.keys(SPK),nia:L&&{attempt:L.nia.attempt,gave:L.nia.gave,trying:!!L.nia.live},ellis:L&&{i:L.ellis.i,trails:L.ellis.trails},paused,layered,run,playing:playing.size,cues:cues.length}},
  attend,commit,step(n=1,dt=1/15){for(let i=0;i<n;i++){if(paused)break;stepClock(dt);if(phase==='listen'&&L)listenTick(dt)}},
- until(ph,max=4000,dt=1/15){for(let i=0;i<max&&phase!==ph;i++){stepClock(dt);if(phase==='listen'&&L)listenTick(dt)}return phase},again,otherWay,replayMissed,setPause};
+ manual(v){manual=!!v},get log(){return LOG.slice()},until(ph,max=4000,dt=1/15){for(let i=0;i<max&&phase!==ph;i++){stepClock(dt);if(phase==='listen'&&L)listenTick(dt)}return phase},again,otherWay,replayMissed,setPause};
 })().catch(error=>{console.error(error);PlayedSupport.fail(error,'../../../anthology/episodes/standup/index.html')});
