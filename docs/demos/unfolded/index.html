@@ -718,7 +718,7 @@ function startFilm(w,o={}){Snd.stopScene();const id=BOTTLES[w].film,f=FILMS[id],
  const scr=$('filmscr');scr.setAttribute('aria-label',f.title);
  const slate=$('slate');slate.hidden=false;slate.querySelector('b').textContent=o.direct?'':(o.fromRoom&&key&&ST[key].slateTitle)||f.title;
  slate.querySelector('span').textContent=o.direct?'':(key&&ST[key].slate&&c&&ST[key].slate[c])||f.arrival;slate.style.background=o.direct&&o.cross?.src?'#000 url("'+o.cross.src.replace(/"/g,'%22')+'") center/cover':'';
- $('film-back').hidden=true;scr.querySelector('iframe')?.remove();
+ $('film-back').hidden=true;$('film-leave').hidden=false;scr.querySelector('iframe')?.remove();
  const fr=document.createElement('iframe');fr.title=f.title;fr.hidden=true;const session='unfolded-'+Date.now().toString(36);fr.src=ROOT+f.src+(f.src.includes('?')?'&':'?')+'session='+session;scr.appendChild(fr);
  FILM={w,id,frame:fr,session,ready:false,slateDone:false,direct:!!o.direct};announce(o.direct?f.title:slate.textContent);
  const afterSlate=()=>{setTimeout(()=>{if(!FILM||FILM.frame!==fr)return;FILM.slateDone=true;tryStart()},o.direct?(reduced?200:500):(reduced?1800:3200));
@@ -731,7 +731,7 @@ function tryStart(){if(!FILM||!FILM.ready||!FILM.slateDone||FILM.started)return;
  try{if(win.__seam){win.document.getElementById('start')?.click();watchSeam()}else win.__asterwindEpisode?.start();setTimeout(()=>{try{const d=win.document,st=d.getElementById('start');(st&&!st.hidden&&st.offsetParent?st:d.getElementById('pause')||FILM.frame).focus()}catch{FILM.frame.focus()}},120)}catch{FILM.frame.focus()}}
 // The preserved Seam film posts no message; its real ending is read the way the hub reads it (hub/legacy-seam.js).
 function watchSeam(){const f=FILM;const id=setInterval(()=>{if(FILM!==f){clearInterval(id);return}let o=null;try{o=window.AsterwindLegacySeam?.completed(f.frame.contentWindow,f.frame.contentDocument)}catch{}if(o){clearInterval(id);filmEnded(o)}},500)}
-function filmEnded(outcome){if(!FILM||!OUTCOMES[FILM.id]?.includes(outcome))return;if(!G.film[FILM.w]){G.film[FILM.w]=outcome;save()}const b=$('film-back');b.hidden=false;setTimeout(()=>b.focus({preventScroll:true}),900);announce('The film has ended. Back into the night when you’re ready.')}
+function filmEnded(outcome){if(!FILM||!OUTCOMES[FILM.id]?.includes(outcome))return;if(!G.film[FILM.w]){G.film[FILM.w]=outcome;save()}const b=$('film-back');b.hidden=false;$('film-leave').hidden=true;setTimeout(()=>b.focus({preventScroll:true}),900);announce('The film has ended. Back into the night when you’re ready.')}
 function lastFilmFrame(fr){try{const doc=fr.contentDocument;const cv=doc.getElementById('cv');if(cv&&cv.toDataURL)return cv.toDataURL('image/jpeg',.82);const img=['art-front','front','back'].map(id=>doc.getElementById(id)).find(el=>el&&!el.hidden&&el.currentSrc&&el.style.opacity!=='0');return img?img.currentSrc:null}catch{return null}}
 addEventListener('message',e=>{const d=e.data;if(!FILM||e.source!==FILM.frame.contentWindow||!d||d.channel!=='asterwind.episode.v1'||d.session!==FILM.session||(d.episodeId&&d.episodeId!==FILM.id))return;
  if(d.type==='ready'){FILM.ready=true;tryStart()}
@@ -749,23 +749,25 @@ function toMirror(w,afterGhost){Snd.stopScene();const key=KEY[w],st=key?ST[key]:
 function walkHome(w){if(V2&&!completedFilm(w)){showCorridor(w);hub({type:'return',id:DRINK[w],walked:false});return}if(!G.walked.includes(w))G.walked.push(w);if(V2&&G.found.length<TARGETS.length)G.found=TARGETS.slice();save();showCorridor();hub({type:'return',id:DRINK[w],walked:true,memento:G.memento[w]||null});if(G.walked.length===TARGETS.length&&!G.dawn)setTimeout(()=>dawn(true),reduced?600:4200)}
 $('mirror-go').onclick=()=>walkHome($('mirror').dataset.word);
 $('mirror-other').onclick=()=>{const w=$('mirror').dataset.word,key=KEY[w],st=ST[key];const other=Object.keys(st.notes).find(c=>c!==G.done[key]);enterRoom(key,{ghost:other})};
-function writeNotes(){let n='';for(const w of TARGETS){const key=KEY[w],[x,y]=PLACE[w];let t='';if(V2){const k=G.walked.includes(w)&&KEPT[G.film[w]];if(k){n+=`<text x="${x}" y="${y+80}" text-anchor="middle" font-size="19">kept: ${k[0]}</text><text x="${x}" y="${y+106}" text-anchor="middle" font-size="17" fill="#7a7480">cost: ${k[1]}</text>`}else if(G.walked.includes(w))t='walked';at('pl-'+w,{opacity:G.walked.includes(w)?.85:.14})}else if(key&&G.done[key])t=ST[key].notes[G.done[key]];if(t)n+=`<text x="${x}" y="${y+86}" text-anchor="middle">${t}</text>`;if(G.walked.includes(w))$('boat-'+w)?.classList.add('done')}const g=$('nb-notes');if(g)g.innerHTML=n}
+function writeNotes(){let n='';for(const w of TARGETS){const key=KEY[w],[x,y]=PLACE[w];let t='';if(V2){const k=G.walked.includes(w)&&KEPT[G.film[w]];const dn=G.walked.includes(w)&&DAWN_NOTE[G.film[w]];
+  // under each story's mark: the note its people left (thanks and cost in their words); The Empty Square keeps kept/cost
+  if(dn){wrapLine('“'+dn[0]+'”',26).slice(0,3).forEach((l,i)=>{n+=`<text x="${x}" y="${y+64+i*18}" text-anchor="middle" font-size="15.5" fill="#3d3846">${esc(l)}</text>`});n+=`<text x="${x}" y="${y+64+Math.min(3,wrapLine('“'+dn[0]+'”',26).length)*18}" text-anchor="middle" font-size="13.5" fill="#7a7480">— ${esc(dn[1])}</text>`}
+  else if(k){n+=`<text x="${x}" y="${y+80}" text-anchor="middle" font-size="19">kept: ${k[0]}</text><text x="${x}" y="${y+106}" text-anchor="middle" font-size="17" fill="#7a7480">cost: ${k[1]}</text>`}else if(G.walked.includes(w))t='walked';at('pl-'+w,{opacity:G.walked.includes(w)?.85:.14})}else if(key&&G.done[key])t=ST[key].notes[G.done[key]];if(t)n+=`<text x="${x}" y="${y+86}" text-anchor="middle">${t}</text>`;if(G.walked.includes(w))$('boat-'+w)?.classList.add('done')}const g=$('nb-notes');if(g)g.innerHTML=n}
 function backToNotebook(){G.screen='notebook';only('notebook');writeNotes();updateGo();Snd.music(null);setTimeout(()=>($('tiles').querySelector('button'))?.focus({preventScroll:true}),100)}
 // ---------- the ending: the word, rewritten by what you did ----------
 const TIMES=['','once','twice','three times','four times','five times','six times'];
 // At dawn (8 Nov) the notebook keeps what the people you led said back, not a tally of which way you leaned.
-// One note per story walked, the one that carries the cost; The Empty Square's waits for its lived-experience review.
+// One note per story walked (the one that carries the cost), under that story's mark; The Empty Square's waits for its review.
 const DAWN_NOTE={round:['We started with me, for once. We still haven’t got an ending.','Nia'],slips:['Too crowded at the harbour.','no name'],
  microphone:['I carried the model home still in its box.','Kit'],notebook:['You said my name. I wish they’d heard about the trolley.','Asha'],
  extend:['You could have asked me before you gave the umbrella’s time away.','Bo'],return:['The library had one bag left. I got lucky. I might not have.','Sam'],
  live:['My arm aches from that reset. I’m proud of it anyway.','Dev'],rehearsal:['I had to tell the queue they couldn’t try it.','Lio'],
  backup:['It moved. I wanted it to be mine.','Julian'],repair:['It jammed on camera, and you said it was your call.','Mara']};
+// (Each note fits three short lines under its mark.)
 function wrapLine(t,n){const out=[];let cur='';for(const w of t.split(' ')){if((cur+' '+w).trim().length>n&&cur){out.push(cur);cur=w}else cur=(cur+' '+w).trim()}if(cur)out.push(cur);return out}
 const esc=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c]);
-function leanLines(){const ns=G.walked.map(w=>DAWN_NOTE[G.film[w]]).filter(Boolean).slice(-2);let y=478,out='';
- for(const [txt,who] of ns){for(const l of wrapLine('“'+txt+'”',40)){out+=`<text x="300" y="${y}" font-size="18" fill="#4d4856">${esc(l)}</text>`;y+=21}out+=`<text x="560" y="${y}" text-anchor="end" font-size="15" fill="#7a7480">— ${esc(who)}</text>`;y+=26}
- if(G.walked.length)out+=`<text x="300" y="${Math.min(y+4,590)}" font-size="16" fill="#7a7480">${G.walked.length>1?'Each way kept something and cost something.':'Walk another story; they’ll write back too.'}</text>`;
- return out}
+function leanLines(){if(!G.walked.length)return'';// the notes themselves sit under each story on the right-hand page
+ return `<text x="300" y="490" font-size="18" fill="#5d5866">${G.walked.length>1?'Each way kept something and cost something.':'Walk another story; they’ll write back too.'}</text>`}
 function endWords(){const ws=(V2?TARGETS.filter(t=>G.walked.includes(t)):TARGETS.filter(t=>G.found.includes(t))).map(t=>t.toLowerCase());const pos=V2?[[300,350],[650,350],[300,395],[650,395],[300,440],[650,440]]:[[300,370],[650,370],[300,440],[650,440],[300,510],[650,510]];
  $('nb-around').innerHTML=ws.map((w,i)=>`<text x="${pos[i][0]}" y="${pos[i][1]}" text-anchor="${i%2?'end':'start'}">${w}</text>`).join('')+(V2&&ws.length?leanLines():'')+'<text x="320" y="600" font-size="30">Leadership is…</text>'+(G.mine?`<text x="470" y="700" text-anchor="middle" font-size="40" fill="#26232e">${G.mine}</text>`:'');at('nb-q',{opacity:0})}
 function beginEnding(){Snd.stopScene();G.ending=1;G.screen='notebook';only('notebook');writeNotes();Snd.play('page');$('tiles').hidden=true;$('spell').hidden=true;$('note').textContent='';$('go').hidden=true;$('boats').hidden=true;

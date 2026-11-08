@@ -24,22 +24,24 @@ The review's first recommendation was Listen plus a small Notes ending. This kee
 
 Both Theo's harbour and Nia's courtyard are about being welcomed. A player who hears both learns that the conflict is not plan against people. Nobody's claim is the hidden right answer; time spent on one person is time not spent on another.
 
-## Act one: the floor (about 70–90 s, 9:40 to 9:48)
+## Act one: the floor (about 45–55 s, 9:40 to 9:48)
 
 Rules, as built in `listen.js` (`listenTick`) and parameterised in `scripts/listen.json`:
 
 - **Attention** is a discrete choice: click or tap a person, Tab to them and press Enter, arrow keys, or 1/2/3. No hover, no holding, no precision. Pausing stops the clock and sound, and you can still change who you face while paused: that is the untimed alternative.
 - **Theo** talks whenever the floor is free. When you turn to someone with something to say, he finishes his sentence and waits.
-- **Nia** tries to get in twice, on her own clock (≈9 s and ≈33 s). Her name pulses, a warm light falls on her, her words appear faintly near her, and screen readers hear "Nia is trying to speak." If you turn to her during the attempt (about 4–5 s), Theo stops and she finishes. If not, Theo talks over her; after the second time she says "Never mind" and stops trying, though she still answers a direct invitation. Once she has made her point about the gate, she does not repeat it.
+- **Nia** tries to get in twice, on her own clock (≈9 s and ≈33 s). Her name pulses, a warm light falls on her face, her words appear beside her, and screen readers hear "Nia is trying to speak. Press 1 to turn to her, or P to pause." If you turn to her during the attempt (about 5 s the first time, 7 s the second), Theo stops and she finishes. If not, Theo talks over her; after the second time she says "Never mind" and stops trying, though she still answers a direct invitation. Once she has made her point about the gate, she does not repeat it.
 - **Ellis** speaks only when invited. Turning to him: he looks up (a caption says so), then speaks. If you turn away mid-thought, he trails off ("It's fine. Later.") and that thought waits. This is his character, not a universal rule: Theo and Nia speak regardless.
 - **Unheard speech** stays perceivable: muffled and quieter in the mix, and a few faint words near the speaker (or at the frame edge) in captions. Essential meaning never depends on sound alone.
-- **The chair's own thought** ("Twenty minutes left, and I've only really heard one person.") plays once at ≈24 s if you have only ever faced Theo.
+- **The chair's own thought** ("Twenty minutes left, and I've only really heard one person.") plays once at ≈18 s if you have only ever faced Theo.
+- **One visible line** at the start says the people are the controls ("Whoever you turn to has the floor · click · 1 2 3 · P pauses") and goes when you first turn to someone.
 - **Heard** means you faced the speaker for at least 60% of the line, not the last second of it.
-- The room runs out at 92 s of scene time, or earlier once nobody has anything left to say. Theo: "Twelve minutes. So, are we agreed?"
+- The room runs out at 50 s of scene time (nobody starts a new line after that), or earlier once nobody has anything left to say. Theo: "Twelve minutes. So, are we agreed?" Turning to someone during that question starts nothing.
+- **Attention is scarce.** Even the most attentive route (catch Nia, stay for her reason, hear Theo's, then invite Ellis) runs out before Ellis's last thought; the independent review found that at 92 s every fact could be heard in one run, which made *What you didn't hear* read like a completeness score.
 
 ## Act two: one untimed choice (unchanged outcomes)
 
-The decision plate, your hands on the table. Two actions on the objects themselves, one line each: **Turn the table** (`round`) or **Pass the slips** (`slips`). These are the registry's two outcomes for `standup`; listening adds none.
+The decision plate, your hands on the table. Two actions on the objects themselves, one line each that names the risk without the outcome: **Turn the table** (`round`): *Everyone heard, in turn. It takes the time it takes.* **Pass the slips** (`slips`): *Quick, and nobody has to speak up. No names, though.* Nothing is lit or focused when the decision opens. These are the registry's two outcomes for `standup`; listening adds none.
 
 What you heard changes what people say and do inside each outcome:
 
@@ -53,7 +55,7 @@ Both outcomes keep a visible cost: the round runs out of room with no ending and
 
 ## Act three: the morning
 
-Dawn grade over the empty table (the clean decision plate), then the notes they leave you, from `scripts/listen.json` `notes`, chosen by outcome and by what you heard. Thanks and cost together; the unsigned slip stays unsigned. One line: *Your attention gave the floor. The format decided who kept it.* Then: **What you didn't hear** (optional: the lines said while you were turned away, voiced, back in the night room), **Again**, **The other way** (the other outcome, with what you heard kept).
+Dawn grade over the empty table (`plates/qm-layers/morning.webp`: the clean decision plate with the platter's footprint ring retouched out), then the notes they leave you, from `scripts/listen.json` `notes`, chosen by outcome and by what you heard. Thanks and cost together; the unsigned slip stays unsigned. One line: *Your attention gave the floor. The format decided who kept it.* Then: **What you didn't hear** (optional: the lines said while you were turned away, voiced, back in the night room), **Again**, **The other way** (the other outcome, with what you heard kept).
 
 The `completed` message (`asterwind.episode.v1`) is posted once, when the notes have landed: the real ending. Nothing listening produces is saved.
 

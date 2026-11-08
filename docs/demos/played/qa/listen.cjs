@@ -39,7 +39,7 @@ const S=p=>p.evaluate(()=>LISTEN.state);const notes=p=>p.evaluate(()=>[...docume
   await p.click('#p-Nia');await p.evaluate(()=>LISTEN.step(200));let st=await S(p);need(st.said.includes('qm2-r2'),'facing her gives her the floor');need(st.heard.includes('nia.gate'),'heard: the gate');
   await p.evaluate(()=>LISTEN.step(60));await w(900);await p.screenshot({path:O+'d2-nia.png'});
   await p.evaluate(()=>LISTEN.step(160));await p.click('#p-Ellis');await p.evaluate(()=>LISTEN.step(30));await w(900);await p.screenshot({path:O+'d3-ellis.png'});
-  await p.evaluate(()=>LISTEN.step(320));st=await S(p);need(st.ellis.i>=2,'Ellis speaks when invited ('+st.ellis.i+' thoughts)');
+  await p.evaluate(()=>LISTEN.step(320));st=await S(p);need(st.ellis.i>=1,'Ellis speaks when invited ('+st.ellis.i+' thoughts)');
   await p.evaluate(()=>LISTEN.until('decision',8000));await w(2600);await p.screenshot({path:O+'d4-decision.png'});
   need(await p.isVisible('#obj-round')&&await p.isVisible('#obj-slips'),'two actions at the decision');
   await p.click('#obj-slips');await p.evaluate(()=>LISTEN.step(120));await w(1200);await p.screenshot({path:O+'d5-slips.png'});
@@ -55,14 +55,25 @@ const S=p=>p.evaluate(()=>LISTEN.state);const notes=p=>p.evaluate(()=>[...docume
   n=await notes(p);need(n.some(x=>/holding you to that/.test(x)),'heard Theo: his note remembers it');
   need(!(await p.isHidden('#missed')),'what you didn\'t hear is offered');await p.click('#missed');await p.evaluate(()=>LISTEN.step(60));await w(1200);await p.screenshot({path:O+'d9-missed.png'});
   await p.evaluate(()=>{for(let i=0;i<3000&&LISTEN.state.phase!=='end';i++)LISTEN.step(1)});need((await S(p)).phase==='end','the replay returns to the morning');
+  // turning to someone while Theo asks for agreement starts nothing that runs into the choice
+  await p.click('#again');await p.evaluate(()=>{for(let i=0;i<9000&&!(LISTEN.state.said.includes('L-t5'));i++)LISTEN.step(1)});await p.click('#p-Ellis');await p.evaluate(()=>LISTEN.until('decision',4000));
+  st=await S(p);need(st.speaking.length===0,'no line carries over into the choice ('+st.speaking+')');need(!st.said.includes('L-e1'),'no invitation once Theo asks for agreement');
+  // attention is scarce: even the most attentive route leaves something unheard
+  await p.evaluate(()=>LISTEN.commit('round'));await p.evaluate(()=>LISTEN.until('end',8000));
+  await p.click('#again');await p.evaluate(()=>{const s=()=>LISTEN.state;for(let i=0;i<9000&&s().phase!=='decision';i++){const t=s();if(t.nia&&t.nia.trying)LISTEN.attend('Nia');
+    if(t.said.includes('L-n3')&&!t.speaking.includes('Nia')&&t.att==='Nia')LISTEN.attend('Theo');if(t.said.includes('L-t3')&&!t.speaking.includes('Theo')&&t.att==='Theo'&&t.ellis.i<3)LISTEN.attend('Ellis');LISTEN.step(1)}});
+  st=await S(p);need(st.heard.length<8,'an attentive route still misses something ('+st.heard.length+' of 8 heard)');
+  await p.evaluate(()=>LISTEN.commit('slips'));await p.evaluate(()=>LISTEN.until('end',8000));
   // again, from the end: nothing from the old run is left speaking, playing or scheduled
   await p.click('#again');st=await S(p);need(st.speaking.length===0&&st.playing===0&&st.cues<=3,'again: no stale lines, sounds or cues ('+JSON.stringify({s:st.speaking,p:st.playing,c:st.cues})+')');
   need(errs.length===0,'no console errors ('+errs.join(' | ')+')');need(bad.length===0,'no failed requests ('+bad.join(' | ')+')');await ctx.close()}
  // 3. Keyboard only: Enter on the title, Tab to Nia, Enter, then the decision with Tab and Enter.
  {const {ctx,p,errs}=await page(b,{viewport:{width:1280,height:720},reducedMotion:'reduce'});await p.focus('#start');await p.keyboard.press('Enter');
-  await p.waitForFunction(()=>LISTEN.state.phase==='listen',null,{timeout:20000});await p.keyboard.press('2');await p.keyboard.press('ArrowLeft');need((await S(p)).att==='Nia','keys: arrows move your attention');
+  await p.waitForFunction(()=>LISTEN.state.phase==='listen',null,{timeout:20000});need(await p.evaluate(()=>document.activeElement.id==='p-Theo'),'after Take the chair, focus is on the person with the floor');
+  await p.keyboard.press('Tab');need(await p.evaluate(()=>document.activeElement.id==='p-Ellis'),'Tab moves between the people');await p.keyboard.press('2');await p.keyboard.press('ArrowLeft');need((await S(p)).att==='Nia','keys: arrows move your attention');
   await p.keyboard.press('3');need((await S(p)).att==='Ellis','keys: 3 turns to Ellis');
-  await p.evaluate(()=>LISTEN.until('decision',8000));await w(400);need(await p.evaluate(()=>document.activeElement.id==='obj-round'),'decision: focus starts on the first action');
+  await p.evaluate(()=>LISTEN.until('decision',8000));await w(400);need(await p.evaluate(()=>document.activeElement.id==='objs'),'decision: focus starts on the question, neither action lit');
+  await p.keyboard.press('Tab');need(await p.evaluate(()=>document.activeElement.id==='obj-round'),'Tab reaches the first action');
   await p.keyboard.press('Tab');need(await p.evaluate(()=>document.activeElement.id==='obj-slips'),'Tab reaches the second action');await p.screenshot({path:O+'k1-focus.png'});
   await p.keyboard.press('Enter');await p.evaluate(()=>LISTEN.until('end',8000));await p.evaluate(()=>LISTEN.step(40));need((await S(p)).choice==='slips','Enter chooses');
   need(errs.length===0,'keyboard: no errors');await ctx.close()}

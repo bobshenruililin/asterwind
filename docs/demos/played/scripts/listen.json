@@ -235,7 +235,7 @@
   }
  },
  "listen": {
-  "seconds": 92,
+  "seconds": 50,
   "theo": [
    "qm2-01",
    "L-t2",
@@ -296,7 +296,7 @@
    "L-n0": "…never mind."
   },
   "nudge": {
-   "at": 24,
+   "at": 18,
    "line": "qm2-07"
   }
  },
@@ -313,13 +313,13 @@
  "choices": {
   "round": {
    "label": "Turn the table",
-   "hint": "One each, in turn. No replies yet.",
-   "aria": "Turn the table: everyone speaks once, in turn, before anyone replies."
+   "hint": "Everyone heard, in turn. It takes the time it takes.",
+   "aria": "Turn the table: everyone speaks once, in turn, before anyone replies. Everyone is heard, but it takes the time it takes."
   },
   "slips": {
    "label": "Pass the slips",
-   "hint": "Everyone writes one worry first.",
-   "aria": "Pass the slips: everyone writes one worry, no names, then you read them together."
+   "hint": "Quick, and nobody has to speak up. No names, though.",
+   "aria": "Pass the slips: everyone writes one worry, no names, then you read them together. Quick, and nobody has to speak up, but you won't know who wrote what."
   }
  },
  "notes": {

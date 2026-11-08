@@ -17,12 +17,12 @@ const SCRIPT=await PlayedSupport.json('scripts/listen.json');const LN=SCRIPT.lin
 const PLATES={master:'01-quiet-minute-master',decision:'02-turn-or-pass-decision',round:'03-turn-shared-unfinished',slips:'04-slips-nuance-unresolved'};
 await PlayedSupport.bounded(Promise.all(Object.entries(PLATES).map(([k,f])=>stage.add(k,PL+f+'.webp','plates/'+f+'-depth.webp'))),20000);
 let layered=false;stage.layer('decision',{clean:'plates/qm-layers/clean.webp',disc:'plates/qm-layers/platter.webp',slide:'plates/qm-layers/tray.webp',over:'plates/qm-layers/occluder.webp'}).then(()=>{layered=true}).catch(()=>{});
-let morningPlate=false;stage.add('morning','plates/qm-layers/clean.webp','plates/02-turn-or-pass-decision-depth.webp').then(()=>{morningPlate=true}).catch(()=>{});
+let morningPlate=false;stage.add('morning','plates/qm-layers/morning.webp','plates/02-turn-or-pass-decision-depth.webp').then(()=>{morningPlate=true}).catch(()=>{});
 S.pasp=1672/941;if(EMBED)film.classList.add('embedded');$('premise').textContent=SCRIPT.premise;$('kicker').textContent=SCRIPT.kicker;$('lesson').textContent=SCRIPT.lesson;
 
 /* ---- depth at a point, so focus lands on a face ---- */
 const DEPTH={};async function sampleDepth(name,file){try{const im=new Image();im.src='plates/'+file+'-depth.webp';await im.decode();const c=document.createElement('canvas');c.width=im.naturalWidth;c.height=im.naturalHeight;
- const g=c.getContext('2d');g.drawImage(im,0,0);DEPTH[name]=(x,y)=>{const d=g.getImageData(Math.round(x*(c.width-1)),Math.round(y*(c.height-1)),1,1).data;return d[0]/255}}catch{DEPTH[name]=()=>.55}}
+ const g=c.getContext('2d',{willReadFrequently:true});g.drawImage(im,0,0);DEPTH[name]=(x,y)=>{const d=g.getImageData(Math.round(x*(c.width-1)),Math.round(y*(c.height-1)),1,1).data;return d[0]/255}}catch{DEPTH[name]=()=>.55}}
 await Promise.all(Object.entries(PLATES).map(([k,f])=>sampleDepth(k,f)));
 
 /* ---- the clock: scene time, cues and tweens. All of it pauses together and is cleared together. ---- */
@@ -65,12 +65,13 @@ async function startSound(){ac=new (window.AudioContext||window.webkitAudioConte
 /* ---- who is where (plate fractions on the master shot) ---- */
 const P=SCRIPT.people,WHO=['Nia','Theo','Ellis'];
 const REGION={Nia:[0,.06,.34,.8],Theo:[.35,0,.66,.44],Ellis:[.68,.04,1,.8]};
-const NAMEAT={Nia:[.16,.47],Theo:[.5,.44],Ellis:[.86,.49]},FRAGAT={Nia:[.17,.13],Theo:[.5,.05],Ellis:[.85,.1]};
+const NAMEAT={Nia:[.16,.47],Theo:[.44,.36],Ellis:[.86,.49]},FRAGAT={Nia:[.17,.13],Theo:[.5,.05],Ellis:[.85,.1]};
 
 /* ---- framing: full-bleed, the plate covering the screen; the camera leans toward whoever you face ---- */
 let portrait=false;
 let contain=false;// phones see the whole table for the choice: the plate fits the width, the actions sit below it
-function fit(){const r=film.getBoundingClientRect(),a=r.width/Math.max(1,r.height),pa=S.pasp;portrait=a<.9;film.classList.toggle('portrait',portrait);
+function fit(){const r=film.getBoundingClientRect(),a=r.width/Math.max(1,r.height),pa=S.pasp,was=portrait;portrait=a<.9;film.classList.toggle('portrait',portrait);
+ if(was!==portrait&&phase==='listen'&&L&&!L.closing)aimAt(L.att,.6);
  S.fit=contain&&portrait?(a>pa?[a/pa,1]:[1,pa/a]):(a>pa?[1,pa/a]:[a/pa,1]);return a}
 const cl1=(h,c)=>h>=.5?.5:Math.max(h,Math.min(1-h,c));
 function clampCen(z,c){return[cl1(.5*S.fit[0]/z,c[0]),cl1(.5*S.fit[1]/z,c[1])]}
@@ -128,8 +129,7 @@ function attend(who){if(!L||!(phase==='listen'||phase==='establish'))return;if(w
  // turning away from Ellis mid-thought: he stops. Nia, who has been trying all evening, finishes hers.
  if(prev==='Ellis'&&SPK.Ellis&&!SPK.Ellis.o.dry){const r=SPK.Ellis;if(T-r.t0<r.dur*.85){cutLine(r);L.ellis.trails++;speak(LS.ellis.trail,{gain:.8});move('ellisHead',0,.004,.8);move('ellisPaper',0,0,.8)}}
  if(phase==='listen')aimAt(who);mixVoices();
- if(who==='Ellis'&&L.ellis.i<LS.ellis.thoughts.length&&!SPK.Ellis)say('You turn to Ellis.');
- else if(who==='Nia'&&!SPK.Nia&&niaHasMore())say('You turn to Nia.');else if(who)say('You turn to '+who+'.')}
+ if(who&&SPK[who]&&!SPK[who].o.dry)say('You turn to '+who+'. '+who+': '+SPK[who].line);else if(who)say('You turn to '+who+'.')}
 function mixVoices(){if(!ac)return;const t=ac.currentTime,inListen=phase==='listen';
  for(const [who,c] of Object.entries(CH)){const on=!inListen||who==='You'||who===(L&&L.att);c.lp.frequency.setTargetAtTime(on?18000:780,t,.12);c.g.gain.setTargetAtTime(on?1:(L&&L.att?.2:.55),t,.15)}}
 function niaHasMore(){const n=L.nia;return n.queue.length>0||!L.said.has('qm2-r2')&&!L.said.has('qm2-04')||!L.said.has('L-n3')}
@@ -144,7 +144,7 @@ function act(id,on){// small acting cues on the master plate
   'L-e1':()=>{move('ellisHead',-.001,-.004,.8);move('ellisPencil',-.002,.009,1.2)},'L-e2':()=>move('ellisPaper',0,-.005,.9),'L-e3':()=>move('ellisPaper',-.003,-.006,1.1)};
  m[id]&&m[id]()}
 
-function listenTick(dt){const att=L.att,t=T-L.t0;
+function listenTick(dt){const att=L.att,t=T-L.t0,over=t>=LS.seconds;// over: the room's time is up; nobody starts anything new
  for(const r of Object.values(SPK))if(r.who===att||r.o.dry)r.att+=dt;
  for(const r of Object.values(SPK))if(T>=r.t0+r.dur)endLine(r,false);
  const n=L.nia,e=L.ellis;
@@ -152,7 +152,7 @@ function listenTick(dt){const att=L.att,t=T-L.t0;
  // once she has made her point about the gate, she stops trying to make it
  if(!n.live&&n.attempt>0&&n.attempt<LS.nia.attempts.length&&(L.said.has('qm2-r2')||L.said.has('L-n2')))n.attempt=LS.nia.attempts.length;
  if(!n.gave&&!n.live&&n.attempt<LS.nia.attempts.length&&t>=LS.nia.attempts[n.attempt].at&&!SPK.Nia&&!SPK.Ellis&&!L.closing){
-  const A=LS.nia.attempts[n.attempt];n.live={A,t:T,rec:line(A.open)};btn.Nia.classList.add('trying');if(att!=='Nia')alert('Nia is trying to speak.')}
+  const A=LS.nia.attempts[n.attempt];n.live={A,t:T,rec:line(A.open)};btn.Nia.classList.add('trying');if(att!=='Nia')alert('Nia is trying to speak. Press 1 to turn to her, or P to pause.')}
  if(n.live){const A=n.live.A,openEnd=n.live.t+n.live.rec.dur,deadline=openEnd+2.6;
   if(att==='Nia'){// she has the floor
    if(SPK.Theo)cutLine(SPK.Theo,.35);btn.Nia.classList.remove('trying');n.queue=n.attempt===0?['qm2-r2']:['L-n2'];n.live=null;n.attempt++;n.warm=99}
@@ -160,18 +160,18 @@ function listenTick(dt){const att=L.att,t=T-L.t0;
    L.theoQ.unshift(A.over);if(n.attempt===LS.nia.attempts.length-1){n.gave=true;at(LN[A.over]?(buf[A.over]?buf[A.over].duration:3)+1:3,()=>{if(phase==='listen'&&!SPK.Nia&&L.att!=='Nia')line(LS.nia.giveUp,{gain:.8})})}n.attempt++}}
  // An invitation: face someone with something to say, and they take the floor at the next breath.
  const waiting=(att==='Nia'&&!n.live&&niaHasMore())||(att==='Ellis'&&e.i<LS.ellis.thoughts.length);
- if(att==='Nia'&&!SPK.Nia&&!n.live&&niaHasMore()){n.warm+=dt;const need=n.gave?2:1.1;
+ if(att==='Nia'&&!SPK.Nia&&!n.live&&niaHasMore()&&!L.closing&&!over){n.warm+=dt;const need=n.gave?2:1.1;
   if(n.warm>=need&&!busyBut('Nia')){const id=n.queue.shift()||niaNext();if(id){line(id,{onEnd:(r,early)=>afterNia(id,early)});n.warm=0}}}
  else if(att!=='Nia')n.warm=Math.max(0,n.warm-dt*2);
- if(att==='Ellis'&&!SPK.Ellis&&e.i<LS.ellis.thoughts.length){e.warm+=dt;if(e.warm>=e.need&&!busyBut('Ellis')){const id=LS.ellis.thoughts[e.i];
+ if(att==='Ellis'&&!SPK.Ellis&&e.i<LS.ellis.thoughts.length&&!L.closing&&!over){e.warm+=dt;if(e.warm>=e.need&&!busyBut('Ellis')){const id=LS.ellis.thoughts[e.i];
    line(id,{onEnd:(r,early)=>{if(!early){e.i++;e.warm=e.i<LS.ellis.thoughts.length?.2:0}}});e.need=LS.ellis.warmAgain}
   if(e.warm>.3&&!e.looked){e.looked=true;move('ellisHead',-.001,-.004,.8);move('ellisPaper',0,-.004,1);say('Ellis looks up from his sheet.')}}
  else if(att!=='Ellis'){e.warm=Math.max(0,e.warm-dt);if(e.looked&&!SPK.Ellis){e.looked=false;move('ellisHead',0,0,1)}}
  // Theo talks whenever the floor is free and you are not holding it open for someone else.
- if(!busy()&&(!waiting||L.reply)&&!L.closing){if((L.theoGap<=0||L.reply)&&L.theoQ.length&&!(n.live)){const id=L.theoQ.shift();L.reply=false;if(!L.said.has(id)||LN[id].over){line(id,{onEnd:()=>{L.theoGap=1.1}})}}}
+ if(!busy()&&(!waiting||L.reply)&&!L.closing&&!over){if((L.theoGap<=0||L.reply)&&L.theoQ.length&&!(n.live)){const id=L.theoQ.shift();L.reply=false;if(!L.said.has(id)||LN[id].over){line(id,{onEnd:()=>{L.theoGap=1.1}})}}}
  if(!SPK.Theo)L.theoGap-=dt;
  // The chair's own thought, once, if you have only ever listened to Theo.
- if(!L.nudged&&t>=24&&!L.ever&&!SPK.You){L.nudged=true;speak('qm2-07',{dry:true})}
+ if(!L.nudged&&t>=LS.nudge.at&&!L.ever&&!SPK.You){L.nudged=true;speak(LS.nudge.line,{dry:true})}
  // The room runs out: when time is up, or there is nobody left with anything to say.
  const everyoneDone=!L.theoQ.length&&(n.gave||!niaHasMore())&&(e.i>=LS.ellis.thoughts.length)&&!n.live;
  const idle=!busy()&&!waiting&&!L.theoQ.length&&!n.live&&!(att==='Nia'&&niaHasMore()&&!n.gave)&&n.attempt>=LS.nia.attempts.length;
@@ -180,7 +180,7 @@ function listenTick(dt){const att=L.att,t=T-L.t0;
 function busyBut(who){return Object.keys(SPK).some(w=>w&&w!==who&&w!=='You'&&!(w==='Theo'&&SPK.Theo&&T-SPK.Theo.t0>SPK.Theo.dur-.25))}
 // After Nia's point about the gate, Theo answers it breezily, whether or not you are listening to him.
 function afterNia(id,early){if(early)return;if((id==='qm2-r2'||id==='L-n2')&&!L.said.has('qm2-05')){L.theoQ.unshift('qm2-05');L.reply=true;L.theoGap=.5;L.nia.warm=-.8}}
-function closeListening(){L.closing=true;$('hint').classList.remove('on');btn.Nia.classList.remove('trying');L.nia.live=null;
+function closeListening(){L.closing=true;$('hint').classList.remove('on');$('alert').textContent='';btn.Nia.classList.remove('trying');L.nia.live=null;
  for(const w of WHO)btn[w].setAttribute('aria-pressed','false');const prevAtt=L.att;L.att=null;mixVoices();aimAt(null,1.6);
  $('clock').querySelector('.now').textContent='9:48';$('clock').querySelector('.fill').style.width='40%';
  at(.9,()=>{line(LS.close,{dry:true,onEnd:()=>at(.6,toDecision)});move('theoHead',0,-.002,.8)});
@@ -192,22 +192,22 @@ const objBtn={};
 for(const id of ['round','slips']){const c=SCRIPT.choices[id],b=document.createElement('button');b.className='obj'+(id==='slips'?' rect':'');b.id='obj-'+id;b.setAttribute('aria-label',c.aria);
  b.innerHTML='<span class="lab" aria-hidden="true"><b></b><i></i></span>';b.querySelector('b').textContent=c.label;b.querySelector('i').textContent=c.hint;$('objs').append(b);objBtn[id]=b;
  b.addEventListener('click',()=>commit(id));
- b.addEventListener('pointerenter',()=>hover(id));b.addEventListener('pointerleave',()=>hover(null));b.addEventListener('focus',()=>hover(id));b.addEventListener('blur',()=>hover(null))}
+ b.addEventListener('pointerenter',()=>hover(id));b.addEventListener('pointerleave',()=>hover(null));b.addEventListener('focus',()=>{if(b.matches(':focus-visible'))hover(id)});b.addEventListener('blur',()=>hover(null))}
 function hover(id){if(phase!=='decision'){S.hovA=0;return}if(!id){tw(S,'hovA',0,.3);return}
  if(id==='round'){const p=OBJ.round;S.hov=[p.x,p.y,p.rx*1.02,p.ry*1.02,0]}else{const t=OBJ.slips;S.hov=[(t.x0+t.x1)/2,(t.y0+t.y1)/2,(t.x1-t.x0)/2+.01,(t.y1-t.y0)/2+.01,1]}tw(S,'hovA',1,.25)}
 function placeObjs(){$('objs').classList.toggle('stack',portrait);if(portrait){for(const b of Object.values(objBtn))b.style.cssText='';return}
  const p=OBJ.round,t=OBJ.slips,a=toScreen(p.x-p.rx,p.y-p.ry),b=toScreen(p.x+p.rx,p.y+p.ry),c=toScreen(t.x0,t.y0),d=toScreen(t.x1,t.y1);
  Object.assign(objBtn.round.style,{left:a[0]*100+'%',top:a[1]*100+'%',width:(b[0]-a[0])*100+'%',height:Math.min(b[1]-a[1],.86-a[1])*100+'%'});
  Object.assign(objBtn.slips.style,{left:c[0]*100+'%',top:c[1]*100+'%',width:(d[0]-c[0])*100+'%',height:(d[1]-c[1])*100+'%'})}
-function toDecision(){if(phase!=='listen')return;phase='turning';caption('','');$('clock').classList.remove('on');$('people').classList.remove('named');$('people').hidden=true;$('frags').hidden=true;
+function toDecision(){if(phase!=='listen')return;phase='turning';caption('','');for(const r of Object.values(SPK))cutLine(r,.3);$('clock').classList.remove('on');$('people').classList.remove('named');$('people').hidden=true;$('frags').hidden=true;
  for(const w of WHO)btn[w].classList.remove('trying');
  contain=true;fit();stage.toward('decision');S.zoomB=1;S.cenB=[.5,.5];tw(S,'mix',1,reduced?.2:2.2);tw(S,'dof',0,1.4);tw(S,'focus',.7,2);if(S.spot)tw(S,'spot',[.5,.5,.3,0],1);
  at(reduced?.25:2.3,()=>{stage.settle();S.zoom=1;S.cen=[.5,.5];phase='decision';
   handles([['niaHead',.094,.08,.07],['theoHead',.53,.06,.07],['ellisHead',.875,.07,.07],['handL',.234,.833,.09],['handR',.633,.847,.09]]);
   const p=OBJ.round,t=OBJ.slips;S.disc=[p.x,p.y,p.rx,p.ry];S.slide=[t.x0-.01,t.y0-.01,t.x1+.01,t.y1+.01];
-  $('ask').textContent='Twelve minutes. How will you run them?';$('ask').classList.add('on');$('objs').hidden=false;placeObjs();
+  $('ask').textContent='Twelve minutes. How will you run them?';$('ask').classList.add('on');$('objs').hidden=!!other;placeObjs();
   say('Twelve minutes left. Your hands rest on the table: the model of the campus, which you could turn, and a tray of blank slips. Turn the table, or pass the slips.');
-  setTimeout(()=>{if(phase==='decision')objBtn.round.focus({preventScroll:true})},60);
+  setTimeout(()=>{if(phase==='decision'&&!other)$('objs').focus({preventScroll:true})},60);
   if(other)at(reduced?.6:1.6,()=>commit(choice==='round'?'slips':'round'))})}
 function commit(id){if(phase!=='decision')return;phase='consequence';choice=id;$('ask').classList.remove('on');S.hov=null;S.hovA=0;$('objs').hidden=true;
  if(id==='round'){tw(S,'ang',.34,reduced?.1:1.1);sfx('sfx:tap',.5);sfx('sfx:rustle',.25)}else{tw(S,'so',[-.045,-.01],reduced?.1:.9);sfx('sfx:rustle',.7)}
@@ -253,11 +253,11 @@ function morning(){phase='morning';caption('','');$('slipcards').innerHTML='';
    at(reduced?.25:2.5,()=>{stage.settle();S.zoom=S.zoomB;S.cen=S.cenB.slice();S.warps=[];S.focus=.8;S.dof=.008;tw(S,'zoom',(portrait?1:1.55)*1.04,14,0,x=>x)})}};
  at(reduced?.3:2.2,toTable);at(reduced?.4:3.2,()=>{$('when').textContent='The next morning';$('when').classList.add('on')});
  at(reduced?.8:4.8,()=>{const ns=notesFor(choice),box=$('notes');box.innerHTML='';box.hidden=false;
-  const POS=portrait?ns.map(()=>[0,0]):ns.length===3?[[.24,.38],[.52,.3],[.79,.42]]:[[.2,.36],[.43,.27],[.66,.38],[.82,.66]];
+  const POS=ns.length===3?[[.24,.38],[.52,.3],[.79,.42]]:[[.2,.36],[.43,.27],[.66,.38],[.82,.66]];
   const live=[];ns.forEach((n,i)=>{const d=document.createElement('article');d.className='note'+(n.unsigned?' unsigned':'');d.style.left=POS[i][0]*100+'%';d.style.top=POS[i][1]*100+'%';
    d.style.setProperty('--r',(((i*41)%9)-4)*.7+'deg');const p=document.createElement('p');p.style.margin='0';p.textContent=n.text;const f=document.createElement('span');f.className='from';f.textContent=n.unsigned?'no name':'— '+n.from;d.append(p,f);
    d.setAttribute('aria-label',(n.unsigned?'An unsigned slip':'A note from '+n.from)+': '+n.text);d.tabIndex=-1;box.append(d);at(.2+i*(reduced?.1:1.1),()=>{d.classList.add('on');sfx('sfx:page',.35)});live.push((n.unsigned?'An unsigned slip: ':n.from+' wrote: ')+n.text)});
-  box.setAttribute('aria-label','The next morning. Notes on the table. '+live.join(' '));say('The next morning. '+live.join(' '));
+  box.setAttribute('aria-label','The next morning: notes left on the table');say('The next morning. '+live.join(' '));
   at(.4+ns.length*(reduced?.1:1.1)+1.2,ending)})}
 function ending(){phase='end';$('end').hidden=false;requestAnimationFrame(()=>$('end').classList.add('on'));$('marks').classList.add('on');
  const unheard=missedLines();$('missed').hidden=!unheard.length;
@@ -283,7 +283,7 @@ function tick(now){const dt=Math.min(.1,(now-last)/1000);last=now;fit();
  if(!paused&&!manual&&phase!=='title'){stepClock(dt);if(phase==='listen'&&L)listenTick(dt)}
  const t=T,move_=!reduced;for(const k in H){const h=H[k];const b=move_&&h.breathe?Math.sin(t*1.7+k.length)*.0012:0;
   const talk=phase==='listen'&&move_&&((k==='theoHead'&&SPK.Theo)||(k==='niaHead'&&SPK.Nia)||(k==='ellisHead'&&SPK.Ellis))?Math.sin(t*7.3)*.0009:0;h.dx=h.bx;h.dy=h.by+b+talk}
- S.lift=phase==='listen'&&L&&L.nia.live&&L.att!=='Nia'?[.15,.3,.16,(reduced?.7:.55+.45*Math.sin(t*3.4))]:null;
+ S.lift=phase==='listen'&&L&&L.nia.live&&L.att!=='Nia'?[.13,.27,.13,(reduced?1:.75+.25*Math.sin(t*3.4))*1.6]:null;
  if(phase!=='listen'){for(const r of Object.values(SPK))if(T>=r.t0+r.dur)endLine(r,false)}
  if(S.lamp&&phase!=='morning'&&phase!=='end')S.lamp[3]=.55*(1+(move_?(Math.sin(t*9.1)*.03+Math.sin(t*23.7)*.02):0));
  S.time=t;stage.draw();
@@ -298,7 +298,8 @@ function drawCaptions(){const att=L.att,own=att&&SPK[att],n=L.nia,e=L.ellis;
   if(show){const frag=(LS.fragments[r.id]||'…');if(f.dataset.id!==r.id){f.dataset.id=r.id;f.innerHTML='';const b=document.createElement('b');b.textContent=who;f.append(b,document.createTextNode(frag))}
    f.classList.remove('edge-l','edge-r');
    if(portrait){f.style.left='50%';f.style.top='calc(var(--gut) + 86px)';f.style.transform='translate(-50%,0)'}
-   else{let [x,y]=toScreen(...FRAGAT[who]);if(x<.12){x=.03;f.classList.add('edge-l')}else if(x>.88){x=.97;f.classList.add('edge-r')}f.style.left=x*100+'%';f.style.top=Math.max(.14,y)*100+'%';f.style.transform=''}}}}
+   else{const trying=who==='Nia'&&!!L.nia.live;f.classList.toggle('trying',trying);let [x,y]=toScreen(...(trying?[.25,.21]:FRAGAT[who]));if(x<.12){x=.03;f.classList.add('edge-l')}else if(x>.88){x=.97;f.classList.add('edge-r')}f.style.left=x*100+'%';f.style.top=Math.max(.14,y)*100+'%';f.style.transform=''}}
+  else f.classList.remove('trying')}}
 
 /* ===================== begin, again, the other way ===================== */
 function reset(){run++;cues.length=0;LOG.length=0;tweens.length=0;stopAll();for(const k of Object.keys(SPK))delete SPK[k];heard.clear();L=null;
@@ -308,20 +309,22 @@ function reset(){run++;cues.length=0;LOG.length=0;tweens.length=0;stopAll();for(
  handles(MASTER_H);if(ac){rainLevel(1);mixVoices()}}
 function establish(){reset();phase='establish';other=false;choice=null;contain=false;L=newListen();
  Object.assign(S,{zoom:portrait?1.25:CAM.title.z,cen:portrait?[.6,.25]:CAM.title.c.slice(),dim:.15});
- $('title').classList.add('gone');$('scrim').classList.add('gone');$('marks').classList.remove('on');
+ $('title').classList.add('gone');$('title').inert=true;$('title').setAttribute('aria-hidden','true');$('scrim').classList.add('gone');$('marks').classList.remove('on');if(paused)setPause(false);
  tw(S,'zoom',portrait?1:CAM.room.z,reduced?.3:5.2,0);tw(S,'cen',portrait?[.5,.46]:CAM.room.c,reduced?.3:5.2,0);tw(S,'dim',0,3);
  $('people').hidden=false;$('frags').hidden=false;
  at(reduced?.4:3.4,()=>{$('people').classList.add('named');$('clock').classList.add('on')});
  at(reduced?.6:4.9,()=>{phase='listen';L.t0=T;if(!L.att){L.att='Theo';btn.Theo.setAttribute('aria-pressed','true')}aimAt(L.att,1.6);mixVoices();
-  say('Nia, Theo and Ellis are at the table. Theo has the floor. Turn to someone to give them the floor: the three people are buttons, or press 1, 2 or 3.');
+  if(!film.contains(document.activeElement)||document.activeElement===document.body||document.activeElement===$('start'))btn[L.att].focus({preventScroll:true});
+  say('Nia, Theo and Ellis are at the table. '+L.att+' has the floor. Turn to someone to give them the floor: the three people are buttons, or press 1, 2 or 3. P pauses, and you can still turn while paused.');
   // one line, once: the people are the controls. It goes when you first turn to someone, or after a while.
   const h=$('hint');h.textContent=portrait?'Tap a name to turn to them. Whoever you face has the floor. Pause any time.':'Whoever you turn to has the floor.';if(!portrait){const k=document.createElement('b');k.textContent='click · 1 2 3 · P pauses';h.append(k)}
   h.classList.add('on');at(11,()=>h.classList.remove('on'))})}
 function again(){if(!(phase==='end'))return;establish()}
-function otherWay(){if(phase!=='end')return;const keep=new Set(heard),was=choice;run++;cues.length=0;tweens.length=0;stopAll();for(const k of Object.keys(SPK))delete SPK[k];
+function otherWay(){if(phase!=='end')return;phase='leaving';$('end').classList.remove('on');tw(S,'dim',1,reduced?.1:.7);at(reduced?.15:.75,otherWay2)}
+function otherWay2(){const keep=new Set(heard),was=choice;run++;cues.length=0;tweens.length=0;stopAll();for(const k of Object.keys(SPK))delete SPK[k];
  $('notes').innerHTML='';$('notes').hidden=true;$('end').classList.remove('on');$('end').hidden=true;$('slipcards').innerHTML='';$('when').classList.remove('on');
  heard.clear();keep.forEach(f=>heard.add(f));other=true;choice=was;contain=false;
- stage.show('master');Object.assign(S,{mix:0,dawn:0,rain:.9,zoom:CAM.room.z,cen:CAM.room.c.slice(),spot:null,dof:0,lamp:[.18,.06,.34,.55]});rainLevel(1);handles(MASTER_H);
+ stage.show('master');Object.assign(S,{mix:0,dawn:0,rain:.9,zoom:CAM.room.z,cen:CAM.room.c.slice(),spot:null,dof:0,dim:1,lamp:[.18,.06,.34,.55]});tw(S,'dim',0,reduced?.2:1.2);rainLevel(1);handles(MASTER_H);
  phase='listen';L=newListen();L.closing=true;toDecision()}
 $('again').onclick=again;$('other').onclick=otherWay;$('missed').onclick=replayMissed;
 $('start').onclick=async()=>{const s=$('start');if(s.disabled)return;s.disabled=true;await PlayedSupport.audio(startSound);establish()};

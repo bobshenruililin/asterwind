@@ -238,6 +238,7 @@ def verify_play(root):
     if listen.is_file():
         source = listen.read_text(encoding='utf-8')
         require(listen, 'scripts/listen.json')
+        require(listen, 'plates/qm-layers/morning.webp')
         base = re.search(r"\bconst\s+PL\s*=\s*['\"]([^'\"]+)['\"]", source)
         plates = re.search(r'\bconst\s+PLATES\s*=\s*\{([^}]+)\}', source)
         if not base or not plates:

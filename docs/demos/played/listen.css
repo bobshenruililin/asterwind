@@ -65,7 +65,8 @@ canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
  text-shadow:0 1px 8px #000,0 0 2px #000;transition:opacity .35s;filter:blur(.3px)}
 .frag.on{opacity:.62}
 .frag b{display:block;font:500 9.5px var(--mono);letter-spacing:.24em;text-transform:uppercase;font-style:normal;color:#e9c27acc;margin-bottom:4px}
-.frag.edge-l{transform:translate(0,-100%);text-align:left}.frag.edge-r{transform:translate(-100%,-100%);text-align:right}
+.frag.edge-l{transform:translate(0,-100%);text-align:left}
+.frag.trying{opacity:.95!important;font-size:clamp(16px,1.5vw,22px);filter:none}.frag.edge-r{transform:translate(-100%,-100%);text-align:right}
 
 /* captions: what the person you are with is saying */
 #cap{position:absolute;left:50%;bottom:calc(var(--gut) + 4vh);transform:translateX(-50%);width:min(900px,84vw);margin:0;text-align:center;z-index:3;pointer-events:none;min-height:1.4em}
@@ -97,7 +98,7 @@ canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
 #ask{position:absolute;left:50%;top:calc(var(--gut) + 28px);transform:translateX(-50%);width:min(760px,86vw);text-align:center;margin:0;z-index:3;pointer-events:none;
  font:300 clamp(20px,2.2vw,32px)/1.25 var(--serif);text-shadow:0 2px 12px #000;opacity:0;transition:opacity .8s}
 #ask.on{opacity:1}
-#when{position:absolute;left:var(--gut);top:calc(var(--gut) + 22px);z-index:5;margin:0;opacity:0;transition:opacity 1.2s;pointer-events:none;text-shadow:0 1px 6px #000}
+#when{position:absolute;left:var(--gut);top:calc(var(--gut) + 22px);z-index:5;margin:0;opacity:0;transition:opacity 1.2s;pointer-events:none;color:#ffe9bd;text-shadow:0 1px 3px #000,0 0 14px #000,0 0 24px #000a}
 #when.on{opacity:1}
 #hint{position:absolute;left:50%;top:calc(var(--gut) + 66px);transform:translateX(-50%);margin:0;z-index:4;pointer-events:none;white-space:nowrap;opacity:0;transition:opacity .9s;
  font:italic 300 clamp(16px,1.5vw,22px) var(--serif);color:#f5ead6;text-shadow:0 1px 10px #000,0 0 3px #000}
@@ -122,7 +123,7 @@ canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
 .note.on{opacity:1;transform:translate(-50%,-50%) rotate(var(--r,0deg))}
 .note .from{display:block;margin-top:10px;text-align:right;font-size:.9em;color:#5a5260}
 .note.unsigned{background:#f4ecda;width:clamp(170px,15vw,220px)}
-.note.unsigned .from{color:#8a8290;font:italic 300 14px var(--serif)}
+.note.unsigned .from{color:#5f5866;font:italic 400 14px var(--serif)}
 #film.portrait .note{position:relative;left:auto!important;top:auto!important;transform:rotate(var(--r,0deg)) translateY(16px);width:auto;margin:0 0 14px}
 #film.portrait .note.on{transform:rotate(var(--r,0deg))}
 #film.portrait #notes{overflow:auto;padding:calc(var(--gut) + 54px) var(--gut) 260px;pointer-events:auto}
@@ -137,7 +138,7 @@ canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
 #film.portrait #end{background:linear-gradient(transparent,#060508 30%);padding-top:40px;left:0;right:0;bottom:0;padding:40px var(--gut) calc(env(safe-area-inset-bottom) + 16px)}
 
 /* small controls, out of the picture's way */
-#chrome{position:absolute;right:var(--gut);top:calc(var(--gut) + 22px);display:flex;gap:6px;z-index:6;opacity:.55;transition:opacity .3s}
+#chrome{position:absolute;right:var(--gut);top:calc(var(--gut) + 22px);display:flex;gap:6px;z-index:6;opacity:.78;transition:opacity .3s}
 #chrome:hover,#chrome:focus-within{opacity:1}
 #chrome button{min-height:34px;min-width:44px;padding:0 12px;background:#0b0a0d99;border:1px solid #f5ead626;border-radius:3px;font:500 10px var(--mono);letter-spacing:.18em;text-transform:uppercase}
 #chrome button[aria-pressed=true]{color:var(--gold);border-color:#e9c27a77}
@@ -159,3 +160,15 @@ canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
 #film.portrait #ask{top:calc(var(--gut) + 68px);font-size:22px}
 #film.portrait #when{top:calc(var(--gut) + 64px)}
 #film.portrait #notes{padding-top:calc(var(--gut) + 96px)}
+
+/* touch screens: playback buttons are full-size targets */
+@media (pointer:coarse){#chrome button{min-height:44px}}
+/* short landscape screens (a phone on its side): the actions stack at the foot, the question sits left of the playback buttons */
+@media (max-height:520px) and (min-aspect-ratio:9/10){
+ #objs:not([hidden]){inset:auto 0 0 0;display:flex;gap:8px;padding:0 var(--gut) calc(env(safe-area-inset-bottom) + 10px);pointer-events:auto}
+ #objs .obj{position:relative;inset:auto!important;width:auto!important;height:auto!important;flex:1;min-height:58px;border-radius:3px;border:1px solid #f5ead633;background:#0b0a0dcc;padding:8px}
+ #objs .obj .lab{position:static;transform:none;white-space:normal;background:none;padding:0}
+ #ask{left:var(--gut);transform:none;text-align:left;width:auto;max-width:calc(100% - 330px);font-size:18px;top:calc(var(--gut) + 18px)}
+}
+/* inside the night, its own way back sits at the bottom right: the episode's ways on stay at the left */
+#film.embedded #end{flex-direction:column;align-items:flex-start;justify-content:flex-end;right:auto;max-width:calc(100% - 300px)}
