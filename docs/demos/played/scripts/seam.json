@@ -382,5 +382,27 @@
    "label": "Repair together",
    "hint": "Splint Julian’s own cracked rib."
   }
+ },
+ "notes": {
+  "backup": [
+   {
+    "from": "Julian",
+    "text": "It moved. I wanted it to be mine. Thank you for saying Monday, and meaning it."
+   },
+   {
+    "from": "Mara",
+    "text": "I got my footage. I know who paid for it."
+   }
+  ],
+  "repair": [
+   {
+    "from": "Mara",
+    "text": "It jammed on camera, and you said it was your call. That mattered more than the footage."
+   },
+   {
+    "from": "Julian",
+    "text": "I’m going to fix that seam properly. Because you let me try."
+   }
+  ]
  }
 }

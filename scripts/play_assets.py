@@ -22,7 +22,7 @@ PLAYED_FILMS = ('seam',)  # played from film/story.json rather than an anthology
 ENTRYPOINTS = (
     *LAUNCH_TARGETS,
     'docs/demos/unfolded/index.html', 'hub/index.html', 'film/index.html',
-    *(PLAYED + name for name in ('index.html', 'pixel.html', 'scene.html')),
+    *(PLAYED + name for name in ('index.html', 'listen.html', 'pixel.html', 'scene.html')),
     *(f'anthology/episodes/{name}/index.html' for name in
       ('scope', 'standup', 'ship', 'slides', 'pixel')),
 )
@@ -233,6 +233,23 @@ def verify_play(root):
     # Played scripts, their voices and recorded sound: only manifest-listed files are requested at runtime.
     for episode in (*PLAYED_EPISODES, *PLAYED_FILMS, 'standup'):
         require(scene, f'scripts/{episode}.json')
+    # The listening Quiet Minute (8 Nov): its plates, the morning table, the paper sounds it borrows, and local fonts.
+    listen = root / PLAYED / 'listen.js'
+    if listen.is_file():
+        source = listen.read_text(encoding='utf-8')
+        require(listen, 'scripts/listen.json')
+        base = re.search(r"\bconst\s+PL\s*=\s*['\"]([^'\"]+)['\"]", source)
+        plates = re.search(r'\bconst\s+PLATES\s*=\s*\{([^}]+)\}', source)
+        if not base or not plates:
+            errors.append(f'{PLAYED}listen.js: cannot verify PL/PLATES asset declarations')
+        else:
+            for filename in re.findall(r"\w+\s*:\s*['\"]([^'\"]+)['\"]", plates[1]):
+                require(listen, base[1] + filename + '.webp')
+                require(listen, 'plates/' + filename + '-depth.webp')
+        for k in ('fold', 'rustle', 'tap', 'pencil', 'scratch', 'page'):
+            require(listen, f'../unfolded/sound/{k}.mp3')
+        for f in ('Newsreader-opsz.woff2', 'Newsreader-opsz-italic.woff2', 'IBMPlexMono-400.woff2', 'IBMPlexMono-500.woff2', 'PROVENANCE.md'):
+            require(listen, f'fonts/{f}')
     for listing, folder in (('voices/v2/manifest.json', 'voices/v2'),):
         owner, data = read(PLAYED + listing)
         for files in data.values():

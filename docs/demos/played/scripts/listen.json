@@ -1,0 +1,374 @@
+{
+ "id": "standup",
+ "title": "The Quiet Minute",
+ "revision": "opus-2026-11-08-listen",
+ "credit": "Built on Robert's preview rewrite (preview-stories-e4e6722) and the 7 November played script. Rewritten on 8 November so that listening is the control: who you turn to gets the floor.",
+ "kicker": "Student union · 9:40 pm",
+ "premise": "You chair tonight. The room is booked until ten, and the route for two hundred new students has to be agreed before then.",
+ "lesson": "Your attention gave the floor. The format decided who kept it.",
+ "people": {
+  "Nia": {
+   "at": [
+    0.15,
+    0.36
+   ],
+   "focus": [
+    0.17,
+    0.42
+   ],
+   "depth": 0.62,
+   "aria": "Nia, in the teal cardigan, with a folded map she walked today"
+  },
+  "Theo": {
+   "at": [
+    0.5,
+    0.2
+   ],
+   "focus": [
+    0.5,
+    0.33
+   ],
+   "depth": 0.5,
+   "aria": "Theo, in the rust shirt, his hand on the model he built"
+  },
+  "Ellis": {
+   "at": [
+    0.86,
+    0.3
+   ],
+   "focus": [
+    0.84,
+    0.42
+   ],
+   "depth": 0.6,
+   "aria": "Ellis, in the plum shirt and glasses, a folded sheet under his hand"
+  }
+ },
+ "lines": {
+  "qm2-01": {
+   "speaker": "Theo",
+   "line": "Main gate, the courtyard, then down to the harbour just as the lights come on. That's the moment. That's what they'll remember.",
+   "fact": "theo.plan",
+   "reuse": "standup"
+  },
+  "L-t2": {
+   "speaker": "Theo",
+   "line": "Two hundred students, one photo at the water. I've timed it twice. Forty minutes, door to harbour.",
+   "direction": "enthusiastic, counting it off, confident in the details"
+  },
+  "L-t3": {
+   "speaker": "Theo",
+   "line": "My first night here, nobody walked me anywhere. I found the harbour on my own, near midnight, a bit lost. I want them to find it together.",
+   "direction": "quieter and more personal, the bravado drops for a moment; sincere, a little embarrassed",
+   "fact": "theo.why"
+  },
+  "L-t4": {
+   "speaker": "Theo",
+   "line": "The model's done. We just need to agree it tonight.",
+   "direction": "brisk, upbeat, wrapping up, hand patting the model"
+  },
+  "L-t5": {
+   "speaker": "Theo",
+   "line": "Twelve minutes. So, are we agreed?",
+   "direction": "glancing at the clock, hopeful, assuming the answer is yes"
+  },
+  "qm2-03": {
+   "speaker": "Theo",
+   "line": "Is a great photo stop, I know. Ten minutes there, tops.",
+   "reuse": "standup",
+   "over": "Nia"
+  },
+  "qm2-05": {
+   "speaker": "Theo",
+   "line": "Security will open it if we ask. It'll be fine.",
+   "reuse": "standup"
+  },
+  "qm2-02": {
+   "speaker": "Nia",
+   "line": "Theo, the courtyard gate...",
+   "reuse": "standup"
+  },
+  "qm2-04": {
+   "speaker": "Nia",
+   "line": "No, I mean it's locked. After six. I checked today.",
+   "reuse": "standup",
+   "fact": "nia.gate"
+  },
+  "qm2-r2": {
+   "speaker": "Nia",
+   "line": "The courtyard gate locks at six. If we start there at half five, it's still open, and we're not stuck outside with two hundred people.",
+   "reuse": "standup",
+   "fact": [
+    "nia.gate",
+    "nia.plan"
+   ]
+  },
+  "L-n2": {
+   "speaker": "Nia",
+   "line": "So we start there at half five, while it's still open. Courtyard first.",
+   "direction": "steadier now that someone is listening, practical and clear",
+   "fact": "nia.plan"
+  },
+  "L-n3": {
+   "speaker": "Nia",
+   "line": "And it's not only the gate. The courtyard's where I met my first friend here. I want them to see it.",
+   "direction": "softer, a little exposed, it matters to her personally; honest",
+   "fact": "nia.why"
+  },
+  "L-n0": {
+   "speaker": "Nia",
+   "line": "Never mind.",
+   "direction": "quietly giving up, deflated, under her breath"
+  },
+  "L-e1": {
+   "speaker": "Ellis",
+   "line": "I... drew another one. A different route.",
+   "direction": "hesitant, shy, surprised to be asked, almost apologetic",
+   "fact": "ellis.route"
+  },
+  "L-e2": {
+   "speaker": "Ellis",
+   "line": "It starts at the courtyard. Early, while it's still light.",
+   "direction": "gaining a little confidence, explaining carefully",
+   "fact": "ellis.start"
+  },
+  "L-e3": {
+   "speaker": "Ellis",
+   "line": "Then up the hill to the open ground. You can see the whole campus from there. It never reaches the harbour, though.",
+   "direction": "warmer, picturing it, then a careful apology at the end",
+   "fact": "ellis.end"
+  },
+  "L-e0": {
+   "speaker": "Ellis",
+   "line": "It's fine. Later.",
+   "direction": "trailing off, retreating, quiet and small"
+  },
+  "qm2-r1": {
+   "speaker": "You",
+   "line": "Let's go round once. One concern each, and nobody replies until everyone's spoken. Nia, you first.",
+   "reuse": "standup"
+  },
+  "qm2-r4": {
+   "speaker": "Ellis",
+   "line": "That's where mine starts, actually. The courtyard. But it never reaches the harbour. I know that's the part you love, Theo.",
+   "reuse": "standup"
+  },
+  "qm2-r5": {
+   "speaker": "Theo",
+   "line": "It is. Show me your first stop.",
+   "reuse": "standup"
+  },
+  "L-ry1": {
+   "speaker": "You",
+   "line": "Theo, I heard why the harbour matters. Could it be its own night, later in the week?",
+   "direction": "gentle, direct, meaning it"
+  },
+  "L-ry2": {
+   "speaker": "Theo",
+   "line": "Its own night. Okay. Show me your first stop, Ellis.",
+   "direction": "disappointed but touched that someone remembered; turning to Ellis with real interest"
+  },
+  "L-rk1": {
+   "speaker": "Nia",
+   "line": "That's the room. We still haven't got an ending.",
+   "direction": "rueful, half laughing, tired"
+  },
+  "L-rk2": {
+   "speaker": "Theo",
+   "line": "We've got a start.",
+   "direction": "a small, generous concession, a little sad"
+  },
+  "qm2-s1": {
+   "speaker": "You",
+   "line": "Everyone, write down one thing that worries you about tomorrow. No names. Then we'll read them together.",
+   "reuse": "standup"
+  },
+  "L-s2": {
+   "speaker": "You",
+   "line": "Gate locked after six. Too crowded at the harbour. A different start?",
+   "direction": "reading three slips aloud, one by one, thoughtful, small pauses between them"
+  },
+  "qm2-s3": {
+   "speaker": "You",
+   "line": "So the courtyard's the problem. We drop it?",
+   "reuse": "standup"
+  },
+  "qm2-s4": {
+   "speaker": "Nia",
+   "line": "No, don't drop it. The courtyard's where I met my first friend here. I want them to see it. Just go there first.",
+   "reuse": "standup"
+  },
+  "qm2-s5": {
+   "speaker": "You",
+   "line": "Sorry. I read that too fast. Courtyard first.",
+   "reuse": "standup"
+  },
+  "L-s3h": {
+   "speaker": "You",
+   "line": "So the gate's the problem, not the courtyard. Courtyard first, before six?",
+   "direction": "careful, reading it right, checking with Nia"
+  },
+  "L-s4h": {
+   "speaker": "Nia",
+   "line": "Yes. Before six. Thank you.",
+   "direction": "relieved, warm, a small smile"
+  },
+  "L-s6h": {
+   "speaker": "Ellis",
+   "line": "The different start is mine. Here.",
+   "direction": "quiet but brave, sliding a folded sheet across the table"
+  },
+  "L-s7h": {
+   "speaker": "Theo",
+   "line": "Courtyard at half five. That works with the gate.",
+   "direction": "reading the sheet, surprised and grudgingly impressed"
+  },
+  "L-sk1": {
+   "speaker": "Theo",
+   "line": "Too crowded at the harbour. Who wrote that?",
+   "direction": "stung, trying to sound casual and failing"
+  },
+  "qm2-07": {
+   "speaker": "You",
+   "line": "Twenty minutes left, and I've only really heard one person.",
+   "reuse": "standup"
+  }
+ },
+ "listen": {
+  "seconds": 92,
+  "theo": [
+   "qm2-01",
+   "L-t2",
+   "L-t3",
+   "L-t4"
+  ],
+  "nia": {
+   "attempts": [
+    {
+     "at": 9.5,
+     "open": "qm2-02",
+     "over": "qm2-03"
+    },
+    {
+     "at": 33,
+     "open": "qm2-04",
+     "over": "qm2-05"
+    }
+   ],
+   "invited": [
+    "qm2-r2",
+    "L-n3"
+   ],
+   "afterAttempt": [
+    "L-n2",
+    "L-n3"
+   ],
+   "dismiss": "qm2-05",
+   "giveUp": "L-n0"
+  },
+  "ellis": {
+   "thoughts": [
+    "L-e1",
+    "L-e2",
+    "L-e3"
+   ],
+   "trail": "L-e0",
+   "warm": 1.6,
+   "warmAgain": 0.8
+  },
+  "close": "L-t5",
+  "fragments": {
+   "qm2-01": "…the harbour… the lights…",
+   "L-t2": "…two hundred… forty minutes…",
+   "L-t3": "…my first night here…",
+   "L-t4": "…agree it tonight…",
+   "qm2-03": "…great photo stop…",
+   "qm2-05": "…security will open it…",
+   "qm2-02": "Theo, the courtyard gate…",
+   "qm2-04": "…locked… after six…",
+   "qm2-r2": "…gate… half five…",
+   "L-n2": "…half five… courtyard first…",
+   "L-n3": "…my first friend…",
+   "L-e1": "…another one…",
+   "L-e2": "…the courtyard…",
+   "L-e3": "…the open ground…",
+   "L-e0": "…it's fine. Later.",
+   "L-n0": "…never mind."
+  },
+  "nudge": {
+   "at": 24,
+   "line": "qm2-07"
+  }
+ },
+ "facts": {
+  "theo.plan": "Theo's route ends at the harbour as the lights come on.",
+  "theo.why": "Theo found the harbour alone, lost, on his first night. He wants the new students to find it together.",
+  "nia.gate": "The courtyard gate locks at six. Nia checked today.",
+  "nia.plan": "Start at half five, while the gate is open: courtyard first.",
+  "nia.why": "The courtyard is where Nia met her first friend here.",
+  "ellis.route": "Ellis has drawn a different route.",
+  "ellis.start": "It starts at the courtyard, early, while it is light.",
+  "ellis.end": "It ends on the open ground, with the whole campus in view. No harbour."
+ },
+ "choices": {
+  "round": {
+   "label": "Turn the table",
+   "hint": "One each, in turn. No replies yet.",
+   "aria": "Turn the table: everyone speaks once, in turn, before anyone replies."
+  },
+  "slips": {
+   "label": "Pass the slips",
+   "hint": "Everyone writes one worry first.",
+   "aria": "Pass the slips: everyone writes one worry, no names, then you read them together."
+  }
+ },
+ "notes": {
+  "round": [
+   {
+    "from": "Ellis",
+    "text": "You asked me. Nobody usually does. The sheet's yours now, with the gate drawn on it."
+   },
+   {
+    "from": "Theo",
+    "when": "theo.why",
+    "text": "You knew why the harbour mattered, and it still went. Its own night, you said. I'm holding you to that."
+   },
+   {
+    "from": "Theo",
+    "unless": "theo.why",
+    "text": "The harbour was the part they'd have remembered. I'll get over it. Not tonight."
+   },
+   {
+    "from": "Nia",
+    "text": "We started with me, for once. We still haven't got an ending. Seven o'clock, before class?"
+   }
+  ],
+  "slips": [
+   {
+    "from": "Nia",
+    "when": "nia.why",
+    "text": "You read my slip the way I meant it. I didn't have to explain twice."
+   },
+   {
+    "from": "Nia",
+    "unless": "nia.why",
+    "text": "You read my slip too fast. Thank you for stopping when I said so."
+   },
+   {
+    "from": "Ellis",
+    "when": "ellis.any",
+    "text": "I only owned up to the slip because you'd already listened once. Full route attached."
+   },
+   {
+    "from": "Ellis",
+    "unless": "ellis.any",
+    "text": "I wrote 'a different start?'. I don't think you knew it was me. The sheet's still in my bag."
+   },
+   {
+    "from": "",
+    "text": "Too crowded at the harbour.",
+    "unsigned": true
+   }
+  ]
+ }
+}

@@ -51,12 +51,13 @@ const OPTS=[
  {id:'tote',need:['need','tote'],label:'The tote tonight, the bag on Friday',hint:'Sam carries the March tote tomorrow; the bag gets a proper fix.',out:()=>['Sam leaves with the canvas tote over one shoulder and a Friday slot. Every booking is done on time.','You found out what Sam needed, not just what Sam asked for.']},
  {id:'teach',need:['teach'],label:'Bo shows Sam the stitch',hint:'Sam mends their own bag at the spare table; Bo finishes the umbrella.',out:()=>['Sam’s stitches are uneven but hold. The umbrella is ready at 5:51.','Sam can fix it next time without you.']}];
 const $=id=>document.getElementById(id),cap=$('cap');let S;
-function reset(){S={asked:new Set(),left:3,min:32,on:false};Lab.caption(cap,'','');$('clock').textContent='5:32';$('end').hidden=true;render()}
+let RUN=0,pending=0;
+function reset(){RUN++;clearTimeout(pending);S={asked:new Set(),left:3,min:32,on:false};Lab.caption(cap,'','');$('clock').textContent='5:32';$('end').hidden=true;render()}
 function render(){$('qs').innerHTML='';for(const q of Q){const b=Lab.el('button','q'+(S.asked.has(q.id)?' asked':''));b.append(Lab.el('small',null,'Ask '+q.who),document.createTextNode(q.ask));
   b.disabled=!S.on||S.asked.has(q.id)||S.left<=0;b.onclick=()=>ask(q);$('qs').append(b)}
  $('left').innerHTML='';if(!S.on)return;$('left').append(Lab.el('span',null,S.left?`${S.left} question${S.left>1?'s':''} left before you have to decide.`:'Time to decide.'));
  const d=Lab.el('button','go',S.left?'Decide now':'Decide');d.onclick=decide;$('left').append(d)}
-function ask(q){S.asked.add(q.id);S.left--;S.min+=2;$('clock').textContent='5:'+S.min;Lab.tone(520,.1,.04);Lab.caption(cap,q.who,q.a);render();if(!S.left)setTimeout(()=>{if(S.on)decide()},4200)}
+function ask(q){S.asked.add(q.id);S.left--;S.min+=2;$('clock').textContent='5:'+S.min;Lab.tone(520,.1,.04);Lab.caption(cap,q.who,q.a);render();if(!S.left){const r=RUN;pending=setTimeout(()=>{if(S.on&&r===RUN)decide()},4200)}}
 function decide(){if(!S.on)return;S.on=false;render();const k=S.asked;const box=$('end').querySelector('.box');
  box.innerHTML=`<p class="k2">5:${S.min} · decide</p><h2>What do you do?</h2><div class="opts"></div>`;
  for(const o of OPTS){const unlocked=!o.need||o.need.every(n=>k.has(n));if(!unlocked)continue;const b=Lab.el('button','opt'+(o.need?' new':''));b.append(Lab.el('b',null,o.label),Lab.el('span',null,o.hint));b.onclick=()=>result(o);box.querySelector('.opts').append(b)}

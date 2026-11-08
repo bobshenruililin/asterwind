@@ -170,5 +170,27 @@
    "label": "Play the rehearsal",
    "hint": "The perfect recording, labelled as one."
   }
+ },
+ "notes": {
+  "live": [
+   {
+    "from": "Dev",
+    "text": "My arm aches from that reset. I’m proud of it anyway."
+   },
+   {
+    "from": "Lio",
+    "text": "One kid came back three times. Nobody minded the glitch once you’d explained it."
+   }
+  ],
+  "rehearsal": [
+   {
+    "from": "Lio",
+    "text": "I had to tell the queue they couldn’t try it. That was the hardest bit of my day."
+   },
+   {
+    "from": "Dev",
+    "text": "Thank you for not making me fix it in front of everyone."
+   }
+  ]
  }
 }

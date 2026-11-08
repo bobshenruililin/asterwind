@@ -1,4 +1,4 @@
-// Draft night (?v=2): corridor → Standup Seltzer → The Quiet Minute played (turn) → back → roof → all lit → morning → notebook.
+// Draft night (?v=2): corridor → Standup Seltzer → The Quiet Minute, listened (turn to Nia, then turn the table) → back → roof → all lit → morning → notebook.
 // Exits non-zero if any step times out, the outcome isn't recorded, or the page logs errors or failed requests.
 // Usage: serve the repo root on 8731, then  node qa/night-v2.cjs <outdir> [base-url]
 const {chromium}=require('playwright');const O=(process.argv[2]||'.')+'/';require('fs').mkdirSync(O,{recursive:true});const w=ms=>new Promise(r=>setTimeout(r,ms));
@@ -14,8 +14,9 @@ const until=async(p,fn,ms=60000)=>{const t=Date.now();while(Date.now()-t<ms){if(
  await fr.locator('#open-drink').click();await w(3800);await p.screenshot({path:O+'3-crossing.png'});
  console.log('film',need(await until(p,()=>Game.state().filmStarted,30000),'film started'));await w(800);await p.screenshot({path:O+'4-sit.png'});
  const qm=p.frameLocator('#filmscr iframe');await qm.locator('#start').click();
- need(await until(p,()=>{try{return document.querySelector('#filmscr iframe').contentWindow.QM.state.phase==='decision'}catch{return false}},180000),'decision reached');await w(800);await p.screenshot({path:O+'5-decision.png'});
- await qm.locator('#platter').click();need(await until(p,()=>!document.getElementById('film-back').hidden,180000),'film ended');await w(1200);await p.screenshot({path:O+'6-end.png'});
+ need(await until(p,()=>{try{return document.querySelector('#filmscr iframe').contentWindow.LISTEN.state.phase==='listen'}catch{return false}},30000),'listening');await qm.locator('#p-Nia').click();
+ need(await until(p,()=>{try{const L=document.querySelector('#filmscr iframe').contentWindow.LISTEN;L.step(30);return L.state.phase==='decision'}catch{return false}},180000),'decision reached');await w(800);await p.screenshot({path:O+'5-decision.png'});
+ await qm.locator('#obj-round').click();need(await until(p,()=>{try{document.querySelector('#filmscr iframe').contentWindow.LISTEN.step(30)}catch{}return !document.getElementById('film-back').hidden},180000),'film ended');await w(1200);await p.screenshot({path:O+'6-end.png'});
  const film=await p.evaluate(()=>Game.state().film);need(film&&film.HEARD==='round','outcome recorded');console.log('film outcome',JSON.stringify(film));
  await p.click('#film-back');need(await until(p,()=>{try{return Game.hub().frame.contentWindow.AsterwindJourney.state.state==='idle'}catch{return false}},30000),'back in the corridor');await w(1500);await p.screenshot({path:O+'7-roof.png'});
  const mv=await p.isVisible('#morning');need(mv,'morning offered');console.log('lit',JSON.stringify(await p.evaluate(()=>Game.state().found)),'morning visible',mv);

@@ -17,7 +17,7 @@
 <div class="px" id="px"><canvas id="cv" width="240" height="135"></canvas><div class="panel" id="panel"><div class="box"></div></div></div>
 <div class="hud"><b id="day">Monday</b><span id="left"></span><span class="sp" style="flex:1"></span><button class="mv" id="next" hidden>End the day</button></div>
 <div class="moves" id="moves"></div><div class="people" id="people"></div><div class="log" id="log" aria-live="polite"></div>
-<div class="why"><b>The idea.</b> Leadership as fifteen small moves instead of one big choice, in a tiny pixel studio. Everyone has a need you can’t see: the same thank-you that lifts Kit drains Asha. Nothing tells you which move is right. You find out on Friday, and the ending says which of your habits suited which person. It’s also the honest pixel-art test: hand-placed pixels, every frame under our control.</div>
+<div class="why"><b>The idea.</b> Leadership as twelve small moves instead of one big choice, in a tiny pixel studio. Everyone has a need you can’t see: the same thank-you that lifts Kit drains Asha. Nothing tells you which move is right. You find out on Friday, and the ending says which of your habits suited which person. It’s also the honest pixel-art test: hand-placed pixels, every frame under our control.</div>
 </div>
 <script src="lab.js"></script>
 <script>
@@ -35,7 +35,7 @@ const MOVES=[{id:'check',name:'Check in, one to one',sub:'ask how it’s really 
 const DAYS=['Monday','Tuesday','Wednesday','Thursday','Friday'];
 const cv=document.getElementById('cv'),g=cv.getContext('2d'),$=id=>document.getElementById(id);let S,pick=null,fx=[];
 function reset(){S={day:0,left:3,on:false,today:[],p:Object.fromEntries(P.map(p=>[p.id,{en:4,tr:3,pr:0,load:0,checks:0,stuck:false,hist:[]}])),log:[]};pick=null;fx=[];ui();
- panel(`<p class="k2">A studio · the week before the showcase</p><h2>Four people, five days, three moves a day.</h2><p>Asha draws the map, Kit builds the model, Dev wires the sensor, Inez holds the logistics together. Each day, pick a move, then a person. Friday, the showcase opens.</p><p style="color:var(--dim)">Watch their energy. Their needs aren’t written anywhere.</p><button class="go" id="go">Monday morning</button>`);$('go').onclick=()=>{panel(null);S.on=true;ui();say('Monday. Everyone’s at their desk.')}}
+ panel(`<p class="k2">A studio · the week before the showcase</p><h2>Four people, four working days, three moves a day.</h2><p>Asha draws the map, Kit builds the model, Dev wires the sensor, Inez holds the logistics together. Monday to Thursday, pick a move, then a person. On Friday the showcase opens, and the week is over.</p><p style="color:var(--dim)">Watch their energy. Their needs aren’t written anywhere.</p><button class="go" id="go">Monday morning</button>`);$('go').onclick=()=>{panel(null);S.on=true;ui();say('Monday. Everyone’s at their desk.')}}
 function panel(html){$('panel').hidden=!html;if(html)$('panel').querySelector('.box').innerHTML=html}
 function say(t){S.log.unshift(t);$('log').innerHTML=S.log.slice(0,3).map((x,i)=>`<p style="opacity:${1-i*.3}">${x}</p>`).join('')}
 function ui(){$('day').textContent=DAYS[S.day];$('left').textContent=S.on?`${S.left} move${S.left===1?'':'s'} left today`:'';
@@ -46,7 +46,7 @@ const nm=id=>P.find(p=>p.id===id).name,cl=v=>Math.max(0,Math.min(5,v));
 function bump(id,k,v){const q=S.p[id];q[k]=k==='pr'?Math.min(100,q[k]+v):cl(q[k]+v);if(v){const p=P.find(x=>x.id===id);fx.push({x:p.x,y:52,t:0,txt:(v>0?'+':'')+(k==='pr'?Math.round(v):v),c:k==='en'?C.green:k==='tr'?C.gold:C.cream})}}
 /* the hidden needs: Asha recharges alone, Kit runs on recognition, Dev freezes when stuck, Inez says yes to everything */
 function act(m,id){if(!m||!S.left)return;const q=S.p[id],d=S.day;q.hist.push(m);S.today.push(m+':'+id);let t='';
- if(m==='check'){q.checks++;if(id==='kit'&&q.checks>1){bump(id,'en',-1);t='Kit: “You’ve asked twice today. Is something wrong?”'}else if(id==='dev'&&q.stuck){bump(id,'en',2);bump(id,'tr',1);q.stuck=false;t='Dev admits the sensor fires twice. Talking it through unsticks him.'}
+ if(m==='check'){q.checks++;if(id==='kit'&&q.checks>1){bump(id,'en',-1);t='Kit: “You’ve asked twice today. Is something wrong?”'}else if(id==='dev'&&q.stuck){bump(id,'en',2);bump(id,'tr',1);q.stuck=false;q.unstuck=d;t='Dev admits the sensor fires twice. Talking it through unsticks him.'}
   else if(id==='inez'){bump(id,'tr',1);t=`Inez lists what she’s carrying: ${q.load+2} things. She hadn’t said.`;q.seen=1}else{bump(id,'tr',1);bump(id,'en',id==='asha'?1:0);t=`${nm(id)} tells you how it’s really going.`}}
  if(m==='thank'){bump(id,'tr',id==='asha'?2:1);bump(id,'en',id==='kit'?0:1);t=`${nm(id)} looks up. “Thanks. That helps.”`}
  if(m==='praise'){if(id==='kit'){bump(id,'en',2);bump(id,'tr',1);t='Kit glows. He works through lunch.'}else if(id==='asha'){if(d===3){bump(id,'tr',2);t='You say the map is Asha’s, in front of everyone. She goes red, but she needed it said.'}else{bump(id,'en',-1);bump(id,'tr',0);t='Asha smiles, and spends the next hour with her headphones on.'}}else{bump(id,'tr',1);t=`${nm(id)} nods.`}}
@@ -64,7 +64,7 @@ function endDay(){const d=S.day;const lines=[];
 function friday(){S.on=false;ui();const part=q=>q.pr>=100?'finished':q.pr>=70?'rough but there':'missing';const tr=P.reduce((a,p)=>a+S.p[p.id].tr,0)/4;
  const note={asha:q=>q.hist.filter(h=>h==='praise').length>1?'You praised her in public more than once. She recharges alone, so each time cost her energy.':q.hist.includes('thank')?'Your quiet thanks landed. She recharges alone; private works.':'She works best left alone, and wants credit when it counts.',
   kit:q=>q.hist.filter(h=>h==='check').length>2?'Kit felt watched: repeated check-ins read as doubt.':q.hist.includes('praise')?'Kit runs on recognition. Public praise was rocket fuel.':'Kit runs on recognition, and didn’t get much.',
-  dev:q=>q.hist.includes('check')?'Dev freezes when he’s stuck and won’t ask. A one-to-one unsticks him.':'Dev freezes when he’s stuck and won’t ask. Nobody asked.',
+  dev:q=>q.unstuck!=null?`Dev freezes when he’s stuck and won’t ask. Your one-to-one on ${DAYS[q.unstuck]} unstuck him.`:q.stuck&&q.hist.includes('check')?'You checked in with Dev, but not once he was stuck. He finished the week stuck, and said nothing.':'Dev freezes when he’s stuck and won’t ask. Nobody asked.',
   inez:q=>q.seen?'Inez says yes to everything. You only saw it because you asked.':'Inez says yes to everything. Her load was invisible unless you asked or took some away.'};
  panel(`<p class="k2">Friday · the showcase opens</p><h2>${P.every(p=>S.p[p.id].pr>=100)?(tr<2?'Everything is ready. Nobody wants to do this again.':'Everything is ready, and so is the team.'):tr<2?'The doors open. The team is running on empty.':'The doors open.'}</h2>
  ${P.map(p=>{const q=S.p[p.id];return `<p><b>${p.name}</b>: ${p.part} is ${part(q)} · energy ${q.en}/5 · trust ${q.tr}/5<br><span style="color:var(--dim)">${note[p.id](q)}</span></p>`}).join('')}

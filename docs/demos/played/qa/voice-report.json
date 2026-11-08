@@ -1368,5 +1368,238 @@
    "seconds": 7.84,
    "render_s": 22.6
   }
+ },
+ "listen": {
+  "L-t2": {
+   "who": "Theo",
+   "voice": "ryan",
+   "direction": "enthusiastic, counting it off, confident in the details. Speak naturally, like a real person in the room, not an announcer.",
+   "text": "Two hundred students, one photo at the water. I've timed it twice. Forty minutes, door to harbour.",
+   "heard": "200 students, one photo at the water. I've timed it twice. 40 minutes, Door to Harbor.",
+   "word_error": 0.235,
+   "flag": true,
+   "seconds": 7.36,
+   "render_s": 39.6
+  },
+  "L-t3": {
+   "who": "Theo",
+   "voice": "ryan",
+   "direction": "quieter and more personal, the bravado drops for a moment; sincere, a little embarrassed. Speak naturally, like a real person in the room, not an announcer.",
+   "text": "My first night here, nobody walked me anywhere. I found the harbour on my own, near midnight, a bit lost. I want them to find it together.",
+   "heard": "My first night here, nobody walked me anywhere. I found the harbor on my own, near midnight, a bit lost. I want them to find it together.",
+   "word_error": 0.037,
+   "flag": false,
+   "seconds": 12.4,
+   "render_s": 88.0
+  },
+  "L-t4": {
+   "who": "Theo",
+   "voice": "ryan",
+   "direction": "brisk, upbeat, wrapping up, hand patting the model. Speak naturally, like a real person in the room, not an announcer.",
+   "text": "The model's done. We just need to agree it tonight.",
+   "heard": "The model's done. We just need to agree it tonight.",
+   "word_error": 0.0,
+   "flag": false,
+   "seconds": 2.72,
+   "render_s": 18.9
+  },
+  "L-t5": {
+   "who": "Theo",
+   "voice": "ryan",
+   "direction": "glancing at the clock, hopeful, assuming the answer is yes. Speak naturally, like a real person in the room, not an announcer.",
+   "text": "Twelve minutes. So, are we agreed?",
+   "heard": "12 minutes. So, are we agreed?",
+   "word_error": 0.167,
+   "flag": true,
+   "seconds": 2.96,
+   "render_s": 21.0
+  },
+  "L-n2": {
+   "who": "Nia",
+   "voice": "serena",
+   "direction": "steadier now that someone is listening, practical and clear. Speak naturally, like a real person in the room, not an announcer.",
+   "text": "So we start there at half five, while it's still open. Courtyard first.",
+   "heard": "So we start there at half-five, while it's still open, courtyard first.",
+   "word_error": 0.0,
+   "flag": false,
+   "seconds": 5.76,
+   "render_s": 42.9
+  },
+  "L-n3": {
+   "who": "Nia",
+   "voice": "serena",
+   "direction": "softer, a little exposed, it matters to her personally; honest. Speak naturally, like a real person in the room, not an announcer.",
+   "text": "And it's not only the gate. The courtyard's where I met my first friend here. I want them to see it.",
+   "heard": "And it's not only the gate. The courtyard's where I met my first friend here. I want them to see it.",
+   "word_error": 0.0,
+   "flag": false,
+   "seconds": 6.48,
+   "render_s": 45.5
+  },
+  "L-n0": {
+   "who": "Nia",
+   "voice": "serena",
+   "direction": "quietly giving up, deflated, under her breath. Speak naturally, like a real person in the room, not an announcer.",
+   "text": "Never mind.",
+   "heard": "Never mind.",
+   "word_error": 0.0,
+   "flag": false,
+   "seconds": 0.96,
+   "render_s": 7.4
+  },
+  "L-e1": {
+   "who": "Ellis",
+   "voice": "aiden",
+   "direction": "hesitant, shy, surprised to be asked, almost apologetic. Speak naturally, like a real person in the room, not an announcer.",
+   "text": "I... drew another one. A different route.",
+   "heard": "I drew another one. A different route.",
+   "word_error": 0.0,
+   "flag": false,
+   "seconds": 5.36,
+   "render_s": 37.8
+  },
+  "L-e2": {
+   "who": "Ellis",
+   "voice": "aiden",
+   "direction": "gaining a little confidence, explaining carefully. Speak naturally, like a real person in the room, not an announcer.",
+   "text": "It starts at the courtyard. Early, while it's still light.",
+   "heard": "It starts at the courtyard, early, while it's still light.",
+   "word_error": 0.0,
+   "flag": false,
+   "seconds": 3.28,
+   "render_s": 23.6
+  },
+  "L-e3": {
+   "who": "Ellis",
+   "voice": "aiden",
+   "direction": "warmer, picturing it, then a careful apology at the end. Speak naturally, like a real person in the room, not an announcer.",
+   "text": "Then up the hill to the open ground. You can see the whole campus from there. It never reaches the harbour, though.",
+   "heard": "Then up the hill to the open ground. You can see the whole campus from there. It never reaches the harbor though.",
+   "word_error": 0.045,
+   "flag": false,
+   "seconds": 7.68,
+   "render_s": 52.9
+  },
+  "L-e0": {
+   "who": "Ellis",
+   "voice": "aiden",
+   "direction": "trailing off, retreating, quiet and small. Speak naturally, like a real person in the room, not an announcer.",
+   "text": "It's fine. Later.",
+   "heard": "It's fine. Later.",
+   "word_error": 0.0,
+   "flag": false,
+   "seconds": 1.52,
+   "render_s": 11.4
+  },
+  "L-ry1": {
+   "who": "You",
+   "voice": "eric",
+   "direction": "gentle, direct, meaning it. Speak naturally, like a real person in the room, not an announcer.",
+   "text": "Theo, I heard why the harbour matters. Could it be its own night, later in the week?",
+   "heard": "Theo, I heard why the harbor matters, could it be its own night later in the week?",
+   "word_error": 0.059,
+   "flag": false,
+   "seconds": 5.92,
+   "render_s": 44.7
+  },
+  "L-ry2": {
+   "who": "Theo",
+   "voice": "ryan",
+   "direction": "disappointed but touched that someone remembered; turning to Ellis with real interest. Speak naturally, like a real person in the room, not an announcer.",
+   "text": "Its own night. Okay. Show me your first stop, Ellis.",
+   "heard": "It's own night. Okay, show me your first stop, Ellis.",
+   "word_error": 0.1,
+   "flag": false,
+   "seconds": 4.64,
+   "render_s": 34.9
+  },
+  "L-rk1": {
+   "who": "Nia",
+   "voice": "serena",
+   "direction": "rueful, half laughing, tired. Speak naturally, like a real person in the room, not an announcer.",
+   "text": "That's the room. We still haven't got an ending.",
+   "heard": "That's the room. We still haven't got an ending.",
+   "word_error": 0.0,
+   "flag": false,
+   "seconds": 3.2,
+   "render_s": 34.5
+  },
+  "L-rk2": {
+   "who": "Theo",
+   "voice": "ryan",
+   "direction": "a small, generous concession, a little sad. Speak naturally, like a real person in the room, not an announcer.",
+   "text": "We've got a start.",
+   "heard": "We've got a start.",
+   "word_error": 0.0,
+   "flag": false,
+   "seconds": 3.44,
+   "render_s": 44.0
+  },
+  "L-s2": {
+   "who": "You",
+   "voice": "eric",
+   "direction": "reading three slips aloud, one by one, thoughtful, small pauses between them. Speak naturally, like a real person in the room, not an announcer.",
+   "text": "Gate locked after six. Too crowded at the harbour. A different start?",
+   "heard": "Gate locked after six. Two crowded at the harbour. A different start?",
+   "word_error": 0.083,
+   "flag": false,
+   "seconds": 4.56,
+   "render_s": 61.2
+  },
+  "L-s3h": {
+   "who": "You",
+   "voice": "eric",
+   "direction": "careful, reading it right, checking with Nia. Speak naturally, like a real person in the room, not an announcer.",
+   "text": "So the gate's the problem, not the courtyard. Courtyard first, before six?",
+   "heard": "So the gate's the problem, not the courtyard. Courtyard first? Before six?",
+   "word_error": 0.0,
+   "flag": false,
+   "seconds": 4.4,
+   "render_s": 53.8
+  },
+  "L-s4h": {
+   "who": "Nia",
+   "voice": "serena",
+   "direction": "relieved, warm, a small smile. Speak naturally, like a real person in the room, not an announcer.",
+   "text": "Yes. Before six. Thank you.",
+   "heard": "Yes, before 6. Thank you.",
+   "word_error": 0.2,
+   "flag": true,
+   "seconds": 2.96,
+   "render_s": 23.5
+  },
+  "L-s6h": {
+   "who": "Ellis",
+   "voice": "aiden",
+   "direction": "quiet but brave, sliding a folded sheet across the table. Speak naturally, like a real person in the room, not an announcer.",
+   "text": "The different start is mine. Here.",
+   "heard": "The different start is mine. Here.",
+   "word_error": 0.0,
+   "flag": false,
+   "seconds": 2.72,
+   "render_s": 36.2
+  },
+  "L-s7h": {
+   "who": "Theo",
+   "voice": "ryan",
+   "direction": "reading the sheet, surprised and grudgingly impressed. Speak naturally, like a real person in the room, not an announcer.",
+   "text": "Courtyard at half five. That works with the gate.",
+   "heard": "Courtyard at half five that works with the gate",
+   "word_error": 0.0,
+   "flag": false,
+   "seconds": 4.4,
+   "render_s": 57.3
+  },
+  "L-sk1": {
+   "who": "Theo",
+   "voice": "ryan",
+   "direction": "stung, trying to sound casual and failing. Speak naturally, like a real person in the room, not an announcer.",
+   "text": "Too crowded at the harbour. Who wrote that?",
+   "heard": "Too crowded at the harbor. Who wrote that?",
+   "word_error": 0.125,
+   "flag": true,
+   "seconds": 2.96,
+   "render_s": 21.9
+  }
  }
 }

@@ -38,12 +38,12 @@ const NOTES={round:[['You asked me. Nobody does. I’m bringing the whole sheet 
  backup:[['It moved. I wanted it to be mine. Thank you for saying Monday, and meaning it.','Julian'],['I got my footage. I know who paid for it.','Mara']],
  repair:[['It jammed on camera, and you said it was your call. That mattered more than the footage.','Mara'],['I’m going to fix that seam properly. Because you let me try.','Julian']]};
 const $=id=>document.getElementById(id);let picks={},fromSave=false;
-function readSave(){try{const d=JSON.parse(localStorage.getItem('asterwind.night2.v1')||'null');if(d&&d.film){const out={};for(const [ep,w] of EPS.map(e=>[e[0],e[1]]))if(d.film[w])out[ep]=d.film[w];return out}}catch{}return null}
+function readSave(){try{const d=JSON.parse(localStorage.getItem('asterwind.night2.v1')||'null');if(d&&d.film){const out={};for(const [ep,w,,a,b] of EPS){const o=d.film[w];if(typeof o==='string'&&(o===a[0]||o===b[0])&&NOTES[o])out[ep]=o}return out}}catch{}return null}
 function render(){$('pick').innerHTML='';for(const [ep,,title,a,b] of EPS){const r=Lab.el('div','row');r.append(Lab.el('b',null,title));for(const [id,lab] of [a,b]){const btn=Lab.el('button',picks[ep]===id?'on':'',lab);
   btn.onclick=()=>{picks[ep]=picks[ep]===id?undefined:id;fromSave=false;Lab.tone(picks[ep]?620:380,.06,.03);render()};r.append(btn)}$('pick').append(r)}
  $('src').textContent=fromSave?'Using the choices saved from your night in the game. Change any of them below.':'Pick what you did in each story (or play the game in this browser first).';
  const B=$('board');B.innerHTML='';let i=0;
- for(const [ep,,title] of EPS){const c=picks[ep];if(!c)continue;
+ for(const [ep,,title] of EPS){const c=picks[ep];if(!c||(ep!=='pixel'&&!NOTES[c]))continue;
   if(ep==='pixel'){const n=Lab.el('div','n wait');n.style.setProperty('--r','1deg');n.append(document.createTextNode('Jo’s note waits for The Empty Square’s lived-experience review. We won’t write Jo’s words before people with that experience have read the story.'));B.append(n);continue}
   for(const [txt,who] of NOTES[c]){const n=Lab.el('div','n');n.style.setProperty('--r',(((i*37)%7)-3)*.8+'deg');n.style.animationDelay=(i*.08)+'s';n.append(document.createTextNode(txt),Lab.el('span','from','— '+who));B.append(n);i++}}
  if(!B.children.length)B.append(Lab.el('p',null,''))}

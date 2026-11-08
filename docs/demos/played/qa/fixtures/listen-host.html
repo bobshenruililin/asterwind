@@ -1,0 +1,5 @@
+<!doctype html><meta charset="utf-8"><title>listen host</title>
+<!-- Test fixture: embeds The Quiet Minute, listened, as the night does, and records every episode message. -->
+<style>html,body{margin:0;height:100%;background:#000}iframe{border:0;width:100%;height:100%}</style>
+<iframe id="f" src="../../listen.html?session=fixture-1" allow="autoplay"></iframe>
+<script>window.MSGS=[];addEventListener('message',e=>{if(e.source===document.getElementById('f').contentWindow&&e.data&&e.data.channel==='asterwind.episode.v1')MSGS.push(e.data)})</script>

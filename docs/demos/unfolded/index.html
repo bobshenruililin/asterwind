@@ -10,6 +10,9 @@
      approved story. No network, storage or account needed. Serve over HTTP or open directly. -->
 <style>
 @font-face{font-family:Kalam;src:url('../../../app/assets/fonts/Kalam-Regular.ttf') format('truetype');font-display:swap}
+@font-face{font-family:Newsreader;src:url('../played/fonts/Newsreader-opsz.woff2') format('woff2');font-weight:200 800;font-style:normal;font-display:swap}
+@font-face{font-family:Newsreader;src:url('../played/fonts/Newsreader-opsz-italic.woff2') format('woff2');font-weight:200 800;font-style:italic;font-display:swap}
+@font-face{font-family:Plex;src:url('../played/fonts/IBMPlexMono-500.woff2') format('woff2');font-weight:500;font-display:swap}
 :root{--ink:#f4ead6;--gold:#e9c27a;--dim:#b7ab98;--night:#141629;--paper:#efe3c8;--pencil:#4a4652;--hand:Kalam,'Segoe Print','Comic Sans MS',cursive}
 *{box-sizing:border-box}
 html,body{margin:0;height:100%;background:#0b0b12;color:var(--ink);font-family:Georgia,'Times New Roman',serif;overflow:hidden}
@@ -83,7 +86,19 @@ button:focus-visible,input:focus-visible{outline:2px solid var(--gold);outline-o
 #title.v2 .t-how{display:block;margin-top:.8em;color:#e8dcc6}
 #title.v2 .t-note{display:block;margin-top:.8em;font:clamp(12px,1.1vw,14px)/1.5 system-ui;color:#a89f90}
 #title.leaving{opacity:0;transition:opacity .7s ease}
-@media(max-height:520px){#title.v2 .t-kicker{margin-bottom:.2em}#title.v2 h1{font-size:40px}#title.v2 .t-sub{margin:.4em auto .8em;font-size:13.5px;line-height:1.4}#title.v2 .t-how,#title.v2 .t-note{margin-top:.35em}#title.v2 .t-note{font-size:11.5px}}
+/* 8 Nov: the opening card is a picture first. The studio after hours, full-bleed; the words sit in its dark side. */
+#title.v2{align-items:flex-start;justify-content:flex-end;text-align:left;padding:0 clamp(16px,4vw,64px) clamp(22px,7vh,72px);
+ background:linear-gradient(90deg,#07060bf0 0%,#07060bc4 36%,#07060b40 62%,#07060b00 100%),linear-gradient(0deg,#07060bb0,transparent 50%),url('../../../hub/assets/studio-opening.webp') 70% 40%/cover #08080d}
+#title.v2 .t-kicker{font:500 11px Plex,ui-monospace,monospace;letter-spacing:.26em;display:flex;align-items:center;gap:14px;margin-bottom:1.2em}
+#title.v2 .t-kicker::before{content:'';width:32px;height:1px;background:var(--gold);opacity:.7}
+#title.v2 h1{font:300 clamp(64px,10.5vw,168px)/.9 Newsreader,Georgia,serif;letter-spacing:-.03em;font-variation-settings:'opsz' 72;color:#fbf2e2}
+#title.v2 .t-sub{margin:1.1em 0 1.6em;max-width:min(34em,92vw);font:italic 300 clamp(16px,1.5vw,21px)/1.5 Newsreader,Georgia,serif;color:#ddd1bb;text-wrap:pretty}
+#title.v2 .t-how{font-style:normal;color:#f1e6cf}
+#title.v2 .t-note{font:500 10.5px/1.8 Plex,ui-monospace,monospace;letter-spacing:.12em;color:#b8ad99;margin-top:1.1em}
+#title.v2 .t-btns{justify-content:flex-start}
+#title.v2 button#begin,#title.v2 button#resume,#title.v2 button#restart{font:500 11px Plex,ui-monospace,monospace;letter-spacing:.22em;text-transform:uppercase;background:#0b0a0dcc;border:1px solid #f5ead655;border-radius:3px;color:#f5ead6;min-height:46px;padding:0 1.6em}
+#title.v2 button#begin:hover,#title.v2 button#begin:focus-visible{border-color:var(--gold);color:#ffe2a0}
+@media(max-height:520px){#title.v2 .t-kicker{margin-bottom:.2em}#title.v2 h1{font-size:52px}#title.v2 .t-sub{margin:.4em auto .8em;font-size:13.5px;line-height:1.4}#title.v2 .t-how,#title.v2 .t-note{margin-top:.35em}#title.v2 .t-note{font-size:11.5px}}
 #title.cut{background:transparent;pointer-events:none}#title.cut>*:not(h1){opacity:0}#title.cut h1{color:#26232e}
 /* Corridor: the After Hours dispenser (hub/, journey mode) */
 #corridor{background:#0d0e1a}#corridor.offstage{visibility:hidden;pointer-events:none}
@@ -535,14 +550,12 @@ const FILMS={standup:{title:'The Quiet Minute',src:'anthology/episodes/standup/i
 const OUTCOMES={standup:['round','slips'],slides:['microphone','notebook'],seam:['backup','repair'],ship:['live','rehearsal'],pixel:['lower','connect'],scope:['extend','return']};
 const OUTNOTE={round:'turned the table',slips:'passed the slips',microphone:'moved the microphone',notebook:'showed the notebook',backup:'fitted the spare',repair:'mended it together',live:'ran it live',rehearsal:'played the rehearsal',lower:'lowered the console',connect:'connected the panel',extend:'pulled in a chair',return:'offered tomorrow'};
 // At dawn (?v=2) the notebook says what each choice kept and what it cost: from the interaction audit, never a grade.
-// Every story pulls between the person in front of you and the plan (a promise, a deadline, the show). At dawn the
-// notebook shows which way you leaned across the night: a pattern to notice, never a score.
-const LEAN={round:'people',slips:'plan',microphone:'people',notebook:'plan',extend:'people',return:'plan',lower:'people',connect:'plan',live:'people',rehearsal:'plan',repair:'people',backup:'plan'};
 const KEPT={round:['every voice, in turn','the harbour waited'],slips:['the quiet concerns','one slip misread'],microphone:['Asha’s own words','the model stayed boxed'],notebook:['the pitch, Asha’s ease','credit in your voice'],
  backup:['the noon deadline','Julian’s rib, unused'],repair:['Julian’s own design','half a canopy'],live:['hands-on, for real','the fault, in public'],rehearsal:['a clean first show','no one could try it'],
  lower:['the same controls','a pause; some left'],connect:['the display running','a different feel'],extend:['Sam, for tomorrow','the umbrella’s seam'],return:['the promises made','Sam’s bag, still torn']};
 // Draft mode (?v=2): all six stories are played at their decision rather than watched (docs/demos/played).
-if(V2){FILMS.standup.src='docs/demos/played/index.html';for(const e of ['slides','scope','pixel','ship','seam'])FILMS[e].src='docs/demos/played/scene.html?ep='+e}
+// The Quiet Minute is the listening version (8 Nov): who you turn to gets the floor. The 7 Nov played version stays at played/index.html.
+if(V2){FILMS.standup.src='docs/demos/played/listen.html';for(const e of ['slides','scope','pixel','ship','seam'])FILMS[e].src='docs/demos/played/scene.html?ep='+e}
 // Each word's bottle opens one film. The wrapper copy lives with the drinks (hub/drinks.js, JOURNEY).
 const BOTTLES={HEARD:{film:'standup'},LEAD:{film:'slides'},SHARED:{film:'seam'},SHIELD:{film:'ship'},HELP:{film:'pixel'},SHIP:{film:'scope'}};
 const LEADQ={question:'Whose map was it? And who said so out loud?',trace:'<path d="M40 150 q30 -90 60 -40 t60 -60" stroke="#e8dcc4" stroke-width="5" fill="none" stroke-dasharray="10 8"/><circle cx="160" cy="50" r="12" fill="#e9c27a"/>'};
@@ -740,10 +753,19 @@ function writeNotes(){let n='';for(const w of TARGETS){const key=KEY[w],[x,y]=PL
 function backToNotebook(){G.screen='notebook';only('notebook');writeNotes();updateGo();Snd.music(null);setTimeout(()=>($('tiles').querySelector('button'))?.focus({preventScroll:true}),100)}
 // ---------- the ending: the word, rewritten by what you did ----------
 const TIMES=['','once','twice','three times','four times','five times','six times'];
-function leanLines(){const o=G.walked.map(w=>LEAN[G.film[w]]).filter(Boolean),p=o.filter(x=>x==='people').length,q=o.length-p;
- const head=!o.length?'Each time, you chose what to keep.':o.length===1?`Tonight you put ${p?'the people in front of you':'the plan'} first.`:p&&q?`People first ${TIMES[p]}; the plan first ${TIMES[q]}.`:p?`Every time, you put the people first.`:`Every time, you put the plan first.`;
- const tail=!o.length?[]:o.length===1?['Walk another story to see if it’s your habit.']:p===q?['You moved between them.','Notice what tipped you.']:['Neither is the right habit.','Knowing your default is where leading starts.'];
- return `<text x="300" y="490" font-size="21" fill="#5d5866">${head}</text>`+tail.map((t,i)=>`<text x="300" y="${515+i*22}" font-size="17" fill="#7a7480">${t}</text>`).join('')}
+// At dawn (8 Nov) the notebook keeps what the people you led said back, not a tally of which way you leaned.
+// One note per story walked, the one that carries the cost; The Empty Square's waits for its lived-experience review.
+const DAWN_NOTE={round:['We started with me, for once. We still haven’t got an ending.','Nia'],slips:['Too crowded at the harbour.','no name'],
+ microphone:['I carried the model home still in its box.','Kit'],notebook:['You said my name. I wish they’d heard about the trolley.','Asha'],
+ extend:['You could have asked me before you gave the umbrella’s time away.','Bo'],return:['The library had one bag left. I got lucky. I might not have.','Sam'],
+ live:['My arm aches from that reset. I’m proud of it anyway.','Dev'],rehearsal:['I had to tell the queue they couldn’t try it.','Lio'],
+ backup:['It moved. I wanted it to be mine.','Julian'],repair:['It jammed on camera, and you said it was your call.','Mara']};
+function wrapLine(t,n){const out=[];let cur='';for(const w of t.split(' ')){if((cur+' '+w).trim().length>n&&cur){out.push(cur);cur=w}else cur=(cur+' '+w).trim()}if(cur)out.push(cur);return out}
+const esc=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c]);
+function leanLines(){const ns=G.walked.map(w=>DAWN_NOTE[G.film[w]]).filter(Boolean).slice(-2);let y=478,out='';
+ for(const [txt,who] of ns){for(const l of wrapLine('“'+txt+'”',40)){out+=`<text x="300" y="${y}" font-size="18" fill="#4d4856">${esc(l)}</text>`;y+=21}out+=`<text x="560" y="${y}" text-anchor="end" font-size="15" fill="#7a7480">— ${esc(who)}</text>`;y+=26}
+ if(G.walked.length)out+=`<text x="300" y="${Math.min(y+4,590)}" font-size="16" fill="#7a7480">${G.walked.length>1?'Each way kept something and cost something.':'Walk another story; they’ll write back too.'}</text>`;
+ return out}
 function endWords(){const ws=(V2?TARGETS.filter(t=>G.walked.includes(t)):TARGETS.filter(t=>G.found.includes(t))).map(t=>t.toLowerCase());const pos=V2?[[300,350],[650,350],[300,395],[650,395],[300,440],[650,440]]:[[300,370],[650,370],[300,440],[650,440],[300,510],[650,510]];
  $('nb-around').innerHTML=ws.map((w,i)=>`<text x="${pos[i][0]}" y="${pos[i][1]}" text-anchor="${i%2?'end':'start'}">${w}</text>`).join('')+(V2&&ws.length?leanLines():'')+'<text x="320" y="600" font-size="30">Leadership is…</text>'+(G.mine?`<text x="470" y="700" text-anchor="middle" font-size="40" fill="#26232e">${G.mine}</text>`:'');at('nb-q',{opacity:0})}
 function beginEnding(){Snd.stopScene();G.ending=1;G.screen='notebook';only('notebook');writeNotes();Snd.play('page');$('tiles').hidden=true;$('spell').hidden=true;$('note').textContent='';$('go').hidden=true;$('boats').hidden=true;
